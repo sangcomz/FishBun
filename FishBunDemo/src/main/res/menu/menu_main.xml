@@ -1,0 +1,9 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_plus"
+        android:icon="@mipmap/ic_add_white"
+        app:showAsAction="withText|ifRoom"
+        android:title="@string/plus" />
+
+</menu>

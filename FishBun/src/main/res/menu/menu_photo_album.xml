@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.administrator.imageviewer.PhotoAlbumActivity">
+
+    <item
+        android:id="@+id/action_ok"
+        android:icon="@mipmap/ic_ok"
+        app:showAsAction="withText|ifRoom"
+        android:title="@string/camera" />
+</menu>

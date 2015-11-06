@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_margin="0.3dp"
+    android:layout_height="match_parent"
+    android:background="#EBF7FF">
+
+    <RelativeLayout
+        android:id="@+id/area_thum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#d9d9d9">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerInParent="true"
+            android:background="@mipmap/ic_main" />
+
+        <ImageView
+            android:id="@+id/img_thum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:scaleType="centerCrop" />
+    </RelativeLayout>
+
+    <!--<CheckBox-->
+        <!--android:id="@+id/chk_photo"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_alignRight="@+id/area_thum"-->
+        <!--android:button="@null"-->
+        <!--android:clickable="false" />-->
+
+
+    <TextView
+        android:id="@+id/txt_pick_count"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#bb000000"
+        android:gravity="center"
+        android:textColor="#ffffff"
+        android:textSize="32dp"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
+    <!-- -->
+    <!--<TextView-->
+        <!--android:id="@+id/txt_pick_count"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:alpha="0.6"-->
+        <!--android:background="?attr/colorPrimary"-->
+        <!--android:gravity="center"-->
+        <!--android:text="1"-->
+        <!--android:textColor="#ffffff"-->
+        <!--android:textSize="30dp"-->
+        <!--android:textStyle="bold"-->
+        <!--android:visibility="visible" />-->
+
+</RelativeLayout>
