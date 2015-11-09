@@ -27,25 +27,22 @@ public class PermissionCheck {
 
     @TargetApi(Build.VERSION_CODES.M)
     public boolean CheckStoragePermission() {
-        int permissionCheckWrite = ContextCompat.checkSelfPermission(context,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE);
         int permissionCheckRead = ContextCompat.checkSelfPermission(context,
                 Manifest.permission.READ_EXTERNAL_STORAGE);
-        if (permissionCheckWrite != PackageManager.PERMISSION_GRANTED ||
-                permissionCheckRead != PackageManager.PERMISSION_GRANTED) {
+        if (permissionCheckRead != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context,
                     Manifest.permission.READ_EXTERNAL_STORAGE)) {
                 // Show an expanation to the user *asynchronously* -- don't block
                 // this thread waiting for the user's response! After the user
                 // sees the explanation, try again to request the permission.
                 ActivityCompat.requestPermissions((Activity) context,
-                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                         Define.PERMISSION_STORAGE);
             } else {
                 // No explanation needed, we can request the permission.
 
                 ActivityCompat.requestPermissions((Activity) context,
-                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                         Define.PERMISSION_STORAGE);
 
                 // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
@@ -56,8 +53,6 @@ public class PermissionCheck {
         } else
             return true;
     }
-
-
 
 
     public void showPermissionDialog(View view) {

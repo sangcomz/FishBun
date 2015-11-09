@@ -5,9 +5,8 @@
     <application>
         <activity
             android:name="com.sangcomz.fishbun.ui.album.AlbumActivity"
-            android:label="@string/album"/>
-        <activity
-            android:name="com.sangcomz.fishbun.ui.picker.PickerActivity"/>
+            android:label="@string/album" />
+        <activity android:name="com.sangcomz.fishbun.ui.picker.PickerActivity" />
     </application>
 
 </manifest>

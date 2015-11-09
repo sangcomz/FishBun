@@ -143,7 +143,7 @@ public class PickerGridAdapter
             public void run() {
                 pickerController.setRecyclerViewClickable(true);
             }
-        }, 250);
+        }, 500);
 
     }
 
