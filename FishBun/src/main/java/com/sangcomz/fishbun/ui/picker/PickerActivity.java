@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.sangcomz.fishbun.R;
 import com.sangcomz.fishbun.adapter.PickerGridAdapter;
 import com.sangcomz.fishbun.bean.Album;
 import com.sangcomz.fishbun.bean.ImageBean;
@@ -25,7 +26,7 @@ import com.sangcomz.fishbun.permission.PermissionCheck;
 
 import java.util.ArrayList;
 
-import kr.co.sangcomz.albummodule.R;
+
 
 
 public class PickerActivity extends AppCompatActivity {

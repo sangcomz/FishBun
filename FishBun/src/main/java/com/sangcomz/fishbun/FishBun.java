@@ -9,7 +9,8 @@ import com.sangcomz.fishbun.ui.album.AlbumActivity;
 
 import java.util.ArrayList;
 
-import kr.co.sangcomz.albummodule.R;
+
+
 
 public class FishBun {
     private static BaseProperty baseProperty;

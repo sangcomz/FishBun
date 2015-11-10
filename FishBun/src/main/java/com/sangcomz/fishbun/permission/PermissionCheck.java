@@ -6,10 +6,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
+import android.widget.Toast;
 
 import com.sangcomz.fishbun.define.Define;
 
@@ -64,11 +64,9 @@ public class PermissionCheck {
 //        TextView dContent = (TextView) dialog.findViewById(R.id.alert_content);
 //			TextView dContent = (TextView)dialog.findViewById(R.id.alert_content);
 
-//        dTitle.setText("권한거부 알림");
 //        title = title.replaceAll(query, "<font color='#78C70F'>" + query + "</font>");
 
-        String strStorage = "저장소에 관한 권한 거부로 <font color='#78C70F'> '포스트 작성 및 편집', '회원가입 프로필 사진 업로드', '프로필 사진 변경' </font>의 기능 사용시 제약을 받을 수 있습니다.";
-        Snackbar.make(view, strStorage, Snackbar.LENGTH_SHORT).show();
+        Toast.makeText(context, "permission deny", Toast.LENGTH_SHORT).show();
 
     }
 

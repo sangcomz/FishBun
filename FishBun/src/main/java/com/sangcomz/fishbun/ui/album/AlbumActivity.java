@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.sangcomz.fishbun.ItemDecoration.DividerItemDecoration;
+import com.sangcomz.fishbun.R;
 import com.sangcomz.fishbun.adapter.AlbumListAdapter;
 import com.sangcomz.fishbun.bean.Album;
 import com.sangcomz.fishbun.define.Define;
@@ -25,7 +26,7 @@ import com.sangcomz.fishbun.permission.PermissionCheck;
 import java.util.ArrayList;
 import java.util.List;
 
-import kr.co.sangcomz.albummodule.R;
+
 
 
 public class AlbumActivity extends AppCompatActivity {

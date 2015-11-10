@@ -64,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_plus) {
 
             FishBun.with(MainActivity.this)
-                    .setAlbumThumnaliSize(150)
                     .setPickerCount(12)
                     .setArrayPaths(path)
                     .startAlbum();

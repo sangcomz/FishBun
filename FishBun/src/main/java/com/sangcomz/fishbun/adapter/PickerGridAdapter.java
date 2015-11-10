@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.sangcomz.fishbun.R;
 import com.sangcomz.fishbun.bean.ImageBean;
 import com.sangcomz.fishbun.bean.PickedImageBean;
 import com.sangcomz.fishbun.define.Define;
@@ -18,7 +19,6 @@ import com.sangcomz.fishbun.ui.picker.PickerController;
 
 import java.util.ArrayList;
 
-import kr.co.sangcomz.albummodule.R;
 
 public class PickerGridAdapter
         extends RecyclerView.Adapter<PickerGridAdapter.ViewHolder> {
@@ -148,19 +148,17 @@ public class PickerGridAdapter
     }
 
     private void setSize(Context context) {
-        //가로길이
         width = context.getResources().getDisplayMetrics().widthPixels;
 
-        //양옆 마진 빼기
         final float scale = context.getResources().getDisplayMetrics().density;
-        float dip = 20.0f;  // 변환하고자하는 dip 치수
+        float dip = 20.0f;
         int marginPixel = (int) (dip * scale + 0.5f);
         width = width / 2 - marginPixel;
         int thWidth = 50;
         int thHeight = 30;
-        //세로길이 구하기
+
         height = width * thHeight / thWidth;
-        //이미지 사이즈 변경
+
         params = new RelativeLayout.LayoutParams(width, height);
     }
 

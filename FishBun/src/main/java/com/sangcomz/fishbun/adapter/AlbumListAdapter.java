@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.sangcomz.fishbun.R;
 import com.sangcomz.fishbun.bean.Album;
 import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.ui.picker.PickerActivity;
@@ -19,7 +20,7 @@ import com.sangcomz.fishbun.ui.picker.PickerActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-import kr.co.sangcomz.albummodule.R;
+
 
 public class AlbumListAdapter
         extends RecyclerView.Adapter<AlbumListAdapter.ViewHolder> {

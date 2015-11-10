@@ -5,4 +5,5 @@
     <string name="done">done</string>
     <string name="msg_no_slected">There is no selected image.</string>
     <string name="str_all_view">All view</string>
+    <string name="msg_permisssion">permission deny</string>
 </resources>
