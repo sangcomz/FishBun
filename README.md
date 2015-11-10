@@ -8,7 +8,7 @@ You can only use download and import your project(Only FishBun).
 <script src="https://gist.github.com/sangcomz/794523dfa75beaf81c8a.js"></script>
 
 
-#Result Screen
+##Result Screen
 ![ScreenShot](https://github.com/sangcomz/FishBun/blob/master/pic/1.png)
 ![ScreenShot](https://github.com/sangcomz/FishBun/blob/master/pic/2.png)
 ![ScreenShot](https://github.com/sangcomz/FishBun/blob/master/pic/3.png)
