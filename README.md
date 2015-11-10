@@ -8,7 +8,7 @@ You can only use download and import your project(Only FishBun).
 
 FishBun.with(MainActivity.this).startAlbum();
 
-###and add OnActivityResult
+and add OnActivityResult
 
     protected void onActivityResult(int requestCode, int resultCode,
                                     Intent imageData) {
