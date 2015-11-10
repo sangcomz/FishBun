@@ -63,7 +63,11 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == R.id.action_plus) {
 
-            FishBun.with(MainActivity.this).setPickerCount(12).setArrayPaths(path).startAlbum();
+            FishBun.with(MainActivity.this)
+                    .setAlbumThumnaliSize(150)
+                    .setPickerCount(12)
+                    .setArrayPaths(path)
+                    .startAlbum();
             return true;
         }
         return super.onOptionsItemSelected(item);
