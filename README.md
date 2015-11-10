@@ -5,7 +5,8 @@
 You can only use download and import your project(Only FishBun).
 
 #How to Use FishBun
-            FishBun.with(MainActivity.this).startAlbum();
+<script src="https://gist.github.com/sangcomz/794523dfa75beaf81c8a.js"></script>
+
 
 #Result Screen
 ![ScreenShot](https://github.com/sangcomz/FishBun/blob/master/pic/1.png)

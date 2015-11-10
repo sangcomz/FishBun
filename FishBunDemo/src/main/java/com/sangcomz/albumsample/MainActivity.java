@@ -37,9 +37,6 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(mainAdapter);
     }
 
-    /**
-     * 다시 액티비티로 복귀하였을때 이미지를 셋팅
-     */
     protected void onActivityResult(int requestCode, int resultCode,
                                     Intent imageData) {
         super.onActivityResult(requestCode, resultCode, imageData);
