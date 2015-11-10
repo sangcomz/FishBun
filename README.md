@@ -5,7 +5,10 @@
 You can only use download and import your project(Only FishBun).
 
 #How to Use FishBun
-<script src="https://gist.github.com/sangcomz/794523dfa75beaf81c8a.js"></script>
+            FishBun.with(MainActivity.this).setPickerCount(12).setArrayPaths(path).startAlbum();
+           
+           
+         
 
 
 #Result Screen
