@@ -46,6 +46,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
 
     public void changePath(ArrayList<String> imagePaths) {
         this.imagePaths = imagePaths;
+        mainController.setImgMain(imagePaths.get(0));
         notifyDataSetChanged();
     }
 
