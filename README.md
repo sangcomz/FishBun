@@ -1,6 +1,6 @@
-# FishBun (붕어빵)
-[![Build Status](https://travis-ci.org/sangcomz/FishBun.svg?branch=master)](https://travis-ci.org/sangcomz/FishBun) 
-[ ![Download](https://api.bintray.com/packages/sangcomz/maven/fishbun/images/download.svg)](https://bintray.com/sangcomz/maven/fishbun/_latestVersion)
+# FishBun (붕어빵)         ![ScreenShot](https://github.com/sangcomz/FishBun/blob/master/pic/fish_bun_icon_small.png)
+
+[![Build Status](https://travis-ci.org/sangcomz/FishBun.svg?branch=master)](https://travis-ci.org/sangcomz/FishBun)  [![Download](https://api.bintray.com/packages/sangcomz/maven/fishbun/images/download.svg)](https://bintray.com/sangcomz/maven/fishbun/_latestVersion)
 
 ##How to Use FishBun
 
