@@ -46,6 +46,7 @@ you can use also this
 
 
 ##Result Screen
+![ScreenShot](https://github.com/sangcomz/FishBun/blob/master/pic/sim.gif)
 ![ScreenShot](https://github.com/sangcomz/FishBun/blob/master/pic/1.png)
 ![ScreenShot](https://github.com/sangcomz/FishBun/blob/master/pic/2.png)
 ![ScreenShot](https://github.com/sangcomz/FishBun/blob/master/pic/3.png)
