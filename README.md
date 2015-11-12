@@ -3,7 +3,11 @@
 [ ![Download](https://api.bintray.com/packages/sangcomz/maven/fishbun/images/download.svg)](https://bintray.com/sangcomz/maven/fishbun/_latestVersion)
 
 ##Download
-You can only use download and import your project(Only FishBun).
+
+###use Gradle
+
+    compile 'com.sangcomz:FishBun:0.0.2@aar'
+
 
 ##How to Use FishBun
 
