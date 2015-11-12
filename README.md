@@ -2,11 +2,18 @@
 [![Build Status](https://travis-ci.org/sangcomz/FishBun.svg?branch=master)](https://travis-ci.org/sangcomz/FishBun) 
 [ ![Download](https://api.bintray.com/packages/sangcomz/maven/fishbun/images/download.svg)](https://bintray.com/sangcomz/maven/fishbun/_latestVersion)
 
-##Download
+##How to Use
 
-###use Gradle
+###Gradle
 
-    compile 'com.sangcomz:FishBun:0.0.2@aar'
+    repositories {
+        jcenter()
+    }
+    
+    
+    dependencies {
+        compile 'com.sangcomz:FishBun:0.0.2@aar'
+    }
 
 
 ##How to Use FishBun
