@@ -15,7 +15,7 @@
         compile 'com.sangcomz:FishBun:0.0.2@aar'
     }
 
-###manifest
+###Manifest
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
@@ -39,10 +39,11 @@ and add OnActivityResult
 you can use also this
 
             FishBun.with(MainActivity.this)
-                    .setAlbumThumnaliSize(150)
-                    .setPickerCount(12)
-                    .setArrayPaths(path)
+                    .setAlbumThumnaliSize(150)//you can resize album thumnail size
+                    .setPickerCount(12)//you can restrict photo count
+                    .setArrayPaths(path)//you can choice again.
                     .startAlbum();
+
 
 ##Result Screen
 ![ScreenShot](https://github.com/sangcomz/FishBun/blob/master/pic/1.png)
@@ -51,7 +52,7 @@ you can use also this
 ![ScreenShot](https://github.com/sangcomz/FishBun/blob/master/pic/4.png)
 
 #License
-Copyright 2015 Jeong SeokWon
+Copyright 2015 Jeong Seok-Won
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
