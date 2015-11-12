@@ -18,6 +18,10 @@
 
 ##How to Use FishBun
 
+###manifest
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
 FishBun.with(MainActivity.this).startAlbum();
 
 and add OnActivityResult
@@ -28,7 +32,8 @@ and add OnActivityResult
         switch (requestCode) {
             case Define.ALBUM_REQUEST_CODE:
                 if (resultCode == RESULT_OK) {
-                    path = imageData.getStringArrayListExtra(Define.INTENT_PATH); //You can get image path(ArrayList<String>
+                    path = imageData.getStringArrayListExtra(Define.INTENT_PATH);
+                    //You can get image path(ArrayList<String>
                     break;
                 }
         }
