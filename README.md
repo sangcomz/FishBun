@@ -52,7 +52,7 @@ you can use also this
 <img src="/pic/sim.gif" width=40%">
 
 ##Android M Permission
-FishBun check permission before loading external storage.
+FishBun check permission before reading external storage.
 
 <img src="/pic/permission.png" width=40%">
 
