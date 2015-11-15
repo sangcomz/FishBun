@@ -51,6 +51,11 @@ you can use also this
 ##Result Screen
 <img src="/pic/sim.gif" width=40%">
 
+##Android M Permission
+FishBun check permission before loading external storage.
+
+<img src="/pic/permission.png" width=40%">
+
 #License
 
     Copyright 2015 Jeong Seok-Won
