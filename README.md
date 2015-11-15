@@ -1,4 +1,4 @@
-# FishBun          ![ScreenShot](https://github.com/sangcomz/FishBun/blob/master/pic/fish_bun_icon_small.png)
+# FishBun
 
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-FishBun-green.svg?style=true)](https://android-arsenal.com/details/1/2785)
 [![Build Status](https://travis-ci.org/sangcomz/FishBun.svg?branch=master)](https://travis-ci.org/sangcomz/FishBun)  [![Download](https://api.bintray.com/packages/sangcomz/maven/fishbun/images/download.svg)](https://bintray.com/sangcomz/maven/fishbun/_latestVersion)
