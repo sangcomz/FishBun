@@ -1,6 +1,9 @@
-# FishBun          ![ScreenShot](https://github.com/sangcomz/FishBun/blob/master/pic/fish_bun_icon_small.png)
+# FishBun
 
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-FishBun-green.svg?style=true)](https://android-arsenal.com/details/1/2785)
 [![Build Status](https://travis-ci.org/sangcomz/FishBun.svg?branch=master)](https://travis-ci.org/sangcomz/FishBun)  [![Download](https://api.bintray.com/packages/sangcomz/maven/fishbun/images/download.svg)](https://bintray.com/sangcomz/maven/fishbun/_latestVersion)
+##What is FishBun
+FishBun is Image Picker for android.
 
 ##How to Use FishBun
 
@@ -48,17 +51,23 @@ you can use also this
 ##Result Screen
 <img src="/pic/sim.gif" width=40%">
 
+##Android M Permission
+FishBun check permission before reading external storage.
+
+<img src="/pic/permission.png" width=40%">
+
 #License
-Copyright 2015 Jeong Seok-Won
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
+    Copyright 2015 Jeong Seok-Won
 
-    http://www.apache.org/licenses/LICENSE-2.0
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
 
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
