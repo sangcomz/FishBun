@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">AlbumModule</string>
+    <string name="app_name">FishBun</string>
     <string name="album">앨범</string>
     <string name="camera">카메라</string>
     <string name="done">완료</string>
