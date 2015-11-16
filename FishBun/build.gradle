@@ -29,19 +29,9 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-
-//    compile group: 'com.android.support', name: 'appcompat-v7', version: '23.1.0'
-//    compile group: 'com.android.support', name: 'design', version: '23.1.0'
-//    compile group: 'com.android.support', name: 'recyclerview', version: '23.1.0'
-//    compile('com.android.support:23.1.0' ) {
-//        exclude group: 'com.android.support', module: 'appcompat-v7:23.1.0'
-//        exclude group: 'com.android.support', module: 'design'
-//
-//    }
-
-    compile 'com.android.support:appcompat-v7:23.1.0'
-    compile 'com.android.support:design:23.1.0'
-    compile 'com.android.support:recyclerview-v7:23.1.0'
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:design:23.1.1'
+    compile 'com.android.support:recyclerview-v7:23.1.1'
     compile 'com.github.bumptech.glide:glide:3.6.0'
 }
 
