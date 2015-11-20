@@ -13,6 +13,7 @@ import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 
@@ -22,11 +23,10 @@ import com.sangcomz.fishbun.adapter.AlbumListAdapter;
 import com.sangcomz.fishbun.bean.Album;
 import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.permission.PermissionCheck;
+import com.sangcomz.fishbun.util.UiUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-
-
 
 
 public class AlbumActivity extends AppCompatActivity {
@@ -36,12 +36,19 @@ public class AlbumActivity extends AppCompatActivity {
     private AlbumListAdapter adapter;
     private static List<String> thumbList;
     private PermissionCheck permissionCheck;
+    private UiUtil uiUtil= new UiUtil();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_album);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setBackgroundColor(Define.ACTIONBAR_COLOR);
+        uiUtil.setStatusBarColor(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -86,7 +93,6 @@ public class AlbumActivity extends AppCompatActivity {
             }
         }
     }
-
 
     public class DisplayImage extends AsyncTask<String, Void, String> {
 
@@ -232,5 +238,6 @@ public class AlbumActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 
 }

@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_plus) {
 
             FishBun.with(MainActivity.this)
-                    .setPickerCount(12)
+                    .setPickerCount(10)
                     .setArrayPaths(path)
                     .startAlbum();
             return true;
