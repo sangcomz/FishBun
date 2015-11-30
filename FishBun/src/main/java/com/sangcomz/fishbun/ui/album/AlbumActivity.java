@@ -36,7 +36,7 @@ public class AlbumActivity extends AppCompatActivity {
     private AlbumListAdapter adapter;
     private static List<String> thumbList;
     private PermissionCheck permissionCheck;
-    private UiUtil uiUtil= new UiUtil();
+    private UiUtil uiUtil = new UiUtil();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,7 +46,10 @@ public class AlbumActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setBackgroundColor(Define.ACTIONBAR_COLOR);
-        uiUtil.setStatusBarColor(this);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            uiUtil.setStatusBarColor(this);
+        }
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
