@@ -55,7 +55,9 @@ public class PickerActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setBackgroundColor(Define.ACTIONBAR_COLOR);
-        uiUtil.setStatusBarColor(this);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            uiUtil.setStatusBarColor(this);
+        }
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
