@@ -16,6 +16,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.RelativeLayout;
 
 import com.sangcomz.fishbun.ItemDecoration.DividerItemDecoration;
 import com.sangcomz.fishbun.R;
@@ -38,12 +40,15 @@ public class AlbumActivity extends AppCompatActivity {
     private PermissionCheck permissionCheck;
     private UiUtil uiUtil = new UiUtil();
 
+    private RelativeLayout noAlbum;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_album);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        noAlbum = (RelativeLayout)findViewById(R.id.no_album);
         setSupportActionBar(toolbar);
         toolbar.setBackgroundColor(Define.ACTIONBAR_COLOR);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -147,7 +152,12 @@ public class AlbumActivity extends AppCompatActivity {
                 }
             }
             imagecursor.close();
-            return "ok";
+            if (totalCounter == 0) {
+                albumlist.clear();
+                return "no";
+            } else
+                return "ok";
+
         }
 
         @Override
@@ -156,10 +166,13 @@ public class AlbumActivity extends AppCompatActivity {
 
             if (result != null) {
                 if (result.equals("ok")) {
+                    noAlbum.setVisibility(View.GONE);
                     adapter = new AlbumListAdapter(AlbumActivity.this, albumlist, getIntent().getStringArrayListExtra(Define.INTENT_PATH));
                     recyclerView.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
                     new DisplayThumbnail().execute();
+                }else {
+                    noAlbum.setVisibility(View.VISIBLE);
                 }
             }
         }

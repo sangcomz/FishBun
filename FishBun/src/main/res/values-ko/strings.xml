@@ -7,6 +7,6 @@
     <string name="msg_no_slected">선택된 이미지가 없습니다.</string>
     <string name="str_all_view">전체사진</string>
     <string name="msg_permisssion">권한 거부</string>
-
+    <string name="msg_no_image">이미지가 없습니다.</string>
 
 </resources>
