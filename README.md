@@ -5,8 +5,10 @@
 ##What is FishBun
 FishBun is Image Picker for android.
 
-##What's New 0.1.3 FishBun
+##What's New 0.1.4 FishBun
 ####● fix sdk version error
+
+####● fix no image error
 
 ##How to Use FishBun
 
@@ -18,7 +20,7 @@ FishBun is Image Picker for android.
     
     
     dependencies {
-        compile 'com.sangcomz:FishBun:0.1.3@aar'
+        compile 'com.sangcomz:FishBun:0.1.4@aar'
     }
 
 ###Manifest
