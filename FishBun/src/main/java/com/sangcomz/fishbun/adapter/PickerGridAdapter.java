@@ -25,7 +25,7 @@ public class PickerGridAdapter
 
 
     private Context context;
-    private ArrayList<PickedImageBean> pickedImageBeans = new ArrayList<>(); //고른 이미지
+    private ArrayList<PickedImageBean> pickedImageBeans = new ArrayList<>();
     private ImageBean[] imageBeans;
     private PickerController pickerController;
 
