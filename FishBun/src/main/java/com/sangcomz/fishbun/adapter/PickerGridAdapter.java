@@ -25,7 +25,7 @@ public class PickerGridAdapter
 
 
     private Context context;
-    private ArrayList<PickedImageBean> pickedImageBeans = new ArrayList<>();
+    private ArrayList<PickedImageBean> pickedImageBeans = new ArrayList<>(); //고른 이미지
     private ImageBean[] imageBeans;
     private PickerController pickerController;
 
@@ -87,7 +87,7 @@ public class PickerGridAdapter
             if (Define.ALBUM_PICKER_COUNT == 1)
                 holder.txtPickCount.setText("");
             else
-                holder.txtPickCount.setText(String.valueOf(pickedImageBeans.size()));
+                holder.txtPickCount.setText(String.valueOf(imageBean.getImgOrder()));
         } else
             holder.txtPickCount.setVisibility(View.GONE);
 
