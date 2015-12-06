@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">FishBun</string>
     <string name="album">Album</string>
     <string name="camera">camera</string>
     <string name="done">done</string>
