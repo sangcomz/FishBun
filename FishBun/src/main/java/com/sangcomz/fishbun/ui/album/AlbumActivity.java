@@ -102,10 +102,10 @@ public class AlbumActivity extends AppCompatActivity {
         }
     }
 
-    public class DisplayImage extends AsyncTask<String, Void, String> {
+    public class DisplayImage extends AsyncTask<Void, Void, Boolean> {
 
         @Override
-        protected String doInBackground(String... params) {
+        protected Boolean doInBackground(Void... params) {
 
             final String orderBy = MediaStore.Images.Media.BUCKET_ID;
             final ContentResolver resolver = getContentResolver();
@@ -154,31 +154,28 @@ public class AlbumActivity extends AppCompatActivity {
             imagecursor.close();
             if (totalCounter == 0) {
                 albumlist.clear();
-                return "no";
-            } else
-                return "ok";
-
+                return false;
+            } else {
+                return true;
+            }
         }
 
         @Override
-        protected void onPostExecute(String result) {
+        protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);
-
-            if (result != null) {
-                if (result.equals("ok")) {
-                    noAlbum.setVisibility(View.GONE);
-                    adapter = new AlbumListAdapter(AlbumActivity.this, albumlist, getIntent().getStringArrayListExtra(Define.INTENT_PATH));
-                    recyclerView.setAdapter(adapter);
-                    adapter.notifyDataSetChanged();
-                    new DisplayThumbnail().execute();
-                }else {
-                    noAlbum.setVisibility(View.VISIBLE);
-                }
+            if (result) {
+                noAlbum.setVisibility(View.GONE);
+                adapter = new AlbumListAdapter(AlbumActivity.this, albumlist, getIntent().getStringArrayListExtra(Define.INTENT_PATH));
+                recyclerView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+                new DisplayThumbnail().execute();
+            }else {
+                noAlbum.setVisibility(View.VISIBLE);
             }
         }
     }
 
-    public class DisplayThumbnail extends AsyncTask<String, Void, String> {
+    public class DisplayThumbnail extends AsyncTask<Void, Void, Void> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -186,7 +183,7 @@ public class AlbumActivity extends AppCompatActivity {
         }
 
         @Override
-        protected String doInBackground(String... params) {
+        protected Void doInBackground(Void... params) {
 
             for (int i = 0; i < albumlist.size(); i++) {
                 Album album = albumlist.get(i);
@@ -195,12 +192,12 @@ public class AlbumActivity extends AppCompatActivity {
                         AlbumActivity.this, album.bucketid);
                 thumbList.add(path);
             }
-            return "ok";
+            return;
         }
 
         @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
             adapter.setThumbList(thumbList);
         }
     }
