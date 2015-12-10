@@ -192,7 +192,7 @@ public class AlbumActivity extends AppCompatActivity {
                         AlbumActivity.this, album.bucketid);
                 thumbList.add(path);
             }
-            return;
+            return null;
         }
 
         @Override

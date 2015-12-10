@@ -121,7 +121,7 @@ public class PickerActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public class DisplayImage extends AsyncTask<String, Void, String> {
+    public class DisplayImage extends AsyncTask<Void, Void, Boolean> {
 
         @Override
         protected void onPreExecute() {
@@ -135,22 +135,22 @@ public class PickerActivity extends AppCompatActivity {
         }
 
         @Override
-        protected String doInBackground(String... params) {
+        protected Boolean doInBackground(Void... params) {
             boolean flag = true;
             while (flag) {
                 if (imageBeans[0] != null && imageBeans[0].getImgPath().length() > 0) {
                     flag = false;
                 }
             }
-            return "ok";
+            return true;
         }
 
 
         @Override
-        protected void onPostExecute(String result) {
+        protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);
             if (result != null) {
-                if (result.equals("ok")) {
+                if (result) {
                     PickerGridAdapter adapter = new PickerGridAdapter(getApplicationContext(),
                             imageBeans, pickedImageBeans, pickerController);
                     recyclerView.setAdapter(adapter);
