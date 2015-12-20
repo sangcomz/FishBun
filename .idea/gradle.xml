@@ -14,6 +14,13 @@
             <option value="$PROJECT_DIR$/FishBunDemo" />
           </set>
         </option>
+        <option name="myModules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/FishBun" />
+            <option value="$PROJECT_DIR$/FishBunDemo" />
+          </set>
+        </option>
       </GradleProjectSettings>
     </option>
   </component>
