@@ -10,8 +10,6 @@ import com.sangcomz.fishbun.ui.album.AlbumActivity;
 import java.util.ArrayList;
 
 
-
-
 public class FishBun {
     private static BaseProperty baseProperty;
 
@@ -40,7 +38,22 @@ public class FishBun {
         }
 
         public BaseProperty setPickerCount(int count) {
+            if (count <= 0)
+                count = 1;
             Define.ALBUM_PICKER_COUNT = count;
+            return baseProperty;
+        }
+
+        @Override
+        public BaseProperty setActionBarColor(int actionbarColor) {
+            Define.ACTIONBAR_COLOR = actionbarColor;
+            return baseProperty;
+        }
+
+        @Override
+        public BaseProperty setActionBarColor(int actionbarColor, int statusbarColor) {
+            Define.ACTIONBAR_COLOR = actionbarColor;
+            Define.STATUSBAR_COLOR = statusbarColor;
             return baseProperty;
         }
 
@@ -61,6 +74,10 @@ public class FishBun {
         BaseProperty setAlbumThumnaliSize(int size);
 
         BaseProperty setPickerCount(int count);
+
+        BaseProperty setActionBarColor(int actionbarColor);
+
+        BaseProperty setActionBarColor(int actionbarColor, int statusbarColor);
 
         void startAlbum();
     }

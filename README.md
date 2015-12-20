@@ -5,6 +5,10 @@
 ##What is FishBun
 FishBun is Image Picker for android.
 
+##What's New 0.1.5 FishBun
+
+####● fix image order number error.
+
 ##How to Use FishBun
 
 ###Gradle
@@ -15,7 +19,11 @@ FishBun is Image Picker for android.
     
     
     dependencies {
-        compile 'com.sangcomz:FishBun:0.0.2@aar'
+        //FishBun use this libraries
+        compile 'com.android.support:design:23.1.1'
+        compile 'com.github.bumptech.glide:glide:3.6.1'
+
+        compile 'com.sangcomz:FishBun:0.1.5@aar'
     }
 
 ###Manifest
@@ -43,6 +51,8 @@ you can use also this
 
             FishBun.with(MainActivity.this)
                     .setAlbumThumnaliSize(150)//you can resize album thumnail size
+                    .setActionBarColor(Color.BLACK, Color.BLUE) // actionBar and StatusBar color
+            //        .setActionBarColor(Color.BLACK)           // only actionbar color
                     .setPickerCount(12)//you can restrict photo count
                     .setArrayPaths(path)//you can choice again.
                     .startAlbum();

@@ -1,6 +1,7 @@
 package com.sangcomz.albumsample;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -64,7 +65,8 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_plus) {
 
             FishBun.with(MainActivity.this)
-                    .setPickerCount(12)
+                    .setPickerCount(10)
+                    .setActionBarColor(Color.parseColor("#3F51B5"), Color.parseColor("#303F9F"))
                     .setArrayPaths(path)
                     .startAlbum();
             return true;

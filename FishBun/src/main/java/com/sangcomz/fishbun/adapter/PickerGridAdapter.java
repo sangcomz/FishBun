@@ -84,7 +84,10 @@ public class PickerGridAdapter
 
         if (imageBean.getImgOrder() != -1) {
             holder.txtPickCount.setVisibility(View.VISIBLE);
-            holder.txtPickCount.setText(String.valueOf(imageBean.getImgOrder()));
+            if (Define.ALBUM_PICKER_COUNT == 1)
+                holder.txtPickCount.setText("");
+            else
+                holder.txtPickCount.setText(String.valueOf(imageBean.getImgOrder()));
         } else
             holder.txtPickCount.setVisibility(View.GONE);
 
@@ -109,13 +112,21 @@ public class PickerGridAdapter
                         Define.ALBUM_PICKER_COUNT > pickedImageBeans.size()) {
                     holder.txtPickCount.setVisibility(View.VISIBLE);
                     pickedImageBeans.add(new PickedImageBean(pickedImageBeans.size() + 1, imgPath, position));
-                    holder.txtPickCount.setText(String.valueOf(pickedImageBeans.size()));
+
+                    if (Define.ALBUM_PICKER_COUNT == 1)
+                        holder.txtPickCount.setText("");
+                    else
+                        holder.txtPickCount.setText(String.valueOf(pickedImageBeans.size()));
+
                     imageBean.setImgOrder(pickedImageBeans.size());
                     pickerController.setActionbarTitle(pickedImageBeans.size());
                 } else if (holder.txtPickCount.getVisibility() == View.VISIBLE) {
                     pickerController.setRecyclerViewClickable(false);
                     pickedImageBeans.remove(imageBean.getImgOrder() - 1);
-                    setOrder(Integer.valueOf(holder.txtPickCount.getText().toString()) - 1);
+                    if (Define.ALBUM_PICKER_COUNT != 1)
+                        setOrder(Integer.valueOf(holder.txtPickCount.getText().toString()) - 1);
+                    else
+                        setOrder(0);
                     imageBean.setImgOrder(-1);
                     holder.txtPickCount.setVisibility(View.GONE);
                     pickerController.setActionbarTitle(pickedImageBeans.size());

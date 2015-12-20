@@ -12,6 +12,7 @@ import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -23,6 +24,7 @@ import com.sangcomz.fishbun.bean.ImageBean;
 import com.sangcomz.fishbun.bean.PickedImageBean;
 import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.permission.PermissionCheck;
+import com.sangcomz.fishbun.util.UiUtil;
 
 import java.util.ArrayList;
 
@@ -38,7 +40,7 @@ public class PickerActivity extends AppCompatActivity {
     boolean stop = false;
     private ImageBean[] imageBeans;
     PermissionCheck permissionCheck;
-
+    private UiUtil uiUtil= new UiUtil();
     @Override
     protected void onResume() {
         super.onResume();
@@ -49,6 +51,14 @@ public class PickerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_picker);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setBackgroundColor(Define.ACTIONBAR_COLOR);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            uiUtil.setStatusBarColor(this);
+        }
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         a = (Album) getIntent().getSerializableExtra("album");
@@ -111,7 +121,7 @@ public class PickerActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public class DisplayImage extends AsyncTask<String, Void, String> {
+    public class DisplayImage extends AsyncTask<Void, Void, Boolean> {
 
         @Override
         protected void onPreExecute() {
@@ -125,22 +135,22 @@ public class PickerActivity extends AppCompatActivity {
         }
 
         @Override
-        protected String doInBackground(String... params) {
+        protected Boolean doInBackground(Void... params) {
             boolean flag = true;
             while (flag) {
                 if (imageBeans[0] != null && imageBeans[0].getImgPath().length() > 0) {
                     flag = false;
                 }
             }
-            return "ok";
+            return true;
         }
 
 
         @Override
-        protected void onPostExecute(String result) {
+        protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);
             if (result != null) {
-                if (result.equals("ok")) {
+                if (result) {
                     PickerGridAdapter adapter = new PickerGridAdapter(getApplicationContext(),
                             imageBeans, pickedImageBeans, pickerController);
                     recyclerView.setAdapter(adapter);
