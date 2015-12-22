@@ -40,7 +40,7 @@ dependencies {
 //apply plugin: 'com.github.dcendents.android-maven'
 //apply plugin: "com.jfrog.bintray"
 //
-//version = "0.2.1"
+//version = "0.2.2"
 //
 //def siteUrl = 'https://github.com/sangcomz/FishBun'      // Homepage URL of the library
 //def gitUrl = 'https://github.com/sangcomz/FishBun.git'   // Git repository URL
