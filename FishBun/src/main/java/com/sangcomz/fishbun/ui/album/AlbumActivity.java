@@ -139,7 +139,6 @@ public class AlbumActivity extends AppCompatActivity {
                     album.bucketid = bucketid;
                     album.bucketname = imagecursor.getString(bucketColumn);
                     album.counter++;
-
                     albumlist.add(album);
                     previousid = bucketid;
 
@@ -165,15 +164,16 @@ public class AlbumActivity extends AppCompatActivity {
             super.onPostExecute(result);
             if (result) {
                 noAlbum.setVisibility(View.GONE);
-                if (adapter == null) {
-                    adapter = new AlbumListAdapter(AlbumActivity.this, albumlist, getIntent().getStringArrayListExtra(Define.INTENT_PATH));
-                    recyclerView.setAdapter(adapter);
-                    adapter.notifyDataSetChanged();
-                    new DisplayThumbnail().execute();
-                }else {
-                    adapter.notifyDataSetChanged();
-                    new DisplayThumbnail().execute();
-                }
+//                if (adapter == null) {
+                adapter = new AlbumListAdapter(AlbumActivity.this, albumlist, getIntent().getStringArrayListExtra(Define.INTENT_PATH));
+                recyclerView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+                new DisplayThumbnail().execute();
+//                }
+//                else {
+//                    adapter.notifyDataSetChanged();
+//                    new DisplayThumbnail().execute();
+//                }
             } else {
                 noAlbum.setVisibility(View.VISIBLE);
             }
