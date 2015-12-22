@@ -1,6 +1,5 @@
 package com.sangcomz.fishbun.ui.picker;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -8,6 +7,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -26,9 +26,8 @@ import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.permission.PermissionCheck;
 import com.sangcomz.fishbun.util.UiUtil;
 
+import java.io.File;
 import java.util.ArrayList;
-
-
 
 
 public class PickerActivity extends AppCompatActivity {
@@ -37,15 +36,19 @@ public class PickerActivity extends AppCompatActivity {
     private ArrayList<PickedImageBean> pickedImageBeans;
     private PickerController pickerController;
     private Album a;
-    boolean stop = false;
+    //    boolean stop = false;
     private ImageBean[] imageBeans;
     PermissionCheck permissionCheck;
-    private UiUtil uiUtil= new UiUtil();
-    @Override
-    protected void onResume() {
-        super.onResume();
-        stop = false;
-    }
+    private UiUtil uiUtil = new UiUtil();
+
+    PickerGridAdapter adapter;
+
+    private String pathDir = "";
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+////        stop = false;
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +70,7 @@ public class PickerActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(gridLayoutManager);
         pickedImageBeans = new ArrayList<>();
 
-        pickerController = new PickerController(getSupportActionBar(), recyclerView, a.bucketname);
+        pickerController = new PickerController(this, getSupportActionBar(), recyclerView, a.bucketname);
 
         ArrayList<String> path = getIntent().getStringArrayListExtra(Define.INTENT_PATH);
         if (path != null) {
@@ -121,14 +124,14 @@ public class PickerActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public class DisplayImage extends AsyncTask<Void, Void, Boolean> {
+    private class DisplayImage extends AsyncTask<Void, Void, Boolean> {
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             Thread t = new Thread(new Runnable() {
                 public void run() {
-                    getAllMediaThumbnailsPath(getApplicationContext(), a.bucketid);
+                    getAllMediaThumbnailsPath(a.bucketid);
                 }
             });
             t.start();
@@ -151,8 +154,8 @@ public class PickerActivity extends AppCompatActivity {
             super.onPostExecute(result);
             if (result != null) {
                 if (result) {
-                    PickerGridAdapter adapter = new PickerGridAdapter(getApplicationContext(),
-                            imageBeans, pickedImageBeans, pickerController);
+                    adapter = new PickerGridAdapter(getApplicationContext(),
+                            imageBeans, pickedImageBeans, pickerController, getPathDir());
                     recyclerView.setAdapter(adapter);
                 }
             }
@@ -178,7 +181,7 @@ public class PickerActivity extends AppCompatActivity {
         }
     }
 
-    public void getAllMediaThumbnailsPath(Context context, long id) {
+    private void getAllMediaThumbnailsPath(long id) {
         String path = "";
         String selection = MediaStore.Images.Media.BUCKET_ID + " = ?";
         String bucketid = String.valueOf(id);
@@ -188,21 +191,21 @@ public class PickerActivity extends AppCompatActivity {
         Uri images = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
         Cursor c;
         if (!bucketid.equals("0")) {
-            c = context.getContentResolver().query(images, null,
+            c = getContentResolver().query(images, null,
                     selection, selectionArgs, sort);
         } else {
-            c = context.getContentResolver().query(images, null,
+            c = getContentResolver().query(images, null,
                     null, null, sort);
         }
 
 
         if (c != null) {
+
             c.moveToFirst();
+
+            setPathDir(c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA)), c.getString(c.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME)));
             int position = 0;
             while (true) {
-                if (stop) {
-                    break;
-                }
                 path = c.getString(c.getColumnIndex(MediaStore.Images.Thumbnails.DATA));
                 if (c.isLast()) {
                     imageBeans[position] = new ImageBean(-1, path);
@@ -217,8 +220,32 @@ public class PickerActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        stop = true;
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == Define.TAKE_A_PICK_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                startFileMediaScan(pickerController.getSavePath());
+                adapter.addImage(pickerController.getSavePath());
+                setResult(Define.ADD_PHOTO_REQUEST_CODE);
+            } else {
+                new File(pickerController.getSavePath()).delete();
+            }
+        }
+    }
+
+    //MediaScanning
+    public void startFileMediaScan(String path) {
+        sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + path)));
+    }
+
+    private void setPathDir(String path, String fileName) {
+        pathDir = path.replace("/" + fileName, "");
+    }
+
+    private String getPathDir() {
+
+        if (pathDir.equals("") || a.bucketid == 0)
+            pathDir = Environment.getExternalStoragePublicDirectory(
+                    Environment.DIRECTORY_PICTURES).getAbsolutePath();
+        return pathDir;
     }
 }

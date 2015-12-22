@@ -57,6 +57,12 @@ public class FishBun {
             return baseProperty;
         }
 
+        @Override
+        public BaseProperty setCamera(boolean isCamera) {
+            Define.IS_CAMERA = isCamera;
+            return baseProperty;
+        }
+
         public void startAlbum() {
             if (Define.ALBUM_THUMNAIL_SIZE == -1)
                 Define.ALBUM_THUMNAIL_SIZE = (int) context.getResources().getDimension(R.dimen.album_thum_size);
@@ -78,6 +84,8 @@ public class FishBun {
         BaseProperty setActionBarColor(int actionbarColor);
 
         BaseProperty setActionBarColor(int actionbarColor, int statusbarColor);
+
+        BaseProperty setCamera(boolean isCamera);
 
         void startAlbum();
     }

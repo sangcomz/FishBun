@@ -1,7 +1,6 @@
 package com.sangcomz.fishbun.ui.album;
 
 import android.content.ContentResolver;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -36,7 +35,7 @@ public class AlbumActivity extends AppCompatActivity {
     private List<Album> albumlist = new ArrayList<>();
     private RecyclerView recyclerView;
     private AlbumListAdapter adapter;
-    private static List<String> thumbList;
+    private List<String> thumbList;
     private PermissionCheck permissionCheck;
     private UiUtil uiUtil = new UiUtil();
 
@@ -48,7 +47,7 @@ public class AlbumActivity extends AppCompatActivity {
         setContentView(R.layout.activity_photo_album);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        noAlbum = (RelativeLayout)findViewById(R.id.no_album);
+        noAlbum = (RelativeLayout) findViewById(R.id.no_album);
         setSupportActionBar(toolbar);
         toolbar.setBackgroundColor(Define.ACTIONBAR_COLOR);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -70,16 +69,17 @@ public class AlbumActivity extends AppCompatActivity {
             new DisplayImage().execute();
     }
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case 1:
-                if (resultCode == RESULT_OK) {
-                    setResult(RESULT_OK, data);
-                    finish();
-                }
-                break;
+        if (requestCode == Define.ENTER_ALBUM_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                setResult(RESULT_OK, data);
+                finish();
+            } else if (resultCode == Define.ADD_PHOTO_REQUEST_CODE) {
+                new DisplayImage().execute();
+            }
         }
     }
 
@@ -165,11 +165,16 @@ public class AlbumActivity extends AppCompatActivity {
             super.onPostExecute(result);
             if (result) {
                 noAlbum.setVisibility(View.GONE);
-                adapter = new AlbumListAdapter(AlbumActivity.this, albumlist, getIntent().getStringArrayListExtra(Define.INTENT_PATH));
-                recyclerView.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
-                new DisplayThumbnail().execute();
-            }else {
+                if (adapter == null) {
+                    adapter = new AlbumListAdapter(AlbumActivity.this, albumlist, getIntent().getStringArrayListExtra(Define.INTENT_PATH));
+                    recyclerView.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                    new DisplayThumbnail().execute();
+                }else {
+                    adapter.notifyDataSetChanged();
+                    new DisplayThumbnail().execute();
+                }
+            } else {
                 noAlbum.setVisibility(View.VISIBLE);
             }
         }
@@ -188,8 +193,7 @@ public class AlbumActivity extends AppCompatActivity {
             for (int i = 0; i < albumlist.size(); i++) {
                 Album album = albumlist.get(i);
 
-                String path = getAllMediaThumbnailsPath(
-                        AlbumActivity.this, album.bucketid);
+                String path = getAllMediaThumbnailsPath(album.bucketid);
                 thumbList.add(path);
             }
             return null;
@@ -203,7 +207,7 @@ public class AlbumActivity extends AppCompatActivity {
     }
 
 
-    public static String getAllMediaThumbnailsPath(Context context, long id) {
+    private String getAllMediaThumbnailsPath(long id) {
         String path = "";
         String selection = MediaStore.Images.Media.BUCKET_ID + " = ?";
         String bucketid = String.valueOf(id);
@@ -213,10 +217,10 @@ public class AlbumActivity extends AppCompatActivity {
         Uri images = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
         Cursor c;
         if (!bucketid.equals("0")) {
-            c = context.getContentResolver().query(images, null,
+            c = getContentResolver().query(images, null,
                     selection, selectionArgs, sort);
         } else {
-            c = context.getContentResolver().query(images, null,
+            c = getContentResolver().query(images, null,
                     null, null, sort);
         }
 
@@ -227,7 +231,7 @@ public class AlbumActivity extends AppCompatActivity {
             selectionArgs = new String[]{photoID};
 
             images = MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI;
-            Cursor cursor = context.getContentResolver().query(images, null,
+            Cursor cursor = getContentResolver().query(images, null,
                     selection, selectionArgs, sort);
             if (cursor != null && cursor.moveToNext()) {
                 path = c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA));
