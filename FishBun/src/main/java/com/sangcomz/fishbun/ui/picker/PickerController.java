@@ -92,7 +92,7 @@ public class PickerController {
         }
     }
 
-    private File createImageFile(String saveDir) throws IOException {   //파일 만들기
+    private File createImageFile(String saveDir) throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
