@@ -5,9 +5,9 @@
 ##What is FishBun
 FishBun is Image Picker for android.
 
-##What's New 0.1.5 FishBun
+##What's New 0.2.2 FishBun
 
-####● fix image order number error.
+####● Add use Camera in Album - Add setCamera(boolean isCamera)
 
 ##How to Use FishBun
 
@@ -23,12 +23,13 @@ FishBun is Image Picker for android.
         compile 'com.android.support:design:23.1.1'
         compile 'com.github.bumptech.glide:glide:3.6.1'
 
-        compile 'com.sangcomz:FishBun:0.1.5@aar'
+        compile 'com.sangcomz:FishBun:0.2.2@aar'
     }
 
 ###Manifest
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 FishBun.with(MainActivity.this).startAlbum();
 
@@ -55,6 +56,7 @@ you can use also this
             //        .setActionBarColor(Color.BLACK)           // only actionbar color
                     .setPickerCount(12)//you can restrict photo count
                     .setArrayPaths(path)//you can choice again.
+                    .setCamera(true)//you can use camera
                     .startAlbum();
 
 
