@@ -103,7 +103,7 @@ public class AlbumListAdapter
                 i.putExtra("album", a);
                 i.putExtra("album_title", albumlist.get(position).bucketname);
                 i.putStringArrayListExtra(Define.INTENT_PATH, path);
-                ((Activity) context).startActivityForResult(i, 1);
+                ((Activity) context).startActivityForResult(i, Define.ENTER_ALBUM_REQUEST_CODE);
             }
         });
     }
