@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.sangcomz.fishbun.R;
 import com.sangcomz.fishbun.adapter.PickerGridAdapter;
 import com.sangcomz.fishbun.bean.Album;
@@ -44,11 +45,12 @@ public class PickerActivity extends AppCompatActivity {
     PickerGridAdapter adapter;
 
     private String pathDir = "";
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-////        stop = false;
-//    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Glide.get(this).clearMemory();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

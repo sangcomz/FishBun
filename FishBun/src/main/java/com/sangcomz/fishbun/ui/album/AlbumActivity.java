@@ -165,7 +165,7 @@ public class AlbumActivity extends AppCompatActivity {
             if (result) {
                 noAlbum.setVisibility(View.GONE);
 //                if (adapter == null) {
-                adapter = new AlbumListAdapter(AlbumActivity.this, albumlist, getIntent().getStringArrayListExtra(Define.INTENT_PATH));
+                adapter = new AlbumListAdapter(albumlist, getIntent().getStringArrayListExtra(Define.INTENT_PATH));
                 recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
                 new DisplayThumbnail().execute();
