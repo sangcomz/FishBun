@@ -1,7 +1,6 @@
 package com.sangcomz.fishbun.adapter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,11 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
 public class AlbumListAdapter
         extends RecyclerView.Adapter<AlbumListAdapter.ViewHolder> {
 
-    private Context context;
     private List<Album> albumlist;
     private List<String> thumbList = new ArrayList<String>();
     private String thumPath;
@@ -50,8 +47,7 @@ public class AlbumListAdapter
         }
     }
 
-    public AlbumListAdapter(Context context, List<Album> albumlist, ArrayList<String> path) {
-        this.context = context;
+    public AlbumListAdapter(List<Album> albumlist, ArrayList<String> path) {
         this.albumlist = albumlist;
         this.path = path;
     }
@@ -79,14 +75,14 @@ public class AlbumListAdapter
         if (thumbList != null) {
             if (thumbList.size() > position) {
                 Glide
-                        .with(context)
+                        .with(holder.imgAlbum.getContext())
                         .load(thumPath)
                         .asBitmap()
                         .override(Define.ALBUM_THUMNAIL_SIZE, Define.ALBUM_THUMNAIL_SIZE)
                         .placeholder(R.mipmap.loading_img)
                         .into(holder.imgAlbum);
             } else {
-                Glide.with(context).load(R.mipmap.loading_img).into(holder.imgAlbum);
+                Glide.with(holder.imgAlbum.getContext()).load(R.mipmap.loading_img).into(holder.imgAlbum);
             }
         }
         holder.areaAlbum.setTag(albumlist.get(position));
@@ -99,11 +95,11 @@ public class AlbumListAdapter
             @Override
             public void onClick(View v) {
                 Album a = (Album) v.getTag();
-                Intent i = new Intent(context, PickerActivity.class);
+                Intent i = new Intent(holder.areaAlbum.getContext(), PickerActivity.class);
                 i.putExtra("album", a);
                 i.putExtra("album_title", albumlist.get(position).bucketname);
                 i.putStringArrayListExtra(Define.INTENT_PATH, path);
-                ((Activity) context).startActivityForResult(i, Define.ENTER_ALBUM_REQUEST_CODE);
+                ((Activity) holder.areaAlbum.getContext()).startActivityForResult(i, Define.ENTER_ALBUM_REQUEST_CODE);
             }
         });
     }
