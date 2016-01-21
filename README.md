@@ -5,9 +5,9 @@
 ##What is FishBun
 FishBun is Image Picker for android.
 
-##What's New 0.2.2 FishBun
+##What's New 0.3.0 FishBun
 
-####● Add use Camera in Album - Add setCamera(boolean isCamera)
+####● You Can Use in Fragment.(issue#10)
 
 ##How to Use FishBun
 
@@ -23,7 +23,7 @@ FishBun is Image Picker for android.
         compile 'com.android.support:design:23.1.1'
         compile 'com.github.bumptech.glide:glide:3.6.1'
 
-        compile 'com.sangcomz:FishBun:0.2.2@aar'
+        compile 'com.sangcomz:FishBun:0.3.0@aar'
     }
 
 ###Manifest
@@ -32,6 +32,10 @@ FishBun is Image Picker for android.
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 FishBun.with(MainActivity.this).startAlbum();
+
+if you use in Fragment,
+
+FishBun.with(Fragment.this).startAlbum();
 
 and add OnActivityResult
 
