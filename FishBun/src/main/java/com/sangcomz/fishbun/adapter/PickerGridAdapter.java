@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.sangcomz.fishbun.R;
@@ -16,6 +15,7 @@ import com.sangcomz.fishbun.bean.ImageBean;
 import com.sangcomz.fishbun.bean.PickedImageBean;
 import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.ui.picker.PickerController;
+import com.sangcomz.fishbun.util.SquareTextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,12 +36,12 @@ public class PickerGridAdapter
 
 
         ImageView imgPhoto;
-        TextView txtPickCount;
+        SquareTextView txtPickCount;
 
         public ViewHolderImage(View view) {
             super(view);
             imgPhoto = (ImageView) view.findViewById(R.id.img_thum);
-            txtPickCount = (TextView) view.findViewById(R.id.txt_pick_count);
+            txtPickCount = (SquareTextView) view.findViewById(R.id.txt_pick_count);
         }
     }
 
