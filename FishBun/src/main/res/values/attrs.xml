@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- used to set the minTextSize via xml -->
+    <attr name="SquareTextView" format="reference" />
+    <declare-styleable name="SquareTextView">
+        <attr name="minTextSize" format="dimension" />
+    </declare-styleable>
+</resources>

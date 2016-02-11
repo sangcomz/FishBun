@@ -47,6 +47,15 @@ public class FishBun {
             return baseProperty;
         }
 
+        @Override
+        public BaseProperty setPickerSpanCount(int spanCount) {
+            if (spanCount <= 0)
+                spanCount = 3;
+            Define.PHOTO_SPAN_COUNT = spanCount;
+            return baseProperty;
+
+        }
+
         public BaseProperty setPickerCount(int count) {
             if (count <= 0)
                 count = 1;
@@ -110,6 +119,8 @@ public class FishBun {
         BaseProperty setArrayPaths(ArrayList<String> arrayPaths);
 
         BaseProperty setAlbumThumnaliSize(int size);
+
+        BaseProperty setPickerSpanCount(int spanCount);
 
         BaseProperty setPickerCount(int count);
 
