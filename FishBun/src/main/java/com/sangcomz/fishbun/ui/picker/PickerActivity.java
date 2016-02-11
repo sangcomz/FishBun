@@ -9,13 +9,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.sangcomz.fishbun.R;
@@ -37,7 +37,6 @@ public class PickerActivity extends AppCompatActivity {
     private ArrayList<PickedImageBean> pickedImageBeans;
     private PickerController pickerController;
     private Album a;
-    //    boolean stop = false;
     private ImageBean[] imageBeans;
     PermissionCheck permissionCheck;
     private UiUtil uiUtil = new UiUtil();
@@ -108,8 +107,8 @@ public class PickerActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == R.id.action_ok) {
             if (pickedImageBeans.size() == 0) {
-                Toast.makeText(this, getString(R.string.msg_no_slected), Toast.LENGTH_SHORT).show();
-//                Snackbar.make(recyclerView, getString(R.string.msg_no_slected), Snackbar.LENGTH_SHORT).show();
+//                Toast.makeText(this, getString(R.string.msg_no_slected), Toast.LENGTH_SHORT).show();
+                Snackbar.make(recyclerView, getString(R.string.msg_no_slected), Snackbar.LENGTH_SHORT).show();
             } else {
                 ArrayList<String> path = new ArrayList<>();
                 for (int i = 0; i < pickedImageBeans.size(); i++) {
@@ -156,7 +155,7 @@ public class PickerActivity extends AppCompatActivity {
             super.onPostExecute(result);
             if (result != null) {
                 if (result) {
-                    adapter = new PickerGridAdapter(getApplicationContext(),
+                    adapter = new PickerGridAdapter(
                             imageBeans, pickedImageBeans, pickerController, getPathDir());
                     recyclerView.setAdapter(adapter);
                 }

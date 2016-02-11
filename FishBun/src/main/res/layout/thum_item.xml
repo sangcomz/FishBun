@@ -17,10 +17,10 @@
             android:layout_centerInParent="true"
             android:background="@mipmap/ic_main" />
 
-        <ImageView
+        <com.sangcomz.fishbun.util.SquareImageView
             android:id="@+id/img_thum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_centerInParent="true"
             android:scaleType="centerCrop" />
     </RelativeLayout>
@@ -35,7 +35,7 @@
         <!--android:clickable="false" />-->
 
 
-    <TextView
+    <com.sangcomz.fishbun.util.SquareTextView
         android:id="@+id/txt_pick_count"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

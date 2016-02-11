@@ -1,6 +1,5 @@
 package com.sangcomz.fishbun.adapter;
 
-import android.content.Context;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -25,15 +24,10 @@ public class PickerGridAdapter
         extends RecyclerView.Adapter<PickerGridAdapter.ViewHolder> {
     private static final int TYPE_HEADER = Integer.MIN_VALUE;
 
-    private Context context;
     private ArrayList<PickedImageBean> pickedImageBeans = new ArrayList<>();
     private ImageBean[] imageBeans;
     private PickerController pickerController;
     private boolean isHeader = Define.IS_CAMERA;
-
-    int width;
-    int height;
-    RelativeLayout.LayoutParams params;
 
     String saveDir;
 
@@ -47,9 +41,6 @@ public class PickerGridAdapter
             super(view);
             imgPhoto = (ImageView) view.findViewById(R.id.img_thum);
             txtPickCount = (TextView) view.findViewById(R.id.txt_pick_count);
-
-            imgPhoto.setLayoutParams(params);
-            txtPickCount.setLayoutParams(params);
         }
     }
 
@@ -61,28 +52,25 @@ public class PickerGridAdapter
         public ViewHolderHeader(View view) {
             super(view);
             header = (RelativeLayout) itemView.findViewById(R.id.area_header);
-
-            header.setLayoutParams(params);
         }
     }
 
-    public PickerGridAdapter(Context context, ImageBean[] imageBeans,
+    public PickerGridAdapter(ImageBean[] imageBeans,
                              ArrayList<PickedImageBean> pickedImageBeans, PickerController pickerController,
                              String saveDir) {
-        this.context = context;
         this.imageBeans = imageBeans;
         this.pickerController = pickerController;
         this.pickedImageBeans = pickedImageBeans;
         this.saveDir = saveDir;
-        setSize(context);
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
 
+
         if (viewType == TYPE_HEADER) {
-            view = LayoutInflater.from(context).inflate(R.layout.header_item, parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.header_item, parent, false);
             return new ViewHolderHeader(view);
         }
 
@@ -142,11 +130,11 @@ public class PickerGridAdapter
 
             if (imgPath != null && !imgPath.equals("")) {
                 Glide
-                        .with(context)
+                        .with(vh.imgPhoto.getContext())
                         .load(imgPath)
 //                        .thumbnail(0.7f)
 //                        .placeholder(R.drawable.loading_img)
-                        .override(width, height)
+//                        .override(vh.imgPhoto.getMeasuredWidth(), vh.imgPhoto.getMeasuredHeight())
                         .crossFade()
                         .centerCrop()
                         .into(vh.imgPhoto);
@@ -220,21 +208,6 @@ public class PickerGridAdapter
             }
         }, 500);
 
-    }
-
-    private void setSize(Context context) {
-        width = context.getResources().getDisplayMetrics().widthPixels;
-
-        final float scale = context.getResources().getDisplayMetrics().density;
-        float dip = 20.0f;
-        int marginPixel = (int) (dip * scale + 0.5f);
-        width = width / 2 - marginPixel;
-        int thWidth = 50;
-        int thHeight = 30;
-
-        height = width * thHeight / thWidth;
-
-        params = new RelativeLayout.LayoutParams(width, height);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
