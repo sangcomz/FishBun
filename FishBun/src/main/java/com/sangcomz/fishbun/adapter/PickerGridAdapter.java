@@ -1,6 +1,7 @@
 package com.sangcomz.fishbun.adapter;
 
 import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -166,6 +167,9 @@ public class PickerGridAdapter
                         imageBean.setImgOrder(-1);
                         vh.txtPickCount.setVisibility(View.GONE);
                         pickerController.setActionbarTitle(pickedImageBeans.size());
+                    }else {
+//                        Snackbar.make(v.getContext(), v.getContext().getString(R.string.msg_no_slected), Snackbar.LENGTH_SHORT).show();
+                        Snackbar.make(v, v.getContext().getString(R.string.msg_full_image), Snackbar.LENGTH_SHORT).show();
                     }
                 }
             });

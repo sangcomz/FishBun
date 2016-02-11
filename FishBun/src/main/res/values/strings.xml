@@ -6,4 +6,5 @@
     <string name="str_all_view">All view</string>
     <string name="msg_permisssion">permission deny</string>
     <string name="msg_no_image">There is no image.</string>
+    <string name="msg_full_image">You can\'t no longer choose.</string>
 </resources>

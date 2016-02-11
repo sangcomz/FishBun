@@ -8,7 +8,7 @@ import android.graphics.Color;
 public class Define {
     public static int ALBUM_THUMNAIL_SIZE = -1;
     public static int ALBUM_PICKER_COUNT = 10;
-    public static int PHOTO_SPAN_COUNT = 3;
+    public static int PHOTO_SPAN_COUNT = 5;
 
 
     //    public static int ACTIONBAR_COLOR = "#3F51B5";
