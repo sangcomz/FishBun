@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
+import android.util.DisplayMetrics;
 
 import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.ui.album.AlbumActivity;
@@ -49,6 +50,18 @@ public class FishBun {
 
         @Override
         public BaseProperty setPickerSpanCount(int spanCount) {
+            DisplayMetrics dm = null;
+            if (activity != null)
+                dm = activity.getApplicationContext().getResources().getDisplayMetrics();
+
+            else if (fragment != null)
+                dm = fragment.getActivity().getResources().getDisplayMetrics();
+
+            if (dm != null) {
+                Define.PHOTO_PICKER_SIZE = dm.widthPixels / 3;
+            }
+
+
             if (spanCount <= 0)
                 spanCount = 3;
             Define.PHOTO_SPAN_COUNT = spanCount;

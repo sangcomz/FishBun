@@ -133,9 +133,9 @@ public class PickerGridAdapter
                 Glide
                         .with(vh.imgPhoto.getContext())
                         .load(imgPath)
-//                        .thumbnail(0.7f)
+//                        .thumbnail(0.9f)
 //                        .placeholder(R.drawable.loading_img)
-//                        .override(vh.imgPhoto.getMeasuredWidth(), vh.imgPhoto.getMeasuredHeight())
+                        .override(Define.PHOTO_PICKER_SIZE, Define.PHOTO_PICKER_SIZE)
                         .crossFade()
                         .centerCrop()
                         .into(vh.imgPhoto);
