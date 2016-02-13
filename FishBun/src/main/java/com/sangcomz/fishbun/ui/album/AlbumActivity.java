@@ -79,6 +79,9 @@ public class AlbumActivity extends AppCompatActivity {
                 finish();
             } else if (resultCode == Define.ADD_PHOTO_REQUEST_CODE) {
                 new DisplayImage().execute();
+            } else if (resultCode == Define.TRANS_IMAGES_RESULT_CODE){
+                ArrayList<String> path = data.getStringArrayListExtra(Define.INTENT_PATH);
+                adapter.setPath(path);
             }
         }
     }

@@ -109,7 +109,9 @@ public class AlbumListAdapter
         return albumlist.size();
     }
 
-
+    public void setPath(ArrayList<String> path) {
+        this.path = path;
+    }
 }
 
 

@@ -51,6 +51,13 @@ public class PickerActivity extends AppCompatActivity {
         Glide.get(this).clearMemory();
     }
 
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        transImageFinish();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,7 +128,7 @@ public class PickerActivity extends AppCompatActivity {
             }
             return true;
         } else if (id == android.R.id.home)
-            finish();
+            transImageFinish();
         return super.onOptionsItemSelected(item);
     }
 
@@ -248,5 +255,16 @@ public class PickerActivity extends AppCompatActivity {
             pathDir = Environment.getExternalStoragePublicDirectory(
                     Environment.DIRECTORY_PICTURES).getAbsolutePath();
         return pathDir;
+    }
+
+    private void transImageFinish(){
+        ArrayList<String> path = new ArrayList<>();
+        for (int i = 0; i < pickedImageBeans.size(); i++) {
+            path.add(pickedImageBeans.get(i).getImgPath());
+        }
+        Intent i = new Intent();
+        i.putStringArrayListExtra(Define.INTENT_PATH, path);
+        setResult(Define.TRANS_IMAGES_RESULT_CODE, i);
+        finish();
     }
 }
