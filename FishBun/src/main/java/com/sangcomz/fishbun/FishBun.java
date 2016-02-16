@@ -51,17 +51,6 @@ public class FishBun {
 
         @Override
         public BaseProperty setPickerSpanCount(int spanCount) {
-            DisplayMetrics dm = null;
-            if (activity != null)
-                dm = activity.getApplicationContext().getResources().getDisplayMetrics();
-
-            else if (fragment != null)
-                dm = fragment.getActivity().getResources().getDisplayMetrics();
-
-            if (dm != null) {
-                Define.PHOTO_PICKER_SIZE = dm.widthPixels / 3;
-            }
-
 
             if (spanCount <= 0)
                 spanCount = 3;
@@ -115,13 +104,18 @@ public class FishBun {
                     e.printStackTrace();
                 }
 
+            DisplayMetrics dm = null;
+            dm = context.getResources().getDisplayMetrics();
+            if (dm != null) {
+                Define.PHOTO_PICKER_SIZE = dm.widthPixels / Define.PHOTO_SPAN_COUNT;
+            }
+
             if (Define.ALBUM_THUMNAIL_SIZE == -1)
                 Define.ALBUM_THUMNAIL_SIZE = (int) context.getResources().getDimension(R.dimen.album_thum_size);
 
 
             Intent i = new Intent(context, AlbumActivity.class);
             i.putStringArrayListExtra(Define.INTENT_PATH, arrayPaths);
-//            ((Activity) context).startActivityForResult(i, Define.ALBUM_REQUEST_CODE);
 
             if (activity != null)
                 activity.startActivityForResult(i, requestCode);
