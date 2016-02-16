@@ -29,6 +29,7 @@ public class FishBun {
         private ArrayList<String> arrayPaths = new ArrayList<>();
         private Activity activity = null;
         private Fragment fragment = null;
+        private int requestCode = Define.ALBUM_REQUEST_CODE;
 
         public BaseProperty(Activity activity) {
             this.activity = activity;
@@ -95,6 +96,12 @@ public class FishBun {
             return baseProperty;
         }
 
+        @Override
+        public BaseProperty setRequestCode(int requestCode) {
+            this.requestCode = requestCode;
+            return baseProperty;
+        }
+
         public void startAlbum() {
             Context context = null;
             if (activity != null)
@@ -111,15 +118,16 @@ public class FishBun {
             if (Define.ALBUM_THUMNAIL_SIZE == -1)
                 Define.ALBUM_THUMNAIL_SIZE = (int) context.getResources().getDimension(R.dimen.album_thum_size);
 
+
             Intent i = new Intent(context, AlbumActivity.class);
             i.putStringArrayListExtra(Define.INTENT_PATH, arrayPaths);
 //            ((Activity) context).startActivityForResult(i, Define.ALBUM_REQUEST_CODE);
 
             if (activity != null)
-                activity.startActivityForResult(i, Define.ALBUM_REQUEST_CODE);
+                activity.startActivityForResult(i, requestCode);
 
             else if (fragment != null)
-                fragment.startActivityForResult(i, Define.ALBUM_REQUEST_CODE);
+                fragment.startActivityForResult(i, requestCode);
 
 
         }
@@ -142,6 +150,8 @@ public class FishBun {
         BaseProperty setActionBarColor(int actionbarColor, int statusbarColor);
 
         BaseProperty setCamera(boolean isCamera);
+
+        BaseProperty setRequestCode(int RequestCode);
 
         void startAlbum();
     }
