@@ -5,9 +5,10 @@
 ##What is FishBun
 FishBun is Image Picker for android.
 
-##What's New 0.3.0 FishBun
+##What's New 0.4.1 FishBun
 
-####● You Can Use in Fragment.(issue#10)
+####● You can set span count!
+####● You can use custom Request Code!
 
 ##How to Use FishBun
 
@@ -60,6 +61,8 @@ you can use also this
             //        .setActionBarColor(Color.BLACK)           // only actionbar color
                     .setPickerCount(12)//you can restrict photo count
                     .setArrayPaths(path)//you can choice again.
+                    .setPickerSpanCount(5)
+                    .setRequestCode(11) //request code is 11. default == Define.ALBUM_REQUEST_CODE(27)
                     .setCamera(true)//you can use camera
                     .startAlbum();
 
