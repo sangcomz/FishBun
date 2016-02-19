@@ -9,6 +9,7 @@ FishBun is Image Picker for android.
 
 ####● You can set span count!
 ####● You can use custom Request Code!
+####● Enhancement #issue6
 
 ##How to Use FishBun
 
