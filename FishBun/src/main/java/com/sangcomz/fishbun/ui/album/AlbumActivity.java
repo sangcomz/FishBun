@@ -29,6 +29,10 @@ import com.sangcomz.fishbun.util.UiUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+import rx.Observer;
+import rx.Subscription;
+import rx.subjects.PublishSubject;
+
 
 public class AlbumActivity extends AppCompatActivity {
 
@@ -38,8 +42,10 @@ public class AlbumActivity extends AppCompatActivity {
     private List<String> thumbList;
     private PermissionCheck permissionCheck;
     private UiUtil uiUtil = new UiUtil();
-
     private RelativeLayout noAlbum;
+
+    public static PublishSubject<String> changeAlbumPublishSubject;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,6 +73,52 @@ public class AlbumActivity extends AppCompatActivity {
                 new DisplayImage().execute();
         } else
             new DisplayImage().execute();
+
+        changeAlbumPublishSubject = PublishSubject.create();
+
+        Subscription changeAlbumSubscription = changeAlbumPublishSubject
+                .subscribe(new Observer<String>() {
+                    int position;
+
+                    @Override
+                    public void onCompleted() {
+
+
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(String imagePath) {
+                        if (imagePath.split("[|]")[0].equals("POSITION")) {
+                            System.out.println("spilt :::: " + imagePath.split("[|]")[0]);
+                            position = Integer.parseInt(imagePath.split("[|]")[1]);
+                        } else if (imagePath.split("[|]")[0].equals("PATH")) {
+                            if (position == 0) {
+                                albumlist.get(position).counter++;
+                                thumbList.set(position, imagePath.split("[|]")[1]);
+                            } else {
+                                albumlist.get(0).counter++;
+                                albumlist.get(position).counter++;
+                                thumbList.set(0, imagePath.split("[|]")[1]);
+                                thumbList.set(position, imagePath.split("[|]")[1]);
+                            }
+                            adapter.notifyItemChanged(0);
+                            adapter.notifyItemChanged(position);
+                        }
+
+
+//                        albumlist.get(Integer.parseInt(imagePath)).counter++;
+//                        adapter.notifyItemChanged(0);
+//                        adapter.notifyItemChanged(Integer.parseInt(imagePath));
+                    }
+                });
+
+
     }
 
 
@@ -77,9 +129,7 @@ public class AlbumActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 setResult(RESULT_OK, data);
                 finish();
-            } else if (resultCode == Define.ADD_PHOTO_REQUEST_CODE) {
-                new DisplayImage().execute();
-            } else if (resultCode == Define.TRANS_IMAGES_RESULT_CODE){
+            } else if (resultCode == Define.TRANS_IMAGES_RESULT_CODE) {
                 ArrayList<String> path = data.getStringArrayListExtra(Define.INTENT_PATH);
                 adapter.setPath(path);
             }

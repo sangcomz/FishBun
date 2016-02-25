@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
             FishBun.with(MainActivity.this)
                     .setPickerCount(20)
-                    .setPickerSpanCount(5)
+                    .setPickerSpanCount(3)
                     .setActionBarColor(Color.parseColor("#3F51B5"), Color.parseColor("#303F9F"))
                     .setArrayPaths(path)
                     .setCamera(true)

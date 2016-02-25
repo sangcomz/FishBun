@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.sangcomz.fishbun.R;
 import com.sangcomz.fishbun.bean.Album;
 import com.sangcomz.fishbun.define.Define;
+import com.sangcomz.fishbun.ui.album.AlbumActivity;
 import com.sangcomz.fishbun.ui.picker.PickerActivity;
 
 import java.util.ArrayList;
@@ -99,6 +100,9 @@ public class AlbumListAdapter
                 i.putExtra("album", a);
                 i.putExtra("album_title", albumlist.get(position).bucketname);
                 i.putStringArrayListExtra(Define.INTENT_PATH, path);
+                if(AlbumActivity.changeAlbumPublishSubject.hasObservers())
+                    AlbumActivity.changeAlbumPublishSubject.onNext("POSITION|" + String.valueOf(position));
+
                 ((Activity) holder.areaAlbum.getContext()).startActivityForResult(i, Define.ENTER_ALBUM_REQUEST_CODE);
             }
         });

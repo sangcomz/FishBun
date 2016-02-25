@@ -106,6 +106,7 @@ public class PickerActivity extends AppCompatActivity {
         return true;
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -233,7 +234,7 @@ public class PickerActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 startFileMediaScan(pickerController.getSavePath());
                 adapter.addImage(pickerController.getSavePath());
-                setResult(Define.ADD_PHOTO_REQUEST_CODE);
+
             } else {
                 new File(pickerController.getSavePath()).delete();
             }
@@ -257,7 +258,7 @@ public class PickerActivity extends AppCompatActivity {
         return pathDir;
     }
 
-    private void transImageFinish(){
+    private void transImageFinish() {
         ArrayList<String> path = new ArrayList<>();
         for (int i = 0; i < pickedImageBeans.size(); i++) {
             path.add(pickedImageBeans.get(i).getImgPath());
