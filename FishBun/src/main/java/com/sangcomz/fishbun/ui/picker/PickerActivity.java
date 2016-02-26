@@ -234,7 +234,6 @@ public class PickerActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 startFileMediaScan(pickerController.getSavePath());
                 adapter.addImage(pickerController.getSavePath());
-
             } else {
                 new File(pickerController.getSavePath()).delete();
             }
@@ -251,10 +250,9 @@ public class PickerActivity extends AppCompatActivity {
     }
 
     private String getPathDir() {
-
         if (pathDir.equals("") || a.bucketid == 0)
             pathDir = Environment.getExternalStoragePublicDirectory(
-                    Environment.DIRECTORY_PICTURES).getAbsolutePath();
+                    Environment.DIRECTORY_DCIM+"/Camera").getAbsolutePath();
         return pathDir;
     }
 

@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -43,6 +44,7 @@ public class AlbumActivity extends AppCompatActivity {
     private PermissionCheck permissionCheck;
     private UiUtil uiUtil = new UiUtil();
     private RelativeLayout noAlbum;
+    private int defCameraAlbum = 0; //total 
 
     public static PublishSubject<String> changeAlbumPublishSubject;
 
@@ -84,7 +86,6 @@ public class AlbumActivity extends AppCompatActivity {
                     public void onCompleted() {
 
 
-
                     }
 
                     @Override
@@ -95,20 +96,28 @@ public class AlbumActivity extends AppCompatActivity {
                     @Override
                     public void onNext(String imagePath) {
                         if (imagePath.split("[|]")[0].equals("POSITION")) {
-                            System.out.println("spilt :::: " + imagePath.split("[|]")[0]);
                             position = Integer.parseInt(imagePath.split("[|]")[1]);
                         } else if (imagePath.split("[|]")[0].equals("PATH")) {
                             if (position == 0) {
                                 albumlist.get(position).counter++;
+                                albumlist.get(defCameraAlbum).counter++;
+
                                 thumbList.set(position, imagePath.split("[|]")[1]);
+                                thumbList.set(defCameraAlbum, imagePath.split("[|]")[1]);
+
+                                adapter.notifyItemChanged(0);
+                                adapter.notifyItemChanged(defCameraAlbum);
                             } else {
                                 albumlist.get(0).counter++;
                                 albumlist.get(position).counter++;
+
                                 thumbList.set(0, imagePath.split("[|]")[1]);
                                 thumbList.set(position, imagePath.split("[|]")[1]);
+
+                                adapter.notifyItemChanged(0);
+                                adapter.notifyItemChanged(position);
                             }
-                            adapter.notifyItemChanged(0);
-                            adapter.notifyItemChanged(position);
+
                         }
 
 
@@ -184,6 +193,7 @@ public class AlbumActivity extends AppCompatActivity {
             totalAlbum.counter = 0;
             albumlist.add(totalAlbum);
             int totalCounter = 0;
+
             while (imagecursor.moveToNext()) {
                 totalCounter++;
                 long bucketid = imagecursor.getInt(bucketcolumnid);
@@ -243,11 +253,16 @@ public class AlbumActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... params) {
 
+            String pathDir = Environment.getExternalStoragePublicDirectory(
+                    Environment.DIRECTORY_DCIM + "/Camera").getAbsolutePath();
             for (int i = 0; i < albumlist.size(); i++) {
                 Album album = albumlist.get(i);
-
                 String path = getAllMediaThumbnailsPath(album.bucketid);
                 thumbList.add(path);
+                if (i != 0 && path.contains(pathDir))
+                    defCameraAlbum = i;
+
+
             }
             return null;
         }
@@ -294,6 +309,7 @@ public class AlbumActivity extends AppCompatActivity {
         } else {
             Log.e("id", "from else");
         }
+
 
         c.close();
         return path;
