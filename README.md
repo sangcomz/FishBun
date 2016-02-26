@@ -5,7 +5,7 @@
 ##What is FishBun
 FishBun is Image Picker for android.
 
-##What's New 0.4.2 FishBun
+##What's New 0.4.3 FishBun
 
 ####● You can set span count!
 ####● You can use custom Request Code!
@@ -22,10 +22,11 @@ FishBun is Image Picker for android.
     
     dependencies {
         //FishBun use this libraries
-        compile 'com.android.support:design:23.1.1'
+        compile 'com.android.support:design:23.2.0'
         compile 'com.github.bumptech.glide:glide:3.7.0'
+        compile 'io.reactivex:rxandroid:1.1.0'
 
-        compile 'com.sangcomz:FishBun:0.4.2@aar'
+        compile 'com.sangcomz:FishBun:0.4.3@aar'
     }
 
 ###Manifest
