@@ -68,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
                     .setPickerCount(20)
                     .setPickerSpanCount(3)
                     .setActionBarColor(Color.parseColor("#3F51B5"), Color.parseColor("#303F9F"))
+                    .textOnImagesSelectionLimitReached("Limit Reached!")
+                    .textOnNothingSelected("Nothing Selected")
                     .setArrayPaths(path)
                     .setCamera(true)
                     .startAlbum();

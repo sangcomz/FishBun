@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 
 public class FishBun {
+
     private static BaseProperty baseProperty;
 
     //    BaseProperty baseProperty;
@@ -30,6 +31,7 @@ public class FishBun {
         private Activity activity = null;
         private Fragment fragment = null;
         private int requestCode = Define.ALBUM_REQUEST_CODE;
+
 
         public BaseProperty(Activity activity) {
             this.activity = activity;
@@ -91,6 +93,18 @@ public class FishBun {
             return baseProperty;
         }
 
+        @Override
+        public BaseProperty textOnNothingSelected(String message) {
+            Define.MESSAGE_NOTHING_SELECTED = message;
+            return baseProperty;
+        }
+
+        @Override
+        public BaseProperty textOnImagesSelectionLimitReached(String message) {
+            Define.MESSAGE_LIMIT_REACHED = message;
+            return baseProperty;
+        }
+
         public void startAlbum() {
             Context context = null;
             if (activity != null)
@@ -113,6 +127,7 @@ public class FishBun {
             if (Define.ALBUM_THUMNAIL_SIZE == -1)
                 Define.ALBUM_THUMNAIL_SIZE = (int) context.getResources().getDimension(R.dimen.album_thum_size);
 
+            setMessage(context);
 
             Intent i = new Intent(context, AlbumActivity.class);
             i.putStringArrayListExtra(Define.INTENT_PATH, arrayPaths);
@@ -147,7 +162,20 @@ public class FishBun {
 
         BaseProperty setRequestCode(int RequestCode);
 
+        BaseProperty textOnNothingSelected(String message);
+
+        BaseProperty textOnImagesSelectionLimitReached(String message);
+
         void startAlbum();
+    }
+
+
+    private static void setMessage(Context context) {
+        if (Define.MESSAGE_NOTHING_SELECTED.equals(""))
+            Define.MESSAGE_NOTHING_SELECTED = context.getResources().getString(R.string.msg_no_slected);
+
+        if (Define.MESSAGE_LIMIT_REACHED.equals(""))
+            Define.MESSAGE_LIMIT_REACHED = context.getResources().getString(R.string.msg_full_image);
     }
 
 }

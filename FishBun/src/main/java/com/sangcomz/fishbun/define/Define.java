@@ -29,4 +29,7 @@ public class Define {
 
     public static String INTENT_PATH = "intent_path";
 
+    public static String MESSAGE_NOTHING_SELECTED = "";
+    public static String MESSAGE_LIMIT_REACHED = "";
+
 }

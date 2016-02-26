@@ -116,7 +116,7 @@ public class PickerActivity extends AppCompatActivity {
         if (id == R.id.action_ok) {
             if (pickedImageBeans.size() == 0) {
 //                Toast.makeText(this, getString(R.string.msg_no_slected), Toast.LENGTH_SHORT).show();
-                Snackbar.make(recyclerView, getString(R.string.msg_no_slected), Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(recyclerView, Define.MESSAGE_NOTHING_SELECTED, Snackbar.LENGTH_SHORT).show();
             } else {
                 ArrayList<String> path = new ArrayList<>();
                 for (int i = 0; i < pickedImageBeans.size(); i++) {
