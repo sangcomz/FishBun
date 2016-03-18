@@ -105,6 +105,12 @@ public class FishBun {
             return baseProperty;
         }
 
+        @Override
+        public BaseProperty setButtonInAlbumActiviy(boolean isButton) {
+            Define.IS_BUTTON = isButton;
+            return baseProperty;
+        }
+
         public void startAlbum() {
             Context context = null;
             if (activity != null)
@@ -165,6 +171,8 @@ public class FishBun {
         BaseProperty textOnNothingSelected(String message);
 
         BaseProperty textOnImagesSelectionLimitReached(String message);
+
+        BaseProperty setButtonInAlbumActiviy(boolean isButton);
 
         void startAlbum();
     }

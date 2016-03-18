@@ -100,7 +100,7 @@ public class AlbumListAdapter
                 i.putExtra("album", a);
                 i.putExtra("album_title", albumlist.get(position).bucketname);
                 i.putStringArrayListExtra(Define.INTENT_PATH, path);
-                if(AlbumActivity.changeAlbumPublishSubject.hasObservers())
+                if (AlbumActivity.changeAlbumPublishSubject.hasObservers())
                     AlbumActivity.changeAlbumPublishSubject.onNext("POSITION|" + String.valueOf(position));
 
                 ((Activity) holder.areaAlbum.getContext()).startActivityForResult(i, Define.ENTER_ALBUM_REQUEST_CODE);
@@ -115,6 +115,10 @@ public class AlbumListAdapter
 
     public void setPath(ArrayList<String> path) {
         this.path = path;
+    }
+
+    public ArrayList<String> getPath() {
+        return path;
     }
 }
 

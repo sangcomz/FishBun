@@ -12,6 +12,8 @@ public class Define {
 
     public static int PHOTO_PICKER_SIZE = 0;
 
+    public static boolean IS_BUTTON = false;
+
 
     //    public static int ACTIONBAR_COLOR = "#3F51B5";
     public static int ACTIONBAR_COLOR = Color.parseColor("#3F51B5");

@@ -10,11 +10,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -316,11 +318,56 @@ public class AlbumActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        if (Define.IS_BUTTON)
+            getMenuInflater().inflate(R.menu.menu_photo_album, menu);
+        return true;
+    }
+
+
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//        if (id == R.id.action_ok) {
+//            if (pickedImageBeans.size() == 0) {
+////                Toast.makeText(this, getString(R.string.msg_no_slected), Toast.LENGTH_SHORT).show();
+//                Snackbar.make(recyclerView, Define.MESSAGE_NOTHING_SELECTED, Snackbar.LENGTH_SHORT).show();
+//            } else {
+//                ArrayList<String> path = new ArrayList<>();
+//                for (int i = 0; i < pickedImageBeans.size(); i++) {
+//                    path.add(pickedImageBeans.get(i).getImgPath());
+//                }
+//                Intent i = new Intent();
+//                i.putStringArrayListExtra(Define.INTENT_PATH, path);
+//                setResult(RESULT_OK, i);
+//                finish();
+//            }
+//            return true;
+//        } else if (id == android.R.id.home)
+//            transImageFinish();
+//        return super.onOptionsItemSelected(item);
+//    }
+
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            finish();
+        } else if (id == R.id.action_ok) {
+            if (adapter.getPath().size() == 0) {
+//                Toast.makeText(this, getString(R.string.msg_no_slected), Toast.LENGTH_SHORT).show();
+                Snackbar.make(recyclerView, Define.MESSAGE_NOTHING_SELECTED, Snackbar.LENGTH_SHORT).show();
+            } else {
+                Intent i = new Intent();
+                i.putStringArrayListExtra(Define.INTENT_PATH, adapter.getPath());
+                setResult(RESULT_OK, i);
                 finish();
-                break;
+            }
         }
         return super.onOptionsItemSelected(item);
     }
