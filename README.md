@@ -7,8 +7,8 @@ FishBun is Image Picker for android.
 
 ##What's New 0.4.4 FishBun
 
-####● You can set SnackBar Message! textOnImagesSelectionLimitReached(String msg), textOnNothingSelected(String msg) Enhancement #issue14
-####● You can set Button! setButtonInAlbumActiviy(boolean isButton) Enhancement #issue16
+####● You can set SnackBar Message! Enhancement #issue14
+####● You can set Button! Enhancement #issue16
 
 ##How to Use FishBun
 
