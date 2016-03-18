@@ -8,7 +8,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 23
         versionCode 1
-        versionName '0.4.3'
+        versionName '0.4.4'
 
 
     }
@@ -26,9 +26,9 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:23.2.0'
-    compile 'com.android.support:design:23.2.0'
-    compile 'com.android.support:recyclerview-v7:23.2.0'
+    compile 'com.android.support:appcompat-v7:23.2.1'
+    compile 'com.android.support:design:23.2.1'
+    compile 'com.android.support:recyclerview-v7:23.2.1'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'io.reactivex:rxandroid:1.1.0'
 }
@@ -41,7 +41,7 @@ dependencies {
 //apply plugin: 'com.github.dcendents.android-maven'
 //apply plugin: "com.jfrog.bintray"
 //
-//version = "0.4.3"
+//version = "0.4.4"
 //
 //def siteUrl = 'https://github.com/sangcomz/FishBun'      // Homepage URL of the library
 //def gitUrl = 'https://github.com/sangcomz/FishBun.git'   // Git repository URL
