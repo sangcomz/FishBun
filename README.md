@@ -5,11 +5,10 @@
 ##What is FishBun
 FishBun is Image Picker for android.
 
-##What's New 0.4.3 FishBun
+##What's New 0.4.4 FishBun
 
-####● You can set span count!
-####● You can use custom Request Code!
-####● Enhancement #issue6
+####● You can set SnackBar Message! textOnImagesSelectionLimitReached(String msg), textOnNothingSelected(String msg) Enhancement #issue14
+####● You can set Button! setButtonInAlbumActiviy(boolean isButton) Enhancement #issue16
 
 ##How to Use FishBun
 
@@ -22,11 +21,11 @@ FishBun is Image Picker for android.
     
     dependencies {
         //FishBun use this libraries
-        compile 'com.android.support:design:23.2.0'
+        compile 'com.android.support:design:23.2.1'
         compile 'com.github.bumptech.glide:glide:3.7.0'
         compile 'io.reactivex:rxandroid:1.1.0'
 
-        compile 'com.sangcomz:FishBun:0.4.3@aar'
+        compile 'com.sangcomz:FishBun:0.4.4@aar'
     }
 
 ###Manifest
@@ -66,6 +65,9 @@ you can use also this
                     .setPickerSpanCount(5)
                     .setRequestCode(11) //request code is 11. default == Define.ALBUM_REQUEST_CODE(27)
                     .setCamera(true)//you can use camera
+                    .textOnImagesSelectionLimitReached("Limit Reached!")
+                    .textOnNothingSelected("Nothing Selected")
+                    .setButtonInAlbumActiviy(true)
                     .startAlbum();
 
 
