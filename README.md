@@ -20,12 +20,9 @@ FishBun is Image Picker for android.
     
     
     dependencies {
-        //FishBun use this libraries
-        compile 'com.android.support:design:23.2.1'
-        compile 'com.github.bumptech.glide:glide:3.7.0'
-        compile 'io.reactivex:rxandroid:1.1.0'
-
-        compile 'com.sangcomz:FishBun:0.4.4@aar'
+        compile('com.sangcomz:FishBun:0.4.4@aar') {
+            transitive = true
+        }
     }
 
 ###Manifest
