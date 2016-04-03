@@ -8,7 +8,6 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.view.View;
 import android.widget.Toast;
 
 import com.sangcomz.fishbun.define.Define;
@@ -57,19 +56,8 @@ public class PermissionCheck {
     }
 
 
-    public void showPermissionDialog(View view) {
-//        final Dialog dialog = new Dialog(context, android.R.style.Theme_Translucent);
-//        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        dialog.setCancelable(true);
-//        dialog.setContentView(R.layout.dialog_permission);
-//        TextView dTitle = (TextView) dialog.findViewById(R.id.alert_title);
-//        TextView dContent = (TextView) dialog.findViewById(R.id.alert_content);
-//			TextView dContent = (TextView)dialog.findViewById(R.id.alert_content);
-
-//        title = title.replaceAll(query, "<font color='#78C70F'>" + query + "</font>");
-
+    public void showPermissionDialog() {
         Toast.makeText(context, "permission deny", Toast.LENGTH_SHORT).show();
-
     }
 
 

@@ -37,7 +37,7 @@ import rx.functions.Action1;
 import rx.subjects.PublishSubject;
 
 
-public class AlbumActivity extends AppCompatActivity {
+public class AlbumActivity extends AppCompatActivity implements AlbumView {
 
     private List<Album> albumlist = new ArrayList<>();
     private RecyclerView recyclerView;
@@ -56,20 +56,8 @@ public class AlbumActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_album);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        noAlbum = (RelativeLayout) findViewById(R.id.no_album);
-        setSupportActionBar(toolbar);
-        toolbar.setBackgroundColor(Define.ACTIONBAR_COLOR);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            uiUtil.setStatusBarColor(this);
-        }
+        initView();
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         permissionCheck = new PermissionCheck(this);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -79,7 +67,6 @@ public class AlbumActivity extends AppCompatActivity {
             new DisplayImage().execute();
 
         changeAlbumPublishSubject = PublishSubject.create();
-
 
         Subscription changeAlbumSubscription =
                 changeAlbumPublishSubject.subscribe(new Action1<String>() {
@@ -143,12 +130,37 @@ public class AlbumActivity extends AppCompatActivity {
                     // permission was granted, yay! do the
                     // calendar task you need to do.
                 } else {
-                    permissionCheck.showPermissionDialog(recyclerView);
+                    permissionCheck.showPermissionDialog();
                     finish();
                 }
                 return;
             }
         }
+    }
+
+    @Override
+    public void initView() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        noAlbum = (RelativeLayout) findViewById(R.id.no_album);
+        setSupportActionBar(toolbar);
+        toolbar.setBackgroundColor(Define.ACTIONBAR_COLOR);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            uiUtil.setStatusBarColor(this);
+        }
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
+        if (recyclerView != null) {
+            recyclerView.setLayoutManager(linearLayoutManager);
+        }
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+    }
+
+    @Override
+    public void showProgerss() {
+
     }
 
     public class DisplayImage extends AsyncTask<Void, Void, Boolean> {
