@@ -32,8 +32,8 @@ import com.sangcomz.fishbun.util.UiUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-import rx.Observer;
 import rx.Subscription;
+import rx.functions.Action1;
 import rx.subjects.PublishSubject;
 
 
@@ -80,23 +80,13 @@ public class AlbumActivity extends AppCompatActivity {
 
         changeAlbumPublishSubject = PublishSubject.create();
 
-        Subscription changeAlbumSubscription = changeAlbumPublishSubject
-                .subscribe(new Observer<String>() {
+
+        Subscription changeAlbumSubscription =
+                changeAlbumPublishSubject.subscribe(new Action1<String>() {
                     int position;
 
                     @Override
-                    public void onCompleted() {
-
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(String imagePath) {
+                    public void call(String imagePath) {
                         if (imagePath.split("[|]")[0].equals("POSITION")) {
                             position = Integer.parseInt(imagePath.split("[|]")[1]);
                         } else if (imagePath.split("[|]")[0].equals("PATH")) {
@@ -121,11 +111,6 @@ public class AlbumActivity extends AppCompatActivity {
                             }
 
                         }
-
-
-//                        albumlist.get(Integer.parseInt(imagePath)).counter++;
-//                        adapter.notifyItemChanged(0);
-//                        adapter.notifyItemChanged(Integer.parseInt(imagePath));
                     }
                 });
 
@@ -229,16 +214,10 @@ public class AlbumActivity extends AppCompatActivity {
             super.onPostExecute(result);
             if (result) {
                 noAlbum.setVisibility(View.GONE);
-//                if (adapter == null) {
                 adapter = new AlbumListAdapter(albumlist, getIntent().getStringArrayListExtra(Define.INTENT_PATH));
                 recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
                 new DisplayThumbnail().execute();
-//                }
-//                else {
-//                    adapter.notifyDataSetChanged();
-//                    new DisplayThumbnail().execute();
-//                }
             } else {
                 noAlbum.setVisibility(View.VISIBLE);
             }
@@ -324,34 +303,6 @@ public class AlbumActivity extends AppCompatActivity {
             getMenuInflater().inflate(R.menu.menu_photo_album, menu);
         return true;
     }
-
-
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//        if (id == R.id.action_ok) {
-//            if (pickedImageBeans.size() == 0) {
-////                Toast.makeText(this, getString(R.string.msg_no_slected), Toast.LENGTH_SHORT).show();
-//                Snackbar.make(recyclerView, Define.MESSAGE_NOTHING_SELECTED, Snackbar.LENGTH_SHORT).show();
-//            } else {
-//                ArrayList<String> path = new ArrayList<>();
-//                for (int i = 0; i < pickedImageBeans.size(); i++) {
-//                    path.add(pickedImageBeans.get(i).getImgPath());
-//                }
-//                Intent i = new Intent();
-//                i.putStringArrayListExtra(Define.INTENT_PATH, path);
-//                setResult(RESULT_OK, i);
-//                finish();
-//            }
-//            return true;
-//        } else if (id == android.R.id.home)
-//            transImageFinish();
-//        return super.onOptionsItemSelected(item);
-//    }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
