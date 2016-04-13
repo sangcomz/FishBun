@@ -182,7 +182,7 @@ public class PickerActivity extends AppCompatActivity {
                     // permission was granted, yay! do the
                     // calendar task you need to do.
                 } else {
-                    permissionCheck.showPermissionDialog(recyclerView);
+                    permissionCheck.showPermissionDialog();
                     finish();
                 }
                 return;

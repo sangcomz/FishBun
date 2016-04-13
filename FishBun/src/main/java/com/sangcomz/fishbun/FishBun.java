@@ -124,7 +124,7 @@ public class FishBun {
                     e.printStackTrace();
                 }
 
-            DisplayMetrics dm = null;
+            DisplayMetrics dm;
             dm = context.getResources().getDisplayMetrics();
             if (dm != null) {
                 Define.PHOTO_PICKER_SIZE = dm.widthPixels / Define.PHOTO_SPAN_COUNT;
