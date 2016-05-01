@@ -9,7 +9,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,7 +19,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.bumptech.glide.Glide;
 import com.sangcomz.fishbun.R;
 import com.sangcomz.fishbun.adapter.PickerGridAdapter;
 import com.sangcomz.fishbun.bean.Album;
@@ -37,20 +38,12 @@ public class PickerActivity extends AppCompatActivity {
     private ArrayList<PickedImageBean> pickedImageBeans;
     private PickerController pickerController;
     private Album a;
-    private ImageBean[] imageBeans;
     PermissionCheck permissionCheck;
     private UiUtil uiUtil = new UiUtil();
 
     PickerGridAdapter adapter;
 
     private String pathDir = "";
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Glide.get(this).clearMemory();
-    }
-
 
     @Override
     public void onBackPressed() {
@@ -69,8 +62,8 @@ public class PickerActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             uiUtil.setStatusBarColor(this);
         }
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ActionBar bar = getSupportActionBar();
+        if (bar != null) bar.setDisplayHomeAsUpEnabled(true);
 
         a = (Album) getIntent().getSerializableExtra("album");
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, Define.PHOTO_SPAN_COUNT, GridLayoutManager.VERTICAL, false);
@@ -87,7 +80,6 @@ public class PickerActivity extends AppCompatActivity {
             }
         }
         pickerController.setActionbarTitle(pickedImageBeans.size());
-        imageBeans = new ImageBean[a.counter];
 
         permissionCheck = new PermissionCheck(this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -133,41 +125,20 @@ public class PickerActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private class DisplayImage extends AsyncTask<Void, Void, Boolean> {
+    private class DisplayImage extends AsyncTask<Void, Void, ImageBean[]> {
 
         @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            Thread t = new Thread(new Runnable() {
-                public void run() {
-                    getAllMediaThumbnailsPath(a.bucketid);
-                }
-            });
-            t.start();
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            boolean flag = true;
-            while (flag) {
-                if (imageBeans[0] != null && imageBeans[0].getImgPath().length() > 0) {
-                    flag = false;
-                }
-            }
-            return true;
+        protected ImageBean[] doInBackground(Void... params) {
+            return getAllMediaThumbnailsPath(a.bucketid);
         }
 
 
         @Override
-        protected void onPostExecute(Boolean result) {
+        protected void onPostExecute(ImageBean[] result) {
             super.onPostExecute(result);
-            if (result != null) {
-                if (result) {
-                    adapter = new PickerGridAdapter(
-                            imageBeans, pickedImageBeans, pickerController, getPathDir());
-                    recyclerView.setAdapter(adapter);
-                }
-            }
+            adapter = new PickerGridAdapter(
+                result, pickedImageBeans, pickerController, getPathDir());
+            recyclerView.setAdapter(adapter);
         }
     }
 
@@ -187,11 +158,14 @@ public class PickerActivity extends AppCompatActivity {
                 }
                 return;
             }
+            default:
+                break;
         }
     }
 
-    private void getAllMediaThumbnailsPath(long id) {
-        String path = "";
+    @NonNull
+    private ImageBean[] getAllMediaThumbnailsPath(long id) {
+        String path;
         String selection = MediaStore.Images.Media.BUCKET_ID + " = ?";
         String bucketid = String.valueOf(id);
         String sort = MediaStore.Images.Media._ID + " DESC";
@@ -200,32 +174,28 @@ public class PickerActivity extends AppCompatActivity {
         Uri images = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
         Cursor c;
         if (!bucketid.equals("0")) {
-            c = getContentResolver().query(images, null,
-                    selection, selectionArgs, sort);
+            c = getContentResolver().query(images, null, selection, selectionArgs, sort);
         } else {
-            c = getContentResolver().query(images, null,
-                    null, null, sort);
+            c = getContentResolver().query(images, null, null, null, sort);
         }
-
-
+        ImageBean[] imageBeans = new ImageBean[c == null ? 0 : c.getCount()];
         if (c != null) {
-
-            c.moveToFirst();
-
-            setPathDir(c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA)), c.getString(c.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME)));
-            int position = 0;
-            while (true) {
-                path = c.getString(c.getColumnIndex(MediaStore.Images.Thumbnails.DATA));
-                if (c.isLast()) {
-                    imageBeans[position] = new ImageBean(-1, path);
-                    c.close();
-                    break;
-                } else {
-                    imageBeans[position++] = new ImageBean(-1, path);
-                    c.moveToNext();
+            try {
+                if (c.moveToFirst()) {
+                    setPathDir(c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA)),
+                        c.getString(c.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME)));
+                    int position = -1;
+                    do {
+                        path = c.getString(c.getColumnIndex(MediaStore.Images.Thumbnails.DATA));
+                        imageBeans[++position] = new ImageBean(-1, path);
+                    } while (c.moveToNext());
                 }
+                c.close();
+            } catch (Exception e) {
+                if (!c.isClosed()) c.close();
             }
         }
+        return imageBeans;
     }
 
     @Override
@@ -252,7 +222,7 @@ public class PickerActivity extends AppCompatActivity {
     private String getPathDir() {
         if (pathDir.equals("") || a.bucketid == 0)
             pathDir = Environment.getExternalStoragePublicDirectory(
-                    Environment.DIRECTORY_DCIM+"/Camera").getAbsolutePath();
+                Environment.DIRECTORY_DCIM+"/Camera").getAbsolutePath();
         return pathDir;
     }
 
