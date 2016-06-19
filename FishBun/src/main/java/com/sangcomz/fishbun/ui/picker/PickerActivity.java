@@ -38,6 +38,7 @@ public class PickerActivity extends AppCompatActivity {
     private ArrayList<PickedImageBean> pickedImageBeans;
     private PickerController pickerController;
     private Album a;
+    private int position;
     PermissionCheck permissionCheck;
     private UiUtil uiUtil = new UiUtil();
 
@@ -66,6 +67,7 @@ public class PickerActivity extends AppCompatActivity {
         if (bar != null) bar.setDisplayHomeAsUpEnabled(true);
 
         a = (Album) getIntent().getSerializableExtra("album");
+        position = getIntent().getIntExtra("position", -1);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, Define.PHOTO_SPAN_COUNT, GridLayoutManager.VERTICAL, false);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(gridLayoutManager);
@@ -107,7 +109,6 @@ public class PickerActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == R.id.action_ok) {
             if (pickedImageBeans.size() == 0) {
-//                Toast.makeText(this, getString(R.string.msg_no_slected), Toast.LENGTH_SHORT).show();
                 Snackbar.make(recyclerView, Define.MESSAGE_NOTHING_SELECTED, Snackbar.LENGTH_SHORT).show();
             } else {
                 ArrayList<String> path = new ArrayList<>();
@@ -137,7 +138,7 @@ public class PickerActivity extends AppCompatActivity {
         protected void onPostExecute(ImageBean[] result) {
             super.onPostExecute(result);
             adapter = new PickerGridAdapter(
-                result, pickedImageBeans, pickerController, getPathDir());
+                    result, pickedImageBeans, pickerController, getPathDir());
             recyclerView.setAdapter(adapter);
         }
     }
@@ -183,7 +184,7 @@ public class PickerActivity extends AppCompatActivity {
             try {
                 if (c.moveToFirst()) {
                     setPathDir(c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA)),
-                        c.getString(c.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME)));
+                            c.getString(c.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME)));
                     int position = -1;
                     do {
                         path = c.getString(c.getColumnIndex(MediaStore.Images.Thumbnails.DATA));
@@ -222,7 +223,7 @@ public class PickerActivity extends AppCompatActivity {
     private String getPathDir() {
         if (pathDir.equals("") || a.bucketid == 0)
             pathDir = Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_DCIM+"/Camera").getAbsolutePath();
+                    Environment.DIRECTORY_DCIM + "/Camera").getAbsolutePath();
         return pathDir;
     }
 
@@ -233,6 +234,8 @@ public class PickerActivity extends AppCompatActivity {
         }
         Intent i = new Intent();
         i.putStringArrayListExtra(Define.INTENT_PATH, path);
+        i.putStringArrayListExtra(Define.INTENT_ADD_PATH, pickerController.getAddImagePaths());
+        i.putExtra(Define.INTENT_POSITION, position);
         setResult(Define.TRANS_IMAGES_RESULT_CODE, i);
         finish();
     }

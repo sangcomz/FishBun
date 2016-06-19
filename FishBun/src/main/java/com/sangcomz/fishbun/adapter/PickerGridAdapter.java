@@ -14,7 +14,6 @@ import com.sangcomz.fishbun.R;
 import com.sangcomz.fishbun.bean.ImageBean;
 import com.sangcomz.fishbun.bean.PickedImageBean;
 import com.sangcomz.fishbun.define.Define;
-import com.sangcomz.fishbun.ui.album.AlbumActivity;
 import com.sangcomz.fishbun.ui.picker.PickerController;
 import com.sangcomz.fishbun.util.SquareTextView;
 
@@ -168,7 +167,7 @@ public class PickerGridAdapter
                         imageBean.setImgOrder(-1);
                         vh.txtPickCount.setVisibility(View.GONE);
                         pickerController.setActionbarTitle(pickedImageBeans.size());
-                    }else {
+                    } else {
 //                        Snackbar.make(v.getContext(), v.getContext().getString(R.string.msg_no_slected), Snackbar.LENGTH_SHORT).show();
                         Snackbar.make(v, Define.MESSAGE_LIMIT_REACHED, Snackbar.LENGTH_SHORT).show();
                     }
@@ -239,8 +238,7 @@ public class PickerGridAdapter
 
         notifyDataSetChanged();
 
-        if(AlbumActivity.changeAlbumPublishSubject.hasObservers())
-            AlbumActivity.changeAlbumPublishSubject.onNext("PATH|" + path);
+        pickerController.setImagePath(path);
     }
 
 }

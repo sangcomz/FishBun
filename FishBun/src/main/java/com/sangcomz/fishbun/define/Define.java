@@ -28,8 +28,11 @@ public class Define {
     public final static int ALBUM_REQUEST_CODE = 27;
     public final static int PERMISSION_STORAGE = 28;
     public final static int TRANS_IMAGES_RESULT_CODE = 29;
+    public final static int ADD_IMAGE_CODE = 30;
 
     public static String INTENT_PATH = "intent_path";
+    public static String INTENT_ADD_PATH = "intent_add_path";
+    public static String INTENT_POSITION = "intent_position";
 
     public static String MESSAGE_NOTHING_SELECTED = "";
     public static String MESSAGE_LIMIT_REACHED = "";

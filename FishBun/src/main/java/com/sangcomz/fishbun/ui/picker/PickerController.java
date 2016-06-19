@@ -12,6 +12,7 @@ import com.sangcomz.fishbun.define.Define;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -23,6 +24,7 @@ public class PickerController {
     private RecyclerView.OnItemTouchListener OnItemTouchListener;
     ActionBar actionBar;
     String bucketTitle;
+    private ArrayList<String> addImagePaths = new ArrayList<>();
 
     private String savePath;
 
@@ -45,7 +47,6 @@ public class PickerController {
 
             @Override
             public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-
             }
         };
     }
@@ -115,4 +116,11 @@ public class PickerController {
         this.savePath = savePath;
     }
 
+    public void setImagePath(String imagePath) {
+        this.addImagePaths.add(imagePath);
+    }
+
+    public ArrayList<String> getAddImagePaths() {
+        return addImagePaths;
+    }
 }
