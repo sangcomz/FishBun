@@ -8,7 +8,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 23
         versionCode 1
-        versionName '0.4.6'
+        versionName '0.5.0'
 
 
     }
@@ -34,7 +34,7 @@ dependencies {
 //apply plugin: 'com.github.dcendents.android-maven'
 //apply plugin: "com.jfrog.bintray"
 //
-//version = "0.4.6"
+//version = "0.5.0"
 //
 //def siteUrl = 'https://github.com/sangcomz/FishBun'      // Homepage URL of the library
 //def gitUrl = 'https://github.com/sangcomz/FishBun.git'   // Git repository URL

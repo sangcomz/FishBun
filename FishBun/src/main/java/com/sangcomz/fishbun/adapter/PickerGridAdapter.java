@@ -150,13 +150,18 @@ public class PickerGridAdapter
                         vh.txtPickCount.setVisibility(View.VISIBLE);
                         pickedImageBeans.add(new PickedImageBean(pickedImageBeans.size() + 1, imgPath, imagePos));
 
+                        pickerController.setActionbarTitle(pickedImageBeans.size());
+                        if (Define.IS_AUTOMATIC_CLOSE) {
+                            pickerController.finishActivity(pickedImageBeans);
+                        }
+
                         if (Define.ALBUM_PICKER_COUNT == 1)
                             vh.txtPickCount.setText("");
                         else
                             vh.txtPickCount.setText(String.valueOf(pickedImageBeans.size()));
 
                         imageBean.setImgOrder(pickedImageBeans.size());
-                        pickerController.setActionbarTitle(pickedImageBeans.size());
+
                     } else if (vh.txtPickCount.getVisibility() == View.VISIBLE) {
                         pickerController.setRecyclerViewClickable(false);
                         pickedImageBeans.remove(imageBean.getImgOrder() - 1);
@@ -168,7 +173,6 @@ public class PickerGridAdapter
                         vh.txtPickCount.setVisibility(View.GONE);
                         pickerController.setActionbarTitle(pickedImageBeans.size());
                     } else {
-//                        Snackbar.make(v.getContext(), v.getContext().getString(R.string.msg_no_slected), Snackbar.LENGTH_SHORT).show();
                         Snackbar.make(v, Define.MESSAGE_LIMIT_REACHED, Snackbar.LENGTH_SHORT).show();
                     }
                 }

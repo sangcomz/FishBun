@@ -111,14 +111,7 @@ public class PickerActivity extends AppCompatActivity {
             if (pickedImageBeans.size() == 0) {
                 Snackbar.make(recyclerView, Define.MESSAGE_NOTHING_SELECTED, Snackbar.LENGTH_SHORT).show();
             } else {
-                ArrayList<String> path = new ArrayList<>();
-                for (int i = 0; i < pickedImageBeans.size(); i++) {
-                    path.add(pickedImageBeans.get(i).getImgPath());
-                }
-                Intent i = new Intent();
-                i.putStringArrayListExtra(Define.INTENT_PATH, path);
-                setResult(RESULT_OK, i);
-                finish();
+                pickerController.finishActivity(pickedImageBeans);
             }
             return true;
         } else if (id == android.R.id.home)

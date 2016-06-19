@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
 
+import com.sangcomz.fishbun.bean.PickedImageBean;
 import com.sangcomz.fishbun.define.Define;
 
 import java.io.File;
@@ -108,11 +109,11 @@ public class PickerController {
     }
 
 
-    public String getSavePath() {
+    protected String getSavePath() {
         return savePath;
     }
 
-    public void setSavePath(String savePath) {
+    protected void setSavePath(String savePath) {
         this.savePath = savePath;
     }
 
@@ -120,7 +121,19 @@ public class PickerController {
         this.addImagePaths.add(imagePath);
     }
 
-    public ArrayList<String> getAddImagePaths() {
+    protected ArrayList<String> getAddImagePaths() {
         return addImagePaths;
+    }
+
+    public void finishActivity(ArrayList<PickedImageBean> pickedImageBeans) {
+        ArrayList<String> path = new ArrayList<>();
+        for (int i = 0; i < pickedImageBeans.size(); i++) {
+            path.add(pickedImageBeans.get(i).getImgPath());
+        }
+        Intent i = new Intent();
+        i.putStringArrayListExtra(Define.INTENT_PATH, path);
+        pickerActivity.setResult(pickerActivity.RESULT_OK, i);
+        pickerActivity.finish();
+
     }
 }
