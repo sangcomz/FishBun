@@ -35,7 +35,7 @@ import java.util.ArrayList;
 public class PickerActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private ArrayList<PickedImageBean> pickedImageBeans;
+    private ArrayList<PickedImageBean> pickedImageBeans = new ArrayList<>();
     private PickerController pickerController;
     private Album a;
     private int position;
@@ -46,52 +46,58 @@ public class PickerActivity extends AppCompatActivity {
 
     private String pathDir = "";
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        transImageFinish();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_picker);
+        initView();
+        initController();
+        setData(getIntent());
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setBackgroundColor(Define.ACTIONBAR_COLOR);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            uiUtil.setStatusBarColor(this);
-        }
-        ActionBar bar = getSupportActionBar();
-        if (bar != null) bar.setDisplayHomeAsUpEnabled(true);
 
-        a = (Album) getIntent().getSerializableExtra("album");
-        position = getIntent().getIntExtra("position", -1);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, Define.PHOTO_SPAN_COUNT, GridLayoutManager.VERTICAL, false);
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
-        recyclerView.setLayoutManager(gridLayoutManager);
-        pickedImageBeans = new ArrayList<>();
-
-        pickerController = new PickerController(this, getSupportActionBar(), recyclerView, a.bucketname);
-
-        ArrayList<String> path = getIntent().getStringArrayListExtra(Define.INTENT_PATH);
-        if (path != null) {
-            for (int i = 0; i < path.size(); i++) {
-                pickedImageBeans.add(new PickedImageBean(i + 1, path.get(i), -1));
-            }
-        }
-        pickerController.setActionbarTitle(pickedImageBeans.size());
-
-        permissionCheck = new PermissionCheck(this);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (permissionCheck.CheckStoragePermission())
-                new DisplayImage().execute();
-        } else
+        showToolbarTitle(pickedImageBeans.size());
+        if (pickerController.checkPermission())
             new DisplayImage().execute();
-
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        pickerController.transImageFinish(pickedImageBeans, position);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == Define.TAKE_A_PICK_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                pickerController.startFileMediaScan();
+                adapter.addImage(pickerController.getSavePath());
+            } else {
+                new File(pickerController.getSavePath()).delete();
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case Define.PERMISSION_STORAGE: {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    new DisplayImage().execute();
+                    // permission was granted, yay! do the
+                    // calendar task you need to do.
+                } else {
+                    permissionCheck.showPermissionDialog();
+                    finish();
+                }
+                return;
+            }
+            default:
+                break;
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -115,9 +121,53 @@ public class PickerActivity extends AppCompatActivity {
             }
             return true;
         } else if (id == android.R.id.home)
-            transImageFinish();
+            pickerController.transImageFinish(pickedImageBeans, position);
         return super.onOptionsItemSelected(item);
     }
+
+    public void showToolbarTitle(int total) {
+        if (getSupportActionBar() != null) {
+            if (Define.ALBUM_PICKER_COUNT == 1)
+                getSupportActionBar().setTitle(a.bucketname);
+            else
+                getSupportActionBar().setTitle(a.bucketname + "(" + String.valueOf(total) + "/" + Define.ALBUM_PICKER_COUNT + ")");
+        }
+
+    }
+
+    private void setData(Intent intent) {
+        a = (Album) intent.getSerializableExtra("album");
+        position = intent.getIntExtra("position", -1);
+        ArrayList<String> path = getIntent().getStringArrayListExtra(Define.INTENT_PATH);
+        if (path != null) {
+            for (int i = 0; i < path.size(); i++) {
+                pickedImageBeans.add(new PickedImageBean(i + 1, path.get(i), -1));
+            }
+        }
+    }
+
+    private void initController() {
+        pickerController = new PickerController(this, recyclerView);
+    }
+
+    private void initView() {
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, Define.PHOTO_SPAN_COUNT, GridLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(gridLayoutManager);
+        setToolBar();
+    }
+
+    private void setToolBar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setBackgroundColor(Define.ACTIONBAR_COLOR);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            uiUtil.setStatusBarColor(this);
+        }
+        ActionBar bar = getSupportActionBar();
+        if (bar != null) bar.setDisplayHomeAsUpEnabled(true);
+    }
+
 
     private class DisplayImage extends AsyncTask<Void, Void, ImageBean[]> {
 
@@ -125,7 +175,6 @@ public class PickerActivity extends AppCompatActivity {
         protected ImageBean[] doInBackground(Void... params) {
             return getAllMediaThumbnailsPath(a.bucketid);
         }
-
 
         @Override
         protected void onPostExecute(ImageBean[] result) {
@@ -136,26 +185,6 @@ public class PickerActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case Define.PERMISSION_STORAGE: {
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    new DisplayImage().execute();
-                    // permission was granted, yay! do the
-                    // calendar task you need to do.
-                } else {
-                    permissionCheck.showPermissionDialog();
-                    finish();
-                }
-                return;
-            }
-            default:
-                break;
-        }
-    }
 
     @NonNull
     private ImageBean[] getAllMediaThumbnailsPath(long id) {
@@ -191,24 +220,7 @@ public class PickerActivity extends AppCompatActivity {
         }
         return imageBeans;
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == Define.TAKE_A_PICK_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                startFileMediaScan(pickerController.getSavePath());
-                adapter.addImage(pickerController.getSavePath());
-            } else {
-                new File(pickerController.getSavePath()).delete();
-            }
-        }
-    }
-
-    //MediaScanning
-    public void startFileMediaScan(String path) {
-        sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + path)));
-    }
-
+    
     private void setPathDir(String path, String fileName) {
         pathDir = path.replace("/" + fileName, "");
     }
@@ -218,18 +230,5 @@ public class PickerActivity extends AppCompatActivity {
             pathDir = Environment.getExternalStoragePublicDirectory(
                     Environment.DIRECTORY_DCIM + "/Camera").getAbsolutePath();
         return pathDir;
-    }
-
-    private void transImageFinish() {
-        ArrayList<String> path = new ArrayList<>();
-        for (int i = 0; i < pickedImageBeans.size(); i++) {
-            path.add(pickedImageBeans.get(i).getImgPath());
-        }
-        Intent i = new Intent();
-        i.putStringArrayListExtra(Define.INTENT_PATH, path);
-        i.putStringArrayListExtra(Define.INTENT_ADD_PATH, pickerController.getAddImagePaths());
-        i.putExtra(Define.INTENT_POSITION, position);
-        setResult(Define.TRANS_IMAGES_RESULT_CODE, i);
-        finish();
     }
 }

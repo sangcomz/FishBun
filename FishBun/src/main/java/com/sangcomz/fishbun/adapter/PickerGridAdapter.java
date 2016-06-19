@@ -150,8 +150,9 @@ public class PickerGridAdapter
                         vh.txtPickCount.setVisibility(View.VISIBLE);
                         pickedImageBeans.add(new PickedImageBean(pickedImageBeans.size() + 1, imgPath, imagePos));
 
-                        pickerController.setActionbarTitle(pickedImageBeans.size());
-                        if (Define.IS_AUTOMATIC_CLOSE) {
+                        pickerController.setToolbarTitle(pickedImageBeans.size());
+                        if (Define.IS_AUTOMATIC_CLOSE
+                                && Define.ALBUM_PICKER_COUNT == pickedImageBeans.size()) {
                             pickerController.finishActivity(pickedImageBeans);
                         }
 
@@ -171,7 +172,7 @@ public class PickerGridAdapter
                             setOrder(0);
                         imageBean.setImgOrder(-1);
                         vh.txtPickCount.setVisibility(View.GONE);
-                        pickerController.setActionbarTitle(pickedImageBeans.size());
+                        pickerController.setToolbarTitle(pickedImageBeans.size());
                     } else {
                         Snackbar.make(v, Define.MESSAGE_LIMIT_REACHED, Snackbar.LENGTH_SHORT).show();
                     }
