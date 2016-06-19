@@ -154,10 +154,10 @@ public class PickerActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, Define.PHOTO_SPAN_COUNT, GridLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(gridLayoutManager);
-        setToolBar();
+        initToolBar();
     }
 
-    private void setToolBar() {
+    private void initToolBar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setBackgroundColor(Define.ACTIONBAR_COLOR);
@@ -220,7 +220,7 @@ public class PickerActivity extends AppCompatActivity {
         }
         return imageBeans;
     }
-    
+
     private void setPathDir(String path, String fileName) {
         pathDir = path.replace("/" + fileName, "");
     }

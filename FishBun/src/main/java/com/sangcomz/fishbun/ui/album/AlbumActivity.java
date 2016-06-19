@@ -34,7 +34,7 @@ import java.util.List;
 
 
 public class AlbumActivity extends AppCompatActivity {
-
+    private AlbumController albumController;
     private List<Album> albumlist = new ArrayList<>();
     private RecyclerView recyclerView;
     private AlbumListAdapter adapter;
@@ -44,14 +44,31 @@ public class AlbumActivity extends AppCompatActivity {
     private RelativeLayout noAlbum;
     private int defCameraAlbum = 0; //total
 
-//    public static PublishSubject<String> changeAlbumPublishSubject;
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_album);
 
+        initView();
+        initController();
+        albumController.checkPermission();
+    }
+
+    void initView() {
+        initToolBar();
+        initRecyclerView();
+    }
+
+    private void initRecyclerView() {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
+        if (recyclerView != null) {
+            recyclerView.setLayoutManager(linearLayoutManager);
+        }
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+    }
+
+    private void initToolBar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         noAlbum = (RelativeLayout) findViewById(R.id.no_album);
         setSupportActionBar(toolbar);
@@ -61,59 +78,41 @@ public class AlbumActivity extends AppCompatActivity {
         }
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
-        if (recyclerView != null) {
-            recyclerView.setLayoutManager(linearLayoutManager);
-        }
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
-
-        permissionCheck = new PermissionCheck(this);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (permissionCheck.CheckStoragePermission())
-                new DisplayImage().execute();
-        } else
-            new DisplayImage().execute();
-
-//        changeAlbumPublishSubject = PublishSubject.create();
-//
-//        Subscription changeAlbumSubscription =
-//                changeAlbumPublishSubject.subscribe(new Action1<String>() {
-//                    int position;
-//
-//                    @Override
-//                    public void call(String imagePath) {
-//                        if (imagePath.split("[|]")[0].equals("POSITION")) {
-//                            position = Integer.parseInt(imagePath.split("[|]")[1]);
-//                        } else if (imagePath.split("[|]")[0].equals("PATH")) {
-//                            if (position == 0) {
-//                                albumlist.get(position).counter++;
-//                                albumlist.get(defCameraAlbum).counter++;
-//
-//                                thumbList.set(position, imagePath.split("[|]")[1]);
-//                                thumbList.set(defCameraAlbum, imagePath.split("[|]")[1]);
-//
-//                                adapter.notifyItemChanged(0);
-//                                adapter.notifyItemChanged(defCameraAlbum);
-//                            } else {
-//                                albumlist.get(0).counter++;
-//                                albumlist.get(position).counter++;
-//
-//                                thumbList.set(0, imagePath.split("[|]")[1]);
-//                                thumbList.set(position, imagePath.split("[|]")[1]);
-//
-//                                adapter.notifyItemChanged(0);
-//                                adapter.notifyItemChanged(position);
-//                            }
-//
-//                        }
-//                    }
-//                });
-
-
     }
+
+    private void initController() {
+        albumController = new AlbumController(this);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        if (Define.IS_BUTTON)
+            getMenuInflater().inflate(R.menu.menu_photo_album, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            finish();
+        } else if (id == R.id.action_ok) {
+            if (adapter != null) {
+                if (adapter.getPath().size() == 0) {
+                    Snackbar.make(recyclerView, Define.MESSAGE_NOTHING_SELECTED, Snackbar.LENGTH_SHORT).show();
+                } else {
+                    Intent i = new Intent();
+                    i.putStringArrayListExtra(Define.INTENT_PATH, adapter.getPath());
+                    setResult(RESULT_OK, i);
+                    finish();
+                }
+            }
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     private void refreshList(int position, ArrayList<String> imagePath) {
         if (imagePath.size() > 0) {
@@ -323,35 +322,6 @@ public class AlbumActivity extends AppCompatActivity {
 
         c.close();
         return path;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        if (Define.IS_BUTTON)
-            getMenuInflater().inflate(R.menu.menu_photo_album, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            finish();
-        } else if (id == R.id.action_ok) {
-            if (adapter != null) {
-                if (adapter.getPath().size() == 0) {
-                    Snackbar.make(recyclerView, Define.MESSAGE_NOTHING_SELECTED, Snackbar.LENGTH_SHORT).show();
-                } else {
-                    Intent i = new Intent();
-                    i.putStringArrayListExtra(Define.INTENT_PATH, adapter.getPath());
-                    setResult(RESULT_OK, i);
-                    finish();
-                }
-            }
-
-        }
-        return super.onOptionsItemSelected(item);
     }
 
 
