@@ -51,7 +51,9 @@ public class AlbumActivity extends AppCompatActivity {
 
         initView();
         initController();
-        albumController.checkPermission();
+        if (albumController.checkPermission())
+            new DisplayImage().execute();
+
     }
 
     void initView() {
@@ -164,7 +166,6 @@ public class AlbumActivity extends AppCompatActivity {
         switch (requestCode) {
             case Define.PERMISSION_STORAGE: {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
                     new DisplayImage().execute();
                     // permission was granted, yay! do the
                     // calendar task you need to do.
@@ -172,7 +173,6 @@ public class AlbumActivity extends AppCompatActivity {
                     permissionCheck.showPermissionDialog();
                     finish();
                 }
-                return;
             }
         }
     }
@@ -194,40 +194,43 @@ public class AlbumActivity extends AppCompatActivity {
                     null, null, orderBy);
 
             long previousid = 0;
-
-            int bucketColumn = imagecursor
-                    .getColumnIndex(MediaStore.Images.Media.BUCKET_DISPLAY_NAME);
-
-            int bucketcolumnid = imagecursor
-                    .getColumnIndex(MediaStore.Images.Media.BUCKET_ID);
-            albumlist = new ArrayList<Album>();
-            Album totalAlbum = new Album();
-            totalAlbum.bucketid = 0;
-            totalAlbum.bucketname = getString(R.string.str_all_view);
-            totalAlbum.counter = 0;
-            albumlist.add(totalAlbum);
             int totalCounter = 0;
+            if (imagecursor != null) {
+                int bucketColumn = imagecursor
+                        .getColumnIndex(MediaStore.Images.Media.BUCKET_DISPLAY_NAME);
 
-            while (imagecursor.moveToNext()) {
-                totalCounter++;
-                long bucketid = imagecursor.getInt(bucketcolumnid);
-                if (previousid != bucketid) {
-                    Album album = new Album();
-                    album.bucketid = bucketid;
-                    album.bucketname = imagecursor.getString(bucketColumn);
-                    album.counter++;
-                    albumlist.add(album);
-                    previousid = bucketid;
+                int bucketcolumnid = imagecursor
+                        .getColumnIndex(MediaStore.Images.Media.BUCKET_ID);
+                albumlist = new ArrayList<>();
+                Album totalAlbum = new Album();
+                totalAlbum.bucketid = 0;
+                totalAlbum.bucketname = getString(R.string.str_all_view);
+                totalAlbum.counter = 0;
+                albumlist.add(totalAlbum);
 
-                } else {
-                    if (albumlist.size() > 0)
-                        albumlist.get(albumlist.size() - 1).counter++;
+
+                while (imagecursor.moveToNext()) {
+                    totalCounter++;
+                    long bucketid = imagecursor.getInt(bucketcolumnid);
+                    if (previousid != bucketid) {
+                        Album album = new Album();
+                        album.bucketid = bucketid;
+                        album.bucketname = imagecursor.getString(bucketColumn);
+                        album.counter++;
+                        albumlist.add(album);
+                        previousid = bucketid;
+
+                    } else {
+                        if (albumlist.size() > 0)
+                            albumlist.get(albumlist.size() - 1).counter++;
+                    }
+                    if (imagecursor.isLast()) {
+                        albumlist.get(0).counter = totalCounter;
+                    }
                 }
-                if (imagecursor.isLast()) {
-                    albumlist.get(0).counter = totalCounter;
-                }
+                imagecursor.close();
             }
-            imagecursor.close();
+
             if (totalCounter == 0) {
                 albumlist.clear();
                 return false;
@@ -255,7 +258,7 @@ public class AlbumActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            thumbList = new ArrayList<String>();
+            thumbList = new ArrayList<>();
         }
 
         @Override
@@ -300,27 +303,29 @@ public class AlbumActivity extends AppCompatActivity {
             c = getContentResolver().query(images, null,
                     null, null, sort);
         }
+        if (c != null) {
+            if (c.moveToNext()) {
+                selection = MediaStore.Images.Media._ID + " = ?";
+                String photoID = c.getString(c.getColumnIndex(MediaStore.Images.Media._ID));
+                selectionArgs = new String[]{photoID};
 
+                images = MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI;
+                Cursor cursor = getContentResolver().query(images, null,
+                        selection, selectionArgs, sort);
+                if (cursor != null && cursor.moveToNext()) {
+                    path = c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA));
+                    if (cursor.isLast())
+                        cursor.close();
+                } else
+                    path = c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA));
 
-        if (c.moveToNext()) {
-            selection = MediaStore.Images.Media._ID + " = ?";
-            String photoID = c.getString(c.getColumnIndex(MediaStore.Images.Media._ID));
-            selectionArgs = new String[]{photoID};
-
-            images = MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI;
-            Cursor cursor = getContentResolver().query(images, null,
-                    selection, selectionArgs, sort);
-            if (cursor != null && cursor.moveToNext()) {
-                path = c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA));
-            } else
-                path = c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA));
-            cursor.close();
-        } else {
-            Log.e("id", "from else");
+            } else {
+                Log.e("id", "from else");
+            }
+            c.close();
         }
 
 
-        c.close();
         return path;
     }
 

@@ -232,7 +232,7 @@ public class PickerGridAdapter
     }
 
     public void addImage(String path) {
-        ArrayList<ImageBean> al = new ArrayList<ImageBean>();
+        ArrayList<ImageBean> al = new ArrayList<>();
         Collections.addAll(al, imageBeans);
         al.add(0, new ImageBean(-1, path));
 

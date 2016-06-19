@@ -94,13 +94,11 @@ public class PickerController {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = new File(saveDir);
-        File image = File.createTempFile(
+        return File.createTempFile(
                 imageFileName,  /* prefix */
                 ".jpg",         /* suffix */
                 storageDir      /* directory */
         );
-        // Save a file: path for use with ACTION_VIEW intents
-        return image;
     }
 
 
@@ -146,7 +144,7 @@ public class PickerController {
     }
 
     protected boolean checkPermission() {
-        permissionCheck = new PermissionCheck(pickerActivity);
+        PermissionCheck permissionCheck = new PermissionCheck(pickerActivity);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (permissionCheck.CheckStoragePermission())
                 return true;

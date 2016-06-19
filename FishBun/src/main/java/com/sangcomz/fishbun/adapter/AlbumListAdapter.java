@@ -24,7 +24,7 @@ public class AlbumListAdapter
         extends RecyclerView.Adapter<AlbumListAdapter.ViewHolder> {
 
     private List<Album> albumlist;
-    private List<String> thumbList = new ArrayList<String>();
+    private List<String> thumbList = new ArrayList<>();
     private String thumPath;
     private ArrayList<String> path;
 
