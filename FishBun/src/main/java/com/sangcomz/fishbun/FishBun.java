@@ -32,7 +32,6 @@ public class FishBun {
         private Fragment fragment = null;
         private int requestCode = Define.ALBUM_REQUEST_CODE;
 
-
         public BaseProperty(Activity activity) {
             this.activity = activity;
         }
@@ -111,6 +110,12 @@ public class FishBun {
             return baseProperty;
         }
 
+        @Override
+        public BaseProperty setReachLimitAutomaticClose(boolean isAutomaticClose) {
+            Define.IS_AUTOMATIC_CLOSE = isAutomaticClose;
+            return baseProperty;
+        }
+
         public void startAlbum() {
             Context context = null;
             if (activity != null)
@@ -173,6 +178,8 @@ public class FishBun {
         BaseProperty textOnImagesSelectionLimitReached(String message);
 
         BaseProperty setButtonInAlbumActiviy(boolean isButton);
+
+        BaseProperty setReachLimitAutomaticClose(boolean isAutomaticClose);
 
         void startAlbum();
     }

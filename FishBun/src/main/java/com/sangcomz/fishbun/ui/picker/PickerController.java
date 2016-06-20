@@ -2,16 +2,19 @@ package com.sangcomz.fishbun.ui.picker;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.MediaStore;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
 
+import com.sangcomz.fishbun.bean.PickedImageBean;
 import com.sangcomz.fishbun.define.Define;
+import com.sangcomz.fishbun.permission.PermissionCheck;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -21,16 +24,13 @@ public class PickerController {
     PickerActivity pickerActivity;
     private RecyclerView recyclerView;
     private RecyclerView.OnItemTouchListener OnItemTouchListener;
-    ActionBar actionBar;
-    String bucketTitle;
-
+    private ArrayList<String> addImagePaths = new ArrayList<>();
+    private PermissionCheck permissionCheck;
     private String savePath;
 
-    PickerController(PickerActivity pickerActivity, ActionBar actionBar, RecyclerView recyclerView, String bucketTitle) {
+    PickerController(PickerActivity pickerActivity, RecyclerView recyclerView) {
         this.pickerActivity = pickerActivity;
         this.recyclerView = recyclerView;
-        this.actionBar = actionBar;
-        this.bucketTitle = bucketTitle;
 
         OnItemTouchListener = new RecyclerView.OnItemTouchListener() {
             @Override
@@ -45,7 +45,6 @@ public class PickerController {
 
             @Override
             public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-
             }
         };
     }
@@ -62,11 +61,9 @@ public class PickerController {
 
     }
 
-    public void setActionbarTitle(int total) {
-        if (Define.ALBUM_PICKER_COUNT == 1)
-            actionBar.setTitle(bucketTitle);
-        else
-            actionBar.setTitle(bucketTitle + "(" + String.valueOf(total) + "/" + Define.ALBUM_PICKER_COUNT + ")");
+
+    public void setToolbarTitle(int total) {
+        pickerActivity.showToolbarTitle(total);
     }
 
     public void takePicture(String saveDir) {
@@ -97,22 +94,70 @@ public class PickerController {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = new File(saveDir);
-        File image = File.createTempFile(
+        return File.createTempFile(
                 imageFileName,  /* prefix */
                 ".jpg",         /* suffix */
                 storageDir      /* directory */
         );
-        // Save a file: path for use with ACTION_VIEW intents
-        return image;
     }
 
 
-    public String getSavePath() {
+    protected String getSavePath() {
         return savePath;
     }
 
-    public void setSavePath(String savePath) {
+    protected void setSavePath(String savePath) {
         this.savePath = savePath;
     }
+
+    public void setImagePath(String imagePath) {
+        this.addImagePaths.add(imagePath);
+    }
+
+    protected ArrayList<String> getAddImagePaths() {
+        return addImagePaths;
+    }
+
+    public void finishActivity(ArrayList<PickedImageBean> pickedImageBeans) {
+        ArrayList<String> path = new ArrayList<>();
+        for (int i = 0; i < pickedImageBeans.size(); i++) {
+            path.add(pickedImageBeans.get(i).getImgPath());
+        }
+        Intent i = new Intent();
+        i.putStringArrayListExtra(Define.INTENT_PATH, path);
+        pickerActivity.setResult(pickerActivity.RESULT_OK, i);
+        pickerActivity.finish();
+
+    }
+
+    protected void transImageFinish(ArrayList<PickedImageBean> pickedImageBeans, int position) {
+        ArrayList<String> path = new ArrayList<>();
+        for (int i = 0; i < pickedImageBeans.size(); i++) {
+            path.add(pickedImageBeans.get(i).getImgPath());
+        }
+        Intent i = new Intent();
+        i.putStringArrayListExtra(Define.INTENT_PATH, path);
+        i.putStringArrayListExtra(Define.INTENT_ADD_PATH, getAddImagePaths());
+        i.putExtra(Define.INTENT_POSITION, position);
+        pickerActivity.setResult(Define.TRANS_IMAGES_RESULT_CODE, i);
+        pickerActivity.finish();
+    }
+
+    protected boolean checkPermission() {
+        PermissionCheck permissionCheck = new PermissionCheck(pickerActivity);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (permissionCheck.CheckStoragePermission())
+                return true;
+        } else
+            return true;
+        return false;
+    }
+
+    //MediaScanning
+    public void startFileMediaScan() {
+        pickerActivity.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + getSavePath())));
+    }
+
+
 
 }

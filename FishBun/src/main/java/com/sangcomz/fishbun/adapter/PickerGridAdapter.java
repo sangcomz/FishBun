@@ -14,7 +14,6 @@ import com.sangcomz.fishbun.R;
 import com.sangcomz.fishbun.bean.ImageBean;
 import com.sangcomz.fishbun.bean.PickedImageBean;
 import com.sangcomz.fishbun.define.Define;
-import com.sangcomz.fishbun.ui.album.AlbumActivity;
 import com.sangcomz.fishbun.ui.picker.PickerController;
 import com.sangcomz.fishbun.util.SquareTextView;
 
@@ -151,13 +150,19 @@ public class PickerGridAdapter
                         vh.txtPickCount.setVisibility(View.VISIBLE);
                         pickedImageBeans.add(new PickedImageBean(pickedImageBeans.size() + 1, imgPath, imagePos));
 
+                        pickerController.setToolbarTitle(pickedImageBeans.size());
+                        if (Define.IS_AUTOMATIC_CLOSE
+                                && Define.ALBUM_PICKER_COUNT == pickedImageBeans.size()) {
+                            pickerController.finishActivity(pickedImageBeans);
+                        }
+
                         if (Define.ALBUM_PICKER_COUNT == 1)
                             vh.txtPickCount.setText("");
                         else
                             vh.txtPickCount.setText(String.valueOf(pickedImageBeans.size()));
 
                         imageBean.setImgOrder(pickedImageBeans.size());
-                        pickerController.setActionbarTitle(pickedImageBeans.size());
+
                     } else if (vh.txtPickCount.getVisibility() == View.VISIBLE) {
                         pickerController.setRecyclerViewClickable(false);
                         pickedImageBeans.remove(imageBean.getImgOrder() - 1);
@@ -167,9 +172,8 @@ public class PickerGridAdapter
                             setOrder(0);
                         imageBean.setImgOrder(-1);
                         vh.txtPickCount.setVisibility(View.GONE);
-                        pickerController.setActionbarTitle(pickedImageBeans.size());
-                    }else {
-//                        Snackbar.make(v.getContext(), v.getContext().getString(R.string.msg_no_slected), Snackbar.LENGTH_SHORT).show();
+                        pickerController.setToolbarTitle(pickedImageBeans.size());
+                    } else {
                         Snackbar.make(v, Define.MESSAGE_LIMIT_REACHED, Snackbar.LENGTH_SHORT).show();
                     }
                 }
@@ -228,7 +232,7 @@ public class PickerGridAdapter
     }
 
     public void addImage(String path) {
-        ArrayList<ImageBean> al = new ArrayList<ImageBean>();
+        ArrayList<ImageBean> al = new ArrayList<>();
         Collections.addAll(al, imageBeans);
         al.add(0, new ImageBean(-1, path));
 
@@ -239,8 +243,7 @@ public class PickerGridAdapter
 
         notifyDataSetChanged();
 
-        if(AlbumActivity.changeAlbumPublishSubject.hasObservers())
-            AlbumActivity.changeAlbumPublishSubject.onNext("PATH|" + path);
+        pickerController.setImagePath(path);
     }
 
 }

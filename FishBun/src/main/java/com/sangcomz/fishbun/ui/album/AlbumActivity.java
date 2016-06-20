@@ -32,13 +32,9 @@ import com.sangcomz.fishbun.util.UiUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-import rx.Subscription;
-import rx.functions.Action1;
-import rx.subjects.PublishSubject;
-
 
 public class AlbumActivity extends AppCompatActivity {
-
+    private AlbumController albumController;
     private List<Album> albumlist = new ArrayList<>();
     private RecyclerView recyclerView;
     private AlbumListAdapter adapter;
@@ -48,14 +44,33 @@ public class AlbumActivity extends AppCompatActivity {
     private RelativeLayout noAlbum;
     private int defCameraAlbum = 0; //total
 
-    public static PublishSubject<String> changeAlbumPublishSubject;
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_album);
 
+        initView();
+        initController();
+        if (albumController.checkPermission())
+            new DisplayImage().execute();
+
+    }
+
+    void initView() {
+        initToolBar();
+        initRecyclerView();
+    }
+
+    private void initRecyclerView() {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
+        if (recyclerView != null) {
+            recyclerView.setLayoutManager(linearLayoutManager);
+        }
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+    }
+
+    private void initToolBar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         noAlbum = (RelativeLayout) findViewById(R.id.no_album);
         setSupportActionBar(toolbar);
@@ -65,58 +80,64 @@ public class AlbumActivity extends AppCompatActivity {
         }
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
-        if (recyclerView != null) {
-            recyclerView.setLayoutManager(linearLayoutManager);
+    private void initController() {
+        albumController = new AlbumController(this);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        if (Define.IS_BUTTON)
+            getMenuInflater().inflate(R.menu.menu_photo_album, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            finish();
+        } else if (id == R.id.action_ok) {
+            if (adapter != null) {
+                if (adapter.getPath().size() == 0) {
+                    Snackbar.make(recyclerView, Define.MESSAGE_NOTHING_SELECTED, Snackbar.LENGTH_SHORT).show();
+                } else {
+                    Intent i = new Intent();
+                    i.putStringArrayListExtra(Define.INTENT_PATH, adapter.getPath());
+                    setResult(RESULT_OK, i);
+                    finish();
+                }
+            }
+
         }
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
-
-        permissionCheck = new PermissionCheck(this);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (permissionCheck.CheckStoragePermission())
-                new DisplayImage().execute();
-        } else
-            new DisplayImage().execute();
-
-        changeAlbumPublishSubject = PublishSubject.create();
-
-        Subscription changeAlbumSubscription =
-                changeAlbumPublishSubject.subscribe(new Action1<String>() {
-                    int position;
-
-                    @Override
-                    public void call(String imagePath) {
-                        if (imagePath.split("[|]")[0].equals("POSITION")) {
-                            position = Integer.parseInt(imagePath.split("[|]")[1]);
-                        } else if (imagePath.split("[|]")[0].equals("PATH")) {
-                            if (position == 0) {
-                                albumlist.get(position).counter++;
-                                albumlist.get(defCameraAlbum).counter++;
-
-                                thumbList.set(position, imagePath.split("[|]")[1]);
-                                thumbList.set(defCameraAlbum, imagePath.split("[|]")[1]);
-
-                                adapter.notifyItemChanged(0);
-                                adapter.notifyItemChanged(defCameraAlbum);
-                            } else {
-                                albumlist.get(0).counter++;
-                                albumlist.get(position).counter++;
-
-                                thumbList.set(0, imagePath.split("[|]")[1]);
-                                thumbList.set(position, imagePath.split("[|]")[1]);
-
-                                adapter.notifyItemChanged(0);
-                                adapter.notifyItemChanged(position);
-                            }
-
-                        }
-                    }
-                });
+        return super.onOptionsItemSelected(item);
+    }
 
 
+    private void refreshList(int position, ArrayList<String> imagePath) {
+        if (imagePath.size() > 0) {
+            if (position == 0) {
+                albumlist.get(position).counter += imagePath.size();
+                albumlist.get(defCameraAlbum).counter += imagePath.size();
+
+                thumbList.set(position, imagePath.get(imagePath.size() - 1));
+                thumbList.set(defCameraAlbum, imagePath.get(imagePath.size() - 1));
+
+                adapter.notifyItemChanged(0);
+                adapter.notifyItemChanged(defCameraAlbum);
+            } else {
+                albumlist.get(0).counter += imagePath.size();
+                albumlist.get(position).counter += imagePath.size();
+
+                thumbList.set(0, imagePath.get(imagePath.size() - 1));
+                thumbList.set(position, imagePath.get(imagePath.size() - 1));
+
+                adapter.notifyItemChanged(0);
+                adapter.notifyItemChanged(position);
+            }
+        }
     }
 
 
@@ -129,7 +150,12 @@ public class AlbumActivity extends AppCompatActivity {
                 finish();
             } else if (resultCode == Define.TRANS_IMAGES_RESULT_CODE) {
                 ArrayList<String> path = data.getStringArrayListExtra(Define.INTENT_PATH);
+                ArrayList<String> addPath = data.getStringArrayListExtra(Define.INTENT_ADD_PATH);
+                int position = data.getIntExtra(Define.INTENT_POSITION, -1);
+                refreshList(position, addPath);
                 adapter.setPath(path);
+            } else if (resultCode == Define.ADD_IMAGE_CODE) {
+
             }
         }
     }
@@ -140,7 +166,6 @@ public class AlbumActivity extends AppCompatActivity {
         switch (requestCode) {
             case Define.PERMISSION_STORAGE: {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
                     new DisplayImage().execute();
                     // permission was granted, yay! do the
                     // calendar task you need to do.
@@ -148,11 +173,9 @@ public class AlbumActivity extends AppCompatActivity {
                     permissionCheck.showPermissionDialog();
                     finish();
                 }
-                return;
             }
         }
     }
-
 
 
     public class DisplayImage extends AsyncTask<Void, Void, Boolean> {
@@ -171,40 +194,43 @@ public class AlbumActivity extends AppCompatActivity {
                     null, null, orderBy);
 
             long previousid = 0;
-
-            int bucketColumn = imagecursor
-                    .getColumnIndex(MediaStore.Images.Media.BUCKET_DISPLAY_NAME);
-
-            int bucketcolumnid = imagecursor
-                    .getColumnIndex(MediaStore.Images.Media.BUCKET_ID);
-            albumlist = new ArrayList<Album>();
-            Album totalAlbum = new Album();
-            totalAlbum.bucketid = 0;
-            totalAlbum.bucketname = getString(R.string.str_all_view);
-            totalAlbum.counter = 0;
-            albumlist.add(totalAlbum);
             int totalCounter = 0;
+            if (imagecursor != null) {
+                int bucketColumn = imagecursor
+                        .getColumnIndex(MediaStore.Images.Media.BUCKET_DISPLAY_NAME);
 
-            while (imagecursor.moveToNext()) {
-                totalCounter++;
-                long bucketid = imagecursor.getInt(bucketcolumnid);
-                if (previousid != bucketid) {
-                    Album album = new Album();
-                    album.bucketid = bucketid;
-                    album.bucketname = imagecursor.getString(bucketColumn);
-                    album.counter++;
-                    albumlist.add(album);
-                    previousid = bucketid;
+                int bucketcolumnid = imagecursor
+                        .getColumnIndex(MediaStore.Images.Media.BUCKET_ID);
+                albumlist = new ArrayList<>();
+                Album totalAlbum = new Album();
+                totalAlbum.bucketid = 0;
+                totalAlbum.bucketname = getString(R.string.str_all_view);
+                totalAlbum.counter = 0;
+                albumlist.add(totalAlbum);
 
-                } else {
-                    if (albumlist.size() > 0)
-                        albumlist.get(albumlist.size() - 1).counter++;
+
+                while (imagecursor.moveToNext()) {
+                    totalCounter++;
+                    long bucketid = imagecursor.getInt(bucketcolumnid);
+                    if (previousid != bucketid) {
+                        Album album = new Album();
+                        album.bucketid = bucketid;
+                        album.bucketname = imagecursor.getString(bucketColumn);
+                        album.counter++;
+                        albumlist.add(album);
+                        previousid = bucketid;
+
+                    } else {
+                        if (albumlist.size() > 0)
+                            albumlist.get(albumlist.size() - 1).counter++;
+                    }
+                    if (imagecursor.isLast()) {
+                        albumlist.get(0).counter = totalCounter;
+                    }
                 }
-                if (imagecursor.isLast()) {
-                    albumlist.get(0).counter = totalCounter;
-                }
+                imagecursor.close();
             }
-            imagecursor.close();
+
             if (totalCounter == 0) {
                 albumlist.clear();
                 return false;
@@ -232,7 +258,7 @@ public class AlbumActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            thumbList = new ArrayList<String>();
+            thumbList = new ArrayList<>();
         }
 
         @Override
@@ -257,6 +283,7 @@ public class AlbumActivity extends AppCompatActivity {
             super.onPostExecute(result);
             adapter.setThumbList(thumbList);
         }
+
     }
 
 
@@ -276,55 +303,30 @@ public class AlbumActivity extends AppCompatActivity {
             c = getContentResolver().query(images, null,
                     null, null, sort);
         }
+        if (c != null) {
+            if (c.moveToNext()) {
+                selection = MediaStore.Images.Media._ID + " = ?";
+                String photoID = c.getString(c.getColumnIndex(MediaStore.Images.Media._ID));
+                selectionArgs = new String[]{photoID};
 
+                images = MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI;
+                Cursor cursor = getContentResolver().query(images, null,
+                        selection, selectionArgs, sort);
+                if (cursor != null && cursor.moveToNext()) {
+                    path = c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA));
+                    if (cursor.isLast())
+                        cursor.close();
+                } else
+                    path = c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA));
 
-        if (c.moveToNext()) {
-            selection = MediaStore.Images.Media._ID + " = ?";
-            String photoID = c.getString(c.getColumnIndex(MediaStore.Images.Media._ID));
-            selectionArgs = new String[]{photoID};
-
-            images = MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI;
-            Cursor cursor = getContentResolver().query(images, null,
-                    selection, selectionArgs, sort);
-            if (cursor != null && cursor.moveToNext()) {
-                path = c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA));
-            } else
-                path = c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA));
-            cursor.close();
-        } else {
-            Log.e("id", "from else");
-        }
-
-
-        c.close();
-        return path;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        if (Define.IS_BUTTON)
-            getMenuInflater().inflate(R.menu.menu_photo_album, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            finish();
-        } else if (id == R.id.action_ok) {
-            if (adapter.getPath().size() == 0) {
-//                Toast.makeText(this, getString(R.string.msg_no_slected), Toast.LENGTH_SHORT).show();
-                Snackbar.make(recyclerView, Define.MESSAGE_NOTHING_SELECTED, Snackbar.LENGTH_SHORT).show();
             } else {
-                Intent i = new Intent();
-                i.putStringArrayListExtra(Define.INTENT_PATH, adapter.getPath());
-                setResult(RESULT_OK, i);
-                finish();
+                Log.e("id", "from else");
             }
+            c.close();
         }
-        return super.onOptionsItemSelected(item);
+
+
+        return path;
     }
 
 
