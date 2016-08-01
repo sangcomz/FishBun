@@ -1,10 +1,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/action_ok"
-        android:icon="@mipmap/ic_ok"
-        app:showAsAction="withText|ifRoom"
-        android:title="@string/done" />
+        android:icon="@drawable/ic_done_white_24dp"
+        android:title="@string/done"
+        app:showAsAction="withText|ifRoom" />
 </menu>

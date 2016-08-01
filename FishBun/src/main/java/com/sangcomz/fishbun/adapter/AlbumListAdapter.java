@@ -79,10 +79,7 @@ public class AlbumListAdapter
                         .load(thumPath)
                         .asBitmap()
                         .override(Define.ALBUM_THUMNAIL_SIZE, Define.ALBUM_THUMNAIL_SIZE)
-                        .placeholder(R.mipmap.loading_img)
                         .into(holder.imgAlbum);
-            } else {
-                Glide.with(holder.imgAlbum.getContext()).load(R.mipmap.loading_img).into(holder.imgAlbum);
             }
         }
         holder.areaAlbum.setTag(albumlist.get(position));

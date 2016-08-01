@@ -30,8 +30,8 @@
         android:id="@+id/no_album"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible"
         android:background="#ffffff"
+        android:visibility="visible"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
@@ -41,17 +41,17 @@
             android:orientation="vertical">
 
             <ImageView
-                android:layout_gravity="center_horizontal"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:background="@mipmap/ic_album" />
-
-            <TextView
-                android:textColor="?android:textColorSecondary"
-                android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/ic_photo_library_white_100dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:text="@string/msg_no_image"
+                android:textColor="?android:textColorSecondary"
                 android:textSize="23dp" />
         </LinearLayout>
 

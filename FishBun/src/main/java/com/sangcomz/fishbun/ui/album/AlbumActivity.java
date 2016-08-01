@@ -42,7 +42,7 @@ public class AlbumActivity extends AppCompatActivity {
     private PermissionCheck permissionCheck;
     private UiUtil uiUtil = new UiUtil();
     private RelativeLayout noAlbum;
-    private int defCameraAlbum = 0; //total
+    private int defCameraAlbum = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

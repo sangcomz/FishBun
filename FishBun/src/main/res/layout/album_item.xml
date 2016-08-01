@@ -5,18 +5,32 @@
     android:layout_height="wrap_content">
 
 
-    <ImageView
-        android:id="@+id/img_album"
+    <RelativeLayout
+        android:id="@+id/area_thum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:scaleType="centerCrop" />
+        android:background="#d9d9d9">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/ic_photo_white_24dp" />
+
+        <com.sangcomz.fishbun.util.SquareImageView
+            android:id="@+id/img_album"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:scaleType="centerCrop" />
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/img_album"
+        android:layout_toRightOf="@+id/area_thum"
         android:orientation="vertical">
 
         <TextView
