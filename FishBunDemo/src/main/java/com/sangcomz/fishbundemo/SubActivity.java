@@ -1,4 +1,4 @@
-package com.sangcomz.albumsample;
+package com.sangcomz.fishbundemo;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
