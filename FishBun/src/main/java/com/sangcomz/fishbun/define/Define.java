@@ -9,6 +9,9 @@ public class Define {
 
     public static int PHOTO_PICKER_SIZE = 0;
 
+    public static int ALBUM_POTRAIT_SPAN_COUNT = 1;
+    public static int ALBUM_LANDSCAPE_SPAN_COUNT = 2;
+
     public static boolean IS_BUTTON = false;
     public static boolean IS_AUTOMATIC_CLOSE = false;
 
@@ -34,5 +37,7 @@ public class Define {
 
     public static String MESSAGE_NOTHING_SELECTED = "";
     public static String MESSAGE_LIMIT_REACHED = "";
+
+
 
 }

@@ -12,6 +12,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -48,12 +49,10 @@ public class AlbumActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_album);
-
         initView();
         initController();
         if (albumController.checkPermission())
             new DisplayImage().execute();
-
     }
 
     void initView() {
@@ -61,11 +60,22 @@ public class AlbumActivity extends AppCompatActivity {
         initRecyclerView();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (UiUtil.isLandscape(this))
+            ((GridLayoutManager) recyclerView.getLayoutManager())
+                    .setSpanCount(Define.ALBUM_LANDSCAPE_SPAN_COUNT);
+        else
+            ((GridLayoutManager) recyclerView.getLayoutManager())
+                    .setSpanCount(Define.ALBUM_POTRAIT_SPAN_COUNT);
+    }
+
     private void initRecyclerView() {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 1);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         if (recyclerView != null) {
-            recyclerView.setLayoutManager(linearLayoutManager);
+            recyclerView.setLayoutManager(layoutManager);
         }
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
     }
