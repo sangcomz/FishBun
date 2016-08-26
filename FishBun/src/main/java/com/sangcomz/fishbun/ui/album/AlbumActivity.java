@@ -163,7 +163,8 @@ public class AlbumActivity extends AppCompatActivity {
                 ArrayList<String> addPath = data.getStringArrayListExtra(Define.INTENT_ADD_PATH);
                 int position = data.getIntExtra(Define.INTENT_POSITION, -1);
                 refreshList(position, addPath);
-                adapter.setPath(path);
+                if (adapter != null)
+                    adapter.setPath(path);
             } else if (resultCode == Define.ADD_IMAGE_CODE) {
 
             }

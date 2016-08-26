@@ -4,7 +4,7 @@ android {
     compileSdkVersion 23
     buildToolsVersion "24.0.2"
     defaultConfig {
-        applicationId "com.sangcomz.albumsample"
+        applicationId "com.sangcomz.fishbundemo"
         minSdkVersion 15
         targetSdkVersion 23
         versionCode 1

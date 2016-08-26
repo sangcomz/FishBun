@@ -46,6 +46,23 @@ public class PickerActivity extends AppCompatActivity {
 
     private String pathDir = "";
 
+    static final String PICK_IMAGES = "pickImages";
+
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putParcelableArrayList(PICK_IMAGES, pickedImageBeans);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle outState) {
+        // Always call the superclass so it can restore the view hierarchy
+        super.onRestoreInstanceState(outState);
+
+        // Restore state members from saved instance
+        pickedImageBeans = outState.getParcelableArrayList(PICK_IMAGES);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
