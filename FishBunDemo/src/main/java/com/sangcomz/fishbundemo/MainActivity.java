@@ -1,4 +1,4 @@
-package com.sangcomz.albumsample;
+package com.sangcomz.fishbundemo;
 
 import android.content.Intent;
 import android.graphics.Color;
