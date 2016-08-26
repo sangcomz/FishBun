@@ -12,8 +12,6 @@ public class AlbumController {
         this.albumActivity = albumActivity;
     }
 
-
-
     protected boolean checkPermission() {
         PermissionCheck permissionCheck = new PermissionCheck(albumActivity);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

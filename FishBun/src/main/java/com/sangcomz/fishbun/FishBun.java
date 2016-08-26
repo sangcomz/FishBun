@@ -116,6 +116,25 @@ public class FishBun {
             return baseProperty;
         }
 
+        @Override
+        public BaseProperty setAlbumSpanCount(int portraitSpanCount, int landscapeSpanCount) {
+            Define.ALBUM_POTRAIT_SPAN_COUNT = portraitSpanCount;
+            Define.ALBUM_LANDSCAPE_SPAN_COUNT = landscapeSpanCount;
+            return baseProperty;
+        }
+
+        @Override
+        public BaseProperty setAlbumSpanCountOnlyLandscape(int landscapeSpanCount) {
+            Define.ALBUM_LANDSCAPE_SPAN_COUNT = landscapeSpanCount;
+            return baseProperty;
+        }
+
+        @Override
+        public BaseProperty setAlbumSpanCountOnlPortrait(int portraitSpanCount) {
+            Define.ALBUM_POTRAIT_SPAN_COUNT = portraitSpanCount;
+            return baseProperty;
+        }
+
         public void startAlbum() {
             Context context = null;
             if (activity != null)
@@ -180,6 +199,12 @@ public class FishBun {
         BaseProperty setButtonInAlbumActiviy(boolean isButton);
 
         BaseProperty setReachLimitAutomaticClose(boolean isAutomaticClose);
+
+        BaseProperty setAlbumSpanCount(int portraitSpanCount, int landscapeSpanCount);
+
+        BaseProperty setAlbumSpanCountOnlyLandscape(int landscapeSpanCount);
+
+        BaseProperty setAlbumSpanCountOnlPortrait(int portraitSpanCount);
 
         void startAlbum();
     }

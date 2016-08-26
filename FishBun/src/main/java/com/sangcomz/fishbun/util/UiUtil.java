@@ -2,6 +2,8 @@ package com.sangcomz.fishbun.util;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.view.Window;
 import android.view.WindowManager;
@@ -13,7 +15,7 @@ import com.sangcomz.fishbun.define.Define;
  */
 public class UiUtil {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public void setStatusBarColor(Activity activity) {
+    public static void setStatusBarColor(Activity activity) {
         Window window = activity.getWindow();
 
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -22,4 +24,10 @@ public class UiUtil {
 
         window.setStatusBarColor(Define.STATUSBAR_COLOR);
     }
+
+    public static boolean isLandscape(Context context) {
+        Configuration configuration = context.getResources().getConfiguration();
+        return configuration.orientation == Configuration.ORIENTATION_LANDSCAPE;
+    }
+
 }
