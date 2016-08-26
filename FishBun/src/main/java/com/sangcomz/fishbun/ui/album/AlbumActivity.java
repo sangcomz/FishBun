@@ -73,6 +73,7 @@ public class AlbumActivity extends AppCompatActivity {
 
     private void initRecyclerView() {
         GridLayoutManager layoutManager = new GridLayoutManager(this, 1);
+
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         if (recyclerView != null) {
             recyclerView.setLayoutManager(layoutManager);
@@ -255,6 +256,7 @@ public class AlbumActivity extends AppCompatActivity {
             super.onPostExecute(result);
             if (result) {
                 noAlbum.setVisibility(View.GONE);
+                albumController.setSpanCount(albumlist.size());
                 adapter = new AlbumListAdapter(albumlist, getIntent().getStringArrayListExtra(Define.INTENT_PATH));
                 recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
