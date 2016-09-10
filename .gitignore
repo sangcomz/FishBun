@@ -21,7 +21,6 @@ gen/
 
 # Gradle files
 .gradle/
-/PhotoPicker/PhotoPicker-PhotoPicker.iml
 build/
 /*/build/
 
