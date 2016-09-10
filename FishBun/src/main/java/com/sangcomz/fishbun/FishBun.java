@@ -45,7 +45,7 @@ public class FishBun {
             return baseProperty;
         }
 
-        public BaseProperty setAlbumThumnaliSize(int size) {
+        public BaseProperty setAlbumThumbnailSize(int size) {
             Define.ALBUM_THUMNAIL_SIZE = size;
             return baseProperty;
         }
@@ -74,9 +74,9 @@ public class FishBun {
         }
 
         @Override
-        public BaseProperty setActionBarColor(int actionbarColor, int statusbarColor) {
+        public BaseProperty setActionBarColor(int actionbarColor, int statusBarColor) {
             Define.ACTIONBAR_COLOR = actionbarColor;
-            Define.STATUSBAR_COLOR = statusbarColor;
+            Define.STATUSBAR_COLOR = statusBarColor;
             return baseProperty;
         }
 
@@ -105,7 +105,7 @@ public class FishBun {
         }
 
         @Override
-        public BaseProperty setButtonInAlbumActiviy(boolean isButton) {
+        public BaseProperty setButtonInAlbumActivity(boolean isButton) {
             Define.IS_BUTTON = isButton;
             return baseProperty;
         }
@@ -178,7 +178,7 @@ public class FishBun {
 
         BaseProperty setArrayPaths(ArrayList<String> arrayPaths);
 
-        BaseProperty setAlbumThumnaliSize(int size);
+        BaseProperty setAlbumThumbnailSize(int size);
 
         BaseProperty setPickerSpanCount(int spanCount);
 
@@ -196,7 +196,7 @@ public class FishBun {
 
         BaseProperty textOnImagesSelectionLimitReached(String message);
 
-        BaseProperty setButtonInAlbumActiviy(boolean isButton);
+        BaseProperty setButtonInAlbumActivity(boolean isButton);
 
         BaseProperty setReachLimitAutomaticClose(boolean isAutomaticClose);
 
