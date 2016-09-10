@@ -26,7 +26,7 @@ public class AlbumController {
     public void setSpanCount(int albumListSize) {
         if (Define.ALBUM_LANDSCAPE_SPAN_COUNT > albumListSize)
             Define.ALBUM_LANDSCAPE_SPAN_COUNT = albumListSize;
-        if (Define.ALBUM_POTRAIT_SPAN_COUNT > albumListSize)
-            Define.ALBUM_POTRAIT_SPAN_COUNT = albumListSize;
+        if (Define.ALBUM_PORTRAIT_SPAN_COUNT > albumListSize)
+            Define.ALBUM_PORTRAIT_SPAN_COUNT = albumListSize;
     }
 }

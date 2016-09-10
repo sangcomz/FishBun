@@ -76,7 +76,7 @@ public class FishBun {
         @Override
         public BaseProperty setActionBarColor(int actionbarColor, int statusBarColor) {
             Define.ACTIONBAR_COLOR = actionbarColor;
-            Define.STATUSBAR_COLOR = statusBarColor;
+            Define.STATUS_BAR_COLOR = statusBarColor;
             return baseProperty;
         }
 
@@ -118,7 +118,7 @@ public class FishBun {
 
         @Override
         public BaseProperty setAlbumSpanCount(int portraitSpanCount, int landscapeSpanCount) {
-            Define.ALBUM_POTRAIT_SPAN_COUNT = portraitSpanCount;
+            Define.ALBUM_PORTRAIT_SPAN_COUNT = portraitSpanCount;
             Define.ALBUM_LANDSCAPE_SPAN_COUNT = landscapeSpanCount;
             return baseProperty;
         }
@@ -131,7 +131,7 @@ public class FishBun {
 
         @Override
         public BaseProperty setAlbumSpanCountOnlPortrait(int portraitSpanCount) {
-            Define.ALBUM_POTRAIT_SPAN_COUNT = portraitSpanCount;
+            Define.ALBUM_PORTRAIT_SPAN_COUNT = portraitSpanCount;
             return baseProperty;
         }
 

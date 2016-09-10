@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -34,12 +35,13 @@ import java.util.ArrayList;
 
 public class PickerActivity extends AppCompatActivity {
 
+    private static final String TAG = "PickerActivity";
+
     private RecyclerView recyclerView;
     private ArrayList<PickedImageBean> pickedImageBeans;
     private PickerController pickerController;
     private Album a;
     private int position;
-    PermissionCheck permissionCheck;
     private UiUtil uiUtil = new UiUtil();
 
     PickerGridAdapter adapter;
@@ -49,10 +51,15 @@ public class PickerActivity extends AppCompatActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putParcelableArrayList(Define.SAVE_INSTANCE_PICK_IMAGES, pickedImageBeans);
-        outState.putString(Define.SAVE_INSTANCE_SAVED_IMAGE, pickerController.getSavePath());
-        outState.putParcelableArray(Define.SAVE_INSTANCE_SAVED_IMAGE_THUMBNAILS, adapter.getImageBeans());
-        outState.putStringArrayList(Define.SAVE_INSTANCE_NEW_IMAGES, pickerController.getAddImagePaths());
+        try {
+            outState.putParcelableArrayList(Define.SAVE_INSTANCE_PICK_IMAGES, pickedImageBeans);
+            outState.putString(Define.SAVE_INSTANCE_SAVED_IMAGE, pickerController.getSavePath());
+            outState.putParcelableArray(Define.SAVE_INSTANCE_SAVED_IMAGE_THUMBNAILS, adapter.getImageBeans());
+            outState.putStringArrayList(Define.SAVE_INSTANCE_NEW_IMAGES, pickerController.getAddImagePaths());
+        } catch (Exception e) {
+            Log.d(TAG, e.toString());
+        }
+
         super.onSaveInstanceState(outState);
     }
 
@@ -61,18 +68,24 @@ public class PickerActivity extends AppCompatActivity {
         // Always call the superclass so it can restore the view hierarchy
         super.onRestoreInstanceState(outState);
         // Restore state members from saved instance
-        pickedImageBeans = outState.getParcelableArrayList(Define.SAVE_INSTANCE_PICK_IMAGES);
-        ArrayList<String> addImages = outState.getStringArrayList(Define.SAVE_INSTANCE_NEW_IMAGES);
-        String savedImage = outState.getString(Define.SAVE_INSTANCE_SAVED_IMAGE);
-        adapter = new PickerGridAdapter((ImageBean[]) outState.getParcelableArray(Define.SAVE_INSTANCE_SAVED_IMAGE_THUMBNAILS),
-                pickedImageBeans,
-                pickerController,
-                getPathDir());
-        if (addImages != null) {
-            pickerController.setAddImagePaths(addImages);
-        }
-        if (savedImage != null) {
-            pickerController.setSavePath(savedImage);
+        try {
+            pickedImageBeans = outState.getParcelableArrayList(Define.SAVE_INSTANCE_PICK_IMAGES);
+            System.out.println("size :::: " + pickedImageBeans.size());
+            ArrayList<String> addImages = outState.getStringArrayList(Define.SAVE_INSTANCE_NEW_IMAGES);
+            String savedImage = outState.getString(Define.SAVE_INSTANCE_SAVED_IMAGE);
+            ImageBean[] imageBeenList = (ImageBean[]) outState.getParcelableArray(Define.SAVE_INSTANCE_SAVED_IMAGE_THUMBNAILS);
+            adapter = new PickerGridAdapter(imageBeenList,
+                    pickedImageBeans,
+                    pickerController,
+                    getPathDir());
+            if (addImages != null) {
+                pickerController.setAddImagePaths(addImages);
+            }
+            if (savedImage != null) {
+                pickerController.setSavePath(savedImage);
+            }
+        } catch (Exception e) {
+            Log.d(TAG, e.toString());
         }
     }
 
@@ -84,8 +97,6 @@ public class PickerActivity extends AppCompatActivity {
         initController();
         setData(getIntent());
 
-
-        showToolbarTitle(pickedImageBeans.size());
         if (pickerController.checkPermission())
             new DisplayImage().execute();
     }
@@ -114,18 +125,18 @@ public class PickerActivity extends AppCompatActivity {
                                            String permissions[], int[] grantResults) {
         switch (requestCode) {
             case Define.PERMISSION_STORAGE: {
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    new DisplayImage().execute();
-                    // permission was granted, yay! do the
-                    // calendar task you need to do.
-                } else {
-                    permissionCheck.showPermissionDialog();
-                    finish();
+                if (grantResults.length > 0) {
+                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        new DisplayImage().execute();
+                        // permission was granted, yay! do the
+                        // calendar task you need to do.
+                    } else {
+                        new PermissionCheck(this).showPermissionDialog();
+                        finish();
+                    }
                 }
-                return;
             }
-            default:
-                break;
+
         }
     }
 
@@ -218,6 +229,7 @@ public class PickerActivity extends AppCompatActivity {
                 adapter = new PickerGridAdapter(
                         result, pickedImageBeans, pickerController, getPathDir());
             recyclerView.setAdapter(adapter);
+            showToolbarTitle(pickedImageBeans.size());
         }
     }
 

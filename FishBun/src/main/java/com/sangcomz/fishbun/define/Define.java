@@ -9,7 +9,7 @@ public class Define {
 
     public static int PHOTO_PICKER_SIZE = 0;
 
-    public static int ALBUM_POTRAIT_SPAN_COUNT = 1;
+    public static int ALBUM_PORTRAIT_SPAN_COUNT = 1;
     public static int ALBUM_LANDSCAPE_SPAN_COUNT = 2;
 
     public static boolean IS_BUTTON = false;
@@ -18,8 +18,8 @@ public class Define {
 
     //    public static int ACTIONBAR_COLOR = "#3F51B5";
     public static int ACTIONBAR_COLOR = Color.parseColor("#3F51B5");
-    //    public static int STATUSBAR_COLOR = "#303F9F";
-    public static int STATUSBAR_COLOR = Color.parseColor("#303F9F");
+    //    public static int STATUS_BAR_COLOR = "#303F9F";
+    public static int STATUS_BAR_COLOR = Color.parseColor("#303F9F");
 
     public static boolean IS_CAMERA = false;
 

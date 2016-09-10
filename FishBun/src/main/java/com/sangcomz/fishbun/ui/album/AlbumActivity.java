@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -40,7 +41,6 @@ public class AlbumActivity extends AppCompatActivity {
     private List<Album> albumList = new ArrayList<>();
     private RecyclerView recyclerView;
     private AlbumListAdapter adapter;
-    private PermissionCheck permissionCheck;
     private UiUtil uiUtil = new UiUtil();
     private RelativeLayout noAlbum;
     private int defCameraAlbum = 0;
@@ -48,10 +48,12 @@ public class AlbumActivity extends AppCompatActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putStringArrayList(Define.SAVE_INSTANCE_PICK_IMAGES, adapter.getPickedImagePath());
-        outState.putParcelableArrayList(Define.SAVE_INSTANCE_ALBUM_LIST, (ArrayList<? extends Parcelable>) adapter.getAlbumList());
-        outState.putStringArrayList(Define.SAVE_INSTANCE_ALBUM_THUMB_LIST,
-                (ArrayList<String>) adapter.getThumbList());
+        if (adapter != null) {
+            outState.putStringArrayList(Define.SAVE_INSTANCE_PICK_IMAGES, adapter.getPickedImagePath());
+            outState.putParcelableArrayList(Define.SAVE_INSTANCE_ALBUM_LIST, (ArrayList<? extends Parcelable>) adapter.getAlbumList());
+            outState.putStringArrayList(Define.SAVE_INSTANCE_ALBUM_THUMB_LIST,
+                    (ArrayList<String>) adapter.getThumbList());
+        }
         super.onSaveInstanceState(outState);
     }
 
@@ -60,9 +62,15 @@ public class AlbumActivity extends AppCompatActivity {
         // Always call the superclass so it can restore the view hierarchy
         super.onRestoreInstanceState(outState);
         // Restore state members from saved instance
-        adapter = new AlbumListAdapter(outState.<Album>getParcelableArrayList(Define.SAVE_INSTANCE_ALBUM_LIST),
-                outState.getStringArrayList(Define.SAVE_INSTANCE_PICK_IMAGES));
-        adapter.setThumbList(outState.getStringArrayList(Define.SAVE_INSTANCE_ALBUM_THUMB_LIST));
+        List<Album> albumList = outState.getParcelableArrayList(Define.SAVE_INSTANCE_ALBUM_LIST);
+        List<String> thumbList = outState.getStringArrayList(Define.SAVE_INSTANCE_ALBUM_THUMB_LIST);
+        ArrayList<String> pickedImagePath = outState.getStringArrayList(Define.SAVE_INSTANCE_PICK_IMAGES);
+
+        if (albumList != null && thumbList != null && pickedImagePath != null) {
+            adapter = new AlbumListAdapter(albumList, pickedImagePath);
+            adapter.setThumbList(thumbList);
+        }
+
     }
 
     @Override
@@ -88,7 +96,7 @@ public class AlbumActivity extends AppCompatActivity {
                     .setSpanCount(Define.ALBUM_LANDSCAPE_SPAN_COUNT);
         else
             ((GridLayoutManager) recyclerView.getLayoutManager())
-                    .setSpanCount(Define.ALBUM_POTRAIT_SPAN_COUNT);
+                    .setSpanCount(Define.ALBUM_PORTRAIT_SPAN_COUNT);
     }
 
     private void initRecyclerView() {
@@ -193,16 +201,17 @@ public class AlbumActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+                                           @NonNull String permissions[], @NonNull int[] grantResults) {
         switch (requestCode) {
             case Define.PERMISSION_STORAGE: {
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    new DisplayImage().execute();
-                    // permission was granted, yay! do the
-                    // calendar task you need to do.
-                } else {
-                    permissionCheck.showPermissionDialog();
-                    finish();
+                if (grantResults.length > 0) {
+                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        // permission was granted, yay!
+                        new DisplayImage().execute();
+                    } else {
+                        new PermissionCheck(this).showPermissionDialog();
+                        finish();
+                    }
                 }
             }
         }
@@ -243,9 +252,6 @@ public class AlbumActivity extends AppCompatActivity {
                     long bucketId = imageCursor.getInt(bucketColumnId);
                     if (previousId != bucketId) {
                         Album album = new Album(bucketId, imageCursor.getString(bucketColumn), 1);
-//                        album.bucketId = bucketId;
-//                        album.bucketName = imageCursor.getString(bucketColumn);
-//                        album.counter++;
                         albumList.add(album);
                         previousId = bucketId;
                     } else {
