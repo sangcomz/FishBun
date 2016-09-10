@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                     .textOnNothingSelected("Nothing Selected")
                     .setArrayPaths(path)
                     .setAlbumSpanCount(2, 4)
-                    .setButtonInAlbumActiviy(true)
+                    .setButtonInAlbumActivity(true)
                     .setCamera(true)
                     .setReachLimitAutomaticClose(true)
                     .startAlbum();

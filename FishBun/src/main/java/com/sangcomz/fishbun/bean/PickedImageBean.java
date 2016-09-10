@@ -18,23 +18,7 @@ public class PickedImageBean implements Parcelable {
         this.imgPosition = imgPosition;
     }
 
-    protected PickedImageBean(Parcel in) {
-        imgOrder = in.readInt();
-        imgPath = in.readString();
-        imgPosition = in.readInt();
-    }
 
-    public static final Creator<PickedImageBean> CREATOR = new Creator<PickedImageBean>() {
-        @Override
-        public PickedImageBean createFromParcel(Parcel in) {
-            return new PickedImageBean(in);
-        }
-
-        @Override
-        public PickedImageBean[] newArray(int size) {
-            return new PickedImageBean[size];
-        }
-    };
 
     public int getImgOrder() {
         return imgOrder;
@@ -60,6 +44,26 @@ public class PickedImageBean implements Parcelable {
         this.imgPosition = imgPosition;
     }
 
+
+    protected PickedImageBean(Parcel in) {
+        imgOrder = in.readInt();
+        imgPath = in.readString();
+        imgPosition = in.readInt();
+    }
+
+    public static final Creator<PickedImageBean> CREATOR = new Creator<PickedImageBean>() {
+        @Override
+        public PickedImageBean createFromParcel(Parcel in) {
+            return new PickedImageBean(in);
+        }
+
+        @Override
+        public PickedImageBean[] newArray(int size) {
+            return new PickedImageBean[size];
+        }
+    };
+
+
     @Override
     public int describeContents() {
         return 0;
@@ -72,9 +76,9 @@ public class PickedImageBean implements Parcelable {
         parcel.writeInt(imgPosition);
     }
 
-    public void readFromParcel(Parcel parcel) {
-        imgOrder = parcel.readInt();
-        imgPath = parcel.readString();
-        imgPosition = parcel.readInt();
-    }
+//    public void readFromParcel(Parcel parcel) {
+//        imgOrder = parcel.readInt();
+//        imgPath = parcel.readString();
+//        imgPosition = parcel.readInt();
+//    }
 }

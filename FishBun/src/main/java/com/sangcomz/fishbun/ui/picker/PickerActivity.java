@@ -35,7 +35,7 @@ import java.util.ArrayList;
 public class PickerActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private ArrayList<PickedImageBean> pickedImageBeans = new ArrayList<>();
+    private ArrayList<PickedImageBean> pickedImageBeans;
     private PickerController pickerController;
     private Album a;
     private int position;
@@ -46,12 +46,13 @@ public class PickerActivity extends AppCompatActivity {
 
     private String pathDir = "";
 
-    static final String PICK_IMAGES = "pickImages";
-
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putParcelableArrayList(PICK_IMAGES, pickedImageBeans);
+        outState.putParcelableArrayList(Define.SAVE_INSTANCE_PICK_IMAGES, pickedImageBeans);
+        outState.putString(Define.SAVE_INSTANCE_SAVED_IMAGE, pickerController.getSavePath());
+        outState.putParcelableArray(Define.SAVE_INSTANCE_SAVED_IMAGE_THUMBNAILS, adapter.getImageBeans());
+        outState.putStringArrayList(Define.SAVE_INSTANCE_NEW_IMAGES, pickerController.getAddImagePaths());
         super.onSaveInstanceState(outState);
     }
 
@@ -59,9 +60,20 @@ public class PickerActivity extends AppCompatActivity {
     protected void onRestoreInstanceState(Bundle outState) {
         // Always call the superclass so it can restore the view hierarchy
         super.onRestoreInstanceState(outState);
-
         // Restore state members from saved instance
-        pickedImageBeans = outState.getParcelableArrayList(PICK_IMAGES);
+        pickedImageBeans = outState.getParcelableArrayList(Define.SAVE_INSTANCE_PICK_IMAGES);
+        ArrayList<String> addImages = outState.getStringArrayList(Define.SAVE_INSTANCE_NEW_IMAGES);
+        String savedImage = outState.getString(Define.SAVE_INSTANCE_SAVED_IMAGE);
+        adapter = new PickerGridAdapter((ImageBean[]) outState.getParcelableArray(Define.SAVE_INSTANCE_SAVED_IMAGE_THUMBNAILS),
+                pickedImageBeans,
+                pickerController,
+                getPathDir());
+        if (addImages != null) {
+            pickerController.setAddImagePaths(addImages);
+        }
+        if (savedImage != null) {
+            pickerController.setSavePath(savedImage);
+        }
     }
 
     @Override
@@ -90,6 +102,7 @@ public class PickerActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 pickerController.startFileMediaScan();
                 adapter.addImage(pickerController.getSavePath());
+
             } else {
                 new File(pickerController.getSavePath()).delete();
             }
@@ -145,20 +158,25 @@ public class PickerActivity extends AppCompatActivity {
     public void showToolbarTitle(int total) {
         if (getSupportActionBar() != null) {
             if (Define.ALBUM_PICKER_COUNT == 1)
-                getSupportActionBar().setTitle(a.bucketname);
+                getSupportActionBar().setTitle(a.bucketName);
             else
-                getSupportActionBar().setTitle(a.bucketname + "(" + String.valueOf(total) + "/" + Define.ALBUM_PICKER_COUNT + ")");
+                getSupportActionBar().setTitle(a.bucketName + "(" + String.valueOf(total) + "/" + Define.ALBUM_PICKER_COUNT + ")");
         }
 
     }
 
     private void setData(Intent intent) {
-        a = (Album) intent.getSerializableExtra("album");
+        a = intent.getParcelableExtra("album");
         position = intent.getIntExtra("position", -1);
-        ArrayList<String> path = getIntent().getStringArrayListExtra(Define.INTENT_PATH);
-        if (path != null) {
-            for (int i = 0; i < path.size(); i++) {
-                pickedImageBeans.add(new PickedImageBean(i + 1, path.get(i), -1));
+
+        //only first init
+        if (pickedImageBeans == null) {
+            pickedImageBeans = new ArrayList<>();
+            ArrayList<String> path = getIntent().getStringArrayListExtra(Define.INTENT_PATH);
+            if (path != null) {
+                for (int i = 0; i < path.size(); i++) {
+                    pickedImageBeans.add(new PickedImageBean(i + 1, path.get(i), -1));
+                }
             }
         }
     }
@@ -190,14 +208,15 @@ public class PickerActivity extends AppCompatActivity {
 
         @Override
         protected ImageBean[] doInBackground(Void... params) {
-            return getAllMediaThumbnailsPath(a.bucketid);
+            return getAllMediaThumbnailsPath(a.bucketId);
         }
 
         @Override
         protected void onPostExecute(ImageBean[] result) {
             super.onPostExecute(result);
-            adapter = new PickerGridAdapter(
-                    result, pickedImageBeans, pickerController, getPathDir());
+            if (adapter == null)
+                adapter = new PickerGridAdapter(
+                        result, pickedImageBeans, pickerController, getPathDir());
             recyclerView.setAdapter(adapter);
         }
     }
@@ -243,7 +262,7 @@ public class PickerActivity extends AppCompatActivity {
     }
 
     private String getPathDir() {
-        if (pathDir.equals("") || a.bucketid == 0)
+        if (pathDir.equals("") || a.bucketId == 0)
             pathDir = Environment.getExternalStoragePublicDirectory(
                     Environment.DIRECTORY_DCIM + "/Camera").getAbsolutePath();
         return pathDir;

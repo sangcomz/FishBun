@@ -39,5 +39,11 @@ public class Define {
     public static String MESSAGE_LIMIT_REACHED = "";
 
 
+    public static final String SAVE_INSTANCE_ALBUM_LIST = "instance_album_list";
+    public static final String SAVE_INSTANCE_ALBUM_THUMB_LIST = "instance_album_thumb_list";
 
+    public static final String SAVE_INSTANCE_PICK_IMAGES = "instance_pick_images";
+    public static final String SAVE_INSTANCE_NEW_IMAGES = "instance_new_images";
+    public static final String SAVE_INSTANCE_SAVED_IMAGE = "instance_saved_image";
+    public static final String SAVE_INSTANCE_SAVED_IMAGE_THUMBNAILS = "instance_saved_image_thumbnails";
 }

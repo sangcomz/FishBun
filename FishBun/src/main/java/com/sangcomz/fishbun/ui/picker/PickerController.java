@@ -25,8 +25,9 @@ public class PickerController {
     private RecyclerView recyclerView;
     private RecyclerView.OnItemTouchListener OnItemTouchListener;
     private ArrayList<String> addImagePaths = new ArrayList<>();
-    private PermissionCheck permissionCheck;
     private String savePath;
+
+
 
     PickerController(PickerActivity pickerActivity, RecyclerView recyclerView) {
         this.pickerActivity = pickerActivity;
@@ -110,12 +111,16 @@ public class PickerController {
         this.savePath = savePath;
     }
 
-    public void setImagePath(String imagePath) {
+    public void setAddImagePath(String imagePath) {
         this.addImagePaths.add(imagePath);
     }
 
     protected ArrayList<String> getAddImagePaths() {
         return addImagePaths;
+    }
+
+    public void setAddImagePaths(ArrayList<String> addImagePaths) {
+        this.addImagePaths = addImagePaths;
     }
 
     public void finishActivity(ArrayList<PickedImageBean> pickedImageBeans) {

@@ -229,6 +229,12 @@ public class PickerGridAdapter
         }
     }
 
+
+    public ImageBean[] getImageBeans() {
+        return imageBeans;
+    }
+
+
     public void addImage(String path) {
         ArrayList<ImageBean> al = new ArrayList<>();
         Collections.addAll(al, imageBeans);
@@ -241,7 +247,7 @@ public class PickerGridAdapter
 
         notifyDataSetChanged();
 
-        pickerController.setImagePath(path);
+        pickerController.setAddImagePath(path);
     }
 
 }
