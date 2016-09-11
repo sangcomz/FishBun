@@ -5,10 +5,10 @@
 ##What is FishBun
 FishBun is Image Picker for android.
 
-##What's New 0.5.0 FishBun
+##What's New 0.6.0 FishBun
 
-####● Remove RxJava Libary
-####● Add New Feature #28 setReachLimitAutomaticClose(boolean)
+####● fix issue #40, #37, #21, #19
+####● Add New Feature setAlbumSpanCount(int portraitSpanCount, int landscapeSpanCount)
 
 ##How to Use FishBun
 
@@ -20,7 +20,7 @@ FishBun is Image Picker for android.
     
     
     dependencies {
-        compile('com.sangcomz:FishBun:0.5.0@aar') {
+        compile('com.sangcomz:FishBun:0.6.0@aar') {
             transitive = true
         }
     }
@@ -66,6 +66,7 @@ you can use also this
                     .textOnNothingSelected("Nothing Selected")
                     .setButtonInAlbumActiviy(true)
                     .setReachLimitAutomaticClose(true)
+                    .setAlbumSpanCount(2, 4)
                     .startAlbum();
 
 
