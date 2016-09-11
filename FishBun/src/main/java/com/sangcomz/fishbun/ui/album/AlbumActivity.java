@@ -77,32 +77,35 @@ public class AlbumActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_album);
-        initView();
         initController();
+        initToolBar();
         if (albumController.checkPermission())
             new DisplayImage().execute();
-    }
-
-    void initView() {
-        initToolBar();
-        initRecyclerView();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (UiUtil.isLandscape(this))
-            ((GridLayoutManager) recyclerView.getLayoutManager())
-                    .setSpanCount(Define.ALBUM_LANDSCAPE_SPAN_COUNT);
-        else
-            ((GridLayoutManager) recyclerView.getLayoutManager())
-                    .setSpanCount(Define.ALBUM_PORTRAIT_SPAN_COUNT);
+        if (recyclerView != null &&
+                recyclerView.getLayoutManager() != null) {
+            if (UiUtil.isLandscape(this))
+                ((GridLayoutManager) recyclerView.getLayoutManager())
+                        .setSpanCount(Define.ALBUM_LANDSCAPE_SPAN_COUNT);
+            else
+                ((GridLayoutManager) recyclerView.getLayoutManager())
+                        .setSpanCount(Define.ALBUM_PORTRAIT_SPAN_COUNT);
+        }
     }
 
     private void initRecyclerView() {
-        GridLayoutManager layoutManager = new GridLayoutManager(this, 1);
-
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
+
+        GridLayoutManager layoutManager;
+        if (UiUtil.isLandscape(this))
+            layoutManager = new GridLayoutManager(this, Define.ALBUM_LANDSCAPE_SPAN_COUNT);
+        else
+            layoutManager = new GridLayoutManager(this, Define.ALBUM_PORTRAIT_SPAN_COUNT);
+
         if (recyclerView != null) {
             recyclerView.setLayoutManager(layoutManager);
         }
@@ -280,6 +283,7 @@ public class AlbumActivity extends AppCompatActivity {
             if (result) {
                 noAlbum.setVisibility(View.GONE);
                 albumController.setSpanCount(albumList.size());
+                initRecyclerView();
                 if (adapter == null)
                     adapter = new AlbumListAdapter(albumList, getIntent().getStringArrayListExtra(Define.INTENT_PATH));
                 recyclerView.setAdapter(adapter);
