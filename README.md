@@ -7,8 +7,9 @@ FishBun is Image Picker for android.
 
 ##What's New 0.6.0 FishBun
 
-####● fix issue #40, #37, #21, #19
+####● Fix Issue #40, #37, #21, #19
 ####● Add New Feature setAlbumSpanCount(int portraitSpanCount, int landscapeSpanCount)
+####● Can rotate screen
 
 ##How to Use FishBun
 
