@@ -45,7 +45,7 @@ public class FishBun {
             return baseProperty;
         }
 
-        public BaseProperty setAlbumThumnaliSize(int size) {
+        public BaseProperty setAlbumThumbnailSize(int size) {
             Define.ALBUM_THUMNAIL_SIZE = size;
             return baseProperty;
         }
@@ -74,9 +74,9 @@ public class FishBun {
         }
 
         @Override
-        public BaseProperty setActionBarColor(int actionbarColor, int statusbarColor) {
+        public BaseProperty setActionBarColor(int actionbarColor, int statusBarColor) {
             Define.ACTIONBAR_COLOR = actionbarColor;
-            Define.STATUSBAR_COLOR = statusbarColor;
+            Define.STATUS_BAR_COLOR = statusBarColor;
             return baseProperty;
         }
 
@@ -105,7 +105,7 @@ public class FishBun {
         }
 
         @Override
-        public BaseProperty setButtonInAlbumActiviy(boolean isButton) {
+        public BaseProperty setButtonInAlbumActivity(boolean isButton) {
             Define.IS_BUTTON = isButton;
             return baseProperty;
         }
@@ -113,6 +113,25 @@ public class FishBun {
         @Override
         public BaseProperty setReachLimitAutomaticClose(boolean isAutomaticClose) {
             Define.IS_AUTOMATIC_CLOSE = isAutomaticClose;
+            return baseProperty;
+        }
+
+        @Override
+        public BaseProperty setAlbumSpanCount(int portraitSpanCount, int landscapeSpanCount) {
+            Define.ALBUM_PORTRAIT_SPAN_COUNT = portraitSpanCount;
+            Define.ALBUM_LANDSCAPE_SPAN_COUNT = landscapeSpanCount;
+            return baseProperty;
+        }
+
+        @Override
+        public BaseProperty setAlbumSpanCountOnlyLandscape(int landscapeSpanCount) {
+            Define.ALBUM_LANDSCAPE_SPAN_COUNT = landscapeSpanCount;
+            return baseProperty;
+        }
+
+        @Override
+        public BaseProperty setAlbumSpanCountOnlPortrait(int portraitSpanCount) {
+            Define.ALBUM_PORTRAIT_SPAN_COUNT = portraitSpanCount;
             return baseProperty;
         }
 
@@ -159,7 +178,7 @@ public class FishBun {
 
         BaseProperty setArrayPaths(ArrayList<String> arrayPaths);
 
-        BaseProperty setAlbumThumnaliSize(int size);
+        BaseProperty setAlbumThumbnailSize(int size);
 
         BaseProperty setPickerSpanCount(int spanCount);
 
@@ -177,9 +196,15 @@ public class FishBun {
 
         BaseProperty textOnImagesSelectionLimitReached(String message);
 
-        BaseProperty setButtonInAlbumActiviy(boolean isButton);
+        BaseProperty setButtonInAlbumActivity(boolean isButton);
 
         BaseProperty setReachLimitAutomaticClose(boolean isAutomaticClose);
+
+        BaseProperty setAlbumSpanCount(int portraitSpanCount, int landscapeSpanCount);
+
+        BaseProperty setAlbumSpanCountOnlyLandscape(int landscapeSpanCount);
+
+        BaseProperty setAlbumSpanCountOnlPortrait(int portraitSpanCount);
 
         void startAlbum();
     }

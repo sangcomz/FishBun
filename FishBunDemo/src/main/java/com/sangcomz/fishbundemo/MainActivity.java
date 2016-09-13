@@ -1,4 +1,4 @@
-package com.sangcomz.albumsample;
+package com.sangcomz.fishbundemo;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -71,7 +71,8 @@ public class MainActivity extends AppCompatActivity {
                     .textOnImagesSelectionLimitReached("Limit Reached!")
                     .textOnNothingSelected("Nothing Selected")
                     .setArrayPaths(path)
-                    .setButtonInAlbumActiviy(true)
+                    .setAlbumSpanCount(2, 4)
+                    .setButtonInAlbumActivity(true)
                     .setCamera(true)
                     .setReachLimitAutomaticClose(true)
                     .startAlbum();

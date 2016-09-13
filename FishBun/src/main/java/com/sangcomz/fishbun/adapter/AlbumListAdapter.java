@@ -23,10 +23,9 @@ import java.util.List;
 public class AlbumListAdapter
         extends RecyclerView.Adapter<AlbumListAdapter.ViewHolder> {
 
-    private List<Album> albumlist;
+    private List<Album> albumList;
     private List<String> thumbList = new ArrayList<>();
-    private String thumPath;
-    private ArrayList<String> path;
+    private ArrayList<String> pickedImagePath;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -47,9 +46,9 @@ public class AlbumListAdapter
         }
     }
 
-    public AlbumListAdapter(List<Album> albumlist, ArrayList<String> path) {
-        this.albumlist = albumlist;
-        this.path = path;
+    public AlbumListAdapter(List<Album> albumList, ArrayList<String> pickedImagePath) {
+        this.albumList = albumList;
+        this.pickedImagePath = pickedImagePath;
     }
 
     @Override
@@ -67,24 +66,23 @@ public class AlbumListAdapter
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-
+        String thumbPath = null;
         if (thumbList != null && thumbList.size() > position)
-            thumPath = thumbList.get(position);
-
+            thumbPath = thumbList.get(position);
 
         if (thumbList != null) {
             if (thumbList.size() > position) {
                 Glide
                         .with(holder.imgAlbum.getContext())
-                        .load(thumPath)
+                        .load(thumbPath)
                         .asBitmap()
                         .override(Define.ALBUM_THUMNAIL_SIZE, Define.ALBUM_THUMNAIL_SIZE)
                         .into(holder.imgAlbum);
             }
         }
-        holder.areaAlbum.setTag(albumlist.get(position));
+        holder.areaAlbum.setTag(albumList.get(position));
         Album a = (Album) holder.areaAlbum.getTag();
-        holder.txtAlbum.setText(albumlist.get(position).bucketname);
+        holder.txtAlbum.setText(albumList.get(position).bucketName);
         holder.txtAlbumCount.setText(String.valueOf(a.counter));
 
 
@@ -94,9 +92,9 @@ public class AlbumListAdapter
                 Album a = (Album) v.getTag();
                 Intent i = new Intent(holder.areaAlbum.getContext(), PickerActivity.class);
                 i.putExtra("album", a);
-                i.putExtra("album_title", albumlist.get(position).bucketname);
+                i.putExtra("album_title", albumList.get(position).bucketName);
                 i.putExtra("position", position);
-                i.putStringArrayListExtra(Define.INTENT_PATH, path);
+                i.putStringArrayListExtra(Define.INTENT_PATH, pickedImagePath);
                 ((Activity) holder.areaAlbum.getContext()).startActivityForResult(i, Define.ENTER_ALBUM_REQUEST_CODE);
             }
         });
@@ -104,15 +102,23 @@ public class AlbumListAdapter
 
     @Override
     public int getItemCount() {
-        return albumlist.size();
+        return albumList.size();
     }
 
-    public void setPath(ArrayList<String> path) {
-        this.path = path;
+    public ArrayList<String> getPickedImagePath() {
+        return pickedImagePath;
     }
 
-    public ArrayList<String> getPath() {
-        return path;
+    public void setPickedImagePath(ArrayList<String> pickedImagePath) {
+        this.pickedImagePath = pickedImagePath;
+    }
+
+    public List<Album> getAlbumList() {
+        return albumList;
+    }
+
+    public List<String> getThumbList() {
+        return thumbList;
     }
 }
 

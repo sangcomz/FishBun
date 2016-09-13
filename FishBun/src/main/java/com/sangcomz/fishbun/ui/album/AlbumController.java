@@ -2,6 +2,7 @@ package com.sangcomz.fishbun.ui.album;
 
 import android.os.Build;
 
+import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.permission.PermissionCheck;
 
 public class AlbumController {
@@ -12,8 +13,6 @@ public class AlbumController {
         this.albumActivity = albumActivity;
     }
 
-
-
     protected boolean checkPermission() {
         PermissionCheck permissionCheck = new PermissionCheck(albumActivity);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -22,5 +21,12 @@ public class AlbumController {
         } else
             return true;
         return false;
+    }
+
+    public void setSpanCount(int albumListSize) {
+        if (Define.ALBUM_LANDSCAPE_SPAN_COUNT > albumListSize)
+            Define.ALBUM_LANDSCAPE_SPAN_COUNT = albumListSize;
+        if (Define.ALBUM_PORTRAIT_SPAN_COUNT > albumListSize)
+            Define.ALBUM_PORTRAIT_SPAN_COUNT = albumListSize;
     }
 }
