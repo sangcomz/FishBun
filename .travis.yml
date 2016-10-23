@@ -1,58 +1,23 @@
 language: android
-
-jdk:
- - oraclejdk8
-# Turn off caching to avoid any caching problems
-cache: false
-# Don't use the Travis Container-Based Infrastructure - See #476
-sudo: true
-
+jdk: oraclejdk8
 env:
   global:
-    - ANDROID_API_LEVEL=23
-    - ANDROID_BUILD_TOOLS_VERSION=24.0.2
+    - ANDROID_TARGET=android-15
     - ANDROID_ABI=armeabi-v7a
-    - ADB_INSTALL_TIMEOUT=20 # minutes (2 minutes by default - see #247)
-
-before_install:
- - chmod +x gradlew
-
-
 android:
   components:
-    - platform-tools
-    - tools
-    - build-tools-$ANDROID_BUILD_TOOLS_VERSION
-    - android-$ANDROID_API_LEVEL
-    # Google Play Services
-    - extra-google-google_play_services
-    # Support library
-    - extra-android-support
-    # Latest artifacts in local repository
-    - extra-google-m2repository
-    - extra-android-m2repository
-    # Specify at least one system image
-    - sys-img-armeabi-v7a-android-$ANDROID_API_LEVEL
-
-
-before_script:
-  # Create and start emulator
-  - echo no | android create avd --force -n test -t android-$ANDROID_API_LEVEL --abi $ANDROID_ABI
-  - emulator -avd test -no-skin -no-audio -no-window &
-
+  - tools
+  - platform-tools
+  - build-tools-24.0.2
+  - android-23
+  - extra-android-m2repository
+  - sys-img-${ANDROID_ABI}-${ANDROID_TARGET}
 script:
-  - ./gradlew clean assembleDebug assembleRelease
   - ./gradlew build jacocoTestReport assembleAndroidTest
   - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
   - emulator -avd test -no-skin -no-audio -no-window &
   - android-wait-for-emulator
   - adb shell setprop dalvik.vm.dexopt-flags v=n,o=v
   - ./gradlew connectedCheck
-
 after_success:
   - bash <(curl -s https://codecov.io/bash)
-
-notifications:
-  email: false
-
-sudo: false
