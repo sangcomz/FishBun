@@ -1,9 +1,16 @@
 language: android
+
+sudo: required
+
+dist: precise
+
 jdk: oraclejdk8
+
 env:
   global:
     - ANDROID_TARGET=android-15
     - ANDROID_ABI=armeabi-v7a
+
 android:
   components:
   - tools
@@ -12,6 +19,10 @@ android:
   - android-24
   - extra-android-m2repository
   - sys-img-${ANDROID_ABI}-${ANDROID_TARGET}
+
+notifications:
+  email: true
+
 script:
   - ./gradlew build jacocoTestReport assembleAndroidTest
   - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
@@ -19,5 +30,6 @@ script:
   - android-wait-for-emulator
   - adb shell setprop dalvik.vm.dexopt-flags v=n,o=v
   - ./gradlew connectedCheck
+
 after_success:
   - bash <(curl -s https://codecov.io/bash)
