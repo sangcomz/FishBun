@@ -70,7 +70,6 @@ public class AlbumActivity extends AppCompatActivity {
             adapter = new AlbumListAdapter(albumList, pickedImagePath);
             adapter.setThumbList(thumbList);
         }
-
     }
 
     @Override
