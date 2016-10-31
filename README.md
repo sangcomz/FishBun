@@ -4,6 +4,8 @@
 [![Build Status](https://travis-ci.org/sangcomz/FishBun.svg?branch=master)](https://travis-ci.org/sangcomz/FishBun)
 [![codecov](https://codecov.io/gh/sangcomz/FishBun/branch/master/graph/badge.svg)](https://codecov.io/gh/sangcomz/FishBun)
 [![Download](https://api.bintray.com/packages/sangcomz/maven/fishbun/images/download.svg)](https://bintray.com/sangcomz/maven/fishbun/_latestVersion)
+
+<a href="http://www.methodscount.com/?lib=com.sangcomz%3AFishBun%3A0.6.0"><img src="https://img.shields.io/badge/Methods and size-core: 461 | deps: 24948 | 95 KB-e91e63.svg"/></a>
 ##What is FishBun
 FishBun is Image Picker for android.
 
