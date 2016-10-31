@@ -9,14 +9,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.bumptech.glide.Glide;
 import com.sangcomz.fishbun.R;
 import com.sangcomz.fishbun.bean.ImageBean;
 import com.sangcomz.fishbun.bean.PickedImageBean;
 import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.ui.picker.PickerController;
 import com.sangcomz.fishbun.util.SquareTextView;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -130,11 +131,10 @@ public class PickerGridAdapter
 
 
             if (imgPath != null && !imgPath.equals("")) {
-                Glide
+                Picasso
                         .with(vh.imgPhoto.getContext())
-                        .load(imgPath)
-                        .override(Define.PHOTO_PICKER_SIZE, Define.PHOTO_PICKER_SIZE)
-                        .crossFade()
+                        .load(new File(imgPath))
+                        .fit()
                         .centerCrop()
                         .into(vh.imgPhoto);
             }

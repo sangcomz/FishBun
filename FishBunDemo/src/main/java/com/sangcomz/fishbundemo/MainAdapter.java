@@ -7,8 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -35,7 +36,13 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final String imagePath = imagePaths.get(position);
-        Glide.with(context).load(imagePath).centerCrop().into(holder.imageView);
+        System.out.println(imagePath);
+        Picasso
+                .with(context)
+                .load(new File(imagePath))
+                .fit()
+                .centerCrop()
+                .into(holder.imageView);
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

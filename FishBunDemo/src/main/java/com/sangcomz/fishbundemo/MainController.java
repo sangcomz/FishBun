@@ -3,12 +3,14 @@ package com.sangcomz.fishbundemo;
 import android.content.Context;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
+
+import java.io.File;
 
 /**
  * Created by sangc on 2015-11-06.
  */
-public class MainController {
+class MainController {
     Context context;
     ImageView imgMain;
 
@@ -17,7 +19,12 @@ public class MainController {
         this.imgMain = imgMain;
     }
 
-    public void setImgMain(String path) {
-        Glide.with(context).load(path).fitCenter().into(imgMain);
+    void setImgMain(String path) {
+        Picasso
+                .with(context)
+                .load(new File(path))
+                .fit()
+                .centerCrop()
+                .into(imgMain);
     }
 }
