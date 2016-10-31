@@ -1,16 +1,10 @@
 package com.sangcomz.fishbun.ui.album;
 
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Parcelable;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -18,7 +12,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,7 +31,7 @@ import java.util.List;
 
 public class AlbumActivity extends AppCompatActivity {
     private AlbumController albumController;
-    private List<Album> albumList = new ArrayList<>();
+    private ArrayList<Album> albumList = new ArrayList<>();
     private RecyclerView recyclerView;
     private AlbumListAdapter adapter;
     private UiUtil uiUtil = new UiUtil();
@@ -79,7 +72,7 @@ public class AlbumActivity extends AppCompatActivity {
         initController();
         initToolBar();
         if (albumController.checkPermission())
-            new DisplayImage().execute();
+            albumController.getAlbumList();
     }
 
     @Override
@@ -127,6 +120,62 @@ public class AlbumActivity extends AppCompatActivity {
         albumController = new AlbumController(this);
     }
 
+    private void setAlbumListAdapter() {
+        if (adapter == null)
+            adapter = new AlbumListAdapter(albumList,
+                    getIntent().getStringArrayListExtra(Define.INTENT_PATH));
+        recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+    }
+
+
+    protected void setDefCameraAlbum(int position) {
+        defCameraAlbum = position;
+    }
+
+    protected void setThumbnail(List<String> thumbList) {
+        adapter.setThumbList(thumbList);
+    }
+
+
+    protected void setAlbumList(ArrayList<Album> _albumList) {
+        albumList = _albumList;
+        if (albumList.size() > 0) {
+            noAlbum.setVisibility(View.GONE);
+            initRecyclerView();
+            setAlbumListAdapter();
+            albumController.getThumbnail(albumList);
+        } else {
+            noAlbum.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void refreshList(int position, ArrayList<String> imagePath) {
+        List<String> thumbList = adapter.getThumbList();
+        if (imagePath.size() > 0) {
+            if (position == 0) {
+                albumList.get(position).counter += imagePath.size();
+                albumList.get(defCameraAlbum).counter += imagePath.size();
+
+                thumbList.set(position, imagePath.get(imagePath.size() - 1));
+                thumbList.set(defCameraAlbum, imagePath.get(imagePath.size() - 1));
+
+                adapter.notifyItemChanged(0);
+                adapter.notifyItemChanged(defCameraAlbum);
+            } else {
+                albumList.get(0).counter += imagePath.size();
+                albumList.get(position).counter += imagePath.size();
+
+                thumbList.set(0, imagePath.get(imagePath.size() - 1));
+                thumbList.set(position, imagePath.get(imagePath.size() - 1));
+
+                adapter.notifyItemChanged(0);
+                adapter.notifyItemChanged(position);
+            }
+        }
+    }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -157,32 +206,6 @@ public class AlbumActivity extends AppCompatActivity {
     }
 
 
-    private void refreshList(int position, ArrayList<String> imagePath) {
-        List<String> thumbList = adapter.getThumbList();
-        if (imagePath.size() > 0) {
-            if (position == 0) {
-                albumList.get(position).counter += imagePath.size();
-                albumList.get(defCameraAlbum).counter += imagePath.size();
-
-                thumbList.set(position, imagePath.get(imagePath.size() - 1));
-                thumbList.set(defCameraAlbum, imagePath.get(imagePath.size() - 1));
-
-                adapter.notifyItemChanged(0);
-                adapter.notifyItemChanged(defCameraAlbum);
-            } else {
-                albumList.get(0).counter += imagePath.size();
-                albumList.get(position).counter += imagePath.size();
-
-                thumbList.set(0, imagePath.get(imagePath.size() - 1));
-                thumbList.set(position, imagePath.get(imagePath.size() - 1));
-
-                adapter.notifyItemChanged(0);
-                adapter.notifyItemChanged(position);
-            }
-        }
-    }
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -209,7 +232,7 @@ public class AlbumActivity extends AppCompatActivity {
                 if (grantResults.length > 0) {
                     if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                         // permission was granted, yay!
-                        new DisplayImage().execute();
+                        albumController.getAlbumList();
                     } else {
                         new PermissionCheck(this).showPermissionDialog();
                         finish();
@@ -218,152 +241,4 @@ public class AlbumActivity extends AppCompatActivity {
             }
         }
     }
-
-
-    public class DisplayImage extends AsyncTask<Void, Void, Boolean> {
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-
-            final String orderBy = MediaStore.Images.Media.BUCKET_ID;
-            final ContentResolver resolver = getContentResolver();
-            String[] projection = new String[]{
-                    MediaStore.Images.Media.BUCKET_DISPLAY_NAME,
-                    MediaStore.Images.Media.BUCKET_ID};
-
-            Cursor imageCursor = resolver.query(
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection,
-                    null, null, orderBy);
-
-            long previousId = 0;
-            int totalCounter = 0;
-            if (imageCursor != null) {
-                int bucketColumn = imageCursor
-                        .getColumnIndex(MediaStore.Images.Media.BUCKET_DISPLAY_NAME);
-
-                int bucketColumnId = imageCursor
-                        .getColumnIndex(MediaStore.Images.Media.BUCKET_ID);
-                albumList = new ArrayList<>();
-                Album totalAlbum = new Album(0, getString(R.string.str_all_view), 0);
-
-                albumList.add(totalAlbum);
-
-
-                while (imageCursor.moveToNext()) {
-                    totalCounter++;
-                    long bucketId = imageCursor.getInt(bucketColumnId);
-                    if (previousId != bucketId) {
-                        Album album = new Album(bucketId, imageCursor.getString(bucketColumn), 1);
-                        albumList.add(album);
-                        previousId = bucketId;
-                    } else {
-                        if (albumList.size() > 0)
-                            albumList.get(albumList.size() - 1).counter++;
-                    }
-
-                    if (imageCursor.isLast()) {
-                        albumList.get(0).counter = totalCounter;
-                    }
-                }
-                imageCursor.close();
-            }
-
-            if (totalCounter == 0) {
-                albumList.clear();
-                return false;
-            } else {
-                return true;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Boolean result) {
-            super.onPostExecute(result);
-            if (result) {
-                noAlbum.setVisibility(View.GONE);
-                albumController.setSpanCount(albumList.size());
-                initRecyclerView();
-                if (adapter == null)
-                    adapter = new AlbumListAdapter(albumList, getIntent().getStringArrayListExtra(Define.INTENT_PATH));
-                recyclerView.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
-                new DisplayThumbnail().execute();
-            } else {
-                noAlbum.setVisibility(View.VISIBLE);
-            }
-        }
-    }
-
-    public class DisplayThumbnail extends AsyncTask<Void, Void, Void> {
-        List<String> thumbList = new ArrayList<>();
-
-        @Override
-        protected Void doInBackground(Void... params) {
-
-            String pathDir = Environment.getExternalStoragePublicDirectory(
-                    Environment.DIRECTORY_DCIM + "/Camera").getAbsolutePath();
-            for (int i = 0; i < albumList.size(); i++) {
-                Album album = albumList.get(i);
-                String path = getAllMediaThumbnailsPath(album.bucketId);
-                thumbList.add(path);
-                if (i != 0 && path.contains(pathDir))
-                    defCameraAlbum = i;
-
-
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-            adapter.setThumbList(thumbList);
-        }
-
-    }
-
-
-    private String getAllMediaThumbnailsPath(long id) {
-        String path = "";
-        String selection = MediaStore.Images.Media.BUCKET_ID + " = ?";
-        String bucketid = String.valueOf(id);
-        String sort = MediaStore.Images.Thumbnails._ID + " DESC";
-        String[] selectionArgs = {bucketid};
-
-        Uri images = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-        Cursor c;
-        if (!bucketid.equals("0")) {
-            c = getContentResolver().query(images, null,
-                    selection, selectionArgs, sort);
-        } else {
-            c = getContentResolver().query(images, null,
-                    null, null, sort);
-        }
-        if (c != null) {
-            if (c.moveToNext()) {
-                selection = MediaStore.Images.Media._ID + " = ?";
-                String photoID = c.getString(c.getColumnIndex(MediaStore.Images.Media._ID));
-                selectionArgs = new String[]{photoID};
-
-                images = MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI;
-                Cursor cursor = getContentResolver().query(images, null,
-                        selection, selectionArgs, sort);
-                if (cursor != null && cursor.moveToNext()) {
-                    path = c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA));
-                    if (cursor.isLast())
-                        cursor.close();
-                } else
-                    path = c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA));
-
-            } else {
-                Log.e("id", "from else");
-            }
-            c.close();
-        }
-
-
-        return path;
-    }
-
-
 }
