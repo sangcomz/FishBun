@@ -102,7 +102,6 @@ public class PickerActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         pickerController.transImageFinish(pickedImageBeans, position);
     }
 
