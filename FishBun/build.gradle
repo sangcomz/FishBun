@@ -20,6 +20,7 @@ buildscript {
     }
 }
 
+
 android {
     compileSdkVersion 24
     buildToolsVersion "24.0.2"
@@ -47,6 +48,10 @@ android {
     productFlavors {
     }
 }
+
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: "com.jfrog.bintray"
+apply plugin: 'co.riiid.gradle'
 
 apply from: '../gradle/release.gradle'
 

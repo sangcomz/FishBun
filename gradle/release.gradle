@@ -1,10 +1,6 @@
 /**
  * Use For Upload
  */
-apply plugin: 'com.github.dcendents.android-maven'
-apply plugin: "com.jfrog.bintray"
-apply plugin: 'co.riiid.gradle'
-
 version = gradle.versionName
 
 def siteUrl = 'https://github.com/sangcomz/FishBun'      // Homepage URL of the library
@@ -74,10 +70,9 @@ artifacts {
     archives sourcesJar
 }
 
-
-if (project.hasProperty('local.properties')) {
+if (project.hasProperty('gradle')) {
     Properties properties = new Properties()
-    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+    properties.load(project.rootProject.file('gradle.properties').newDataInputStream())
 
     // https://github.com/bintray/gradle-bintray-plugin
     bintray {
@@ -101,12 +96,12 @@ if (project.hasProperty('local.properties')) {
         owner = 'sangcomz'
         repo = 'Fishbun'
         token = properties.get("github_access_tokens") ? properties.get("github_access_tokens") : ""
-        tagName = gradle.versionName
+        tagName = version
         targetCommitish = 'master'
         body = """## Release Note
 * glide to picasso because reduce method count
 * in view logic method to controller"""
-        name = gradle.versionName
+        name = version
     }
 }
 
