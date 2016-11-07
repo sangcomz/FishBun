@@ -102,7 +102,7 @@ if (project.hasProperty('local.properties')) {
         repo = 'Fishbun'
         token = properties.get("github_access_tokens") ? properties.get("github_access_tokens") : ""
         tagName = gradle.versionName
-        targetCommitish = 'develop'
+        targetCommitish = 'master'
         body = """## Release Note
 * glide to picasso because reduce method count
 * in view logic method to controller"""
