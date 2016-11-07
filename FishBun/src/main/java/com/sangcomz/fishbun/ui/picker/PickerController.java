@@ -1,12 +1,18 @@
 package com.sangcomz.fishbun.ui.picker;
 
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
 
+import com.sangcomz.fishbun.bean.ImageBean;
 import com.sangcomz.fishbun.bean.PickedImageBean;
 import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.permission.PermissionCheck;
@@ -26,12 +32,14 @@ public class PickerController {
     private RecyclerView.OnItemTouchListener OnItemTouchListener;
     private ArrayList<String> addImagePaths = new ArrayList<>();
     private String savePath;
-
+    private ContentResolver resolver;
+    private String pathDir = "";
 
 
     PickerController(PickerActivity pickerActivity, RecyclerView recyclerView) {
         this.pickerActivity = pickerActivity;
         this.recyclerView = recyclerView;
+        resolver = pickerActivity.getContentResolver();
 
         OnItemTouchListener = new RecyclerView.OnItemTouchListener() {
             @Override
@@ -163,6 +171,78 @@ public class PickerController {
         pickerActivity.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + getSavePath())));
     }
 
+    protected void displayImage(Long bucketId) {
+        new DisplayImage(bucketId).execute();
+    }
+
+    private class DisplayImage extends AsyncTask<Void, Void, ImageBean[]> {
+        private Long bucketId;
+
+        DisplayImage(Long bucketId) {
+            this.bucketId = bucketId;
+        }
+
+        @Override
+        protected ImageBean[] doInBackground(Void... params) {
+            return getAllMediaThumbnailsPath(bucketId);
+        }
+
+        @Override
+        protected void onPostExecute(ImageBean[] result) {
+            super.onPostExecute(result);
+            pickerActivity.setAdapter(result);
+//            if (adapter == null)
+//                adapter = new PickerGridAdapter(
+//                        result, pickedImageBeans, pickerController);
+//            recyclerView.setAdapter(adapter);
+//            showToolbarTitle(pickedImageBeans.size());
+        }
+    }
 
 
+    @NonNull
+    private ImageBean[] getAllMediaThumbnailsPath(long id) {
+        String path;
+        String selection = MediaStore.Images.Media.BUCKET_ID + " = ?";
+        String bucketid = String.valueOf(id);
+        String sort = MediaStore.Images.Media._ID + " DESC";
+        String[] selectionArgs = {bucketid};
+
+        Uri images = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+        Cursor c;
+        if (!bucketid.equals("0")) {
+            c = resolver.query(images, null, selection, selectionArgs, sort);
+        } else {
+            c = resolver.query(images, null, null, null, sort);
+        }
+        ImageBean[] imageBeans = new ImageBean[c == null ? 0 : c.getCount()];
+        if (c != null) {
+            try {
+                if (c.moveToFirst()) {
+                    setPathDir(c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA)),
+                            c.getString(c.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME)));
+                    int position = -1;
+                    do {
+                        path = c.getString(c.getColumnIndex(MediaStore.Images.Thumbnails.DATA));
+                        imageBeans[++position] = new ImageBean(-1, path);
+                    } while (c.moveToNext());
+                }
+                c.close();
+            } catch (Exception e) {
+                if (!c.isClosed()) c.close();
+            }
+        }
+        return imageBeans;
+    }
+
+    private String setPathDir(String path, String fileName) {
+        return pathDir = path.replace("/" + fileName, "");
+    }
+
+    public String getPathDir(Long bucketId) {
+        if (pathDir.equals("") || bucketId == 0)
+            pathDir = Environment.getExternalStoragePublicDirectory(
+                    Environment.DIRECTORY_DCIM + "/Camera").getAbsolutePath();
+        return pathDir;
+    }
 }

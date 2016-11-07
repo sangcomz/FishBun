@@ -10,12 +10,13 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.sangcomz.fishbun.R;
 import com.sangcomz.fishbun.bean.Album;
 import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.ui.picker.PickerActivity;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +39,7 @@ public class AlbumListAdapter
         public ViewHolder(View view) {
             super(view);
             imgAlbum = (ImageView) view.findViewById(R.id.img_album);
-            imgAlbum.setLayoutParams(new RelativeLayout.LayoutParams(Define.ALBUM_THUMNAIL_SIZE, Define.ALBUM_THUMNAIL_SIZE));
+            imgAlbum.setLayoutParams(new RelativeLayout.LayoutParams(Define.ALBUM_THUMBNAIL_SIZE, Define.ALBUM_THUMBNAIL_SIZE));
 
             txtAlbum = (TextView) view.findViewById(R.id.txt_album);
             txtAlbumCount = (TextView) view.findViewById(R.id.txt_album_count);
@@ -66,19 +67,13 @@ public class AlbumListAdapter
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        String thumbPath = null;
-        if (thumbList != null && thumbList.size() > position)
-            thumbPath = thumbList.get(position);
-
-        if (thumbList != null) {
-            if (thumbList.size() > position) {
-                Glide
-                        .with(holder.imgAlbum.getContext())
-                        .load(thumbPath)
-                        .asBitmap()
-                        .override(Define.ALBUM_THUMNAIL_SIZE, Define.ALBUM_THUMNAIL_SIZE)
-                        .into(holder.imgAlbum);
-            }
+        if (thumbList != null && thumbList.size() > position) {
+            Picasso
+                    .with(holder.imgAlbum.getContext())
+                    .load(new File(thumbList.get(position)))
+                    .fit()
+                    .centerCrop()
+                    .into(holder.imgAlbum);
         }
         holder.areaAlbum.setTag(albumList.get(position));
         Album a = (Album) holder.areaAlbum.getTag();

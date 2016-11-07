@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
-import android.util.DisplayMetrics;
 
 import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.ui.album.AlbumActivity;
@@ -46,7 +45,7 @@ public class FishBun {
         }
 
         public BaseProperty setAlbumThumbnailSize(int size) {
-            Define.ALBUM_THUMNAIL_SIZE = size;
+            Define.ALBUM_THUMBNAIL_SIZE = size;
             return baseProperty;
         }
 
@@ -148,14 +147,8 @@ public class FishBun {
                     e.printStackTrace();
                 }
 
-            DisplayMetrics dm;
-            dm = context.getResources().getDisplayMetrics();
-            if (dm != null) {
-                Define.PHOTO_PICKER_SIZE = dm.widthPixels / Define.PHOTO_SPAN_COUNT;
-            }
-
-            if (Define.ALBUM_THUMNAIL_SIZE == -1)
-                Define.ALBUM_THUMNAIL_SIZE = (int) context.getResources().getDimension(R.dimen.album_thum_size);
+            if (Define.ALBUM_THUMBNAIL_SIZE == -1)
+                Define.ALBUM_THUMBNAIL_SIZE = (int) context.getResources().getDimension(R.dimen.album_thum_size);
 
             setMessage(context);
 

@@ -2,14 +2,8 @@ package com.sangcomz.fishbun.ui.picker;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -40,14 +34,11 @@ public class PickerActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ArrayList<PickedImageBean> pickedImageBeans;
     private PickerController pickerController;
-    private Album a;
+    private Album album;
     private int position;
     private UiUtil uiUtil = new UiUtil();
 
-    PickerGridAdapter adapter;
-
-    private String pathDir = "";
-
+    private PickerGridAdapter adapter;
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -76,7 +67,7 @@ public class PickerActivity extends AppCompatActivity {
             adapter = new PickerGridAdapter(imageBeenList,
                     pickedImageBeans,
                     pickerController,
-                    getPathDir());
+                    pickerController.getPathDir(album.bucketId));
             if (addImages != null) {
                 pickerController.setAddImagePaths(addImages);
             }
@@ -97,12 +88,11 @@ public class PickerActivity extends AppCompatActivity {
         setData(getIntent());
 
         if (pickerController.checkPermission())
-            new DisplayImage().execute();
+            pickerController.displayImage(album.bucketId);
     }
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         pickerController.transImageFinish(pickedImageBeans, position);
     }
 
@@ -126,7 +116,7 @@ public class PickerActivity extends AppCompatActivity {
             case Define.PERMISSION_STORAGE: {
                 if (grantResults.length > 0) {
                     if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                        new DisplayImage().execute();
+                        pickerController.displayImage(album.bucketId);
                         // permission was granted, yay! do the
                         // calendar task you need to do.
                     } else {
@@ -151,7 +141,7 @@ public class PickerActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+        // as you specify album parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_ok) {
             if (pickedImageBeans.size() == 0) {
@@ -168,15 +158,15 @@ public class PickerActivity extends AppCompatActivity {
     public void showToolbarTitle(int total) {
         if (getSupportActionBar() != null) {
             if (Define.ALBUM_PICKER_COUNT == 1)
-                getSupportActionBar().setTitle(a.bucketName);
+                getSupportActionBar().setTitle(album.bucketName);
             else
-                getSupportActionBar().setTitle(a.bucketName + "(" + String.valueOf(total) + "/" + Define.ALBUM_PICKER_COUNT + ")");
+                getSupportActionBar().setTitle(album.bucketName + "(" + String.valueOf(total) + "/" + Define.ALBUM_PICKER_COUNT + ")");
         }
 
     }
 
     private void setData(Intent intent) {
-        a = intent.getParcelableExtra("album");
+        album = intent.getParcelableExtra("album");
         position = intent.getIntExtra("position", -1);
 
         //only first init
@@ -214,68 +204,13 @@ public class PickerActivity extends AppCompatActivity {
     }
 
 
-    private class DisplayImage extends AsyncTask<Void, Void, ImageBean[]> {
-
-        @Override
-        protected ImageBean[] doInBackground(Void... params) {
-            return getAllMediaThumbnailsPath(a.bucketId);
-        }
-
-        @Override
-        protected void onPostExecute(ImageBean[] result) {
-            super.onPostExecute(result);
-            if (adapter == null)
-                adapter = new PickerGridAdapter(
-                        result, pickedImageBeans, pickerController, getPathDir());
-            recyclerView.setAdapter(adapter);
-            showToolbarTitle(pickedImageBeans.size());
-        }
+    public void setAdapter(ImageBean[] result) {
+        if (adapter == null)
+            adapter = new PickerGridAdapter(
+                    result, pickedImageBeans, pickerController, pickerController.getPathDir(album.bucketId));
+        recyclerView.setAdapter(adapter);
+        showToolbarTitle(pickedImageBeans.size());
     }
 
 
-    @NonNull
-    private ImageBean[] getAllMediaThumbnailsPath(long id) {
-        String path;
-        String selection = MediaStore.Images.Media.BUCKET_ID + " = ?";
-        String bucketid = String.valueOf(id);
-        String sort = MediaStore.Images.Media._ID + " DESC";
-        String[] selectionArgs = {bucketid};
-
-        Uri images = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-        Cursor c;
-        if (!bucketid.equals("0")) {
-            c = getContentResolver().query(images, null, selection, selectionArgs, sort);
-        } else {
-            c = getContentResolver().query(images, null, null, null, sort);
-        }
-        ImageBean[] imageBeans = new ImageBean[c == null ? 0 : c.getCount()];
-        if (c != null) {
-            try {
-                if (c.moveToFirst()) {
-                    setPathDir(c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA)),
-                            c.getString(c.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME)));
-                    int position = -1;
-                    do {
-                        path = c.getString(c.getColumnIndex(MediaStore.Images.Thumbnails.DATA));
-                        imageBeans[++position] = new ImageBean(-1, path);
-                    } while (c.moveToNext());
-                }
-                c.close();
-            } catch (Exception e) {
-                if (!c.isClosed()) c.close();
-            }
-        }
-        return imageBeans;
-    }
-
-    private void setPathDir(String path, String fileName) {
-        pathDir = path.replace("/" + fileName, "");
-    }
-
-    private String getPathDir() {
-        if (pathDir.equals("") || a.bucketId == 0)
-            pathDir = Environment.getExternalStoragePublicDirectory(
-                    Environment.DIRECTORY_DCIM + "/Camera").getAbsolutePath();
-        return pathDir;
-    }
 }
