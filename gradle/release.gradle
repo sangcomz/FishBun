@@ -70,38 +70,35 @@ artifacts {
     archives sourcesJar
 }
 
-if (project.hasProperty('gradle')) {
-    Properties properties = new Properties()
-    properties.load(project.rootProject.file('gradle.properties').newDataInputStream())
+Properties properties = new Properties()
+properties.load(project.rootProject.file('gradle.properties').newDataInputStream())
 
-    // https://github.com/bintray/gradle-bintray-plugin
-    bintray {
-        user = properties.getProperty("bintray.user")
-        key = properties.getProperty("bintray.apikey")
+// https://github.com/bintray/gradle-bintray-plugin
+bintray {
+    user = project.hasProperty("bintray.user") ? properties.getProperty("bintray.user") : ""
+    key = project.hasProperty("bintray.apikey") ? properties.getProperty("bintray.apikey") : ""
+    publish = true
+    configurations = ['archives']
+    pkg {
+        repo = "maven"
+        // it is the name that appears in bintray when logged
+        name = "fishbun"
+        websiteUrl = siteUrl
+        vcsUrl = gitUrl
+        licenses = ["Apache-2.0"]
         publish = true
-        configurations = ['archives']
-        pkg {
-            repo = "maven"
-            // it is the name that appears in bintray when logged
-            name = "fishbun"
-            websiteUrl = siteUrl
-            vcsUrl = gitUrl
-            licenses = ["Apache-2.0"]
-            publish = true
-        }
-    }
-
-
-    github {
-        owner = 'sangcomz'
-        repo = 'Fishbun'
-        token = properties.get("github_access_tokens") ? properties.get("github_access_tokens") : ""
-        tagName = version
-        targetCommitish = 'master'
-        body = """## Release Note
-* glide to picasso because reduce method count
-* in view logic method to controller"""
-        name = version
     }
 }
 
+
+github {
+    owner = 'sangcomz'
+    repo = 'Fishbun'
+    token = project.hasProperty("github_access_tokens") ? properties.get("github_access_tokens") : ''
+    tagName = version
+    targetCommitish = 'master'
+    body = """## Release Note
+* glide to picasso because reduce method count
+* in view logic method to controller"""
+    name = version
+}
