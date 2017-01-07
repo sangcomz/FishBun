@@ -83,6 +83,9 @@ FishBun check permission before reading external storage.
 
 <img src="/pic/permission.png" width=40%">
 
+#Contribute
+We welcome any contributions.
+
 #License
 
     Copyright 2015 Jeong Seok-Won
