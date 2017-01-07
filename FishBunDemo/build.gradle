@@ -7,8 +7,8 @@ android {
         applicationId "com.sangcomz.fishbundemo"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 1
-        versionName '0.1'
+        versionCode gradle.versionCode
+        versionName gradle.versionName
         multiDexEnabled true
     }
     buildTypes {
