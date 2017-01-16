@@ -1,6 +1,7 @@
 language: android
 jdk: oraclejdk8
-sudo: true
+install: travis_wait 30 mvn install
+sudo: false
 
 env:
   global:
