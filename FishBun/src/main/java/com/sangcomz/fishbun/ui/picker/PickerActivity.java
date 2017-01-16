@@ -21,6 +21,7 @@ import com.sangcomz.fishbun.bean.ImageBean;
 import com.sangcomz.fishbun.bean.PickedImageBean;
 import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.permission.PermissionCheck;
+import com.sangcomz.fishbun.util.SingleMediaScanner;
 import com.sangcomz.fishbun.util.UiUtil;
 
 import java.io.File;
@@ -37,7 +38,6 @@ public class PickerActivity extends AppCompatActivity {
     private Album album;
     private int position;
     private UiUtil uiUtil = new UiUtil();
-
     private PickerGridAdapter adapter;
 
     @Override
@@ -100,9 +100,8 @@ public class PickerActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == Define.TAKE_A_PICK_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                pickerController.startFileMediaScan();
+                new SingleMediaScanner(this, new File(pickerController.getSavePath()));
                 adapter.addImage(pickerController.getSavePath());
-
             } else {
                 new File(pickerController.getSavePath()).delete();
             }

@@ -23,7 +23,7 @@ FishBun is Image Picker for android.
         jcenter()
     }
     
-    
+    ;
     dependencies {
         compile('com.sangcomz:FishBun:0.6.1@aar') {
             transitive = true

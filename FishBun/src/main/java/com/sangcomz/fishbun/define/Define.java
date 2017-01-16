@@ -23,7 +23,7 @@ public class Define {
 
     public static int ADD_PHOTO_REQUEST_CODE = 127;
     public static int TAKE_A_PICK_REQUEST_CODE = 128;
-    public static int ENTER_ALBUM_REQUEST_CODE = 128;
+    public static int ENTER_ALBUM_REQUEST_CODE = 129;
     public final static int ALBUM_REQUEST_CODE = 27;
     public final static int PERMISSION_STORAGE = 28;
     public final static int TRANS_IMAGES_RESULT_CODE = 29;

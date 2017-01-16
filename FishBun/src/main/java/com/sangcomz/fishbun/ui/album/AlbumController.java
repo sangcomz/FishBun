@@ -1,5 +1,6 @@
 package com.sangcomz.fishbun.ui.album;
 
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
@@ -13,6 +14,7 @@ import com.sangcomz.fishbun.R;
 import com.sangcomz.fishbun.bean.Album;
 import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.permission.PermissionCheck;
+import com.sangcomz.fishbun.util.CameraUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +23,7 @@ class AlbumController {
 
     private AlbumActivity albumActivity;
     private ContentResolver resolver;
+    private CameraUtil cameraUtil = new CameraUtil();
 
     AlbumController(AlbumActivity albumActivity) {
         this.albumActivity = albumActivity;
@@ -183,5 +186,19 @@ class AlbumController {
             albumActivity.setThumbnail(thumbList);
         }
 
+    }
+
+    void takePicture(Activity activity, String saveDir) {
+        cameraUtil.takePicture(activity, saveDir);
+    }
+
+    String getSavePath() {
+        return cameraUtil.getSavePath();
+    }
+
+
+    String getPathDir() {
+        return Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DCIM + "/Camera").getAbsolutePath();
     }
 }
