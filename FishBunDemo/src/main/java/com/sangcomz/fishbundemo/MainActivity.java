@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
                     .setButtonInAlbumActivity(true)
                     .setCamera(true)
                     .setReachLimitAutomaticClose(true)
+                    .setAllViewTitle("All")
                     .startAlbum();
             return true;
         }
