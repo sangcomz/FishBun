@@ -78,11 +78,16 @@ class AlbumController {
                 Cursor cursor = resolver.query(images, null,
                         selection, selectionArgs, sort);
                 if (cursor != null && cursor.moveToNext()) {
+                    //int imgId = c.getInt(c.getColumnIndex(MediaStore.MediaColumns._ID));
+                    //path = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "" + imgId);
                     path = c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA));
                     if (cursor.isLast())
                         cursor.close();
-                } else
+                } else {
                     path = c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA));
+                    //int imgId = c.getInt(c.getColumnIndex(MediaStore.MediaColumns._ID));
+                    //path = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "" + imgId);
+                }
 
             } else {
                 Log.e("id", "from else");

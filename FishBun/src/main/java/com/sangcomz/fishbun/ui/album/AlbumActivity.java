@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import android.widget.TextView;
 import com.sangcomz.fishbun.ItemDecoration.DividerItemDecoration;
 import com.sangcomz.fishbun.R;
 import com.sangcomz.fishbun.adapter.AlbumListAdapter;
@@ -36,6 +37,7 @@ public class AlbumActivity extends AppCompatActivity {
     private AlbumListAdapter adapter;
     private UiUtil uiUtil = new UiUtil();
     private RelativeLayout noAlbum;
+    private TextView progressAlbumText;
     private int defCameraAlbum = 0;
 
 
@@ -107,6 +109,8 @@ public class AlbumActivity extends AppCompatActivity {
     private void initToolBar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         noAlbum = (RelativeLayout) findViewById(R.id.no_album);
+        progressAlbumText = (TextView) findViewById(R.id.textViewProgress);
+        progressAlbumText.setText(R.string.msg_loading_image);
         setSupportActionBar(toolbar);
         toolbar.setBackgroundColor(Define.ACTIONBAR_COLOR);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -147,6 +151,7 @@ public class AlbumActivity extends AppCompatActivity {
             albumController.getThumbnail(albumList);
         } else {
             noAlbum.setVisibility(View.VISIBLE);
+            progressAlbumText.setText(R.string.msg_no_image);
         }
     }
 
