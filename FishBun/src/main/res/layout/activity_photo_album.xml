@@ -59,7 +59,7 @@
                 android:fontFamily="sans-serif-thin"
                 android:textColor="?android:textColorSecondary"
                 android:textSize="23dp"
-                android:id="@+id/textView" />
+		/>
         </LinearLayout>
 
 

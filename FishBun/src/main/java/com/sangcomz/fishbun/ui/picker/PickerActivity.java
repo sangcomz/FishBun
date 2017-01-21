@@ -2,6 +2,7 @@ package com.sangcomz.fishbun.ui.picker;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -46,7 +47,7 @@ public class PickerActivity extends AppCompatActivity {
             outState.putParcelableArrayList(Define.SAVE_INSTANCE_PICK_IMAGES, pickedImageBeans);
             outState.putString(Define.SAVE_INSTANCE_SAVED_IMAGE, pickerController.getSavePath());
             outState.putParcelableArray(Define.SAVE_INSTANCE_SAVED_IMAGE_THUMBNAILS, adapter.getImageBeans());
-            outState.putStringArrayList(Define.SAVE_INSTANCE_NEW_IMAGES, pickerController.getAddImagePaths());
+            outState.putParcelableArrayList(Define.SAVE_INSTANCE_NEW_IMAGES, pickerController.getAddImagePaths());
         } catch (Exception e) {
             Log.d(TAG, e.toString());
         }
@@ -61,7 +62,7 @@ public class PickerActivity extends AppCompatActivity {
         // Restore state members from saved instance
         try {
             pickedImageBeans = outState.getParcelableArrayList(Define.SAVE_INSTANCE_PICK_IMAGES);
-            ArrayList<String> addImages = outState.getStringArrayList(Define.SAVE_INSTANCE_NEW_IMAGES);
+            ArrayList<Uri> addImages = outState.getParcelableArrayList(Define.SAVE_INSTANCE_NEW_IMAGES);
             String savedImage = outState.getString(Define.SAVE_INSTANCE_SAVED_IMAGE);
             ImageBean[] imageBeenList = (ImageBean[]) outState.getParcelableArray(Define.SAVE_INSTANCE_SAVED_IMAGE_THUMBNAILS);
             adapter = new PickerGridAdapter(imageBeenList,
@@ -100,8 +101,9 @@ public class PickerActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == Define.TAKE_A_PICK_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                new SingleMediaScanner(this, new File(pickerController.getSavePath()));
-                adapter.addImage(pickerController.getSavePath());
+		File savedFile = new File(pickerController.getSavePath());
+                new SingleMediaScanner(this, savedFile);
+                adapter.addImage(Uri.fromFile(savedFile));
             } else {
                 new File(pickerController.getSavePath()).delete();
             }
@@ -171,7 +173,7 @@ public class PickerActivity extends AppCompatActivity {
         //only first init
         if (pickedImageBeans == null) {
             pickedImageBeans = new ArrayList<>();
-            ArrayList<String> path = getIntent().getStringArrayListExtra(Define.INTENT_PATH);
+            ArrayList<Uri> path = getIntent().getParcelableArrayListExtra(Define.INTENT_PATH);
             if (path != null) {
                 for (int i = 0; i < path.size(); i++) {
                     pickedImageBeans.add(new PickedImageBean(i + 1, path.get(i), -1));

@@ -3,6 +3,7 @@ package com.sangcomz.fishbun;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 
 import com.sangcomz.fishbun.define.Define;
@@ -26,7 +27,7 @@ public class FishBun {
 
     public static class BaseProperty implements BasePropertyImpl {
 
-        private ArrayList<String> arrayPaths = new ArrayList<>();
+        private ArrayList<Uri> arrayPaths = new ArrayList<>();
         private Activity activity = null;
         private Fragment fragment = null;
         private int requestCode = Define.ALBUM_REQUEST_CODE;
@@ -39,7 +40,7 @@ public class FishBun {
             this.fragment = fragment;
         }
 
-        public BaseProperty setArrayPaths(ArrayList<String> arrayPaths) {
+        public BaseProperty setArrayPaths(ArrayList<Uri> arrayPaths) {
             this.arrayPaths = arrayPaths;
             return baseProperty;
         }
@@ -153,7 +154,7 @@ public class FishBun {
             setMessage(context);
 
             Intent i = new Intent(context, AlbumActivity.class);
-            i.putStringArrayListExtra(Define.INTENT_PATH, arrayPaths);
+            i.putParcelableArrayListExtra(Define.INTENT_PATH, arrayPaths);
 
             if (activity != null)
                 activity.startActivityForResult(i, requestCode);
@@ -169,7 +170,7 @@ public class FishBun {
 
     interface BasePropertyImpl {
 
-        BaseProperty setArrayPaths(ArrayList<String> arrayPaths);
+        BaseProperty setArrayPaths(ArrayList<Uri> arrayPaths);
 
         BaseProperty setAlbumThumbnailSize(int size);
 

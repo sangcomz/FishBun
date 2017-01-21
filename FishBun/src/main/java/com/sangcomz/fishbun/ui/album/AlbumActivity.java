@@ -2,6 +2,7 @@ package com.sangcomz.fishbun.ui.album;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -49,10 +50,9 @@ public class AlbumActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         if (adapter != null) {
-            outState.putStringArrayList(Define.SAVE_INSTANCE_PICK_IMAGES, adapter.getPickedImagePath());
+            outState.putParcelableArrayList(Define.SAVE_INSTANCE_PICK_IMAGES, adapter.getPickedImagePath());
             outState.putParcelableArrayList(Define.SAVE_INSTANCE_ALBUM_LIST, (ArrayList<? extends Parcelable>) adapter.getAlbumList());
-            outState.putStringArrayList(Define.SAVE_INSTANCE_ALBUM_THUMB_LIST,
-                    (ArrayList<String>) adapter.getThumbList());
+            outState.putParcelableArrayList(Define.SAVE_INSTANCE_ALBUM_THUMB_LIST, (ArrayList<Uri>) adapter.getThumbList());
         }
         super.onSaveInstanceState(outState);
     }
@@ -63,8 +63,8 @@ public class AlbumActivity extends AppCompatActivity {
         super.onRestoreInstanceState(outState);
         // Restore state members from saved instance
         List<Album> albumList = outState.getParcelableArrayList(Define.SAVE_INSTANCE_ALBUM_LIST);
-        List<String> thumbList = outState.getStringArrayList(Define.SAVE_INSTANCE_ALBUM_THUMB_LIST);
-        ArrayList<String> pickedImagePath = outState.getStringArrayList(Define.SAVE_INSTANCE_PICK_IMAGES);
+        List<Uri> thumbList = outState.getParcelableArrayList(Define.SAVE_INSTANCE_ALBUM_THUMB_LIST);
+        ArrayList<Uri> pickedImagePath = outState.getParcelableArrayList(Define.SAVE_INSTANCE_PICK_IMAGES);
 
         if (albumList != null && thumbList != null && pickedImagePath != null) {
             adapter = new AlbumListAdapter(albumList, pickedImagePath);
@@ -142,9 +142,10 @@ public class AlbumActivity extends AppCompatActivity {
     }
 
     private void setAlbumListAdapter() {
-        if (adapter == null)
-            adapter = new AlbumListAdapter(albumList,
-                    getIntent().getStringArrayListExtra(Define.INTENT_PATH));
+        if (adapter == null){
+            ArrayList<Uri> data = getIntent().getParcelableArrayListExtra(Define.INTENT_PATH);
+            adapter = new AlbumListAdapter(albumList, data);
+        }
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
@@ -154,7 +155,7 @@ public class AlbumActivity extends AppCompatActivity {
         defCameraAlbum = position;
     }
 
-    protected void setThumbnail(List<String> thumbList) {
+    protected void setThumbnail(List<Uri> thumbList) {
         adapter.setThumbList(thumbList);
     }
 
@@ -172,8 +173,8 @@ public class AlbumActivity extends AppCompatActivity {
         }
     }
 
-    private void refreshList(int position, ArrayList<String> imagePath) {
-        List<String> thumbList = adapter.getThumbList();
+    private void refreshList(int position, ArrayList<Uri> imagePath) {
+        List<Uri> thumbList = adapter.getThumbList();
         if (imagePath.size() > 0) {
             if (position == 0) {
                 albumList.get(position).counter += imagePath.size();
@@ -217,7 +218,7 @@ public class AlbumActivity extends AppCompatActivity {
                     Snackbar.make(recyclerView, Define.MESSAGE_NOTHING_SELECTED, Snackbar.LENGTH_SHORT).show();
                 } else {
                     Intent i = new Intent();
-                    i.putStringArrayListExtra(Define.INTENT_PATH, adapter.getPickedImagePath());
+                    i.putParcelableArrayListExtra(Define.INTENT_PATH, adapter.getPickedImagePath());
                     setResult(RESULT_OK, i);
                     finish();
                 }
@@ -236,8 +237,8 @@ public class AlbumActivity extends AppCompatActivity {
                 setResult(RESULT_OK, data);
                 finish();
             } else if (resultCode == Define.TRANS_IMAGES_RESULT_CODE) {
-                ArrayList<String> path = data.getStringArrayListExtra(Define.INTENT_PATH);
-                ArrayList<String> addPath = data.getStringArrayListExtra(Define.INTENT_ADD_PATH);
+                ArrayList<Uri> path = data.getParcelableArrayListExtra(Define.INTENT_PATH);
+                ArrayList<Uri> addPath = data.getParcelableArrayListExtra(Define.INTENT_ADD_PATH);
                 int position = data.getIntExtra(Define.INTENT_POSITION, -1);
                 refreshList(position, addPath);
                 if (adapter != null)

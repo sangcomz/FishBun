@@ -2,6 +2,7 @@ package com.sangcomz.fishbun.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,8 +26,8 @@ public class AlbumListAdapter
         extends RecyclerView.Adapter<AlbumListAdapter.ViewHolder> {
 
     private List<Album> albumList;
-    private List<String> thumbList = new ArrayList<>();
-    private ArrayList<String> pickedImagePath;
+    private List<Uri> thumbList = new ArrayList<>();
+    private ArrayList<Uri> pickedImagePath;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -47,7 +48,7 @@ public class AlbumListAdapter
         }
     }
 
-    public AlbumListAdapter(List<Album> albumList, ArrayList<String> pickedImagePath) {
+    public AlbumListAdapter(List<Album> albumList, ArrayList<Uri> pickedImagePath) {
         this.albumList = albumList;
         this.pickedImagePath = pickedImagePath;
     }
@@ -59,7 +60,7 @@ public class AlbumListAdapter
         return new ViewHolder(view);
     }
 
-    public void setThumbList(List<String> thumbList) {
+    public void setThumbList(List<Uri> thumbList) {
         this.thumbList = thumbList;
         notifyDataSetChanged();
     }
@@ -70,7 +71,7 @@ public class AlbumListAdapter
         if (thumbList != null && thumbList.size() > position) {
             Picasso
                     .with(holder.imgAlbum.getContext())
-                    .load(new File(thumbList.get(position)))
+                    .load(thumbList.get(position))
                     .fit()
                     .centerCrop()
                     .into(holder.imgAlbum);
@@ -89,7 +90,7 @@ public class AlbumListAdapter
                 i.putExtra("album", a);
                 i.putExtra("album_title", albumList.get(position).bucketName);
                 i.putExtra("position", position);
-                i.putStringArrayListExtra(Define.INTENT_PATH, pickedImagePath);
+                i.putParcelableArrayListExtra(Define.INTENT_PATH, pickedImagePath);
                 ((Activity) holder.areaAlbum.getContext()).startActivityForResult(i, Define.ENTER_ALBUM_REQUEST_CODE);
             }
         });
@@ -100,11 +101,11 @@ public class AlbumListAdapter
         return albumList.size();
     }
 
-    public ArrayList<String> getPickedImagePath() {
+    public ArrayList<Uri> getPickedImagePath() {
         return pickedImagePath;
     }
 
-    public void setPickedImagePath(ArrayList<String> pickedImagePath) {
+    public void setPickedImagePath(ArrayList<Uri> pickedImagePath) {
         this.pickedImagePath = pickedImagePath;
     }
 
@@ -112,7 +113,7 @@ public class AlbumListAdapter
         return albumList;
     }
 
-    public List<String> getThumbList() {
+    public List<Uri> getThumbList() {
         return thumbList;
     }
 }
