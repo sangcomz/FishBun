@@ -10,7 +10,6 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 
-import com.sangcomz.fishbun.R;
 import com.sangcomz.fishbun.bean.Album;
 import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.permission.PermissionCheck;
@@ -118,7 +117,7 @@ class AlbumController {
                 int bucketColumnId = imageCursor
                         .getColumnIndex(MediaStore.Images.Media.BUCKET_ID);
                 albumList = new ArrayList<>();
-                Album totalAlbum = new Album(0, albumActivity.getString(R.string.str_all_view), 0);
+                Album totalAlbum = new Album(0, Define.ALL_VIEW_TITLE, 0);
 
                 albumList.add(totalAlbum);
 

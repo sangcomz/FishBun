@@ -35,6 +35,7 @@ public class Define {
 
     public static String MESSAGE_NOTHING_SELECTED = "";
     public static String MESSAGE_LIMIT_REACHED = "";
+    public static String ALL_VIEW_TITLE = "";
 
 
     public static final String SAVE_INSTANCE_ALBUM_LIST = "instance_album_list";
