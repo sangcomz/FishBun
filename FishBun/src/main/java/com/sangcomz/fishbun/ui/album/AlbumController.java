@@ -117,7 +117,7 @@ class AlbumController {
                 int bucketColumnId = imageCursor
                         .getColumnIndex(MediaStore.Images.Media.BUCKET_ID);
                 albumList = new ArrayList<>();
-                Album totalAlbum = new Album(0, Define.ALL_VIEW_TITLE, 0);
+                Album totalAlbum = new Album(0, Define.TITLE_ALBUM_ALL_VIEW, 0);
 
                 albumList.add(totalAlbum);
 

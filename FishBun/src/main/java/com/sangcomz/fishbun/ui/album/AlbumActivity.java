@@ -36,11 +36,14 @@ import java.util.List;
 public class AlbumActivity extends AppCompatActivity {
     private AlbumController albumController;
     private ArrayList<Album> albumList = new ArrayList<>();
-    private RecyclerView recyclerView;
-    private LinearLayout areaCamera;
+
+    private RecyclerView recyclerAlbumList;
+    private LinearLayout linearAlbumCamera;
+    private RelativeLayout relAlbumEmpty;
+
     private AlbumListAdapter adapter;
     private UiUtil uiUtil = new UiUtil();
-    private RelativeLayout noAlbum;
+
     private int defCameraAlbum = 0;
 
 
@@ -83,20 +86,20 @@ public class AlbumActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (recyclerView != null &&
-                recyclerView.getLayoutManager() != null) {
+        if (recyclerAlbumList != null &&
+                recyclerAlbumList.getLayoutManager() != null) {
             if (UiUtil.isLandscape(this))
-                ((GridLayoutManager) recyclerView.getLayoutManager())
+                ((GridLayoutManager) recyclerAlbumList.getLayoutManager())
                         .setSpanCount(Define.ALBUM_LANDSCAPE_SPAN_COUNT);
             else
-                ((GridLayoutManager) recyclerView.getLayoutManager())
+                ((GridLayoutManager) recyclerAlbumList.getLayoutManager())
                         .setSpanCount(Define.ALBUM_PORTRAIT_SPAN_COUNT);
         }
     }
 
     private void initView() {
-        areaCamera = (LinearLayout) findViewById(R.id.area_camera);
-        areaCamera.setOnClickListener(new View.OnClickListener() {
+        linearAlbumCamera = (LinearLayout) findViewById(R.id.lin_album_camera);
+        linearAlbumCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 albumController.takePicture(AlbumActivity.this, albumController.getPathDir());
@@ -107,7 +110,7 @@ public class AlbumActivity extends AppCompatActivity {
 
 
     private void initRecyclerView() {
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
+        recyclerAlbumList = (RecyclerView) findViewById(R.id.recycler_album_list);
 
         GridLayoutManager layoutManager;
         if (UiUtil.isLandscape(this))
@@ -115,22 +118,28 @@ public class AlbumActivity extends AppCompatActivity {
         else
             layoutManager = new GridLayoutManager(this, Define.ALBUM_PORTRAIT_SPAN_COUNT);
 
-        if (recyclerView != null) {
-            recyclerView.setLayoutManager(layoutManager);
+        if (recyclerAlbumList != null) {
+            recyclerAlbumList.setLayoutManager(layoutManager);
         }
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+        recyclerAlbumList.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
     }
 
     private void initToolBar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        noAlbum = (RelativeLayout) findViewById(R.id.no_album);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_album_bar);
+        relAlbumEmpty = (RelativeLayout) findViewById(R.id.rel_album_empty);
         setSupportActionBar(toolbar);
-        toolbar.setBackgroundColor(Define.ACTIONBAR_COLOR);
+
+
+        toolbar.setBackgroundColor(Define.COLOR_ACTION_BAR);
+        toolbar.setTitleTextColor(Define.COLOR_ACTION_BAR_TITLE_COLOR);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             uiUtil.setStatusBarColor(this);
         }
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(Define.TITLE_ACTIONBAR);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void initController() {
@@ -141,7 +150,7 @@ public class AlbumActivity extends AppCompatActivity {
         if (adapter == null)
             adapter = new AlbumListAdapter(albumList,
                     getIntent().getStringArrayListExtra(Define.INTENT_PATH));
-        recyclerView.setAdapter(adapter);
+        recyclerAlbumList.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
 
@@ -158,12 +167,12 @@ public class AlbumActivity extends AppCompatActivity {
     protected void setAlbumList(ArrayList<Album> albumList) {
         this.albumList = albumList;
         if (albumList.size() > 0) {
-            noAlbum.setVisibility(View.GONE);
+            relAlbumEmpty.setVisibility(View.GONE);
             initRecyclerView();
             setAlbumListAdapter();
             albumController.getThumbnail(albumList);
         } else {
-            noAlbum.setVisibility(View.VISIBLE);
+            relAlbumEmpty.setVisibility(View.VISIBLE);
         }
     }
 
@@ -209,7 +218,7 @@ public class AlbumActivity extends AppCompatActivity {
         } else if (id == R.id.action_ok) {
             if (adapter != null) {
                 if (adapter.getPickedImagePath().size() == 0) {
-                    Snackbar.make(recyclerView, Define.MESSAGE_NOTHING_SELECTED, Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(recyclerAlbumList, Define.MESSAGE_NOTHING_SELECTED, Snackbar.LENGTH_SHORT).show();
                 } else {
                     Intent i = new Intent();
                     i.putStringArrayListExtra(Define.INTENT_PATH, adapter.getPickedImagePath());

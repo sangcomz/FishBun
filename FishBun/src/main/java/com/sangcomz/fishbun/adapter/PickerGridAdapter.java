@@ -37,13 +37,13 @@ public class PickerGridAdapter
     public class ViewHolderImage extends ViewHolder {
 
 
-        ImageView imgPhoto;
-        SquareTextView txtPickCount;
+        ImageView imgThumbImage;
+        SquareTextView txtThumbCount;
 
         public ViewHolderImage(View view) {
             super(view);
-            imgPhoto = (ImageView) view.findViewById(R.id.img_thum);
-            txtPickCount = (SquareTextView) view.findViewById(R.id.txt_pick_count);
+            imgThumbImage = (ImageView) view.findViewById(R.id.img_thumb_image);
+            txtThumbCount = (SquareTextView) view.findViewById(R.id.txt_thumb_count);
         }
     }
 
@@ -54,7 +54,7 @@ public class PickerGridAdapter
 
         public ViewHolderHeader(View view) {
             super(view);
-            header = (RelativeLayout) itemView.findViewById(R.id.area_header);
+            header = (RelativeLayout) itemView.findViewById(R.id.rel_header_area);
         }
     }
 
@@ -78,14 +78,13 @@ public class PickerGridAdapter
         }
 
         view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.thum_item, parent, false);
+                .inflate(R.layout.thumb_item, parent, false);
         return new ViewHolderImage(view);
     }
 
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-
         if (holder instanceof ViewHolderHeader) {
             final ViewHolderHeader vh = (ViewHolderHeader) holder;
             vh.header.setOnClickListener(new View.OnClickListener() {
@@ -122,31 +121,32 @@ public class PickerGridAdapter
 
 
             if (imageBean.getImgOrder() != -1) {
-                vh.txtPickCount.setVisibility(View.VISIBLE);
+                vh.txtThumbCount.setVisibility(View.VISIBLE);
                 if (Define.ALBUM_PICKER_COUNT == 1)
-                    vh.txtPickCount.setText("");
+                    vh.txtThumbCount.setText("");
                 else
-                    vh.txtPickCount.setText(String.valueOf(imageBean.getImgOrder()));
+                    vh.txtThumbCount.setText(String.valueOf(imageBean.getImgOrder()));
             } else
-                vh.txtPickCount.setVisibility(View.GONE);
+                vh.txtThumbCount.setVisibility(View.GONE);
 
 
             if (imgPath != null && !imgPath.equals("")) {
+                vh.imgThumbImage.setImageDrawable(null);
                 Picasso
-                        .with(vh.imgPhoto.getContext())
+                        .with(vh.imgThumbImage.getContext())
                         .load(new File(imgPath))
                         .fit()
                         .centerCrop()
-                        .into(vh.imgPhoto);
+                        .into(vh.imgThumbImage);
             }
 
 
-            vh.imgPhoto.setOnClickListener(new View.OnClickListener() {
+            vh.imgThumbImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (vh.txtPickCount.getVisibility() == View.GONE &&
+                    if (vh.txtThumbCount.getVisibility() == View.GONE &&
                             Define.ALBUM_PICKER_COUNT > pickedImageBeans.size()) {
-                        vh.txtPickCount.setVisibility(View.VISIBLE);
+                        vh.txtThumbCount.setVisibility(View.VISIBLE);
                         pickedImageBeans.add(new PickedImageBean(pickedImageBeans.size() + 1, imgPath, imagePos));
 
                         pickerController.setToolbarTitle(pickedImageBeans.size());
@@ -156,21 +156,21 @@ public class PickerGridAdapter
                         }
 
                         if (Define.ALBUM_PICKER_COUNT == 1)
-                            vh.txtPickCount.setText("");
+                            vh.txtThumbCount.setText("");
                         else
-                            vh.txtPickCount.setText(String.valueOf(pickedImageBeans.size()));
+                            vh.txtThumbCount.setText(String.valueOf(pickedImageBeans.size()));
 
                         imageBean.setImgOrder(pickedImageBeans.size());
 
-                    } else if (vh.txtPickCount.getVisibility() == View.VISIBLE) {
+                    } else if (vh.txtThumbCount.getVisibility() == View.VISIBLE) {
                         pickerController.setRecyclerViewClickable(false);
                         pickedImageBeans.remove(imageBean.getImgOrder() - 1);
                         if (Define.ALBUM_PICKER_COUNT != 1)
-                            setOrder(Integer.valueOf(vh.txtPickCount.getText().toString()) - 1);
+                            setOrder(Integer.valueOf(vh.txtThumbCount.getText().toString()) - 1);
                         else
                             setOrder(0);
                         imageBean.setImgOrder(-1);
-                        vh.txtPickCount.setVisibility(View.GONE);
+                        vh.txtThumbCount.setVisibility(View.GONE);
                         pickerController.setToolbarTitle(pickedImageBeans.size());
                     } else {
                         Snackbar.make(v, Define.MESSAGE_LIMIT_REACHED, Snackbar.LENGTH_SHORT).show();
@@ -204,9 +204,9 @@ public class PickerGridAdapter
                 imageBeans[pickedImageBeans.get(i).getImgPosition()]
                         .setImgOrder(i + 1);
                 if (isHeader)
-                    notifyItemChanged(pickedImageBeans.get(i).getImgPosition() + 1); //if use header +1
+                    notifyDataSetChanged();
                 else
-                    notifyItemChanged(pickedImageBeans.get(i).getImgPosition()); //if don't use header
+                    notifyDataSetChanged();
             }
         }
         new Handler().postDelayed(new Runnable() {

@@ -14,10 +14,9 @@ public class Define {
     public static boolean IS_AUTOMATIC_CLOSE = false;
 
 
-    //    public static int ACTIONBAR_COLOR = "#3F51B5";
-    public static int ACTIONBAR_COLOR = Color.parseColor("#3F51B5");
-    //    public static int STATUS_BAR_COLOR = "#303F9F";
-    public static int STATUS_BAR_COLOR = Color.parseColor("#303F9F");
+    public static int COLOR_ACTION_BAR = Color.parseColor("#3F51B5");
+    public static int COLOR_ACTION_BAR_TITLE_COLOR = Color.parseColor("#ffffff");
+    public static int COLOR_STATUS_BAR = Color.parseColor("#303F9F");
 
     public static boolean IS_CAMERA = false;
 
@@ -35,7 +34,8 @@ public class Define {
 
     public static String MESSAGE_NOTHING_SELECTED = "";
     public static String MESSAGE_LIMIT_REACHED = "";
-    public static String ALL_VIEW_TITLE = "";
+    public static String TITLE_ALBUM_ALL_VIEW = "";
+    public static String TITLE_ACTIONBAR = "";
 
 
     public static final String SAVE_INSTANCE_ALBUM_LIST = "instance_album_list";
