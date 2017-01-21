@@ -1,5 +1,6 @@
 package com.sangcomz.fishbun.ui.picker;
 
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
@@ -16,29 +17,27 @@ import com.sangcomz.fishbun.bean.ImageBean;
 import com.sangcomz.fishbun.bean.PickedImageBean;
 import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.permission.PermissionCheck;
+import com.sangcomz.fishbun.util.CameraUtil;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Created by sangc on 2015-11-05.
  */
 public class PickerController {
-    PickerActivity pickerActivity;
+    private PickerActivity pickerActivity;
     private RecyclerView recyclerView;
     private RecyclerView.OnItemTouchListener OnItemTouchListener;
     private ArrayList<String> addImagePaths = new ArrayList<>();
-    private String savePath;
     private ContentResolver resolver;
+    private CameraUtil cameraUtil = new CameraUtil();
     private String pathDir = "";
 
 
     PickerController(PickerActivity pickerActivity, RecyclerView recyclerView) {
         this.pickerActivity = pickerActivity;
         this.recyclerView = recyclerView;
+
         resolver = pickerActivity.getContentResolver();
 
         OnItemTouchListener = new RecyclerView.OnItemTouchListener() {
@@ -70,64 +69,32 @@ public class PickerController {
 
     }
 
+    public void takePicture(Activity activity, String saveDir) {
+        cameraUtil.takePicture(activity, saveDir);
+    }
+
 
     public void setToolbarTitle(int total) {
         pickerActivity.showToolbarTitle(total);
     }
 
-    public void takePicture(String saveDir) {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-        if (takePictureIntent.resolveActivity(pickerActivity.getPackageManager()) != null) {
-            // Create the File where the photo should go
-            File photoFile = null;
-            try {
-                photoFile = createImageFile(saveDir); //make a file
-                setSavePath(photoFile.getAbsolutePath());
-            } catch (IOException ex) {
-                ex.printStackTrace();
-                // Error occurred while creating the File
-            }
-            // Continue only if the File was successfully created
-            if (photoFile != null) {
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-                        Uri.fromFile(photoFile));
-//                Log.d("photoFile path ", String.valueOf(photoFile));
-                pickerActivity.startActivityForResult(takePictureIntent, Define.TAKE_A_PICK_REQUEST_CODE);
-            }
-        }
+    String getSavePath() {
+        return cameraUtil.getSavePath();
     }
 
-    private File createImageFile(String saveDir) throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = new File(saveDir);
-        return File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-    }
-
-
-    protected String getSavePath() {
-        return savePath;
-    }
-
-    protected void setSavePath(String savePath) {
-        this.savePath = savePath;
+    void setSavePath(String savePath) {
+        cameraUtil.setSavePath(savePath);
     }
 
     public void setAddImagePath(String imagePath) {
         this.addImagePaths.add(imagePath);
     }
 
-    protected ArrayList<String> getAddImagePaths() {
+    ArrayList<String> getAddImagePaths() {
         return addImagePaths;
     }
 
-    public void setAddImagePaths(ArrayList<String> addImagePaths) {
+    void setAddImagePaths(ArrayList<String> addImagePaths) {
         this.addImagePaths = addImagePaths;
     }
 
@@ -143,7 +110,7 @@ public class PickerController {
 
     }
 
-    protected void transImageFinish(ArrayList<PickedImageBean> pickedImageBeans, int position) {
+    void transImageFinish(ArrayList<PickedImageBean> pickedImageBeans, int position) {
         ArrayList<String> path = new ArrayList<>();
         for (int i = 0; i < pickedImageBeans.size(); i++) {
             path.add(pickedImageBeans.get(i).getImgPath());
@@ -156,7 +123,7 @@ public class PickerController {
         pickerActivity.finish();
     }
 
-    protected boolean checkPermission() {
+    boolean checkPermission() {
         PermissionCheck permissionCheck = new PermissionCheck(pickerActivity);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (permissionCheck.CheckStoragePermission())
@@ -166,12 +133,8 @@ public class PickerController {
         return false;
     }
 
-    //MediaScanning
-    public void startFileMediaScan() {
-        pickerActivity.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + getSavePath())));
-    }
 
-    protected void displayImage(Long bucketId) {
+    void displayImage(Long bucketId) {
         new DisplayImage(bucketId).execute();
     }
 
@@ -191,11 +154,6 @@ public class PickerController {
         protected void onPostExecute(ImageBean[] result) {
             super.onPostExecute(result);
             pickerActivity.setAdapter(result);
-//            if (adapter == null)
-//                adapter = new PickerGridAdapter(
-//                        result, pickedImageBeans, pickerController);
-//            recyclerView.setAdapter(adapter);
-//            showToolbarTitle(pickedImageBeans.size());
         }
     }
 

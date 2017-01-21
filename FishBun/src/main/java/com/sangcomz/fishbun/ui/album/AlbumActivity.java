@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import android.widget.TextView;
@@ -24,8 +25,11 @@ import com.sangcomz.fishbun.adapter.AlbumListAdapter;
 import com.sangcomz.fishbun.bean.Album;
 import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.permission.PermissionCheck;
+import com.sangcomz.fishbun.util.ScanListener;
+import com.sangcomz.fishbun.util.SingleMediaScanner;
 import com.sangcomz.fishbun.util.UiUtil;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +38,7 @@ public class AlbumActivity extends AppCompatActivity {
     private AlbumController albumController;
     private ArrayList<Album> albumList = new ArrayList<>();
     private RecyclerView recyclerView;
+    private LinearLayout areaCamera;
     private AlbumListAdapter adapter;
     private UiUtil uiUtil = new UiUtil();
     private RelativeLayout noAlbum;
@@ -71,8 +76,8 @@ public class AlbumActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_album);
+        initView();
         initController();
-        initToolBar();
         if (albumController.checkPermission())
             albumController.getAlbumList();
     }
@@ -90,6 +95,18 @@ public class AlbumActivity extends AppCompatActivity {
                         .setSpanCount(Define.ALBUM_PORTRAIT_SPAN_COUNT);
         }
     }
+
+    private void initView() {
+        areaCamera = (LinearLayout) findViewById(R.id.area_camera);
+        areaCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                albumController.takePicture(AlbumActivity.this, albumController.getPathDir());
+            }
+        });
+        initToolBar();
+    }
+
 
     private void initRecyclerView() {
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
@@ -142,8 +159,8 @@ public class AlbumActivity extends AppCompatActivity {
     }
 
 
-    protected void setAlbumList(ArrayList<Album> _albumList) {
-        albumList = _albumList;
+    protected void setAlbumList(ArrayList<Album> albumList) {
+        this.albumList = albumList;
         if (albumList.size() > 0) {
             noAlbum.setVisibility(View.GONE);
             initRecyclerView();
@@ -225,6 +242,17 @@ public class AlbumActivity extends AppCompatActivity {
                 refreshList(position, addPath);
                 if (adapter != null)
                     adapter.setPickedImagePath(path);
+            }
+        } else if (requestCode == Define.TAKE_A_PICK_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                new SingleMediaScanner(this, new File(albumController.getSavePath()), new ScanListener() {
+                    @Override
+                    protected void onScanCompleted() {
+                        albumController.getAlbumList();
+                    }
+                });
+            } else {
+                new File(albumController.getSavePath()).delete();
             }
         }
     }

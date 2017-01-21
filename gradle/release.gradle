@@ -97,10 +97,10 @@ if (project.rootProject.file('local.properties').isFile()){
         repo = 'Fishbun'
         token = project.hasProperty("github_access_tokens") ? properties.get("github_access_tokens") : " "
         tagName = version
-        targetCommitish = 'master'
+        targetCommitish = 'dev'
         body = """## Release Note
-* glide to picasso because reduce method count
-* in view logic method to controller"""
+* FishBun Demo Icon Update
+* Support Library Update"""
         name = version
     }
 }

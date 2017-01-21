@@ -6,8 +6,10 @@
 [![Download](https://api.bintray.com/packages/sangcomz/maven/fishbun/images/download.svg)](https://bintray.com/sangcomz/maven/fishbun/_latestVersion)
 
 <a href="http://www.methodscount.com/?lib=com.sangcomz%3AFishBun%3A0.6.1"><img src="https://img.shields.io/badge/Methods and size-core: 461 | deps: 24948 | 95 KB-e91e63.svg"/></a>
-##What is FishBun
+
 FishBun is Image Picker for android.
+
+<img src="/pic/fishbuns.png">
 
 ##What's New 0.6.1 FishBun
 
@@ -21,7 +23,7 @@ FishBun is Image Picker for android.
         jcenter()
     }
     
-    
+    ;
     dependencies {
         compile('com.sangcomz:FishBun:0.6.1@aar') {
             transitive = true
@@ -80,6 +82,9 @@ you can use also this
 FishBun check permission before reading external storage.
 
 <img src="/pic/permission.png" width=40%">
+
+#Contribute
+We welcome any contributions.
 
 #License
 

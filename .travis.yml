@@ -1,20 +1,30 @@
 language: android
 jdk: oraclejdk8
-sudo: false
+sudo: required
 
 env:
   global:
-    - ANDROID_TARGET=android-15
+    - ANDROID_TARGET=android-25
     - ANDROID_ABI=armeabi-v7a
 
 android:
   components:
   - tools
   - platform-tools
-  - build-tools-24.0.2
-  - android-24
+  - build-tools-25.0.2
   - extra-android-m2repository
   - sys-img-${ANDROID_ABI}-${ANDROID_TARGET}
+  - android-25
+  - android-24
+  - android-23
+  - android-22
+  - android-21
+  - android-20
+  - android-19
+  - android-18
+  - android-17
+  - android-16
+  - android-15
 
 notifications:
   email: true

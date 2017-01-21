@@ -1,5 +1,6 @@
 package com.sangcomz.fishbun.adapter;
 
+import android.app.Activity;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
@@ -90,7 +91,7 @@ public class PickerGridAdapter
             vh.header.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    pickerController.takePicture(saveDir);
+                    pickerController.takePicture((Activity) vh.header.getContext(), saveDir);
                 }
             });
         }

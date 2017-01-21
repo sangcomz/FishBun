@@ -35,25 +35,31 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
+            android:id="@+id/area_camera"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
             android:orientation="vertical">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:background="@drawable/ic_photo_library_white_100dp" />
+                android:background="@drawable/ic_add_a_photo_gray_100dp" />
 
             <TextView
                     android:id="@+id/textViewProgress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:gravity="center"
                 android:text="@string/msg_loading_image"
+                android:fontFamily="sans-serif-thin"
                 android:textColor="?android:textColorSecondary"
-                android:textSize="23dp" />
+                android:textSize="23dp"
+                android:id="@+id/textView" />
         </LinearLayout>
 
 

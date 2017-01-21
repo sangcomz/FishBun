@@ -3,7 +3,7 @@ apply plugin: 'jacoco-android'
 
 buildscript {
     ext {
-        support_version = '24.2.0'
+        support_version = '25.1.0'
         picasso_version = '2.5.2'
     }
 
@@ -22,19 +22,17 @@ buildscript {
 
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "24.0.2"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
 
     lintOptions {
         abortOnError false
     }
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 24
+        targetSdkVersion 25
         versionCode gradle.versionCode
         versionName gradle.versionName
-
-
     }
     buildTypes {
         release {
