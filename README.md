@@ -11,9 +11,14 @@ FishBun is Image Picker for android.
 
 <img src="/pic/fishbuns.png">
 
-##What's New 0.6.1 FishBun
+##What's New 0.6.2 FishBun
 
-####● Glide to Picasso
+####● New feature setActionBarTitleColor
+####● New feature setAllViewTitle
+####● New feature setActionBarTitle
+####● Add Proguard
+####● Change image path from String to Uri
+####● Fix Android N Bug
 
 ##How to Use FishBun
 
@@ -25,7 +30,7 @@ FishBun is Image Picker for android.
     
     ;
     dependencies {
-        compile('com.sangcomz:FishBun:0.6.1@aar') {
+        compile('com.sangcomz:FishBun:0.6.2@aar') {
             transitive = true
         }
     }
@@ -59,19 +64,19 @@ and add OnActivityResult
 you can use also this
 
             FishBun.with(MainActivity.this)
-                    .setAlbumThumnaliSize(150)//you can resize album thumnail size
-                    .setActionBarColor(Color.BLACK, Color.BLUE) // actionBar and StatusBar color
-            //        .setActionBarColor(Color.BLACK)           // only actionbar color
-                    .setPickerCount(12)//you can restrict photo count
-                    .setArrayPaths(path)//you can choice again.
-                    .setPickerSpanCount(5)
-                    .setRequestCode(11) //request code is 11. default == Define.ALBUM_REQUEST_CODE(27)
-                    .setCamera(true)//you can use camera
+                    .setPickerCount(20)
+                    .setPickerSpanCount(3)
+                    .setActionBarColor(Color.parseColor("#3F51B5"), Color.parseColor("#303F9F"))
+                    .setActionBarTitleColor(Color.parseColor("#000000"))
                     .textOnImagesSelectionLimitReached("Limit Reached!")
                     .textOnNothingSelected("Nothing Selected")
-                    .setButtonInAlbumActiviy(true)
-                    .setReachLimitAutomaticClose(true)
+                    .setArrayPaths(path)
                     .setAlbumSpanCount(2, 4)
+                    .setButtonInAlbumActivity(true)
+                    .setCamera(true)
+                    .setReachLimitAutomaticClose(true)
+                    .setAllViewTitle("All")
+                    .setActionBarTitle("Image Library")
                     .startAlbum();
 
 
@@ -88,7 +93,7 @@ We welcome any contributions.
 
 #License
 
-    Copyright 2015 Jeong Seok-Won
+    Copyright 2017 Jeong Seok-Won
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
