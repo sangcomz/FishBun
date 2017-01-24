@@ -135,6 +135,12 @@ public class FishBun {
             return baseProperty;
         }
 
+        @Override
+        public BaseProperty setAllViewTitle(String allViewTitle) {
+            Define.ALL_VIEW_TITLE = allViewTitle;
+            return baseProperty;
+        }
+
         public void startAlbum() {
             Context context = null;
             if (activity != null)
@@ -151,7 +157,7 @@ public class FishBun {
             if (Define.ALBUM_THUMBNAIL_SIZE == -1)
                 Define.ALBUM_THUMBNAIL_SIZE = (int) context.getResources().getDimension(R.dimen.album_thum_size);
 
-            setMessage(context);
+            setDefaultMessage(context);
 
             Intent i = new Intent(context, AlbumActivity.class);
             i.putParcelableArrayListExtra(Define.INTENT_PATH, arrayPaths);
@@ -200,16 +206,21 @@ public class FishBun {
 
         BaseProperty setAlbumSpanCountOnlPortrait(int portraitSpanCount);
 
+        BaseProperty setAllViewTitle(String allViewTitle);
+
         void startAlbum();
     }
 
 
-    private static void setMessage(Context context) {
+    private static void setDefaultMessage(Context context) {
         if (Define.MESSAGE_NOTHING_SELECTED.equals(""))
             Define.MESSAGE_NOTHING_SELECTED = context.getResources().getString(R.string.msg_no_slected);
 
         if (Define.MESSAGE_LIMIT_REACHED.equals(""))
             Define.MESSAGE_LIMIT_REACHED = context.getResources().getString(R.string.msg_full_image);
+
+        if (Define.ALL_VIEW_TITLE.equals(""))
+            Define.ALL_VIEW_TITLE = context.getResources().getString(R.string.str_all_view);
     }
 
 }
