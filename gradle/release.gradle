@@ -97,7 +97,7 @@ if (project.rootProject.file('local.properties').isFile()){
         repo = 'Fishbun'
         token = project.hasProperty("github_access_tokens") ? properties.get("github_access_tokens") : " "
         tagName = version
-        targetCommitish = 'dev'
+        targetCommitish = 'master'
         body = """## Release Note
 * FishBun Demo Icon Update
 * Support Library Update
