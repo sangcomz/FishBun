@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
                     .setPickerCount(20)
                     .setPickerSpanCount(3)
                     .setActionBarColor(Color.parseColor("#3F51B5"), Color.parseColor("#303F9F"))
+                    .setActionBarTitleColor(Color.parseColor("#000000"))
                     .textOnImagesSelectionLimitReached("Limit Reached!")
                     .textOnNothingSelected("Nothing Selected")
                     .setArrayPaths(path)
@@ -79,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
                     .setCamera(true)
                     .setReachLimitAutomaticClose(true)
                     .setAllViewTitle("All")
+                    .setActionBarTitle("Image Library")
                     .startAlbum();
             return true;
         }

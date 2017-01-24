@@ -22,7 +22,7 @@ public class UiUtil {
 
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
-        window.setStatusBarColor(Define.STATUS_BAR_COLOR);
+        window.setStatusBarColor(Define.COLOR_STATUS_BAR);
     }
 
     public static boolean isLandscape(Context context) {

@@ -5,7 +5,7 @@
     android:layout_margin="0.3dp">
 
     <RelativeLayout
-        android:id="@+id/area_thum"
+        android:id="@+id/rel_thumb_area"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#d9d9d9">
@@ -17,7 +17,7 @@
             android:background="@drawable/ic_photo_white_24dp" />
 
         <com.sangcomz.fishbun.util.SquareImageView
-            android:id="@+id/img_thum"
+            android:id="@+id/img_thumb_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
@@ -25,11 +25,11 @@
     </RelativeLayout>
 
     <com.sangcomz.fishbun.util.SquareTextView
-        android:id="@+id/txt_pick_count"
+        android:id="@+id/txt_thumb_count"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignBottom="@+id/area_thum"
-        android:layout_alignTop="@+id/area_thum"
+        android:layout_alignBottom="@+id/rel_thumb_area"
+        android:layout_alignTop="@+id/rel_thumb_area"
         android:background="#bb000000"
         android:gravity="center"
         android:maxLines="1"

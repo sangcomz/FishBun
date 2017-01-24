@@ -69,14 +69,20 @@ public class FishBun {
 
         @Override
         public BaseProperty setActionBarColor(int actionbarColor) {
-            Define.ACTIONBAR_COLOR = actionbarColor;
+            Define.COLOR_ACTION_BAR = actionbarColor;
+            return baseProperty;
+        }
+
+        @Override
+        public BaseProperty setActionBarTitleColor(int actionbarTitleColor) {
+            Define.COLOR_ACTION_BAR_TITLE_COLOR = actionbarTitleColor;
             return baseProperty;
         }
 
         @Override
         public BaseProperty setActionBarColor(int actionbarColor, int statusBarColor) {
-            Define.ACTIONBAR_COLOR = actionbarColor;
-            Define.STATUS_BAR_COLOR = statusBarColor;
+            Define.COLOR_ACTION_BAR = actionbarColor;
+            Define.COLOR_STATUS_BAR = statusBarColor;
             return baseProperty;
         }
 
@@ -137,7 +143,13 @@ public class FishBun {
 
         @Override
         public BaseProperty setAllViewTitle(String allViewTitle) {
-            Define.ALL_VIEW_TITLE = allViewTitle;
+            Define.TITLE_ALBUM_ALL_VIEW = allViewTitle;
+            return baseProperty;
+        }
+
+        @Override
+        public BaseProperty setActionBarTitle(String actionBarTitle) {
+            Define.TITLE_ACTIONBAR = actionBarTitle;
             return baseProperty;
         }
 
@@ -186,6 +198,8 @@ public class FishBun {
 
         BaseProperty setActionBarColor(int actionbarColor);
 
+        BaseProperty setActionBarTitleColor(int actionbarTitleColor);
+
         BaseProperty setActionBarColor(int actionbarColor, int statusbarColor);
 
         BaseProperty setCamera(boolean isCamera);
@@ -208,19 +222,24 @@ public class FishBun {
 
         BaseProperty setAllViewTitle(String allViewTitle);
 
+        BaseProperty setActionBarTitle(String actionBarTitle);
+
         void startAlbum();
     }
 
 
     private static void setDefaultMessage(Context context) {
         if (Define.MESSAGE_NOTHING_SELECTED.equals(""))
-            Define.MESSAGE_NOTHING_SELECTED = context.getResources().getString(R.string.msg_no_slected);
+            Define.MESSAGE_NOTHING_SELECTED = context.getResources().getString(R.string.msg_no_selected);
 
         if (Define.MESSAGE_LIMIT_REACHED.equals(""))
             Define.MESSAGE_LIMIT_REACHED = context.getResources().getString(R.string.msg_full_image);
 
-        if (Define.ALL_VIEW_TITLE.equals(""))
-            Define.ALL_VIEW_TITLE = context.getResources().getString(R.string.str_all_view);
+        if (Define.TITLE_ALBUM_ALL_VIEW.equals(""))
+            Define.TITLE_ALBUM_ALL_VIEW = context.getResources().getString(R.string.str_all_view);
+
+        if (Define.TITLE_ACTIONBAR.equals(""))
+            Define.TITLE_ACTIONBAR = context.getResources().getString(R.string.album);
     }
 
 }

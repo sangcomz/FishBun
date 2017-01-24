@@ -40,7 +40,7 @@ public class SubFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_sub, container, false);
         // Inflate the layout for this fragment
         imgMain = (ImageView) rootView.findViewById(R.id.img_main);
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview);
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_picker_list);
         btnAddImages = (Button)rootView.findViewById(R.id.btn_add_images);
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         mainController = new MainController(getActivity(), imgMain);

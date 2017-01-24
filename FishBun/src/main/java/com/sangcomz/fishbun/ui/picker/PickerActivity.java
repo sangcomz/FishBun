@@ -187,16 +187,17 @@ public class PickerActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_picker_list);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, Define.PHOTO_SPAN_COUNT, GridLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(gridLayoutManager);
         initToolBar();
     }
 
     private void initToolBar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_picker_bar);
         setSupportActionBar(toolbar);
-        toolbar.setBackgroundColor(Define.ACTIONBAR_COLOR);
+        toolbar.setBackgroundColor(Define.COLOR_ACTION_BAR);
+        toolbar.setTitleTextColor(Define.COLOR_ACTION_BAR_TITLE_COLOR);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             uiUtil.setStatusBarColor(this);
         }
