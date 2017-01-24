@@ -1,6 +1,7 @@
 package com.sangcomz.fishbun.adapter;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
@@ -107,12 +108,12 @@ public class PickerGridAdapter
             final ViewHolderImage vh = (ViewHolderImage) holder;
 
             final ImageBean imageBean = imageBeans[imagePos];
-            final String imgPath = imageBean.getImgPath();
+            final Uri imgUri = imageBean.getImgPath();
 
             if (!imageBean.isInit()) {
                 imageBean.setIsInit(true);
                 for (int i = 0; i < pickedImageBeans.size(); i++) {
-                    if (imgPath.equals(pickedImageBeans.get(i).getImgPath())) {
+                    if (imgUri.equals(pickedImageBeans.get(i).getImgPath())) {
                         imageBean.setImgOrder(i + 1);
                         pickedImageBeans.get(i).setImgPosition(imagePos);
                         break;
@@ -130,11 +131,10 @@ public class PickerGridAdapter
             } else
                 vh.txtPickCount.setVisibility(View.GONE);
 
-
-            if (imgPath != null && !imgPath.equals("")) {
+            if (imgUri != null && !imgUri.equals("")) {
                 Picasso
                         .with(vh.imgPhoto.getContext())
-                        .load(new File(imgPath))
+                        .load(imgUri)
                         .fit()
                         .centerCrop()
                         .into(vh.imgPhoto);
@@ -147,7 +147,7 @@ public class PickerGridAdapter
                     if (vh.txtPickCount.getVisibility() == View.GONE &&
                             Define.ALBUM_PICKER_COUNT > pickedImageBeans.size()) {
                         vh.txtPickCount.setVisibility(View.VISIBLE);
-                        pickedImageBeans.add(new PickedImageBean(pickedImageBeans.size() + 1, imgPath, imagePos));
+                        pickedImageBeans.add(new PickedImageBean(pickedImageBeans.size() + 1, imgUri, imagePos));
 
                         pickerController.setToolbarTitle(pickedImageBeans.size());
                         if (Define.IS_AUTOMATIC_CLOSE
@@ -236,7 +236,7 @@ public class PickerGridAdapter
     }
 
 
-    public void addImage(String path) {
+    public void addImage(Uri path) {
         ArrayList<ImageBean> al = new ArrayList<>();
         Collections.addAll(al, imageBeans);
         al.add(0, new ImageBean(-1, path));

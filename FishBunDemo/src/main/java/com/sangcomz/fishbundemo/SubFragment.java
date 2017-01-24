@@ -3,6 +3,7 @@ package com.sangcomz.fishbundemo;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
  */
 public class SubFragment extends Fragment {
 
-    ArrayList<String> path = new ArrayList<>();
+    ArrayList<Uri> path = new ArrayList<>();
     ImageView imgMain;
     Button btnAddImages;
     RecyclerView recyclerView;
@@ -70,7 +71,7 @@ public class SubFragment extends Fragment {
         switch (requestCode) {
             case Define.ALBUM_REQUEST_CODE:
                 if (resultCode == getActivity().RESULT_OK) {
-                    path = data.getStringArrayListExtra(Define.INTENT_PATH);
+                    path = data.getParcelableArrayListExtra(Define.INTENT_PATH);
                     mainAdapter.changePath(path);
                     break;
                 }
