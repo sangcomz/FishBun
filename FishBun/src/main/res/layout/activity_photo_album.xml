@@ -50,7 +50,7 @@
                 android:background="@drawable/ic_add_a_photo_gray_100dp" />
 
             <TextView
-                    android:id="@+id/textViewProgress"
+                    android:id="@+id/textview_progress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"

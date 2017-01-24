@@ -126,7 +126,7 @@ public class AlbumActivity extends AppCompatActivity {
     private void initToolBar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         noAlbum = (RelativeLayout) findViewById(R.id.no_album);
-        progressAlbumText = (TextView) findViewById(R.id.textViewProgress);
+        progressAlbumText = (TextView) findViewById(R.id.textview_progress);
         progressAlbumText.setText(R.string.msg_loading_image);
         setSupportActionBar(toolbar);
         toolbar.setBackgroundColor(Define.ACTIONBAR_COLOR);
