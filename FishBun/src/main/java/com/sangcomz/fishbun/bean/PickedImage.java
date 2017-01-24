@@ -7,13 +7,13 @@ import android.os.Parcelable;
 /**
  * Created by Administrator on 2014-12-22.
  */
-public class PickedImageBean implements Parcelable {
+public class PickedImage implements Parcelable {
     int imgOrder;
     Uri imgUri;
     int imgPosition;
 
 
-    public PickedImageBean(int imgOrder, Uri imgPath, int imgPosition) {
+    public PickedImage(int imgOrder, Uri imgPath, int imgPosition) {
         this.imgOrder = imgOrder;
         this.imgUri = imgPath;
         this.imgPosition = imgPosition;
@@ -46,21 +46,21 @@ public class PickedImageBean implements Parcelable {
     }
 
 
-    protected PickedImageBean(Parcel in) {
+    protected PickedImage(Parcel in) {
         imgOrder = in.readInt();
         imgUri = Uri.parse(in.readString());
         imgPosition = in.readInt();
     }
 
-    public static final Creator<PickedImageBean> CREATOR = new Creator<PickedImageBean>() {
+    public static final Creator<PickedImage> CREATOR = new Creator<PickedImage>() {
         @Override
-        public PickedImageBean createFromParcel(Parcel in) {
-            return new PickedImageBean(in);
+        public PickedImage createFromParcel(Parcel in) {
+            return new PickedImage(in);
         }
 
         @Override
-        public PickedImageBean[] newArray(int size) {
-            return new PickedImageBean[size];
+        public PickedImage[] newArray(int size) {
+            return new PickedImage[size];
         }
     };
 
@@ -76,10 +76,4 @@ public class PickedImageBean implements Parcelable {
         parcel.writeString(imgUri.toString());
         parcel.writeInt(imgPosition);
     }
-
-//    public void readFromParcel(Parcel parcel) {
-//        imgOrder = parcel.readInt();
-//        imgPath = parcel.readString();
-//        imgPosition = parcel.readInt();
-//    }
 }

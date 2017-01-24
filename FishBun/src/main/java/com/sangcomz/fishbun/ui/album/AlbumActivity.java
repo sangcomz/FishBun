@@ -40,13 +40,11 @@ public class AlbumActivity extends AppCompatActivity {
     private ArrayList<Album> albumList = new ArrayList<>();
 
     private RecyclerView recyclerAlbumList;
-    private LinearLayout linearAlbumCamera;
     private RelativeLayout relAlbumEmpty;
 
     private AlbumListAdapter adapter;
     private UiUtil uiUtil = new UiUtil();
 
-    private RelativeLayout noAlbum;
     private TextView progressAlbumText;
   
     private int defCameraAlbum = 0;
@@ -102,7 +100,7 @@ public class AlbumActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        linearAlbumCamera = (LinearLayout) findViewById(R.id.lin_album_camera);
+        LinearLayout linearAlbumCamera = (LinearLayout) findViewById(R.id.lin_album_camera);
         linearAlbumCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -130,8 +128,8 @@ public class AlbumActivity extends AppCompatActivity {
 
     private void initToolBar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_album_bar);
-        noAlbum = (RelativeLayout) findViewById(R.id.rel_album_empty);
-        progressAlbumText = (TextView) findViewById(R.id.textview_progress);
+        relAlbumEmpty = (RelativeLayout) findViewById(R.id.rel_album_empty);
+        progressAlbumText = (TextView) findViewById(R.id.txt_album_msg);
         progressAlbumText.setText(R.string.msg_loading_image);
       
         setSupportActionBar(toolbar);
@@ -159,7 +157,7 @@ public class AlbumActivity extends AppCompatActivity {
             ArrayList<Uri> data = getIntent().getParcelableArrayListExtra(Define.INTENT_PATH);
             adapter = new AlbumListAdapter(albumList, data);
         }
-        recyclerView.setAdapter(adapter);
+        recyclerAlbumList.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
 
@@ -181,7 +179,7 @@ public class AlbumActivity extends AppCompatActivity {
             setAlbumListAdapter();
             albumController.getThumbnail(albumList);
         } else {
-            noAlbum.setVisibility(View.VISIBLE);
+            relAlbumEmpty.setVisibility(View.VISIBLE);
             progressAlbumText.setText(R.string.msg_no_image);
         }
     }

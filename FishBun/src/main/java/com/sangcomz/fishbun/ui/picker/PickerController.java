@@ -13,8 +13,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
 
-import com.sangcomz.fishbun.bean.ImageBean;
-import com.sangcomz.fishbun.bean.PickedImageBean;
+import com.sangcomz.fishbun.bean.Image;
+import com.sangcomz.fishbun.bean.PickedImage;
 import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.permission.PermissionCheck;
 import com.sangcomz.fishbun.util.CameraUtil;
@@ -99,10 +99,10 @@ public class PickerController {
         this.addImagePaths = addImagePaths;
     }
 
-    public void finishActivity(ArrayList<PickedImageBean> pickedImageBeans) {
+    public void finishActivity(ArrayList<PickedImage> pickedImages) {
         ArrayList<Uri> path = new ArrayList<>();
-        for (int i = 0; i < pickedImageBeans.size(); i++) {
-            path.add(pickedImageBeans.get(i).getImgPath());
+        for (int i = 0; i < pickedImages.size(); i++) {
+            path.add(pickedImages.get(i).getImgPath());
         }
         Intent i = new Intent();
         i.putParcelableArrayListExtra(Define.INTENT_PATH, path);
@@ -111,10 +111,10 @@ public class PickerController {
 
     }
 
-    void transImageFinish(ArrayList<PickedImageBean> pickedImageBeans, int position) {
+    void transImageFinish(ArrayList<PickedImage> pickedImages, int position) {
         ArrayList<Uri> path = new ArrayList<>();
-        for (int i = 0; i < pickedImageBeans.size(); i++) {
-            path.add(pickedImageBeans.get(i).getImgPath());
+        for (int i = 0; i < pickedImages.size(); i++) {
+            path.add(pickedImages.get(i).getImgPath());
         }
         Intent i = new Intent();
         i.putParcelableArrayListExtra(Define.INTENT_PATH, path);
@@ -139,7 +139,7 @@ public class PickerController {
         new DisplayImage(bucketId).execute();
     }
 
-    private class DisplayImage extends AsyncTask<Void, Void, ImageBean[]> {
+    private class DisplayImage extends AsyncTask<Void, Void, Image[]> {
         private Long bucketId;
 
         DisplayImage(Long bucketId) {
@@ -147,12 +147,12 @@ public class PickerController {
         }
 
         @Override
-        protected ImageBean[] doInBackground(Void... params) {
+        protected Image[] doInBackground(Void... params) {
             return getAllMediaThumbnailsPath(bucketId);
         }
 
         @Override
-        protected void onPostExecute(ImageBean[] result) {
+        protected void onPostExecute(Image[] result) {
             super.onPostExecute(result);
             pickerActivity.setAdapter(result);
         }
@@ -160,7 +160,7 @@ public class PickerController {
 
 
     @NonNull
-    private ImageBean[] getAllMediaThumbnailsPath(long id) {
+    private Image[] getAllMediaThumbnailsPath(long id) {
         String selection = MediaStore.Images.Media.BUCKET_ID + " = ?";
         String bucketid = String.valueOf(id);
         String sort = MediaStore.Images.Media._ID + " DESC";
@@ -173,7 +173,7 @@ public class PickerController {
         } else {
             c = resolver.query(images, null, null, null, sort);
         }
-        ImageBean[] imageBeans = new ImageBean[c == null ? 0 : c.getCount()];
+        Image[] imageBeans = new Image[c == null ? 0 : c.getCount()];
         if (c != null) {
             try {
                 if (c.moveToFirst()) {
@@ -183,7 +183,7 @@ public class PickerController {
                     do {
                         int imgId = c.getInt(c.getColumnIndex(MediaStore.MediaColumns._ID));
                         Uri path = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "" + imgId);
-                        imageBeans[++position] = new ImageBean(-1, path);
+                        imageBeans[++position] = new Image(-1, path);
                     } while (c.moveToNext());
                 }
                 c.close();

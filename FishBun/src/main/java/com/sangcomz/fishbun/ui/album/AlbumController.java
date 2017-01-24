@@ -120,7 +120,7 @@ class AlbumController {
                 int bucketColumnId = imageCursor
                         .getColumnIndex(MediaStore.Images.Media.BUCKET_ID);
                 albumList = new ArrayList<>();
-                Album totalAlbum = new Album(0, Define.TITLE_ALBUM_ALL_VIEW, 0);
+                Album totalAlbum = new Album(0, Define.TITLE_ALBUM_ALL_VIEW, "", 0);
 
                 albumList.add(totalAlbum);
 
@@ -129,7 +129,7 @@ class AlbumController {
                     totalCounter++;
                     long bucketId = imageCursor.getInt(bucketColumnId);
                     if (previousId != bucketId) {
-                        Album album = new Album(bucketId, imageCursor.getString(bucketColumn), imageCursor.getString(bucketData),1);
+                        Album album = new Album(bucketId, imageCursor.getString(bucketColumn), imageCursor.getString(bucketData), 1);
                         albumList.add(album);
                         previousId = bucketId;
                     } else {
@@ -175,9 +175,9 @@ class AlbumController {
             for (int i = 0; i < albumList.size(); i++) {
                 Album album = albumList.get(i);
                 Uri path = getAllMediaThumbnailsPath(resolver, album.bucketId);
-                if (null != path) {
+                if (path != null) {
                     thumbList.add(path);
-                }else{
+                } else {
                     thumbList.add(Uri.parse(""));
                 }
                 if (i != 0 && album.path.contains(pathDir))

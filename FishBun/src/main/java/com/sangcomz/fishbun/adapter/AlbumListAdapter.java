@@ -18,7 +18,6 @@ import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.ui.picker.PickerActivity;
 import com.squareup.picasso.Picasso;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,7 +70,7 @@ public class AlbumListAdapter
         if (thumbList != null && thumbList.size() > position) {
             holder.imgAlbumThumb.setImageDrawable(null);
             Picasso
-                    .with(holder.imgAlbum.getContext())
+                    .with(holder.imgAlbumThumb.getContext())
                     .load(thumbList.get(position))
                     .fit()
                     .centerCrop()
@@ -94,7 +93,7 @@ public class AlbumListAdapter
                 i.putExtra("position", position);
 
                 i.putParcelableArrayListExtra(Define.INTENT_PATH, pickedImagePath);
-                ((Activity) holder.areaAlbum.getContext()).startActivityForResult(i, Define.ENTER_ALBUM_REQUEST_CODE);
+                ((Activity) context).startActivityForResult(i, Define.ENTER_ALBUM_REQUEST_CODE);
             }
         });
     }

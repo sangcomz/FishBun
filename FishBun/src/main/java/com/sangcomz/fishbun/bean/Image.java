@@ -7,13 +7,13 @@ import android.os.Parcelable;
 /**
  * Created by Administrator on 2014-12-22.
  */
-public class ImageBean implements Parcelable {
+public class Image implements Parcelable {
     int imgOrder;
     Uri imgUri;
     boolean isInit = false;
 
 
-    public ImageBean(int imgOrder, Uri imgPath) {
+    public Image(int imgOrder, Uri imgPath) {
         this.imgOrder = imgOrder;
         this.imgUri = imgPath;
     }
@@ -43,7 +43,7 @@ public class ImageBean implements Parcelable {
     }
 
 
-    protected ImageBean(Parcel in) {
+    protected Image(Parcel in) {
         imgOrder = in.readInt();
         imgUri = Uri.parse(in.readString());
         isInit = (boolean) in.readValue(Boolean.class.getClassLoader());
@@ -63,15 +63,15 @@ public class ImageBean implements Parcelable {
     }
 
 
-    public static final Creator<ImageBean> CREATOR = new Creator<ImageBean>() {
+    public static final Creator<Image> CREATOR = new Creator<Image>() {
         @Override
-        public ImageBean createFromParcel(Parcel in) {
-            return new ImageBean(in);
+        public Image createFromParcel(Parcel in) {
+            return new Image(in);
         }
 
         @Override
-        public ImageBean[] newArray(int size) {
-            return new ImageBean[size];
+        public Image[] newArray(int size) {
+            return new Image[size];
         }
     };
 
