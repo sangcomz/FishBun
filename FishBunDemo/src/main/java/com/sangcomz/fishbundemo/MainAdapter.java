@@ -10,7 +10,6 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
-import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -37,7 +36,6 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final Uri imagePath = imagePaths.get(position);
-        System.out.println(imagePath);
         Picasso
                 .with(context)
                 .load(imagePath)

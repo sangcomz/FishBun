@@ -68,7 +68,6 @@ public class CameraUtil {
     }
 
     public void setSavePath(String savePath) {
-        System.out.println("setSavePath :::: " + savePath);
         this.savePath = savePath;
     }
 }
