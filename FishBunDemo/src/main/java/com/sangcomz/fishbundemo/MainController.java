@@ -1,6 +1,7 @@
 package com.sangcomz.fishbundemo;
 
 import android.content.Context;
+import android.net.Uri;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
@@ -19,10 +20,10 @@ class MainController {
         this.imgMain = imgMain;
     }
 
-    void setImgMain(String path) {
+    void setImgMain(Uri path) {
         Picasso
                 .with(context)
-                .load(new File(path))
+                .load(path)
                 .fit()
                 .centerCrop()
                 .into(imgMain);

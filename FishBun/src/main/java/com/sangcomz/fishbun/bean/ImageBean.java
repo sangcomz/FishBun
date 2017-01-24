@@ -1,5 +1,6 @@
 package com.sangcomz.fishbun.bean;
 
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -8,13 +9,13 @@ import android.os.Parcelable;
  */
 public class ImageBean implements Parcelable {
     int imgOrder;
-    String imgPath;
+    Uri imgUri;
     boolean isInit = false;
 
 
-    public ImageBean(int imgOrder, String imgPath) {
+    public ImageBean(int imgOrder, Uri imgPath) {
         this.imgOrder = imgOrder;
-        this.imgPath = imgPath;
+        this.imgUri = imgPath;
     }
 
     public int getImgOrder() {
@@ -25,12 +26,12 @@ public class ImageBean implements Parcelable {
         this.imgOrder = imgOrder;
     }
 
-    public String getImgPath() {
-        return imgPath;
+    public Uri getImgPath() {
+        return imgUri;
     }
 
-    public void setImgPath(String imgPath) {
-        this.imgPath = imgPath;
+    public void setImgPath(Uri imageUri) {
+        this.imgUri = imgUri;
     }
 
     public boolean isInit() {
@@ -44,7 +45,7 @@ public class ImageBean implements Parcelable {
 
     protected ImageBean(Parcel in) {
         imgOrder = in.readInt();
-        imgPath = in.readString();
+        imgUri = Uri.parse(in.readString());
         isInit = (boolean) in.readValue(Boolean.class.getClassLoader());
     }
 
@@ -57,7 +58,7 @@ public class ImageBean implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeInt(imgOrder);
-        parcel.writeString(imgPath);
+        parcel.writeString(imgUri.toString());
         parcel.writeValue(isInit);
     }
 

@@ -31,19 +31,9 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 25
+        consumerProguardFile('proguard-rules.pro')
         versionCode gradle.versionCode
         versionName gradle.versionName
-    }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-        debug {
-            testCoverageEnabled true
-        }
-    }
-    productFlavors {
     }
 }
 

@@ -1,5 +1,6 @@
 package com.sangcomz.fishbun.bean;
 
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -8,13 +9,13 @@ import android.os.Parcelable;
  */
 public class PickedImageBean implements Parcelable {
     int imgOrder;
-    String imgPath;
+    Uri imgUri;
     int imgPosition;
 
 
-    public PickedImageBean(int imgOrder, String imgPath, int imgPosition) {
+    public PickedImageBean(int imgOrder, Uri imgPath, int imgPosition) {
         this.imgOrder = imgOrder;
-        this.imgPath = imgPath;
+        this.imgUri = imgPath;
         this.imgPosition = imgPosition;
     }
 
@@ -28,12 +29,12 @@ public class PickedImageBean implements Parcelable {
         this.imgOrder = imgOrder;
     }
 
-    public String getImgPath() {
-        return imgPath;
+    public Uri getImgPath() {
+        return imgUri;
     }
 
-    public void setImgPath(String imgPath) {
-        this.imgPath = imgPath;
+    public void setImgUri(Uri imgPath) {
+        this.imgUri= imgPath;
     }
 
     public int getImgPosition() {
@@ -47,7 +48,7 @@ public class PickedImageBean implements Parcelable {
 
     protected PickedImageBean(Parcel in) {
         imgOrder = in.readInt();
-        imgPath = in.readString();
+        imgUri = Uri.parse(in.readString());
         imgPosition = in.readInt();
     }
 
@@ -72,7 +73,7 @@ public class PickedImageBean implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeInt(imgOrder);
-        parcel.writeString(imgPath);
+        parcel.writeString(imgUri.toString());
         parcel.writeInt(imgPosition);
     }
 

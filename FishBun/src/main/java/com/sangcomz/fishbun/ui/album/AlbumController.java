@@ -54,8 +54,8 @@ class AlbumController {
             Define.ALBUM_PORTRAIT_SPAN_COUNT = albumListSize;
     }
 
-    private String getAllMediaThumbnailsPath(ContentResolver resolver, long id) {
-        String path = "";
+    private Uri getAllMediaThumbnailsPath(ContentResolver resolver, long id) {
+        Uri path = null;
         String selection = MediaStore.Images.Media.BUCKET_ID + " = ?";
         String bucketId = String.valueOf(id);
         String sort = MediaStore.Images.Thumbnails._ID + " DESC";
@@ -79,12 +79,12 @@ class AlbumController {
                 images = MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI;
                 Cursor cursor = resolver.query(images, null,
                         selection, selectionArgs, sort);
+                int imgId = c.getInt(c.getColumnIndex(MediaStore.MediaColumns._ID));
+                path = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "" + imgId);
                 if (cursor != null && cursor.moveToNext()) {
-                    path = c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA));
                     if (cursor.isLast())
                         cursor.close();
-                } else
-                    path = c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA));
+                }
 
             } else {
                 Log.e("id", "from else");
@@ -101,6 +101,7 @@ class AlbumController {
             ArrayList<Album> albumList = new ArrayList<>();
             final String orderBy = MediaStore.Images.Media.BUCKET_ID;
             String[] projection = new String[]{
+                    MediaStore.Images.Media.DATA,
                     MediaStore.Images.Media.BUCKET_DISPLAY_NAME,
                     MediaStore.Images.Media.BUCKET_ID};
 
@@ -111,6 +112,8 @@ class AlbumController {
             long previousId = 0;
             int totalCounter = 0;
             if (imageCursor != null) {
+                int bucketData = imageCursor
+                        .getColumnIndex(MediaStore.Images.Media.DATA);
                 int bucketColumn = imageCursor
                         .getColumnIndex(MediaStore.Images.Media.BUCKET_DISPLAY_NAME);
 
@@ -126,7 +129,7 @@ class AlbumController {
                     totalCounter++;
                     long bucketId = imageCursor.getInt(bucketColumnId);
                     if (previousId != bucketId) {
-                        Album album = new Album(bucketId, imageCursor.getString(bucketColumn), 1);
+                        Album album = new Album(bucketId, imageCursor.getString(bucketColumn), imageCursor.getString(bucketData),1);
                         albumList.add(album);
                         previousId = bucketId;
                     } else {
@@ -157,7 +160,7 @@ class AlbumController {
         }
     }
 
-    private class DisplayAlbumThumbnail extends AsyncTask<Void, Void, List<String>> {
+    private class DisplayAlbumThumbnail extends AsyncTask<Void, Void, List<Uri>> {
         ArrayList<Album> albumList;
 
         DisplayAlbumThumbnail(ArrayList<Album> albumList) {
@@ -165,22 +168,26 @@ class AlbumController {
         }
 
         @Override
-        protected List<String> doInBackground(Void... params) {
-            List<String> thumbList = new ArrayList<>();
+        protected List<Uri> doInBackground(Void... params) {
+            List<Uri> thumbList = new ArrayList<>();
             String pathDir = Environment.getExternalStoragePublicDirectory(
                     Environment.DIRECTORY_DCIM + "/Camera").getAbsolutePath();
             for (int i = 0; i < albumList.size(); i++) {
                 Album album = albumList.get(i);
-                String path = getAllMediaThumbnailsPath(resolver, album.bucketId);
-                thumbList.add(path);
-                if (i != 0 && path.contains(pathDir))
+                Uri path = getAllMediaThumbnailsPath(resolver, album.bucketId);
+                if (null != path) {
+                    thumbList.add(path);
+                }else{
+                    thumbList.add(Uri.parse(""));
+                }
+                if (i != 0 && album.path.contains(pathDir))
                     albumActivity.setDefCameraAlbum(i);
             }
             return thumbList;
         }
 
         @Override
-        protected void onPostExecute(List<String> thumbList) {
+        protected void onPostExecute(List<Uri> thumbList) {
             super.onPostExecute(thumbList);
             albumActivity.setThumbnail(thumbList);
         }

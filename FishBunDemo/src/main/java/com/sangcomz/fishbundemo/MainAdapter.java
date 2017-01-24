@@ -1,6 +1,7 @@
 package com.sangcomz.fishbundemo;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,10 +18,10 @@ import java.util.ArrayList;
  */
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     Context context;
-    ArrayList<String> imagePaths;
+    ArrayList<Uri> imagePaths;
     MainController mainController;
 
-    MainAdapter(Context context, MainController mainController, ArrayList<String> imagePaths) {
+    MainAdapter(Context context, MainController mainController, ArrayList<Uri> imagePaths) {
         this.context = context;
         this.mainController = mainController;
         this.imagePaths = imagePaths;
@@ -35,11 +36,11 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        final String imagePath = imagePaths.get(position);
+        final Uri imagePath = imagePaths.get(position);
         System.out.println(imagePath);
         Picasso
                 .with(context)
-                .load(new File(imagePath))
+                .load(imagePath)
                 .fit()
                 .centerCrop()
                 .into(holder.imageView);
@@ -51,7 +52,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         });
     }
 
-    public void changePath(ArrayList<String> imagePaths) {
+    public void changePath(ArrayList<Uri> imagePaths) {
         this.imagePaths = imagePaths;
         mainController.setImgMain(imagePaths.get(0));
         notifyDataSetChanged();

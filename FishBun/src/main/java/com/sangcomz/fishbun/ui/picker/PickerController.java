@@ -28,7 +28,8 @@ public class PickerController {
     private PickerActivity pickerActivity;
     private RecyclerView recyclerView;
     private RecyclerView.OnItemTouchListener OnItemTouchListener;
-    private ArrayList<String> addImagePaths = new ArrayList<>();
+    private ArrayList<Uri> addImagePaths = new ArrayList<>();
+    private String savePath;
     private ContentResolver resolver;
     private CameraUtil cameraUtil = new CameraUtil();
     private String pathDir = "";
@@ -86,38 +87,38 @@ public class PickerController {
         cameraUtil.setSavePath(savePath);
     }
 
-    public void setAddImagePath(String imagePath) {
+    public void setAddImagePath(Uri imagePath) {
         this.addImagePaths.add(imagePath);
     }
 
-    ArrayList<String> getAddImagePaths() {
+    protected ArrayList<Uri> getAddImagePaths() {
         return addImagePaths;
     }
 
-    void setAddImagePaths(ArrayList<String> addImagePaths) {
+    public void setAddImagePaths(ArrayList<Uri> addImagePaths) {
         this.addImagePaths = addImagePaths;
     }
 
     public void finishActivity(ArrayList<PickedImageBean> pickedImageBeans) {
-        ArrayList<String> path = new ArrayList<>();
+        ArrayList<Uri> path = new ArrayList<>();
         for (int i = 0; i < pickedImageBeans.size(); i++) {
             path.add(pickedImageBeans.get(i).getImgPath());
         }
         Intent i = new Intent();
-        i.putStringArrayListExtra(Define.INTENT_PATH, path);
+        i.putParcelableArrayListExtra(Define.INTENT_PATH, path);
         pickerActivity.setResult(pickerActivity.RESULT_OK, i);
         pickerActivity.finish();
 
     }
 
     void transImageFinish(ArrayList<PickedImageBean> pickedImageBeans, int position) {
-        ArrayList<String> path = new ArrayList<>();
+        ArrayList<Uri> path = new ArrayList<>();
         for (int i = 0; i < pickedImageBeans.size(); i++) {
             path.add(pickedImageBeans.get(i).getImgPath());
         }
         Intent i = new Intent();
-        i.putStringArrayListExtra(Define.INTENT_PATH, path);
-        i.putStringArrayListExtra(Define.INTENT_ADD_PATH, getAddImagePaths());
+        i.putParcelableArrayListExtra(Define.INTENT_PATH, path);
+        i.putParcelableArrayListExtra(Define.INTENT_ADD_PATH, getAddImagePaths());
         i.putExtra(Define.INTENT_POSITION, position);
         pickerActivity.setResult(Define.TRANS_IMAGES_RESULT_CODE, i);
         pickerActivity.finish();
@@ -160,7 +161,6 @@ public class PickerController {
 
     @NonNull
     private ImageBean[] getAllMediaThumbnailsPath(long id) {
-        String path;
         String selection = MediaStore.Images.Media.BUCKET_ID + " = ?";
         String bucketid = String.valueOf(id);
         String sort = MediaStore.Images.Media._ID + " DESC";
@@ -181,7 +181,8 @@ public class PickerController {
                             c.getString(c.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME)));
                     int position = -1;
                     do {
-                        path = c.getString(c.getColumnIndex(MediaStore.Images.Thumbnails.DATA));
+                        int imgId = c.getInt(c.getColumnIndex(MediaStore.MediaColumns._ID));
+                        Uri path = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "" + imgId);
                         imageBeans[++position] = new ImageBean(-1, path);
                     } while (c.moveToNext());
                 }
