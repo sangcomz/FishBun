@@ -2,6 +2,7 @@ package com.sangcomz.fishbun.ui.picker;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -17,10 +18,11 @@ import android.view.MenuItem;
 import com.sangcomz.fishbun.R;
 import com.sangcomz.fishbun.adapter.PickerGridAdapter;
 import com.sangcomz.fishbun.bean.Album;
-import com.sangcomz.fishbun.bean.ImageBean;
-import com.sangcomz.fishbun.bean.PickedImageBean;
+import com.sangcomz.fishbun.bean.Image;
+import com.sangcomz.fishbun.bean.PickedImage;
 import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.permission.PermissionCheck;
+import com.sangcomz.fishbun.util.SingleMediaScanner;
 import com.sangcomz.fishbun.util.UiUtil;
 
 import java.io.File;
@@ -32,21 +34,20 @@ public class PickerActivity extends AppCompatActivity {
     private static final String TAG = "PickerActivity";
 
     private RecyclerView recyclerView;
-    private ArrayList<PickedImageBean> pickedImageBeans;
+    private ArrayList<PickedImage> pickedImages;
     private PickerController pickerController;
     private Album album;
     private int position;
     private UiUtil uiUtil = new UiUtil();
-
     private PickerGridAdapter adapter;
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         try {
-            outState.putParcelableArrayList(Define.SAVE_INSTANCE_PICK_IMAGES, pickedImageBeans);
+            outState.putParcelableArrayList(Define.SAVE_INSTANCE_PICK_IMAGES, pickedImages);
             outState.putString(Define.SAVE_INSTANCE_SAVED_IMAGE, pickerController.getSavePath());
-            outState.putParcelableArray(Define.SAVE_INSTANCE_SAVED_IMAGE_THUMBNAILS, adapter.getImageBeans());
-            outState.putStringArrayList(Define.SAVE_INSTANCE_NEW_IMAGES, pickerController.getAddImagePaths());
+            outState.putParcelableArray(Define.SAVE_INSTANCE_SAVED_IMAGE_THUMBNAILS, adapter.getImages());
+            outState.putParcelableArrayList(Define.SAVE_INSTANCE_NEW_IMAGES, pickerController.getAddImagePaths());
         } catch (Exception e) {
             Log.d(TAG, e.toString());
         }
@@ -60,12 +61,12 @@ public class PickerActivity extends AppCompatActivity {
         super.onRestoreInstanceState(outState);
         // Restore state members from saved instance
         try {
-            pickedImageBeans = outState.getParcelableArrayList(Define.SAVE_INSTANCE_PICK_IMAGES);
-            ArrayList<String> addImages = outState.getStringArrayList(Define.SAVE_INSTANCE_NEW_IMAGES);
+            pickedImages = outState.getParcelableArrayList(Define.SAVE_INSTANCE_PICK_IMAGES);
+            ArrayList<Uri> addImages = outState.getParcelableArrayList(Define.SAVE_INSTANCE_NEW_IMAGES);
             String savedImage = outState.getString(Define.SAVE_INSTANCE_SAVED_IMAGE);
-            ImageBean[] imageBeenList = (ImageBean[]) outState.getParcelableArray(Define.SAVE_INSTANCE_SAVED_IMAGE_THUMBNAILS);
+            Image[] imageBeenList = (Image[]) outState.getParcelableArray(Define.SAVE_INSTANCE_SAVED_IMAGE_THUMBNAILS);
             adapter = new PickerGridAdapter(imageBeenList,
-                    pickedImageBeans,
+                    pickedImages,
                     pickerController,
                     pickerController.getPathDir(album.bucketId));
             if (addImages != null) {
@@ -93,16 +94,16 @@ public class PickerActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        pickerController.transImageFinish(pickedImageBeans, position);
+        pickerController.transImageFinish(pickedImages, position);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == Define.TAKE_A_PICK_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                pickerController.startFileMediaScan();
-                adapter.addImage(pickerController.getSavePath());
-
+                File savedFile = new File(pickerController.getSavePath());
+                new SingleMediaScanner(this, savedFile);
+                adapter.addImage(Uri.fromFile(savedFile));
             } else {
                 new File(pickerController.getSavePath()).delete();
             }
@@ -144,14 +145,14 @@ public class PickerActivity extends AppCompatActivity {
         // as you specify album parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_ok) {
-            if (pickedImageBeans.size() == 0) {
+            if (pickedImages.size() == 0) {
                 Snackbar.make(recyclerView, Define.MESSAGE_NOTHING_SELECTED, Snackbar.LENGTH_SHORT).show();
             } else {
-                pickerController.finishActivity(pickedImageBeans);
+                pickerController.finishActivity(pickedImages);
             }
             return true;
         } else if (id == android.R.id.home)
-            pickerController.transImageFinish(pickedImageBeans, position);
+            pickerController.transImageFinish(pickedImages, position);
         return super.onOptionsItemSelected(item);
     }
 
@@ -170,12 +171,12 @@ public class PickerActivity extends AppCompatActivity {
         position = intent.getIntExtra("position", -1);
 
         //only first init
-        if (pickedImageBeans == null) {
-            pickedImageBeans = new ArrayList<>();
-            ArrayList<String> path = getIntent().getStringArrayListExtra(Define.INTENT_PATH);
+        if (pickedImages == null) {
+            pickedImages = new ArrayList<>();
+            ArrayList<Uri> path = getIntent().getParcelableArrayListExtra(Define.INTENT_PATH);
             if (path != null) {
                 for (int i = 0; i < path.size(); i++) {
-                    pickedImageBeans.add(new PickedImageBean(i + 1, path.get(i), -1));
+                    pickedImages.add(new PickedImage(i + 1, path.get(i), -1));
                 }
             }
         }
@@ -186,16 +187,17 @@ public class PickerActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_picker_list);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, Define.PHOTO_SPAN_COUNT, GridLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(gridLayoutManager);
         initToolBar();
     }
 
     private void initToolBar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_picker_bar);
         setSupportActionBar(toolbar);
-        toolbar.setBackgroundColor(Define.ACTIONBAR_COLOR);
+        toolbar.setBackgroundColor(Define.COLOR_ACTION_BAR);
+        toolbar.setTitleTextColor(Define.COLOR_ACTION_BAR_TITLE_COLOR);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             uiUtil.setStatusBarColor(this);
         }
@@ -204,12 +206,12 @@ public class PickerActivity extends AppCompatActivity {
     }
 
 
-    public void setAdapter(ImageBean[] result) {
+    public void setAdapter(Image[] result) {
         if (adapter == null)
             adapter = new PickerGridAdapter(
-                    result, pickedImageBeans, pickerController, pickerController.getPathDir(album.bucketId));
+                    result, pickedImages, pickerController, pickerController.getPathDir(album.bucketId));
         recyclerView.setAdapter(adapter);
-        showToolbarTitle(pickedImageBeans.size());
+        showToolbarTitle(pickedImages.size());
     }
 
 

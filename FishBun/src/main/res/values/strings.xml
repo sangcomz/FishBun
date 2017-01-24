@@ -2,10 +2,10 @@
     <string name="album">Album</string>
     <string name="camera">camera</string>
     <string name="done">done</string>
-    <string name="msg_no_slected">There is no selected image.</string>
+    <string name="msg_no_selected">There is no selected image.</string>
     <string name="str_all_view">All view</string>
-    <string name="msg_permisssion">permission deny</string>
-
-    <string name="msg_no_image">There is no image.</string>
+    <string name="msg_permission">permission deny</string>
+    <string name="msg_no_image">There is no album.\nTake a Picture!</string>
     <string name="msg_full_image">You can\'t no longer choose.</string>
+    <string name="msg_loading_image">Loading...</string>
 </resources>

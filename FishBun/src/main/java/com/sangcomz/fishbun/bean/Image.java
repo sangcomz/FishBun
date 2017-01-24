@@ -1,20 +1,21 @@
 package com.sangcomz.fishbun.bean;
 
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
  * Created by Administrator on 2014-12-22.
  */
-public class ImageBean implements Parcelable {
+public class Image implements Parcelable {
     int imgOrder;
-    String imgPath;
+    Uri imgUri;
     boolean isInit = false;
 
 
-    public ImageBean(int imgOrder, String imgPath) {
+    public Image(int imgOrder, Uri imgPath) {
         this.imgOrder = imgOrder;
-        this.imgPath = imgPath;
+        this.imgUri = imgPath;
     }
 
     public int getImgOrder() {
@@ -25,12 +26,12 @@ public class ImageBean implements Parcelable {
         this.imgOrder = imgOrder;
     }
 
-    public String getImgPath() {
-        return imgPath;
+    public Uri getImgPath() {
+        return imgUri;
     }
 
-    public void setImgPath(String imgPath) {
-        this.imgPath = imgPath;
+    public void setImgPath(Uri imageUri) {
+        this.imgUri = imgUri;
     }
 
     public boolean isInit() {
@@ -42,9 +43,9 @@ public class ImageBean implements Parcelable {
     }
 
 
-    protected ImageBean(Parcel in) {
+    protected Image(Parcel in) {
         imgOrder = in.readInt();
-        imgPath = in.readString();
+        imgUri = Uri.parse(in.readString());
         isInit = (boolean) in.readValue(Boolean.class.getClassLoader());
     }
 
@@ -57,20 +58,20 @@ public class ImageBean implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeInt(imgOrder);
-        parcel.writeString(imgPath);
+        parcel.writeString(imgUri.toString());
         parcel.writeValue(isInit);
     }
 
 
-    public static final Creator<ImageBean> CREATOR = new Creator<ImageBean>() {
+    public static final Creator<Image> CREATOR = new Creator<Image>() {
         @Override
-        public ImageBean createFromParcel(Parcel in) {
-            return new ImageBean(in);
+        public Image createFromParcel(Parcel in) {
+            return new Image(in);
         }
 
         @Override
-        public ImageBean[] newArray(int size) {
-            return new ImageBean[size];
+        public Image[] newArray(int size) {
+            return new Image[size];
         }
     };
 

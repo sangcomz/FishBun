@@ -9,7 +9,7 @@
         android:id="@+id/img_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/recyclerview"
+        android:layout_above="@+id/recycler_picker_list"
         android:layout_marginBottom="1dp" />
 
 

@@ -2,6 +2,7 @@ package com.sangcomz.fishbundemo;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,9 +17,11 @@ import com.sangcomz.fishbun.define.Define;
 
 import java.util.ArrayList;
 
+import static android.app.Activity.RESULT_OK;
+
 public class MainActivity extends AppCompatActivity {
 
-    ArrayList<String> path = new ArrayList<>();
+    ArrayList<Uri> path = new ArrayList<>();
     ImageView imgMain;
     RecyclerView recyclerView;
     LinearLayoutManager linearLayoutManager;
@@ -45,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         switch (requestCode) {
             case Define.ALBUM_REQUEST_CODE:
                 if (resultCode == RESULT_OK) {
-                    path = imageData.getStringArrayListExtra(Define.INTENT_PATH);
+                    path = imageData.getParcelableArrayListExtra(Define.INTENT_PATH);
                     mainAdapter.changePath(path);
                     break;
                 }
@@ -68,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
                     .setPickerCount(20)
                     .setPickerSpanCount(3)
                     .setActionBarColor(Color.parseColor("#3F51B5"), Color.parseColor("#303F9F"))
+                    .setActionBarTitleColor(Color.parseColor("#000000"))
                     .textOnImagesSelectionLimitReached("Limit Reached!")
                     .textOnNothingSelected("Nothing Selected")
                     .setArrayPaths(path)
@@ -75,6 +79,8 @@ public class MainActivity extends AppCompatActivity {
                     .setButtonInAlbumActivity(true)
                     .setCamera(true)
                     .setReachLimitAutomaticClose(true)
+                    .setAllViewTitle("All")
+                    .setActionBarTitle("Image Library")
                     .startAlbum();
             return true;
         }

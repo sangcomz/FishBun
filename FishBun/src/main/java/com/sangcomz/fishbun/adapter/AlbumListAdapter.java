@@ -1,7 +1,9 @@
 package com.sangcomz.fishbun.adapter;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +18,6 @@ import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.ui.picker.PickerActivity;
 import com.squareup.picasso.Picasso;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,29 +26,28 @@ public class AlbumListAdapter
         extends RecyclerView.Adapter<AlbumListAdapter.ViewHolder> {
 
     private List<Album> albumList;
-    private List<String> thumbList = new ArrayList<>();
-    private ArrayList<String> pickedImagePath;
+    private List<Uri> thumbList = new ArrayList<>();
+    private ArrayList<Uri> pickedImagePath;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView imgAlbum;
-        private TextView txtAlbum;
+        private View view;
+        private ImageView imgAlbumThumb;
+        private TextView txtAlbumName;
         private TextView txtAlbumCount;
-        private RelativeLayout areaAlbum;
-
 
         public ViewHolder(View view) {
             super(view);
-            imgAlbum = (ImageView) view.findViewById(R.id.img_album);
-            imgAlbum.setLayoutParams(new RelativeLayout.LayoutParams(Define.ALBUM_THUMBNAIL_SIZE, Define.ALBUM_THUMBNAIL_SIZE));
+            this.view = view;
+            imgAlbumThumb = (ImageView) view.findViewById(R.id.img_album_thumb);
+            imgAlbumThumb.setLayoutParams(new RelativeLayout.LayoutParams(Define.ALBUM_THUMBNAIL_SIZE, Define.ALBUM_THUMBNAIL_SIZE));
 
-            txtAlbum = (TextView) view.findViewById(R.id.txt_album);
+            txtAlbumName = (TextView) view.findViewById(R.id.txt_album_name);
             txtAlbumCount = (TextView) view.findViewById(R.id.txt_album_count);
-            areaAlbum = (RelativeLayout) view.findViewById(R.id.area_album);
         }
     }
 
-    public AlbumListAdapter(List<Album> albumList, ArrayList<String> pickedImagePath) {
+    public AlbumListAdapter(List<Album> albumList, ArrayList<Uri> pickedImagePath) {
         this.albumList = albumList;
         this.pickedImagePath = pickedImagePath;
     }
@@ -59,7 +59,7 @@ public class AlbumListAdapter
         return new ViewHolder(view);
     }
 
-    public void setThumbList(List<String> thumbList) {
+    public void setThumbList(List<Uri> thumbList) {
         this.thumbList = thumbList;
         notifyDataSetChanged();
     }
@@ -68,29 +68,32 @@ public class AlbumListAdapter
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         if (thumbList != null && thumbList.size() > position) {
+            holder.imgAlbumThumb.setImageDrawable(null);
             Picasso
-                    .with(holder.imgAlbum.getContext())
-                    .load(new File(thumbList.get(position)))
+                    .with(holder.imgAlbumThumb.getContext())
+                    .load(thumbList.get(position))
                     .fit()
                     .centerCrop()
-                    .into(holder.imgAlbum);
+                    .into(holder.imgAlbumThumb);
         }
-        holder.areaAlbum.setTag(albumList.get(position));
-        Album a = (Album) holder.areaAlbum.getTag();
-        holder.txtAlbum.setText(albumList.get(position).bucketName);
+        holder.view.setTag(albumList.get(position));
+        Album a = (Album) holder.view.getTag();
+        holder.txtAlbumName.setText(albumList.get(position).bucketName);
         holder.txtAlbumCount.setText(String.valueOf(a.counter));
 
 
-        holder.areaAlbum.setOnClickListener(new View.OnClickListener() {
+        holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Album a = (Album) v.getTag();
-                Intent i = new Intent(holder.areaAlbum.getContext(), PickerActivity.class);
+                Context context = holder.view.getContext();
+                Intent i = new Intent(context, PickerActivity.class);
                 i.putExtra("album", a);
                 i.putExtra("album_title", albumList.get(position).bucketName);
                 i.putExtra("position", position);
-                i.putStringArrayListExtra(Define.INTENT_PATH, pickedImagePath);
-                ((Activity) holder.areaAlbum.getContext()).startActivityForResult(i, Define.ENTER_ALBUM_REQUEST_CODE);
+
+                i.putParcelableArrayListExtra(Define.INTENT_PATH, pickedImagePath);
+                ((Activity) context).startActivityForResult(i, Define.ENTER_ALBUM_REQUEST_CODE);
             }
         });
     }
@@ -100,11 +103,11 @@ public class AlbumListAdapter
         return albumList.size();
     }
 
-    public ArrayList<String> getPickedImagePath() {
+    public ArrayList<Uri> getPickedImagePath() {
         return pickedImagePath;
     }
 
-    public void setPickedImagePath(ArrayList<String> pickedImagePath) {
+    public void setPickedImagePath(ArrayList<Uri> pickedImagePath) {
         this.pickedImagePath = pickedImagePath;
     }
 
@@ -112,7 +115,7 @@ public class AlbumListAdapter
         return albumList;
     }
 
-    public List<String> getThumbList() {
+    public List<Uri> getThumbList() {
         return thumbList;
     }
 }

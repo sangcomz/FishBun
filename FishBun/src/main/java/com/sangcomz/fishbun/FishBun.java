@@ -3,6 +3,7 @@ package com.sangcomz.fishbun;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 
 import com.sangcomz.fishbun.define.Define;
@@ -26,7 +27,7 @@ public class FishBun {
 
     public static class BaseProperty implements BasePropertyImpl {
 
-        private ArrayList<String> arrayPaths = new ArrayList<>();
+        private ArrayList<Uri> arrayPaths = new ArrayList<>();
         private Activity activity = null;
         private Fragment fragment = null;
         private int requestCode = Define.ALBUM_REQUEST_CODE;
@@ -39,7 +40,7 @@ public class FishBun {
             this.fragment = fragment;
         }
 
-        public BaseProperty setArrayPaths(ArrayList<String> arrayPaths) {
+        public BaseProperty setArrayPaths(ArrayList<Uri> arrayPaths) {
             this.arrayPaths = arrayPaths;
             return baseProperty;
         }
@@ -68,14 +69,20 @@ public class FishBun {
 
         @Override
         public BaseProperty setActionBarColor(int actionbarColor) {
-            Define.ACTIONBAR_COLOR = actionbarColor;
+            Define.COLOR_ACTION_BAR = actionbarColor;
+            return baseProperty;
+        }
+
+        @Override
+        public BaseProperty setActionBarTitleColor(int actionbarTitleColor) {
+            Define.COLOR_ACTION_BAR_TITLE_COLOR = actionbarTitleColor;
             return baseProperty;
         }
 
         @Override
         public BaseProperty setActionBarColor(int actionbarColor, int statusBarColor) {
-            Define.ACTIONBAR_COLOR = actionbarColor;
-            Define.STATUS_BAR_COLOR = statusBarColor;
+            Define.COLOR_ACTION_BAR = actionbarColor;
+            Define.COLOR_STATUS_BAR = statusBarColor;
             return baseProperty;
         }
 
@@ -134,6 +141,18 @@ public class FishBun {
             return baseProperty;
         }
 
+        @Override
+        public BaseProperty setAllViewTitle(String allViewTitle) {
+            Define.TITLE_ALBUM_ALL_VIEW = allViewTitle;
+            return baseProperty;
+        }
+
+        @Override
+        public BaseProperty setActionBarTitle(String actionBarTitle) {
+            Define.TITLE_ACTIONBAR = actionBarTitle;
+            return baseProperty;
+        }
+
         public void startAlbum() {
             Context context = null;
             if (activity != null)
@@ -150,10 +169,10 @@ public class FishBun {
             if (Define.ALBUM_THUMBNAIL_SIZE == -1)
                 Define.ALBUM_THUMBNAIL_SIZE = (int) context.getResources().getDimension(R.dimen.album_thum_size);
 
-            setMessage(context);
+            setDefaultMessage(context);
 
             Intent i = new Intent(context, AlbumActivity.class);
-            i.putStringArrayListExtra(Define.INTENT_PATH, arrayPaths);
+            i.putParcelableArrayListExtra(Define.INTENT_PATH, arrayPaths);
 
             if (activity != null)
                 activity.startActivityForResult(i, requestCode);
@@ -169,7 +188,7 @@ public class FishBun {
 
     interface BasePropertyImpl {
 
-        BaseProperty setArrayPaths(ArrayList<String> arrayPaths);
+        BaseProperty setArrayPaths(ArrayList<Uri> arrayPaths);
 
         BaseProperty setAlbumThumbnailSize(int size);
 
@@ -178,6 +197,8 @@ public class FishBun {
         BaseProperty setPickerCount(int count);
 
         BaseProperty setActionBarColor(int actionbarColor);
+
+        BaseProperty setActionBarTitleColor(int actionbarTitleColor);
 
         BaseProperty setActionBarColor(int actionbarColor, int statusbarColor);
 
@@ -199,16 +220,26 @@ public class FishBun {
 
         BaseProperty setAlbumSpanCountOnlPortrait(int portraitSpanCount);
 
+        BaseProperty setAllViewTitle(String allViewTitle);
+
+        BaseProperty setActionBarTitle(String actionBarTitle);
+
         void startAlbum();
     }
 
 
-    private static void setMessage(Context context) {
+    private static void setDefaultMessage(Context context) {
         if (Define.MESSAGE_NOTHING_SELECTED.equals(""))
-            Define.MESSAGE_NOTHING_SELECTED = context.getResources().getString(R.string.msg_no_slected);
+            Define.MESSAGE_NOTHING_SELECTED = context.getResources().getString(R.string.msg_no_selected);
 
         if (Define.MESSAGE_LIMIT_REACHED.equals(""))
             Define.MESSAGE_LIMIT_REACHED = context.getResources().getString(R.string.msg_full_image);
+
+        if (Define.TITLE_ALBUM_ALL_VIEW.equals(""))
+            Define.TITLE_ALBUM_ALL_VIEW = context.getResources().getString(R.string.str_all_view);
+
+        if (Define.TITLE_ACTIONBAR.equals(""))
+            Define.TITLE_ACTIONBAR = context.getResources().getString(R.string.album);
     }
 
 }

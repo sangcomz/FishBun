@@ -1,5 +1,7 @@
 package com.sangcomz.fishbun.adapter;
 
+import android.app.Activity;
+import android.net.Uri;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
@@ -10,14 +12,13 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.sangcomz.fishbun.R;
-import com.sangcomz.fishbun.bean.ImageBean;
-import com.sangcomz.fishbun.bean.PickedImageBean;
+import com.sangcomz.fishbun.bean.Image;
+import com.sangcomz.fishbun.bean.PickedImage;
 import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.ui.picker.PickerController;
 import com.sangcomz.fishbun.util.SquareTextView;
 import com.squareup.picasso.Picasso;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -26,8 +27,8 @@ public class PickerGridAdapter
         extends RecyclerView.Adapter<PickerGridAdapter.ViewHolder> {
     private static final int TYPE_HEADER = Integer.MIN_VALUE;
 
-    private ArrayList<PickedImageBean> pickedImageBeans = new ArrayList<>();
-    private ImageBean[] imageBeans;
+    private ArrayList<PickedImage> pickedImages = new ArrayList<>();
+    private Image[] images;
     private PickerController pickerController;
     private boolean isHeader = Define.IS_CAMERA;
 
@@ -36,13 +37,13 @@ public class PickerGridAdapter
     public class ViewHolderImage extends ViewHolder {
 
 
-        ImageView imgPhoto;
-        SquareTextView txtPickCount;
+        ImageView imgThumbImage;
+        SquareTextView txtThumbCount;
 
         public ViewHolderImage(View view) {
             super(view);
-            imgPhoto = (ImageView) view.findViewById(R.id.img_thum);
-            txtPickCount = (SquareTextView) view.findViewById(R.id.txt_pick_count);
+            imgThumbImage = (ImageView) view.findViewById(R.id.img_thumb_image);
+            txtThumbCount = (SquareTextView) view.findViewById(R.id.txt_thumb_count);
         }
     }
 
@@ -53,16 +54,16 @@ public class PickerGridAdapter
 
         public ViewHolderHeader(View view) {
             super(view);
-            header = (RelativeLayout) itemView.findViewById(R.id.area_header);
+            header = (RelativeLayout) itemView.findViewById(R.id.rel_header_area);
         }
     }
 
-    public PickerGridAdapter(ImageBean[] imageBeans,
-                             ArrayList<PickedImageBean> pickedImageBeans, PickerController pickerController,
+    public PickerGridAdapter(Image[] images,
+                             ArrayList<PickedImage> pickedImages, PickerController pickerController,
                              String saveDir) {
-        this.imageBeans = imageBeans;
+        this.images = images;
         this.pickerController = pickerController;
-        this.pickedImageBeans = pickedImageBeans;
+        this.pickedImages = pickedImages;
         this.saveDir = saveDir;
     }
 
@@ -77,20 +78,19 @@ public class PickerGridAdapter
         }
 
         view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.thum_item, parent, false);
+                .inflate(R.layout.thumb_item, parent, false);
         return new ViewHolderImage(view);
     }
 
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-
         if (holder instanceof ViewHolderHeader) {
             final ViewHolderHeader vh = (ViewHolderHeader) holder;
             vh.header.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    pickerController.takePicture(saveDir);
+                    pickerController.takePicture((Activity) vh.header.getContext(), saveDir);
                 }
             });
         }
@@ -105,72 +105,72 @@ public class PickerGridAdapter
 
             final ViewHolderImage vh = (ViewHolderImage) holder;
 
-            final ImageBean imageBean = imageBeans[imagePos];
-            final String imgPath = imageBean.getImgPath();
+            final Image image = images[imagePos];
+            final Uri imgUri = image.getImgPath();
 
-            if (!imageBean.isInit()) {
-                imageBean.setIsInit(true);
-                for (int i = 0; i < pickedImageBeans.size(); i++) {
-                    if (imgPath.equals(pickedImageBeans.get(i).getImgPath())) {
-                        imageBean.setImgOrder(i + 1);
-                        pickedImageBeans.get(i).setImgPosition(imagePos);
+            if (!image.isInit()) {
+                image.setIsInit(true);
+                for (int i = 0; i < pickedImages.size(); i++) {
+                    if (imgUri.equals(pickedImages.get(i).getImgPath())) {
+                        image.setImgOrder(i + 1);
+                        pickedImages.get(i).setImgPosition(imagePos);
                         break;
                     }
                 }
             }
 
 
-            if (imageBean.getImgOrder() != -1) {
-                vh.txtPickCount.setVisibility(View.VISIBLE);
+            if (image.getImgOrder() != -1) {
+                vh.txtThumbCount.setVisibility(View.VISIBLE);
                 if (Define.ALBUM_PICKER_COUNT == 1)
-                    vh.txtPickCount.setText("");
+                    vh.txtThumbCount.setText("");
                 else
-                    vh.txtPickCount.setText(String.valueOf(imageBean.getImgOrder()));
+                    vh.txtThumbCount.setText(String.valueOf(image.getImgOrder()));
             } else
-                vh.txtPickCount.setVisibility(View.GONE);
+                vh.txtThumbCount.setVisibility(View.GONE);
 
-
-            if (imgPath != null && !imgPath.equals("")) {
+            if (imgUri != null && !imgUri.equals("")) {
                 Picasso
-                        .with(vh.imgPhoto.getContext())
-                        .load(new File(imgPath))
+                        .with(vh.imgThumbImage.getContext())
+                        .load(imgUri)
                         .fit()
                         .centerCrop()
-                        .into(vh.imgPhoto);
+                        .into(vh.imgThumbImage);
             }
 
 
-            vh.imgPhoto.setOnClickListener(new View.OnClickListener() {
+            vh.imgThumbImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (vh.txtPickCount.getVisibility() == View.GONE &&
-                            Define.ALBUM_PICKER_COUNT > pickedImageBeans.size()) {
-                        vh.txtPickCount.setVisibility(View.VISIBLE);
-                        pickedImageBeans.add(new PickedImageBean(pickedImageBeans.size() + 1, imgPath, imagePos));
+                    if (vh.txtThumbCount.getVisibility() == View.GONE &&
+                            Define.ALBUM_PICKER_COUNT > pickedImages.size()) {
 
-                        pickerController.setToolbarTitle(pickedImageBeans.size());
+                        vh.txtThumbCount.setVisibility(View.VISIBLE);
+                        pickedImages.add(new PickedImage(pickedImages.size() + 1, imgUri, imagePos));
+
+                        pickerController.setToolbarTitle(pickedImages.size());
                         if (Define.IS_AUTOMATIC_CLOSE
-                                && Define.ALBUM_PICKER_COUNT == pickedImageBeans.size()) {
-                            pickerController.finishActivity(pickedImageBeans);
+                                && Define.ALBUM_PICKER_COUNT == pickedImages.size()) {
+                            pickerController.finishActivity(pickedImages);
                         }
 
                         if (Define.ALBUM_PICKER_COUNT == 1)
-                            vh.txtPickCount.setText("");
+                            vh.txtThumbCount.setText("");
                         else
-                            vh.txtPickCount.setText(String.valueOf(pickedImageBeans.size()));
+                            vh.txtThumbCount.setText(String.valueOf(pickedImages.size()));
 
-                        imageBean.setImgOrder(pickedImageBeans.size());
+                        image.setImgOrder(pickedImages.size());
 
-                    } else if (vh.txtPickCount.getVisibility() == View.VISIBLE) {
+                    } else if (vh.txtThumbCount.getVisibility() == View.VISIBLE) {
                         pickerController.setRecyclerViewClickable(false);
-                        pickedImageBeans.remove(imageBean.getImgOrder() - 1);
+                        pickedImages.remove(image.getImgOrder() - 1);
                         if (Define.ALBUM_PICKER_COUNT != 1)
-                            setOrder(Integer.valueOf(vh.txtPickCount.getText().toString()) - 1);
+                            setOrder(Integer.valueOf(vh.txtThumbCount.getText().toString()) - 1);
                         else
                             setOrder(0);
-                        imageBean.setImgOrder(-1);
-                        vh.txtPickCount.setVisibility(View.GONE);
-                        pickerController.setToolbarTitle(pickedImageBeans.size());
+                        image.setImgOrder(-1);
+                        vh.txtThumbCount.setVisibility(View.GONE);
+                        pickerController.setToolbarTitle(pickedImages.size());
                     } else {
                         Snackbar.make(v, Define.MESSAGE_LIMIT_REACHED, Snackbar.LENGTH_SHORT).show();
                     }
@@ -183,9 +183,9 @@ public class PickerGridAdapter
     @Override
     public int getItemCount() {
         if (isHeader)
-            return imageBeans.length + 1;
+            return images.length + 1;
 
-        return imageBeans.length;
+        return images.length;
     }
 
     @Override
@@ -198,14 +198,14 @@ public class PickerGridAdapter
 
 
     private void setOrder(int removePosition) {
-        for (int i = removePosition; i < pickedImageBeans.size(); i++) {
-            if (pickedImageBeans.get(i).getImgPosition() != -1) {
-                imageBeans[pickedImageBeans.get(i).getImgPosition()]
+        for (int i = removePosition; i < pickedImages.size(); i++) {
+            if (pickedImages.get(i).getImgPosition() != -1) {
+                images[pickedImages.get(i).getImgPosition()]
                         .setImgOrder(i + 1);
                 if (isHeader)
-                    notifyItemChanged(pickedImageBeans.get(i).getImgPosition() + 1); //if use header +1
+                    notifyDataSetChanged();
                 else
-                    notifyItemChanged(pickedImageBeans.get(i).getImgPosition()); //if don't use header
+                    notifyDataSetChanged();
             }
         }
         new Handler().postDelayed(new Runnable() {
@@ -230,20 +230,20 @@ public class PickerGridAdapter
     }
 
 
-    public ImageBean[] getImageBeans() {
-        return imageBeans;
+    public Image[] getImages() {
+        return images;
     }
 
 
-    public void addImage(String path) {
-        ArrayList<ImageBean> al = new ArrayList<>();
-        Collections.addAll(al, imageBeans);
-        al.add(0, new ImageBean(-1, path));
+    public void addImage(Uri path) {
+        ArrayList<Image> al = new ArrayList<>();
+        Collections.addAll(al, images);
+        al.add(0, new Image(-1, path));
 
-        imageBeans = al.toArray(new ImageBean[al.size()]);
+        images = al.toArray(new Image[al.size()]);
 
-        for (int i = 0; i < pickedImageBeans.size(); i++)
-            pickedImageBeans.get(i).setImgPosition(pickedImageBeans.get(i).getImgPosition() + 1);
+        for (int i = 0; i < pickedImages.size(); i++)
+            pickedImages.get(i).setImgPosition(pickedImages.get(i).getImgPosition() + 1);
 
         notifyDataSetChanged();
 
