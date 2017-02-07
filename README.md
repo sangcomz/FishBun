@@ -11,14 +11,10 @@ FishBun is Image Picker for android.
 
 <img src="/pic/fishbuns.png">
 
-##What's New 0.6.2 FishBun
+##What's New 0.6.3 FishBun
 
-####● New feature setActionBarTitleColor
-####● New feature setAllViewTitle
-####● New feature setActionBarTitle
-####● Add Proguard
-####● Change image path from String to Uri
-####● Fix Android N Bug
+####● Fix Proguard (#60)
+####● Fix Demo App
 
 ##How to Use FishBun
 
@@ -30,7 +26,7 @@ FishBun is Image Picker for android.
     
     ;
     dependencies {
-        compile('com.sangcomz:FishBun:0.6.2@aar') {
+        compile('com.sangcomz:FishBun:0.6.3@aar') {
             transitive = true
         }
     }
