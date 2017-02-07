@@ -70,14 +70,14 @@ artifacts {
     archives sourcesJar
 }
 
-if (project.rootProject.file('local.properties').isFile()){
+if (project.rootProject.file('local.properties').isFile()) {
     Properties properties = new Properties()
     properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
 // https://github.com/bintray/gradle-bintray-plugin
     bintray {
-        user = project.hasProperty("bintray.user") ? properties.getProperty("bintray.user") : " "
-        key = project.hasProperty("bintray.apikey") ? properties.getProperty("bintray.apikey") : " "
+        user = properties.getProperty("bintray.user") ?: ''
+        key = properties.getProperty("bintray.apikey") ?: ''
         publish = true
         configurations = ['archives']
         pkg {
@@ -95,15 +95,12 @@ if (project.rootProject.file('local.properties').isFile()){
     github {
         owner = 'sangcomz'
         repo = 'Fishbun'
-        token = project.hasProperty("github_access_tokens") ? properties.get("github_access_tokens") : " "
+        token = properties.get("github_access_tokens") ?: ''
         tagName = version
         targetCommitish = 'master'
         body = """## Release Note
-* FishBun Demo Icon Update
-* Support Library Update
-* #23, #49, #18, #33
-* Change image path from String to Uri
-* Fix Android N Bug"""
+* #60, #49, #18, #33
+* Fix Demo App"""
         name = version
     }
 }
