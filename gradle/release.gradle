@@ -99,11 +99,8 @@ if (project.rootProject.file('local.properties').isFile()) {
         tagName = version
         targetCommitish = 'master'
         body = """## Release Note
-* FishBun Demo Icon Update
-* Support Library Update
-* #23, #49, #18, #33
-* Change image path from String to Uri
-* Fix Android N Bug"""
+* #60, #49, #18, #33
+* Fix Demo App"""
         name = version
     }
 }
