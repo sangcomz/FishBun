@@ -15,4 +15,5 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
--keep class com.sangcomz.fishbun.bean.** { ; }
+-dontwarn com.squareup.okhttp.**
+-keep class com.sangcomz.fishbun.bean.** { *; }
