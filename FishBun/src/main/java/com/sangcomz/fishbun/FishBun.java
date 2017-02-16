@@ -3,6 +3,7 @@ package com.sangcomz.fishbun;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 
@@ -153,6 +154,18 @@ public class FishBun {
             return baseProperty;
         }
 
+        @Override
+        public BaseProperty setHomeAsUpIndicatorDrawable(Drawable icon) {
+            Define.homeAsUpIndicatorDrawable = icon;
+            return baseProperty;
+        }
+
+        @Override
+        public BaseProperty setOkButtonDrawable(Drawable icon) {
+            Define.okButtonDrawable = icon;
+            return baseProperty;
+        }
+
         public void startAlbum() {
             Context context = null;
             if (activity != null)
@@ -223,6 +236,10 @@ public class FishBun {
         BaseProperty setAllViewTitle(String allViewTitle);
 
         BaseProperty setActionBarTitle(String actionBarTitle);
+
+        BaseProperty setHomeAsUpIndicatorDrawable(Drawable icon);
+
+        BaseProperty setOkButtonDrawable(Drawable icon);
 
         void startAlbum();
     }

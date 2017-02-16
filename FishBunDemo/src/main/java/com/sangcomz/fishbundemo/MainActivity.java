@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,8 +17,6 @@ import com.sangcomz.fishbun.FishBun;
 import com.sangcomz.fishbun.define.Define;
 
 import java.util.ArrayList;
-
-import static android.app.Activity.RESULT_OK;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -70,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
             FishBun.with(MainActivity.this)
                     .setPickerCount(20)
                     .setPickerSpanCount(3)
-                    .setActionBarColor(Color.parseColor("#3F51B5"), Color.parseColor("#303F9F"))
+                    .setActionBarColor(Color.parseColor("#ffffff"), Color.parseColor("#ffffff"))
                     .setActionBarTitleColor(Color.parseColor("#000000"))
                     .textOnImagesSelectionLimitReached("Limit Reached!")
                     .textOnNothingSelected("Nothing Selected")
@@ -81,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
                     .setReachLimitAutomaticClose(true)
                     .setAllViewTitle("All")
                     .setActionBarTitle("Image Library")
+                    .setHomeAsUpIndicatorDrawable(ContextCompat.getDrawable(this, R.drawable.ic_arrow_back_black_24dp))
+                    .setOkButtonDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check_black_24dp))
                     .startAlbum();
             return true;
         }

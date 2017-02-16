@@ -28,6 +28,9 @@ import com.sangcomz.fishbun.util.UiUtil;
 import java.io.File;
 import java.util.ArrayList;
 
+import static com.sangcomz.fishbun.define.Define.homeAsUpIndicatorDrawable;
+import static com.sangcomz.fishbun.define.Define.okButtonDrawable;
+
 
 public class PickerActivity extends AppCompatActivity {
 
@@ -134,6 +137,8 @@ public class PickerActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_photo_album, menu);
+        if (okButtonDrawable != null)
+            menu.findItem(R.id.action_ok).setIcon(okButtonDrawable);
         return true;
     }
 
@@ -202,7 +207,11 @@ public class PickerActivity extends AppCompatActivity {
             uiUtil.setStatusBarColor(this);
         }
         ActionBar bar = getSupportActionBar();
-        if (bar != null) bar.setDisplayHomeAsUpEnabled(true);
+        if (bar != null) {
+            bar.setDisplayHomeAsUpEnabled(true);
+            if (homeAsUpIndicatorDrawable != null)
+                getSupportActionBar().setHomeAsUpIndicator(homeAsUpIndicatorDrawable);
+        }
     }
 
 
