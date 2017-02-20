@@ -18,8 +18,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-
 import android.widget.TextView;
+
 import com.sangcomz.fishbun.ItemDecoration.DividerItemDecoration;
 import com.sangcomz.fishbun.R;
 import com.sangcomz.fishbun.adapter.AlbumListAdapter;
@@ -34,6 +34,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.sangcomz.fishbun.define.Define.homeAsUpIndicatorDrawable;
+import static com.sangcomz.fishbun.define.Define.okButtonDrawable;
+
 
 public class AlbumActivity extends AppCompatActivity {
     private AlbumController albumController;
@@ -46,7 +49,7 @@ public class AlbumActivity extends AppCompatActivity {
     private UiUtil uiUtil = new UiUtil();
 
     private TextView progressAlbumText;
-  
+
     private int defCameraAlbum = 0;
 
 
@@ -131,7 +134,7 @@ public class AlbumActivity extends AppCompatActivity {
         relAlbumEmpty = (RelativeLayout) findViewById(R.id.rel_album_empty);
         progressAlbumText = (TextView) findViewById(R.id.txt_album_msg);
         progressAlbumText.setText(R.string.msg_loading_image);
-      
+
         setSupportActionBar(toolbar);
 
 
@@ -143,6 +146,8 @@ public class AlbumActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(Define.TITLE_ACTIONBAR);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            if (homeAsUpIndicatorDrawable != null)
+                getSupportActionBar().setHomeAsUpIndicator(homeAsUpIndicatorDrawable);
         }
 
     }
@@ -153,7 +158,7 @@ public class AlbumActivity extends AppCompatActivity {
 
     private void setAlbumListAdapter() {
 
-        if (adapter == null){
+        if (adapter == null) {
             ArrayList<Uri> data = getIntent().getParcelableArrayListExtra(Define.INTENT_PATH);
             adapter = new AlbumListAdapter(albumList, data);
         }
@@ -213,8 +218,12 @@ public class AlbumActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        if (Define.IS_BUTTON)
+        if (Define.IS_BUTTON) {
             getMenuInflater().inflate(R.menu.menu_photo_album, menu);
+            if (okButtonDrawable != null)
+                menu.findItem(R.id.action_ok).setIcon(okButtonDrawable);
+            System.out.println(menu.findItem(R.id.action_ok));
+        }
         return true;
     }
 

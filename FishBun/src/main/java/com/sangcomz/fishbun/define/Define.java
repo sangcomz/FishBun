@@ -1,6 +1,7 @@
 package com.sangcomz.fishbun.define;
 
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 
 public class Define {
     public static int ALBUM_THUMBNAIL_SIZE = -1;
@@ -45,4 +46,8 @@ public class Define {
     public static final String SAVE_INSTANCE_NEW_IMAGES = "instance_new_images";
     public static final String SAVE_INSTANCE_SAVED_IMAGE = "instance_saved_image";
     public static final String SAVE_INSTANCE_SAVED_IMAGE_THUMBNAILS = "instance_saved_image_thumbnails";
+
+
+    public static Drawable homeAsUpIndicatorDrawable = null;
+    public static Drawable okButtonDrawable = null;
 }
