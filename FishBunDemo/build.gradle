@@ -15,21 +15,24 @@ android {
     Properties signProp = new Properties()
     if (project.rootProject.file('playstore/sign.properties').isFile()) {
         signProp.load(project.rootProject.file('playstore/sign.properties').newDataInputStream())
-    }
-    signingConfigs {
-        release {
-            keyAlias signProp.get("alias") ? signProp.get("alias") : ""
-            keyPassword signProp.get("password") ? signProp.get("password") : ""
-            storeFile project.rootProject.file('playstore/key.jks').isFile() ?
-                    rootProject.file("playstore/key.jks") : null
-            storePassword signProp.get("password") ? signProp.get("password") : ""
+
+        signingConfigs {
+            release {
+                keyAlias signProp.get("alias") ? signProp.get("alias") : ""
+                keyPassword signProp.get("password") ? signProp.get("password") : ""
+                storeFile rootProject.file("playstore/key.jks")
+                storePassword signProp.get("password") ? signProp.get("password") : ""
+            }
         }
     }
+
     buildTypes {
+
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
+            if (project.rootProject.file('playstore/sign.properties').isFile()) signingConfig signingConfigs.release
+
         }
         debug {
             minifyEnabled true
