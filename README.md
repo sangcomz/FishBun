@@ -19,6 +19,7 @@ FishBun is Image Picker for android.
 ##What's New 0.6.4 FishBun
 
 ####● set light status bar  (#69)
+####● you can use setHomeAsUpIndicatorDrawable(Drawable icon), setOkButtonDrawable(Drawable icon)
 ####● Fix Demo App
 
 ##How to Use FishBun
@@ -55,8 +56,11 @@ and add OnActivityResult
         switch (requestCode) {
             case Define.ALBUM_REQUEST_CODE:
                 if (resultCode == RESULT_OK) {
-                    path = imageData.getStringArrayListExtra(Define.INTENT_PATH);
-                    //You can get image path(ArrayList<String>
+                    //path = imageData.getStringArrayListExtra(Define.INTENT_PATH);
+                    //You can get image path(ArrayList<String>) Under version 0.6.2
+                    
+                    path = imageData.getParcelableArrayListExtra(Define.INTENT_PATH);
+                    //You can get image path(ArrayList<Uri>) Version 0.6.2 or later
                     break;
                 }
         }
