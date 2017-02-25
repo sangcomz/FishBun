@@ -27,5 +27,24 @@ dependencies {
     compile project(':FishBun')
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta1'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta1'
-    compile 'com.android.support:support-v4:25.1.0'
+    compile 'com.android.support:support-v4:25.2.0'
+}
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.triplet.gradle:play-publisher:1.1.5'
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+apply plugin: 'com.github.triplet.play'
+
+play {
+    track = 'production' // or 'rollout' or 'beta' or 'alpha'
+//    userFraction = 0.2 // only necessary for 'rollout', in this case default is 0.1 (10% of the target)
+    jsonFile = rootProject.file('playstore_kye.json')
 }

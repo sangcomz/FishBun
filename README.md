@@ -11,9 +11,9 @@ FishBun is Image Picker for android.
 
 <img src="/pic/fishbuns.png">
 
-##What's New 0.6.3 FishBun
+##What's New 0.6.4 FishBun
 
-####● Fix Proguard (#60)
+####● set light status bar  (#69)
 ####● Fix Demo App
 
 ##How to Use FishBun
@@ -26,7 +26,7 @@ FishBun is Image Picker for android.
     
     ;
     dependencies {
-        compile('com.sangcomz:FishBun:0.6.3@aar') {
+        compile('com.sangcomz:FishBun:0.6.4@aar') {
             transitive = true
         }
     }
@@ -36,11 +36,11 @@ FishBun is Image Picker for android.
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-FishBun.with(MainActivity.this).startAlbum();
+FishBun.with(Your Activity).startAlbum();
 
 if you use in Fragment,
 
-FishBun.with(Fragment.this).startAlbum();
+FishBun.with(Your Fragment).startAlbum();
 
 and add OnActivityResult
 
@@ -59,21 +59,23 @@ and add OnActivityResult
 
 you can use also this
 
-            FishBun.with(MainActivity.this)
-                    .setPickerCount(20)
-                    .setPickerSpanCount(3)
-                    .setActionBarColor(Color.parseColor("#3F51B5"), Color.parseColor("#303F9F"))
-                    .setActionBarTitleColor(Color.parseColor("#000000"))
-                    .textOnImagesSelectionLimitReached("Limit Reached!")
-                    .textOnNothingSelected("Nothing Selected")
-                    .setArrayPaths(path)
-                    .setAlbumSpanCount(2, 4)
-                    .setButtonInAlbumActivity(true)
-                    .setCamera(true)
-                    .setReachLimitAutomaticClose(true)
-                    .setAllViewTitle("All")
-                    .setActionBarTitle("Image Library")
-                    .startAlbum();
+                FishBun.with(Your Activity or Fragment)
+                        .setPickerCount(5)
+                        .setPickerSpanCount(6)
+                        .setActionBarColor(Color.parseColor("#795548"), Color.parseColor("#5D4037"), false)
+                        .setActionBarTitleColor(Color.parseColor("#ffffff"))
+                        .setArrayPaths(path)
+                        .setAlbumSpanCount(2, 4)
+                        .setButtonInAlbumActivity(false)
+                        .setCamera(true)
+                        .setReachLimitAutomaticClose(true)
+                        .setHomeAsUpIndicatorDrawable(ContextCompat.getDrawable(this, R.drawable.ic_custom_back_white))
+                        .setOkButtonDrawable(ContextCompat.getDrawable(this, R.drawable.ic_custom_ok))
+                        .setAllViewTitle("All")
+                        .setActionBarTitle("Image Library")
+                        .textOnImagesSelectionLimitReached("Limit Reached!")
+                        .textOnNothingSelected("Nothing Selected")
+                        .startAlbum();
 
 
 ##Result Screen

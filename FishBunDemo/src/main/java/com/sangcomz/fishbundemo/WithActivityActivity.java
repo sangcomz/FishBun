@@ -73,7 +73,7 @@ public class WithActivityActivity extends AppCompatActivity {
                     FishBun.with(WithActivityActivity.this)
                             .setPickerCount(1)
                             .setPickerSpanCount(5)
-                            .setActionBarColor(Color.parseColor("#FFA400"), Color.parseColor("#DF9613"))
+                            .setActionBarColor(Color.parseColor("#FFA400"), Color.parseColor("#DF9613"), false)
                             .setActionBarTitleColor(Color.parseColor("#ffffff"))
                             .setArrayPaths(path)
                             .setAlbumSpanCount(1, 2)
@@ -82,9 +82,9 @@ public class WithActivityActivity extends AppCompatActivity {
                             .setReachLimitAutomaticClose(false)
                             .setHomeAsUpIndicatorDrawable(ContextCompat.getDrawable(this, R.drawable.ic_arrow_back_white_24dp))
                             .setOkButtonDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check_white_24dp))
-                            .setAllViewTitle("All")
-                            .setActionBarTitle("Image Library")
-                            .textOnImagesSelectionLimitReached("Limit Reached!")
+                            .setAllViewTitle("All photos")
+                            .setActionBarTitle("FishBun Basic")
+                            .textOnImagesSelectionLimitReached("Limit Reached")
                             .textOnNothingSelected("Nothing Selected")
                             .startAlbum();
                     break;
@@ -94,7 +94,7 @@ public class WithActivityActivity extends AppCompatActivity {
                     FishBun.with(WithActivityActivity.this)
                             .setPickerCount(5)
                             .setPickerSpanCount(6)
-                            .setActionBarColor(Color.parseColor("#795548"), Color.parseColor("#5D4037"))
+                            .setActionBarColor(Color.parseColor("#795548"), Color.parseColor("#5D4037"), false)
                             .setActionBarTitleColor(Color.parseColor("#ffffff"))
                             .setArrayPaths(path)
                             .setAlbumSpanCount(2, 4)
@@ -104,9 +104,8 @@ public class WithActivityActivity extends AppCompatActivity {
                             .setHomeAsUpIndicatorDrawable(ContextCompat.getDrawable(this, R.drawable.ic_custom_back_white))
                             .setOkButtonDrawable(ContextCompat.getDrawable(this, R.drawable.ic_custom_ok))
                             .setAllViewTitle("All")
-                            .setActionBarTitle("Image Library")
-                            .textOnImagesSelectionLimitReached("Limit Reached!")
-                            .textOnNothingSelected("Nothing Selected")
+                            .setActionBarTitle("FishBun Dark")
+                            .textOnNothingSelected("Please pick one.")
                             .startAlbum();
                     break;
                 }
@@ -115,7 +114,7 @@ public class WithActivityActivity extends AppCompatActivity {
                     FishBun.with(WithActivityActivity.this)
                             .setPickerCount(10)
                             .setPickerSpanCount(7)
-                            .setActionBarColor(Color.parseColor("#ffffff"), Color.parseColor("#ffffff"))
+                            .setActionBarColor(Color.parseColor("#ffffff"), Color.parseColor("#ffffff"), true)
                             .setActionBarTitleColor(Color.parseColor("#000000"))
                             .setArrayPaths(path)
                             .setAlbumSpanCount(2, 4)
@@ -124,10 +123,10 @@ public class WithActivityActivity extends AppCompatActivity {
                             .setReachLimitAutomaticClose(false)
                             .setHomeAsUpIndicatorDrawable(ContextCompat.getDrawable(this, R.drawable.ic_arrow_back_black_24dp))
                             .setOkButtonDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check_black_24dp))
-                            .setAllViewTitle("All")
-                            .setActionBarTitle("Image Library")
-                            .textOnImagesSelectionLimitReached("Limit Reached!")
-                            .textOnNothingSelected("Nothing Selected")
+                            .setAllViewTitle("All of your photos")
+                            .setActionBarTitle("FishBun Light")
+                            .textOnImagesSelectionLimitReached("You can't select any more.")
+                            .textOnNothingSelected("I need a photo!")
                             .startAlbum();
                     break;
                 }
