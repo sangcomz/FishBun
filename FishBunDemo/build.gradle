@@ -20,7 +20,8 @@ android {
         release {
             keyAlias signProp.get("alias") ? signProp.get("alias") : ""
             keyPassword signProp.get("password") ? signProp.get("password") : ""
-            storeFile rootProject.file("playstore/key.jks")
+            storeFile project.rootProject.file('playstore/key.jks').isFile() ?
+                    rootProject.file("playstore/key.jks") : null
             storePassword signProp.get("password") ? signProp.get("password") : ""
         }
     }
