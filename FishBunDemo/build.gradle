@@ -1,8 +1,6 @@
 apply plugin: 'com.android.application'
 
 android {
-    Properties signProp = new Properties()
-    signProp.load(project.rootProject.file('playstore/sign.properties').newDataInputStream())
 
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
@@ -14,14 +12,20 @@ android {
         versionName '0.6.4'
         multiDexEnabled true
     }
-    signingConfigs {
-        release {
-            keyAlias 'sangcomz'
-            keyPassword '4874Jung2@'
-            storeFile file('/Users/sangcomz/Projects/FishBun/playstore/key.jks')
-            storePassword '4874Jung2@'
+
+    if (project.rootProject.file('playstore/sign.properties').isFile()) {
+        Properties signProp = new Properties()
+        signProp.load(project.rootProject.file('playstore/sign.properties').newDataInputStream())
+        signingConfigs {
+            release {
+                keyAlias signProp.get("alias") ? signProp.get("alias") : ""
+                keyPassword signProp.get("password") ? signProp.get("password") : ""
+                storeFile rootProject.file("playstore/key.jks")
+                storePassword signProp.get("password") ? signProp.get("password") : ""
+            }
         }
     }
+
     buildTypes {
         release {
             minifyEnabled true
