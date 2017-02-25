@@ -1,17 +1,33 @@
 apply plugin: 'com.android.application'
 
 android {
+    Properties signProp = new Properties()
+    signProp.load(project.rootProject.file('playstore/sign.properties').newDataInputStream())
+
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "com.sangcomz.fishbundemo"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode gradle.versionCode
-        versionName gradle.versionName
+        versionCode 4
+        versionName '0.6.4'
         multiDexEnabled true
     }
+    signingConfigs {
+        release {
+            keyAlias 'sangcomz'
+            keyPassword '4874Jung2@'
+            storeFile file('/Users/sangcomz/Projects/FishBun/playstore/key.jks')
+            storePassword '4874Jung2@'
+        }
+    }
     buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
         debug {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -19,6 +35,8 @@ android {
     }
     lintOptions {
         abortOnError false
+    }
+    productFlavors {
     }
 }
 

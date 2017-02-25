@@ -37,3 +37,4 @@ proguard/
 *.iml
 
 playstore_key.json
+/playstore
