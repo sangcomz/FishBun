@@ -12,20 +12,18 @@ android {
         versionName '0.6.4'
         multiDexEnabled true
     }
-
+    Properties signProp = new Properties()
     if (project.rootProject.file('playstore/sign.properties').isFile()) {
-        Properties signProp = new Properties()
         signProp.load(project.rootProject.file('playstore/sign.properties').newDataInputStream())
-        signingConfigs {
-            release {
-                keyAlias signProp.get("alias") ? signProp.get("alias") : ""
-                keyPassword signProp.get("password") ? signProp.get("password") : ""
-                storeFile rootProject.file("playstore/key.jks")
-                storePassword signProp.get("password") ? signProp.get("password") : ""
-            }
+    }
+    signingConfigs {
+        release {
+            keyAlias signProp.get("alias") ? signProp.get("alias") : ""
+            keyPassword signProp.get("password") ? signProp.get("password") : ""
+            storeFile rootProject.file("playstore/key.jks")
+            storePassword signProp.get("password") ? signProp.get("password") : ""
         }
     }
-
     buildTypes {
         release {
             minifyEnabled true
