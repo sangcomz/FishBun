@@ -88,6 +88,14 @@ public class FishBun {
         }
 
         @Override
+        public BaseProperty setActionBarColor(int actionbarColor, int statusBarColor, boolean isStatusBarLight) {
+            Define.COLOR_ACTION_BAR = actionbarColor;
+            Define.COLOR_STATUS_BAR = statusBarColor;
+            Define.STYLE_STATUS_BAR_LIGHT = isStatusBarLight;
+            return baseProperty;
+        }
+
+        @Override
         public BaseProperty setCamera(boolean isCamera) {
             Define.IS_CAMERA = isCamera;
             return baseProperty;
@@ -213,7 +221,9 @@ public class FishBun {
 
         BaseProperty setActionBarTitleColor(int actionbarTitleColor);
 
-        BaseProperty setActionBarColor(int actionbarColor, int statusbarColor);
+        BaseProperty setActionBarColor(int actionbarColor, int statusBarColor);
+
+        BaseProperty setActionBarColor(int actionbarColor, int statusBarColor, boolean isStatusBarLight);
 
         BaseProperty setCamera(boolean isCamera);
 
