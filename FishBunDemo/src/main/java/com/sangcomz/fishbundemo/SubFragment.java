@@ -30,8 +30,8 @@ public class SubFragment extends Fragment {
     Button btnAddImages;
     RecyclerView recyclerView;
     LinearLayoutManager linearLayoutManager;
-    MainAdapter mainAdapter;
-    MainController mainController;
+    ImageAdapter imageAdapter;
+    ImageController withActivityController;
 
 
     @Override
@@ -43,10 +43,10 @@ public class SubFragment extends Fragment {
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview);
         btnAddImages = (Button)rootView.findViewById(R.id.btn_add_images);
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        mainController = new MainController(getActivity(), imgMain);
-        mainAdapter = new MainAdapter(getActivity(), mainController, path);
+        withActivityController = new ImageController(getActivity(), imgMain);
+        imageAdapter = new ImageAdapter(getActivity(), withActivityController, path);
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(mainAdapter);
+        recyclerView.setAdapter(imageAdapter);
 
 
         btnAddImages.setOnClickListener(new View.OnClickListener() {
@@ -72,7 +72,7 @@ public class SubFragment extends Fragment {
             case Define.ALBUM_REQUEST_CODE:
                 if (resultCode == getActivity().RESULT_OK) {
                     path = data.getParcelableArrayListExtra(Define.INTENT_PATH);
-                    mainAdapter.changePath(path);
+                    imageAdapter.changePath(path);
                     break;
                 }
         }

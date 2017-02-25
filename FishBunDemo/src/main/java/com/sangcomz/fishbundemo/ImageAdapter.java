@@ -15,14 +15,14 @@ import java.util.ArrayList;
 /**
  * Created by sangc on 2015-11-06.
  */
-public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
+public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> {
     Context context;
     ArrayList<Uri> imagePaths;
-    MainController mainController;
+    ImageController imageController;
 
-    MainAdapter(Context context, MainController mainController, ArrayList<Uri> imagePaths) {
+    public ImageAdapter(Context context, ImageController imageController, ArrayList<Uri> imagePaths) {
         this.context = context;
-        this.mainController = mainController;
+        this.imageController = imageController;
         this.imagePaths = imagePaths;
     }
 
@@ -45,14 +45,14 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mainController.setImgMain(imagePath);
+                imageController.setImgMain(imagePath);
             }
         });
     }
 
     public void changePath(ArrayList<Uri> imagePaths) {
         this.imagePaths = imagePaths;
-        mainController.setImgMain(imagePaths.get(0));
+        imageController.setImgMain(imagePaths.get(0));
         notifyDataSetChanged();
     }
 

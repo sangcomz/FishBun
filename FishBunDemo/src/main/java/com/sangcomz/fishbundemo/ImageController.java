@@ -6,16 +6,14 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
-import java.io.File;
-
 /**
  * Created by sangc on 2015-11-06.
  */
-class MainController {
+class ImageController {
     Context context;
     ImageView imgMain;
 
-    MainController(Context context, ImageView imgMain) {
+    ImageController(Context context, ImageView imgMain) {
         this.context = context;
         this.imgMain = imgMain;
     }
