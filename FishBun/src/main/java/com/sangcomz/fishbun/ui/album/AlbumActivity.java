@@ -93,7 +93,7 @@ public class AlbumActivity extends AppCompatActivity {
         super.onResume();
         if (recyclerAlbumList != null &&
                 recyclerAlbumList.getLayoutManager() != null) {
-            if (UiUtil.isLandscape(this))
+            if (uiUtil.isLandscape(this))
                 ((GridLayoutManager) recyclerAlbumList.getLayoutManager())
                         .setSpanCount(Define.ALBUM_LANDSCAPE_SPAN_COUNT);
             else
@@ -118,7 +118,7 @@ public class AlbumActivity extends AppCompatActivity {
         recyclerAlbumList = (RecyclerView) findViewById(R.id.recycler_album_list);
 
         GridLayoutManager layoutManager;
-        if (UiUtil.isLandscape(this))
+        if (uiUtil.isLandscape(this))
             layoutManager = new GridLayoutManager(this, Define.ALBUM_LANDSCAPE_SPAN_COUNT);
         else
             layoutManager = new GridLayoutManager(this, Define.ALBUM_PORTRAIT_SPAN_COUNT);
@@ -137,7 +137,6 @@ public class AlbumActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
 
-
         toolbar.setBackgroundColor(Define.COLOR_ACTION_BAR);
         toolbar.setTitleTextColor(Define.COLOR_ACTION_BAR_TITLE_COLOR);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -148,6 +147,12 @@ public class AlbumActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             if (homeAsUpIndicatorDrawable != null)
                 getSupportActionBar().setHomeAsUpIndicator(homeAsUpIndicatorDrawable);
+        }
+
+        if (Define.STYLE_STATUS_BAR_LIGHT
+                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            toolbar.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+
         }
 
     }

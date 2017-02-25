@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.sangcomz.fishbun.R;
 import com.sangcomz.fishbun.adapter.PickerGridAdapter;
@@ -211,6 +212,12 @@ public class PickerActivity extends AppCompatActivity {
             bar.setDisplayHomeAsUpEnabled(true);
             if (homeAsUpIndicatorDrawable != null)
                 getSupportActionBar().setHomeAsUpIndicator(homeAsUpIndicatorDrawable);
+        }
+
+        if (Define.STYLE_STATUS_BAR_LIGHT
+                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            toolbar.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+
         }
     }
 
