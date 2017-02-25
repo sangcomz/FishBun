@@ -3,7 +3,5 @@
     <string name="app_name">FishBunDemo</string>
     <string name="plus">사진추가</string>
 
-    <string name="txt_with_activity">Activity in startActivityForResult</string>
-    <string name="txt_with_Fragment">Fragment in startActivityForResult</string>
     <string name="txt_add_images">이미지 추가</string>
 </resources>

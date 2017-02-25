@@ -19,6 +19,8 @@ public class Define {
     public static int COLOR_ACTION_BAR_TITLE_COLOR = Color.parseColor("#ffffff");
     public static int COLOR_STATUS_BAR = Color.parseColor("#303F9F");
 
+    public static boolean STYLE_STATUS_BAR_LIGHT = false;
+
     public static boolean IS_CAMERA = false;
 
     public static int ADD_PHOTO_REQUEST_CODE = 127;

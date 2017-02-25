@@ -15,7 +15,7 @@ import com.sangcomz.fishbun.define.Define;
  */
 public class UiUtil {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public static void setStatusBarColor(Activity activity) {
+    public void setStatusBarColor(Activity activity) {
         Window window = activity.getWindow();
 
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -25,7 +25,7 @@ public class UiUtil {
         window.setStatusBarColor(Define.COLOR_STATUS_BAR);
     }
 
-    public static boolean isLandscape(Context context) {
+    public boolean isLandscape(Context context) {
         Configuration configuration = context.getResources().getConfiguration();
         return configuration.orientation == Configuration.ORIENTATION_LANDSCAPE;
     }
