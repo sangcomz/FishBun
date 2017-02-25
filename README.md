@@ -19,6 +19,7 @@ FishBun is Image Picker for android.
 ##What's New 0.6.4 FishBun
 
 ####● set light status bar  (#69)
+####● you can use setHomeAsUpIndicatorDrawable(Drawable icon), setOkButtonDrawable(Drawable icon)
 ####● Fix Demo App
 
 ##How to Use FishBun
