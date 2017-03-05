@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="app_name">FishBunDemo</string>
-    <string name="plus">사진추가</string>
-
-    <string name="txt_add_images">이미지 추가</string>
-</resources>

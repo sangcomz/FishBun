@@ -1,4 +1,0 @@
-include ':FishBunDemo', ':FishBun'
-
-gradle.ext.versionCode = 4
-gradle.ext.versionName = '0.6.4'
