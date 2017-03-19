@@ -19,8 +19,6 @@ import android.view.View;
 import com.sangcomz.fishbun.R;
 import com.sangcomz.fishbun.adapter.PickerGridAdapter;
 import com.sangcomz.fishbun.bean.Album;
-import com.sangcomz.fishbun.bean.Image;
-import com.sangcomz.fishbun.bean.PickedImage;
 import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.permission.PermissionCheck;
 import com.sangcomz.fishbun.util.SingleMediaScanner;
@@ -38,7 +36,7 @@ public class PickerActivity extends AppCompatActivity {
     private static final String TAG = "PickerActivity";
 
     private RecyclerView recyclerView;
-    private ArrayList<PickedImage> pickedImages;
+    private ArrayList<Uri> pickedImages;
     private PickerController pickerController;
     private Album album;
     private int position;
@@ -68,8 +66,8 @@ public class PickerActivity extends AppCompatActivity {
             pickedImages = outState.getParcelableArrayList(Define.SAVE_INSTANCE_PICK_IMAGES);
             ArrayList<Uri> addImages = outState.getParcelableArrayList(Define.SAVE_INSTANCE_NEW_IMAGES);
             String savedImage = outState.getString(Define.SAVE_INSTANCE_SAVED_IMAGE);
-            Image[] imageBeenList = (Image[]) outState.getParcelableArray(Define.SAVE_INSTANCE_SAVED_IMAGE_THUMBNAILS);
-            adapter = new PickerGridAdapter(imageBeenList,
+            Uri[] images = (Uri[]) outState.getParcelableArray(Define.SAVE_INSTANCE_SAVED_IMAGE_THUMBNAILS);
+            adapter = new PickerGridAdapter(images,
                     pickedImages,
                     pickerController,
                     pickerController.getPathDir(album.bucketId));
@@ -182,7 +180,7 @@ public class PickerActivity extends AppCompatActivity {
             ArrayList<Uri> path = getIntent().getParcelableArrayListExtra(Define.INTENT_PATH);
             if (path != null) {
                 for (int i = 0; i < path.size(); i++) {
-                    pickedImages.add(new PickedImage(i + 1, path.get(i), -1));
+                    pickedImages.add(path.get(i));
                 }
             }
         }
@@ -222,7 +220,7 @@ public class PickerActivity extends AppCompatActivity {
     }
 
 
-    public void setAdapter(Image[] result) {
+    public void setAdapter(Uri[] result) {
         if (adapter == null)
             adapter = new PickerGridAdapter(
                     result, pickedImages, pickerController, pickerController.getPathDir(album.bucketId));

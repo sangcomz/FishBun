@@ -2,8 +2,8 @@ package com.sangcomz.fishbun.adapter;
 
 import android.app.Activity;
 import android.net.Uri;
-import android.os.Handler;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,8 +27,9 @@ public class PickerGridAdapter
         extends RecyclerView.Adapter<PickerGridAdapter.ViewHolder> {
     private static final int TYPE_HEADER = Integer.MIN_VALUE;
 
-    private ArrayList<PickedImage> pickedImages = new ArrayList<>();
-    private Image[] images;
+//    private ArrayList<PickedImage> pickedImages = new ArrayList<>();
+    private ArrayList<Uri> pickedImages = new ArrayList<>();
+    private Uri[] images;
     private PickerController pickerController;
     private boolean isHeader = Define.IS_CAMERA;
 
@@ -58,8 +59,8 @@ public class PickerGridAdapter
         }
     }
 
-    public PickerGridAdapter(Image[] images,
-                             ArrayList<PickedImage> pickedImages, PickerController pickerController,
+    public PickerGridAdapter(Uri[] images,
+                             ArrayList<Uri> pickedImages, PickerController pickerController,
                              String saveDir) {
         this.images = images;
         this.pickerController = pickerController;
@@ -105,13 +106,12 @@ public class PickerGridAdapter
 
             final ViewHolderImage vh = (ViewHolderImage) holder;
 
-            final Image image = images[imagePos];
-            final Uri imgUri = image.getImgPath();
+            final Uri image = images[imagePos];
 
             if (!image.isInit()) {
                 image.setIsInit(true);
                 for (int i = 0; i < pickedImages.size(); i++) {
-                    if (imgUri.equals(pickedImages.get(i).getImgPath())) {
+                    if (image.equals(pickedImages.get(i))) {
                         image.setImgOrder(i + 1);
                         pickedImages.get(i).setImgPosition(imagePos);
                         break;
@@ -121,6 +121,8 @@ public class PickerGridAdapter
 
 
             if (image.getImgOrder() != -1) {
+                animScale(vh.imgThumbImage,
+                        true, false);
                 vh.txtThumbCount.setVisibility(View.VISIBLE);
                 if (Define.ALBUM_PICKER_COUNT == 1)
                     vh.txtThumbCount.setText("");
@@ -160,8 +162,12 @@ public class PickerGridAdapter
                             vh.txtThumbCount.setText(String.valueOf(pickedImages.size()));
 
                         image.setImgOrder(pickedImages.size());
+                        animScale(vh.imgThumbImage,
+                                true, true);
 
                     } else if (vh.txtThumbCount.getVisibility() == View.VISIBLE) {
+                        animScale(vh.imgThumbImage,
+                                false, true);
                         pickerController.setRecyclerViewClickable(false);
                         pickedImages.remove(image.getImgOrder() - 1);
                         if (Define.ALBUM_PICKER_COUNT != 1)
@@ -171,12 +177,34 @@ public class PickerGridAdapter
                         image.setImgOrder(-1);
                         vh.txtThumbCount.setVisibility(View.GONE);
                         pickerController.setToolbarTitle(pickedImages.size());
+
+
                     } else {
                         Snackbar.make(v, Define.MESSAGE_LIMIT_REACHED, Snackbar.LENGTH_SHORT).show();
                     }
                 }
             });
         }
+
+    }
+
+    private void animScale(View view,
+                           boolean isSelected,
+                           boolean isAnimation) {
+        int duration = 200;
+        if (!isAnimation) duration = 0;
+        if (isSelected)
+            ViewCompat.animate(view)
+                    .setDuration(duration)
+                    .scaleX(0.7f)
+                    .scaleY(0.7f)
+                    .start();
+        else
+            ViewCompat.animate(view)
+                    .setDuration(duration)
+                    .scaleX(1f)
+                    .scaleY(1f)
+                    .start();
 
     }
 
@@ -202,18 +230,15 @@ public class PickerGridAdapter
             if (pickedImages.get(i).getImgPosition() != -1) {
                 images[pickedImages.get(i).getImgPosition()]
                         .setImgOrder(i + 1);
-                if (isHeader)
-                    notifyDataSetChanged();
-                else
-                    notifyDataSetChanged();
+                notifyDataSetChanged();
             }
         }
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                pickerController.setRecyclerViewClickable(true);
-            }
-        }, 500);
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                pickerController.setRecyclerViewClickable(true);
+//            }
+//        }, 500);
 
     }
 
@@ -230,7 +255,7 @@ public class PickerGridAdapter
     }
 
 
-    public Image[] getImages() {
+    public Uri[] getImages() {
         return images;
     }
 

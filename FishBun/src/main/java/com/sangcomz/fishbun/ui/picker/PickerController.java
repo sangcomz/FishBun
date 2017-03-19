@@ -14,7 +14,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
 
 import com.sangcomz.fishbun.bean.Image;
-import com.sangcomz.fishbun.bean.PickedImage;
 import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.permission.PermissionCheck;
 import com.sangcomz.fishbun.util.CameraUtil;
@@ -99,10 +98,10 @@ public class PickerController {
         this.addImagePaths = addImagePaths;
     }
 
-    public void finishActivity(ArrayList<PickedImage> pickedImages) {
+    public void finishActivity(ArrayList<Uri> pickedImages) {
         ArrayList<Uri> path = new ArrayList<>();
         for (int i = 0; i < pickedImages.size(); i++) {
-            path.add(pickedImages.get(i).getImgPath());
+            path.add(pickedImages.get(i));
         }
         Intent i = new Intent();
         i.putParcelableArrayListExtra(Define.INTENT_PATH, path);
@@ -111,10 +110,10 @@ public class PickerController {
 
     }
 
-    void transImageFinish(ArrayList<PickedImage> pickedImages, int position) {
+    void transImageFinish(ArrayList<Uri> pickedImages, int position) {
         ArrayList<Uri> path = new ArrayList<>();
         for (int i = 0; i < pickedImages.size(); i++) {
-            path.add(pickedImages.get(i).getImgPath());
+            path.add(pickedImages.get(i));
         }
         Intent i = new Intent();
         i.putParcelableArrayListExtra(Define.INTENT_PATH, path);
