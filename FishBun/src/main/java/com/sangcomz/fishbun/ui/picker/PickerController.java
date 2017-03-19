@@ -13,7 +13,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
 
-import com.sangcomz.fishbun.bean.Image;
 import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.permission.PermissionCheck;
 import com.sangcomz.fishbun.util.CameraUtil;
@@ -138,7 +137,7 @@ public class PickerController {
         new DisplayImage(bucketId).execute();
     }
 
-    private class DisplayImage extends AsyncTask<Void, Void, Image[]> {
+    private class DisplayImage extends AsyncTask<Void, Void, Uri[]> {
         private Long bucketId;
 
         DisplayImage(Long bucketId) {
@@ -146,12 +145,12 @@ public class PickerController {
         }
 
         @Override
-        protected Image[] doInBackground(Void... params) {
+        protected Uri[] doInBackground(Void... params) {
             return getAllMediaThumbnailsPath(bucketId);
         }
 
         @Override
-        protected void onPostExecute(Image[] result) {
+        protected void onPostExecute(Uri[] result) {
             super.onPostExecute(result);
             pickerActivity.setAdapter(result);
         }
@@ -159,7 +158,7 @@ public class PickerController {
 
 
     @NonNull
-    private Image[] getAllMediaThumbnailsPath(long id) {
+    private Uri[] getAllMediaThumbnailsPath(long id) {
         String selection = MediaStore.Images.Media.BUCKET_ID + " = ?";
         String bucketid = String.valueOf(id);
         String sort = MediaStore.Images.Media._ID + " DESC";
@@ -172,7 +171,7 @@ public class PickerController {
         } else {
             c = resolver.query(images, null, null, null, sort);
         }
-        Image[] imageBeans = new Image[c == null ? 0 : c.getCount()];
+        Uri[] imageUris = new Uri[c == null ? 0 : c.getCount()];
         if (c != null) {
             try {
                 if (c.moveToFirst()) {
@@ -182,7 +181,7 @@ public class PickerController {
                     do {
                         int imgId = c.getInt(c.getColumnIndex(MediaStore.MediaColumns._ID));
                         Uri path = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "" + imgId);
-                        imageBeans[++position] = new Image(-1, path);
+                        imageUris[++position] = path;
                     } while (c.moveToNext());
                 }
                 c.close();
@@ -190,7 +189,7 @@ public class PickerController {
                 if (!c.isClosed()) c.close();
             }
         }
-        return imageBeans;
+        return imageUris;
     }
 
     private String setPathDir(String path, String fileName) {

@@ -12,22 +12,19 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.sangcomz.fishbun.R;
-import com.sangcomz.fishbun.bean.Image;
-import com.sangcomz.fishbun.bean.PickedImage;
 import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.ui.picker.PickerController;
 import com.sangcomz.fishbun.util.SquareTextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 
 public class PickerGridAdapter
         extends RecyclerView.Adapter<PickerGridAdapter.ViewHolder> {
     private static final int TYPE_HEADER = Integer.MIN_VALUE;
 
-//    private ArrayList<PickedImage> pickedImages = new ArrayList<>();
+    //    private ArrayList<PickedImage> pickedImages = new ArrayList<>();
     private ArrayList<Uri> pickedImages = new ArrayList<>();
     private Uri[] images;
     private PickerController pickerController;
@@ -60,7 +57,8 @@ public class PickerGridAdapter
     }
 
     public PickerGridAdapter(Uri[] images,
-                             ArrayList<Uri> pickedImages, PickerController pickerController,
+                             ArrayList<Uri> pickedImages,
+                             PickerController pickerController,
                              String saveDir) {
         this.images = images;
         this.pickerController = pickerController;
@@ -107,48 +105,31 @@ public class PickerGridAdapter
             final ViewHolderImage vh = (ViewHolderImage) holder;
 
             final Uri image = images[imagePos];
-
-            if (!image.isInit()) {
-                image.setIsInit(true);
-                for (int i = 0; i < pickedImages.size(); i++) {
-                    if (image.equals(pickedImages.get(i))) {
-                        image.setImgOrder(i + 1);
-                        pickedImages.get(i).setImgPosition(imagePos);
-                        break;
-                    }
-                }
+            final int selectedIndex = pickedImages.indexOf(image);
+            if (selectedIndex != -1) {
+                vh.txtThumbCount.setVisibility(View.VISIBLE);
+                vh.txtThumbCount.setText(String.valueOf(selectedIndex + 1));
+            } else {
+                vh.txtThumbCount.setVisibility(View.GONE);
             }
 
-
-            if (image.getImgOrder() != -1) {
-                animScale(vh.imgThumbImage,
-                        true, false);
-                vh.txtThumbCount.setVisibility(View.VISIBLE);
-                if (Define.ALBUM_PICKER_COUNT == 1)
-                    vh.txtThumbCount.setText("");
-                else
-                    vh.txtThumbCount.setText(String.valueOf(image.getImgOrder()));
-            } else
-                vh.txtThumbCount.setVisibility(View.GONE);
-
-            if (imgUri != null && !imgUri.equals("")) {
+            if (image != null)
                 Picasso
                         .with(vh.imgThumbImage.getContext())
-                        .load(imgUri)
+                        .load(image)
                         .fit()
                         .centerCrop()
                         .into(vh.imgThumbImage);
-            }
 
 
             vh.imgThumbImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (vh.txtThumbCount.getVisibility() == View.GONE &&
+                    if (selectedIndex == -1 &&
                             Define.ALBUM_PICKER_COUNT > pickedImages.size()) {
 
                         vh.txtThumbCount.setVisibility(View.VISIBLE);
-                        pickedImages.add(new PickedImage(pickedImages.size() + 1, imgUri, imagePos));
+                        pickedImages.add(image);
 
                         pickerController.setToolbarTitle(pickedImages.size());
                         if (Define.IS_AUTOMATIC_CLOSE
@@ -161,20 +142,17 @@ public class PickerGridAdapter
                         else
                             vh.txtThumbCount.setText(String.valueOf(pickedImages.size()));
 
-                        image.setImgOrder(pickedImages.size());
                         animScale(vh.imgThumbImage,
                                 true, true);
 
-                    } else if (vh.txtThumbCount.getVisibility() == View.VISIBLE) {
+                    } else if (selectedIndex != -1) {
                         animScale(vh.imgThumbImage,
                                 false, true);
-                        pickerController.setRecyclerViewClickable(false);
-                        pickedImages.remove(image.getImgOrder() - 1);
+                        pickedImages.remove(selectedIndex);
                         if (Define.ALBUM_PICKER_COUNT != 1)
                             setOrder(Integer.valueOf(vh.txtThumbCount.getText().toString()) - 1);
                         else
                             setOrder(0);
-                        image.setImgOrder(-1);
                         vh.txtThumbCount.setVisibility(View.GONE);
                         pickerController.setToolbarTitle(pickedImages.size());
 
@@ -226,13 +204,13 @@ public class PickerGridAdapter
 
 
     private void setOrder(int removePosition) {
-        for (int i = removePosition; i < pickedImages.size(); i++) {
-            if (pickedImages.get(i).getImgPosition() != -1) {
-                images[pickedImages.get(i).getImgPosition()]
-                        .setImgOrder(i + 1);
-                notifyDataSetChanged();
-            }
-        }
+//        for (int i = removePosition; i < pickedImages.size(); i++) {
+//            if (pickedImages.get(i).getImgPosition() != -1) {
+//                images[pickedImages.get(i).getImgPosition()]
+//                        .setImgOrder(i + 1);
+//                notifyDataSetChanged();
+//            }
+//        }
 //        new Handler().postDelayed(new Runnable() {
 //            @Override
 //            public void run() {
@@ -261,14 +239,14 @@ public class PickerGridAdapter
 
 
     public void addImage(Uri path) {
-        ArrayList<Image> al = new ArrayList<>();
-        Collections.addAll(al, images);
-        al.add(0, new Image(-1, path));
-
-        images = al.toArray(new Image[al.size()]);
-
-        for (int i = 0; i < pickedImages.size(); i++)
-            pickedImages.get(i).setImgPosition(pickedImages.get(i).getImgPosition() + 1);
+//        ArrayList<Image> al = new ArrayList<>();
+//        Collections.addAll(al, images);
+//        al.add(0, new Image(-1, path));
+//
+//        images = al.toArray(new Image[al.size()]);
+//
+//        for (int i = 0; i < pickedImages.size(); i++)
+//            pickedImages.get(i).setImgPosition(pickedImages.get(i).getImgPosition() + 1);
 
         notifyDataSetChanged();
 
