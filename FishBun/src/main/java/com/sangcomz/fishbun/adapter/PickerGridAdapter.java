@@ -24,22 +24,24 @@ public class PickerGridAdapter
         extends RecyclerView.Adapter<PickerGridAdapter.ViewHolder> {
     private static final int TYPE_HEADER = Integer.MIN_VALUE;
 
-    //    private ArrayList<PickedImage> pickedImages = new ArrayList<>();
     private ArrayList<Uri> pickedImages = new ArrayList<>();
     private Uri[] images;
     private PickerController pickerController;
     private boolean isHeader = Define.IS_CAMERA;
+    private OnPhotoActionListener actionListener;
 
     String saveDir;
 
     public class ViewHolderImage extends ViewHolder {
 
 
+        View item;
         ImageView imgThumbImage;
         SquareTextView txtThumbCount;
 
         public ViewHolderImage(View view) {
             super(view);
+            item = view;
             imgThumbImage = (ImageView) view.findViewById(R.id.img_thumb_image);
             txtThumbCount = (SquareTextView) view.findViewById(R.id.txt_thumb_count);
         }
@@ -96,15 +98,14 @@ public class PickerGridAdapter
 
         if (holder instanceof ViewHolderImage) {
             final int imagePos;
-
             if (isHeader)
                 imagePos = position - 1;
             else
                 imagePos = position;
 
             final ViewHolderImage vh = (ViewHolderImage) holder;
-
             final Uri image = images[imagePos];
+            vh.item.setTag(image);
             final int selectedIndex = pickedImages.indexOf(image);
             if (selectedIndex != -1) {
                 vh.txtThumbCount.setVisibility(View.VISIBLE);
@@ -122,48 +123,79 @@ public class PickerGridAdapter
                         .into(vh.imgThumbImage);
 
 
-            vh.imgThumbImage.setOnClickListener(new View.OnClickListener() {
+            vh.item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (selectedIndex == -1 &&
-                            Define.ALBUM_PICKER_COUNT > pickedImages.size()) {
-
-                        vh.txtThumbCount.setVisibility(View.VISIBLE);
-                        pickedImages.add(image);
-
-                        pickerController.setToolbarTitle(pickedImages.size());
-                        if (Define.IS_AUTOMATIC_CLOSE
-                                && Define.ALBUM_PICKER_COUNT == pickedImages.size()) {
-                            pickerController.finishActivity(pickedImages);
-                        }
-
-                        if (Define.ALBUM_PICKER_COUNT == 1)
-                            vh.txtThumbCount.setText("");
-                        else
-                            vh.txtThumbCount.setText(String.valueOf(pickedImages.size()));
-
-                        animScale(vh.imgThumbImage,
-                                true, true);
-
-                    } else if (selectedIndex != -1) {
-                        animScale(vh.imgThumbImage,
-                                false, true);
-                        pickedImages.remove(selectedIndex);
-                        if (Define.ALBUM_PICKER_COUNT != 1)
-                            setOrder(Integer.valueOf(vh.txtThumbCount.getText().toString()) - 1);
-                        else
-                            setOrder(0);
-                        vh.txtThumbCount.setVisibility(View.GONE);
-                        pickerController.setToolbarTitle(pickedImages.size());
-
-
-                    } else {
-                        Snackbar.make(v, Define.MESSAGE_LIMIT_REACHED, Snackbar.LENGTH_SHORT).show();
-                    }
+                    onCheckStateChange(v, image);
+//                    if (selectedIndex == -1 &&
+//                            Define.ALBUM_PICKER_COUNT > pickedImages.size()) {
+//
+//                        vh.txtThumbCount.setVisibility(View.VISIBLE);
+//                        pickedImages.add(image);
+//
+//                        pickerController.setToolbarTitle(pickedImages.size());
+//                        if (Define.IS_AUTOMATIC_CLOSE
+//                                && Define.ALBUM_PICKER_COUNT == pickedImages.size()) {
+//                            pickerController.finishActivity(pickedImages);
+//                        }
+//
+//                        if (Define.ALBUM_PICKER_COUNT == 1)
+//                            vh.txtThumbCount.setText("");
+//                        else
+//                            vh.txtThumbCount.setText(String.valueOf(pickedImages.size()));
+//
+//                        animScale(vh.imgThumbImage,
+//                                true, true);
+//
+//                    } else if (selectedIndex != -1) {
+//                        animScale(vh.imgThumbImage,
+//                                false, true);
+//                        pickedImages.remove(selectedIndex);
+//                        if (Define.ALBUM_PICKER_COUNT != 1)
+//                            setOrder(Integer.valueOf(vh.txtThumbCount.getText().toString()) - 1);
+//                        else
+//                            setOrder(0);
+//                        vh.txtThumbCount.setVisibility(View.GONE);
+//                        pickerController.setToolbarTitle(pickedImages.size());
+//                        actionListener.onDeselect();
+//
+//                    } else {
+//                        Snackbar.make(v, Define.MESSAGE_LIMIT_REACHED, Snackbar.LENGTH_SHORT).show();
+//                    }
                 }
             });
         }
 
+    }
+
+    private void onCheckStateChange(View v, Uri image) {
+        boolean isContained = pickedImages.contains(image);
+        if (Define.ALBUM_PICKER_COUNT == pickedImages.size()
+                && !isContained) {
+            Snackbar.make(v, Define.MESSAGE_LIMIT_REACHED, Snackbar.LENGTH_SHORT).show();
+            return;
+        }
+        SquareTextView txtThumbCount = (SquareTextView) v.findViewById(R.id.txt_thumb_count);
+        ImageView imgThumbImage = (ImageView) v.findViewById(R.id.img_thumb_image);
+        if (isContained) {
+            pickedImages.remove(image);
+            txtThumbCount.setVisibility(View.GONE);
+            animScale(imgThumbImage, false, true);
+        } else {
+            animScale(imgThumbImage, true, true);
+            txtThumbCount.setVisibility(View.VISIBLE);
+            pickedImages.add(image);
+            if (Define.IS_AUTOMATIC_CLOSE
+                    && Define.ALBUM_PICKER_COUNT == pickedImages.size()) {
+                pickerController.finishActivity(pickedImages);
+            }
+
+            if (Define.ALBUM_PICKER_COUNT == 1)
+                txtThumbCount.setText("");
+            else
+                txtThumbCount.setText(String.valueOf(pickedImages.size()));
+        }
+        pickerController.setToolbarTitle(pickedImages.size());
     }
 
     private void animScale(View view,
@@ -182,6 +214,12 @@ public class PickerGridAdapter
                     .setDuration(duration)
                     .scaleX(1f)
                     .scaleY(1f)
+                    .withEndAction(new Runnable() {
+                        @Override
+                        public void run() {
+                            actionListener.onDeselect();
+                        }
+                    })
                     .start();
 
     }
@@ -253,4 +291,15 @@ public class PickerGridAdapter
         pickerController.setAddImagePath(path);
     }
 
+    public void setActionListener(OnPhotoActionListener actionListener) {
+        this.actionListener = actionListener;
+    }
+
+    public interface OnPhotoActionListener {
+        void onDeselect();
+    }
+
+    public int getPickedImageIndexOf(Uri uri) {
+        return pickedImages.indexOf(uri);
+    }
 }
