@@ -245,20 +245,17 @@ public class PickerActivity extends AppCompatActivity {
             View view = layoutManager.findViewByPosition(i);
             if (view instanceof RelativeLayout) {
                 RelativeLayout item = (RelativeLayout) view;
-                System.out.println("tag :::: " + item.getTag());
                 SquareTextView txtThumbCount = (SquareTextView) item.findViewById(R.id.txt_thumb_count);
                 Uri image = (Uri) item.getTag();
-                int index = adapter.getPickedImageIndexOf(image);
-                if (index != -1) {
-                    txtThumbCount.setText(String.valueOf(index + 1));
-                } else {
-                    txtThumbCount.setVisibility(View.GONE);
+                if (image != null) {
+                    int index = adapter.getPickedImageIndexOf(image);
+                    if (index != -1) {
+                        txtThumbCount.setText(String.valueOf(index + 1));
+                    } else {
+                        txtThumbCount.setVisibility(View.GONE);
+                    }
                 }
-//                if (photoController.getSelectedPhoto().contains(photoPath)) {
-//                    item.checkBox.setText(String.valueOf(photoController.getSelectedPhoto()
-//                            .indexOf(photoPath) + 1));
-//                    item.checkBox.refresh(false);
-//                }
+
             }
         }
     }
