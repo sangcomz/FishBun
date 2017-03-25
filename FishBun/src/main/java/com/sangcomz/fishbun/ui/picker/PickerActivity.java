@@ -15,15 +15,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import com.sangcomz.fishbun.R;
 import com.sangcomz.fishbun.adapter.PickerGridAdapter;
 import com.sangcomz.fishbun.bean.Album;
-import com.sangcomz.fishbun.bean.Image;
-import com.sangcomz.fishbun.bean.PickedImage;
 import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.permission.PermissionCheck;
 import com.sangcomz.fishbun.util.SingleMediaScanner;
+import com.sangcomz.fishbun.util.SquareTextView;
 import com.sangcomz.fishbun.util.UiUtil;
 
 import java.io.File;
@@ -38,12 +38,13 @@ public class PickerActivity extends AppCompatActivity {
     private static final String TAG = "PickerActivity";
 
     private RecyclerView recyclerView;
-    private ArrayList<PickedImage> pickedImages;
+    private ArrayList<Uri> pickedImages;
     private PickerController pickerController;
     private Album album;
     private int position;
     private UiUtil uiUtil = new UiUtil();
     private PickerGridAdapter adapter;
+    private GridLayoutManager layoutManager;
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -68,8 +69,8 @@ public class PickerActivity extends AppCompatActivity {
             pickedImages = outState.getParcelableArrayList(Define.SAVE_INSTANCE_PICK_IMAGES);
             ArrayList<Uri> addImages = outState.getParcelableArrayList(Define.SAVE_INSTANCE_NEW_IMAGES);
             String savedImage = outState.getString(Define.SAVE_INSTANCE_SAVED_IMAGE);
-            Image[] imageBeenList = (Image[]) outState.getParcelableArray(Define.SAVE_INSTANCE_SAVED_IMAGE_THUMBNAILS);
-            adapter = new PickerGridAdapter(imageBeenList,
+            Uri[] images = (Uri[]) outState.getParcelableArray(Define.SAVE_INSTANCE_SAVED_IMAGE_THUMBNAILS);
+            adapter = new PickerGridAdapter(images,
                     pickedImages,
                     pickerController,
                     pickerController.getPathDir(album.bucketId));
@@ -181,7 +182,7 @@ public class PickerActivity extends AppCompatActivity {
             ArrayList<Uri> path = getIntent().getParcelableArrayListExtra(Define.INTENT_PATH);
             if (path != null) {
                 for (int i = 0; i < path.size(); i++) {
-                    pickedImages.add(new PickedImage(i + 1, path.get(i), -1));
+                    pickedImages.add(path.get(i));
                 }
             }
         }
@@ -193,8 +194,8 @@ public class PickerActivity extends AppCompatActivity {
 
     private void initView() {
         recyclerView = (RecyclerView) findViewById(R.id.recycler_picker_list);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, Define.PHOTO_SPAN_COUNT, GridLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(gridLayoutManager);
+        layoutManager = new GridLayoutManager(this, Define.PHOTO_SPAN_COUNT, GridLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(layoutManager);
         initToolBar();
     }
 
@@ -221,13 +222,41 @@ public class PickerActivity extends AppCompatActivity {
     }
 
 
-    public void setAdapter(Image[] result) {
-        if (adapter == null)
+    public void setAdapter(Uri[] result) {
+        if (adapter == null) {
             adapter = new PickerGridAdapter(
                     result, pickedImages, pickerController, pickerController.getPathDir(album.bucketId));
+            adapter.setActionListener(new PickerGridAdapter.OnPhotoActionListener() {
+                @Override
+                public void onDeselect() {
+                    refreshThumb();
+                }
+            });
+        }
         recyclerView.setAdapter(adapter);
         showToolbarTitle(pickedImages.size());
     }
 
+    private void refreshThumb() {
+        int firstVisible = layoutManager.findFirstVisibleItemPosition();
+        int lastVisible = layoutManager.findLastVisibleItemPosition();
+        for (int i = firstVisible; i <= lastVisible; i++) {
+            View view = layoutManager.findViewByPosition(i);
+            if (view instanceof RelativeLayout) {
+                RelativeLayout item = (RelativeLayout) view;
+                SquareTextView txtThumbCount = (SquareTextView) item.findViewById(R.id.txt_thumb_count);
+                Uri image = (Uri) item.getTag();
+                if (image != null) {
+                    int index = adapter.getPickedImageIndexOf(image);
+                    if (index != -1) {
+                        txtThumbCount.setText(String.valueOf(index + 1));
+                    } else {
+                        txtThumbCount.setVisibility(View.GONE);
+                    }
+                }
+
+            }
+        }
+    }
 
 }

@@ -3,7 +3,7 @@ apply plugin: 'jacoco-android'
 
 buildscript {
     ext {
-        support_version = '25.1.0'
+        support_version = '25.3.0'
         picasso_version = '2.5.2'
     }
 

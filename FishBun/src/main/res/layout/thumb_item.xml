@@ -37,6 +37,6 @@
         android:paddingRight="5dp"
         android:textColor="#ffffff"
         android:textStyle="bold"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
 </RelativeLayout>

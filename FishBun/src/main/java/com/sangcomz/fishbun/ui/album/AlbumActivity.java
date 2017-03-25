@@ -226,7 +226,6 @@ public class AlbumActivity extends AppCompatActivity {
             getMenuInflater().inflate(R.menu.menu_photo_album, menu);
             if (okButtonDrawable != null)
                 menu.findItem(R.id.action_ok).setIcon(okButtonDrawable);
-            System.out.println(menu.findItem(R.id.action_ok));
         }
         return true;
     }
