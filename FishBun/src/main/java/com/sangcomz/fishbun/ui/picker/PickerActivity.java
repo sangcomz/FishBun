@@ -169,7 +169,6 @@ public class PickerActivity extends AppCompatActivity {
             else
                 getSupportActionBar().setTitle(album.bucketName + "(" + String.valueOf(total) + "/" + Define.ALBUM_PICKER_COUNT + ")");
         }
-
     }
 
     private void setData(Intent intent) {
