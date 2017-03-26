@@ -237,7 +237,7 @@ public class AlbumActivity extends AppCompatActivity {
             finish();
         } else if (id == R.id.action_ok) {
             if (adapter != null) {
-                if (adapter.getPickedImagePath().size() == 0) {
+                if (adapter.getPickedImagePath().size() < Define.MIN_COUNT) {
                     Snackbar.make(recyclerAlbumList, Define.MESSAGE_NOTHING_SELECTED, Snackbar.LENGTH_SHORT).show();
                 } else {
                     Intent i = new Intent();
@@ -256,10 +256,10 @@ public class AlbumActivity extends AppCompatActivity {
 
 
         if (getSupportActionBar() != null) {
-            if (Define.ALBUM_PICKER_COUNT == 1)
+            if (Define.MAX_COUNT == 1)
                 getSupportActionBar().setTitle(Define.TITLE_ACTIONBAR);
             else
-                getSupportActionBar().setTitle(Define.TITLE_ACTIONBAR + "(" + String.valueOf(total) + "/" + Define.ALBUM_PICKER_COUNT + ")");
+                getSupportActionBar().setTitle(Define.TITLE_ACTIONBAR + "(" + String.valueOf(total) + "/" + Define.MAX_COUNT + ")");
         }
     }
 

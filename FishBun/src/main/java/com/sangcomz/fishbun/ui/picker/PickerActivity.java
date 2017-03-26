@@ -29,6 +29,7 @@ import com.sangcomz.fishbun.util.UiUtil;
 import java.io.File;
 import java.util.ArrayList;
 
+import static com.sangcomz.fishbun.define.Define.MIN_COUNT;
 import static com.sangcomz.fishbun.define.Define.homeAsUpIndicatorDrawable;
 import static com.sangcomz.fishbun.define.Define.okButtonDrawable;
 
@@ -152,7 +153,7 @@ public class PickerActivity extends AppCompatActivity {
         // as you specify album parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_ok) {
-            if (pickedImages.size() == 0) {
+            if (pickedImages.size() < MIN_COUNT) {
                 Snackbar.make(recyclerView, Define.MESSAGE_NOTHING_SELECTED, Snackbar.LENGTH_SHORT).show();
             } else {
                 pickerController.finishActivity(pickedImages);
@@ -165,10 +166,10 @@ public class PickerActivity extends AppCompatActivity {
 
     public void showToolbarTitle(int total) {
         if (getSupportActionBar() != null) {
-            if (Define.ALBUM_PICKER_COUNT == 1)
+            if (Define.MAX_COUNT == 1)
                 getSupportActionBar().setTitle(album.bucketName);
             else
-                getSupportActionBar().setTitle(album.bucketName + "(" + String.valueOf(total) + "/" + Define.ALBUM_PICKER_COUNT + ")");
+                getSupportActionBar().setTitle(album.bucketName + "(" + String.valueOf(total) + "/" + Define.MAX_COUNT + ")");
         }
     }
 
