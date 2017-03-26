@@ -128,8 +128,9 @@ public class PickerGridAdapter
     private void initState(int selectedIndex, ViewHolderImage vh) {
         if (selectedIndex != -1) {
             vh.txtThumbCount.setVisibility(View.VISIBLE);
-            vh.txtThumbCount.setText(String.valueOf(selectedIndex + 1));
             animScale(vh.imgThumbImage, true, false);
+            if (Define.MAX_COUNT == 1) vh.txtThumbCount.setText("");
+            else vh.txtThumbCount.setText(String.valueOf(selectedIndex + 1));
         } else {
             vh.txtThumbCount.setVisibility(View.GONE);
             animScale(vh.imgThumbImage, false, false);
@@ -138,7 +139,7 @@ public class PickerGridAdapter
 
     private void onCheckStateChange(View v, Uri image) {
         boolean isContained = pickedImages.contains(image);
-        if (Define.ALBUM_PICKER_COUNT == pickedImages.size()
+        if (Define.MAX_COUNT == pickedImages.size()
                 && !isContained) {
             Snackbar.make(v, Define.MESSAGE_LIMIT_REACHED, Snackbar.LENGTH_SHORT).show();
             return;
@@ -154,11 +155,11 @@ public class PickerGridAdapter
             txtThumbCount.setVisibility(View.VISIBLE);
             pickedImages.add(image);
             if (Define.IS_AUTOMATIC_CLOSE
-                    && Define.ALBUM_PICKER_COUNT == pickedImages.size()) {
+                    && Define.MAX_COUNT == pickedImages.size()) {
                 pickerController.finishActivity(pickedImages);
             }
 
-            if (Define.ALBUM_PICKER_COUNT == 1)
+            if (Define.MAX_COUNT == 1)
                 txtThumbCount.setText("");
             else
                 txtThumbCount.setText(String.valueOf(pickedImages.size()));
@@ -168,7 +169,7 @@ public class PickerGridAdapter
 
     private void animScale(View view,
                            boolean isSelected,
-                           boolean isAnimation) {
+                           final boolean isAnimation) {
         int duration = 200;
         if (!isAnimation) duration = 0;
         if (isSelected)
@@ -185,7 +186,7 @@ public class PickerGridAdapter
                     .withEndAction(new Runnable() {
                         @Override
                         public void run() {
-                            actionListener.onDeselect();
+                            if (isAnimation) actionListener.onDeselect();
                         }
                     })
                     .start();

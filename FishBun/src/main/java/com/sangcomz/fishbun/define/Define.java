@@ -5,7 +5,8 @@ import android.graphics.drawable.Drawable;
 
 public class Define {
     public static int ALBUM_THUMBNAIL_SIZE = -1;
-    public static int ALBUM_PICKER_COUNT = 10;
+    public static int MAX_COUNT = 10;
+    public static int MIN_COUNT = 1;
     public static int PHOTO_SPAN_COUNT = 3;
 
     public static int ALBUM_PORTRAIT_SPAN_COUNT = 1;

@@ -61,10 +61,25 @@ public class FishBun {
 
         }
 
+        @Deprecated
         public BaseProperty setPickerCount(int count) {
             if (count <= 0)
                 count = 1;
-            Define.ALBUM_PICKER_COUNT = count;
+            Define.MAX_COUNT = count;
+            return baseProperty;
+        }
+
+        public BaseProperty setMaxCount(int count) {
+            if (count <= 0)
+                count = 1;
+            Define.MAX_COUNT = count;
+            return baseProperty;
+        }
+
+        public BaseProperty setMinCount(int count) {
+            if (count <= 0)
+                count = 1;
+            Define.MIN_COUNT = count;
             return baseProperty;
         }
 
