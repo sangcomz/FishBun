@@ -15,15 +15,13 @@ FishBun is Image Picker for android.
 
 <img src="/pic/fishbuns.png">
 
-##What's New 0.6.4 FishBun
+## What's New 0.6.4 FishBun
 
-####● set light status bar  (#69)
-####● you can use setHomeAsUpIndicatorDrawable(Drawable icon), setOkButtonDrawable(Drawable icon)
-####● Fix Demo App
+#### ● set light status bar  (#69)
+#### ● you can use setHomeAsUpIndicatorDrawable(Drawable icon), setOkButtonDrawable(Drawable icon)
+#### ● Fix Demo App
 
-##How to Use FishBun
-
-###Gradle
+### Gradle
 
     repositories {
         jcenter()
@@ -36,16 +34,18 @@ FishBun is Image Picker for android.
         }
     }
 
-###Manifest
+### Manifest
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-FishBun.with(Your Activity).startAlbum();
+## How to Use FishBun
+
+    FishBun.with(Your Activity).startAlbum();
 
 if you use in Fragment,
 
-FishBun.with(Your Fragment).startAlbum();
+    FishBun.with(Your Fragment).startAlbum();
 
 and add OnActivityResult
 
@@ -86,15 +86,16 @@ you can use also this
                         .startAlbum();
 
 
-##Result Screen
-<img src="/pic/sim.gif" width=40%">
+## Result Screen
+<img src="/pic/sim.gif" width=40%>
 
-##Android M Permission
+## Android M Permission
 FishBun check permission before reading external storage.
 
-<img src="/pic/permission.png" width=40%">
 
-#Contribute
+<img src="/pic/permission.png" width=40%>
+
+# Contribute
 We welcome any contributions.
 
 #License
