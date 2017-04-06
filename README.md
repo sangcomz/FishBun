@@ -15,20 +15,20 @@ FishBun is Image Picker for android.
 
 <img src="/pic/fishbuns.png">
 
-##What's New 0.6.4 FishBun
+## What's New 0.6.5 FishBun
 
-####● set light status bar  (#69)
-####● you can use setHomeAsUpIndicatorDrawable(Drawable icon), setOkButtonDrawable(Drawable icon)
-####● Fix Demo App
+#### ● Displays the number of images selected on the album activity
+#### ● Add image selection effect (#76)
+#### ● add setMinCount() (#75)
+#### ● Deprecated setPickerCount() -> setMaxCount()
 
-##How to Use FishBun
 
-###Gradle
+### Gradle
 
     repositories {
         jcenter()
     }
-    
+
     ;
     dependencies {
         compile('com.sangcomz:FishBun:0.6.4@aar') {
@@ -36,16 +36,18 @@ FishBun is Image Picker for android.
         }
     }
 
-###Manifest
+### Manifest
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-FishBun.with(Your Activity).startAlbum();
+## How to Use FishBun
+
+    FishBun.with(Your Activity).startAlbum();
 
 if you use in Fragment,
 
-FishBun.with(Your Fragment).startAlbum();
+    FishBun.with(Your Fragment).startAlbum();
 
 and add OnActivityResult
 
@@ -57,7 +59,7 @@ and add OnActivityResult
                 if (resultCode == RESULT_OK) {
                     //path = imageData.getStringArrayListExtra(Define.INTENT_PATH);
                     //You can get image path(ArrayList<String>) Under version 0.6.2
-                    
+
                     path = imageData.getParcelableArrayListExtra(Define.INTENT_PATH);
                     //You can get image path(ArrayList<Uri>) Version 0.6.2 or later
                     break;
@@ -68,7 +70,9 @@ and add OnActivityResult
 you can use also this
 
                 FishBun.with(Your Activity or Fragment)
-                        .setPickerCount(5)
+                        .setPickerCount(5) //Deprecated
+                        .setMaxCount(5)
+                        .setMinCount(1)
                         .setPickerSpanCount(6)
                         .setActionBarColor(Color.parseColor("#795548"), Color.parseColor("#5D4037"), false)
                         .setActionBarTitleColor(Color.parseColor("#ffffff"))
@@ -86,18 +90,19 @@ you can use also this
                         .startAlbum();
 
 
-##Result Screen
-<img src="/pic/sim.gif" width=40%">
+## Result Screen
+<img src="/pic/sim.gif" width=40%>
 
-##Android M Permission
+## Android M Permission
 FishBun check permission before reading external storage.
 
-<img src="/pic/permission.png" width=40%">
 
-#Contribute
+<img src="/pic/permission.png" width=40%>
+
+# Contribute
 We welcome any contributions.
 
-#License
+# License
 
     Copyright 2017 Jeong Seok-Won
 
