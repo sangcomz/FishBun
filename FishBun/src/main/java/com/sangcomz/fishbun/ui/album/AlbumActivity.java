@@ -152,7 +152,6 @@ public class AlbumActivity extends AppCompatActivity {
         if (Define.STYLE_STATUS_BAR_LIGHT
                 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             toolbar.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-
         }
 
     }
@@ -162,13 +161,13 @@ public class AlbumActivity extends AppCompatActivity {
     }
 
     private void setAlbumListAdapter() {
-
         if (adapter == null) {
             ArrayList<Uri> data = getIntent().getParcelableArrayListExtra(Define.INTENT_PATH);
             adapter = new AlbumListAdapter(albumList, data);
         }
         recyclerAlbumList.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+        changeToolbarTitle();
     }
 
 
@@ -227,7 +226,6 @@ public class AlbumActivity extends AppCompatActivity {
             getMenuInflater().inflate(R.menu.menu_photo_album, menu);
             if (okButtonDrawable != null)
                 menu.findItem(R.id.action_ok).setIcon(okButtonDrawable);
-            System.out.println(menu.findItem(R.id.action_ok));
         }
         return true;
     }
@@ -239,7 +237,7 @@ public class AlbumActivity extends AppCompatActivity {
             finish();
         } else if (id == R.id.action_ok) {
             if (adapter != null) {
-                if (adapter.getPickedImagePath().size() == 0) {
+                if (adapter.getPickedImagePath().size() < Define.MIN_COUNT) {
                     Snackbar.make(recyclerAlbumList, Define.MESSAGE_NOTHING_SELECTED, Snackbar.LENGTH_SHORT).show();
                 } else {
                     Intent i = new Intent();
@@ -251,6 +249,18 @@ public class AlbumActivity extends AppCompatActivity {
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void changeToolbarTitle() {
+        int total = adapter.getPickedImagePath().size();
+
+
+        if (getSupportActionBar() != null) {
+            if (Define.MAX_COUNT == 1)
+                getSupportActionBar().setTitle(Define.TITLE_ACTIONBAR);
+            else
+                getSupportActionBar().setTitle(Define.TITLE_ACTIONBAR + "(" + String.valueOf(total) + "/" + Define.MAX_COUNT + ")");
+        }
     }
 
 
@@ -268,6 +278,8 @@ public class AlbumActivity extends AppCompatActivity {
                 refreshList(position, addPath);
                 if (adapter != null)
                     adapter.setPickedImagePath(path);
+
+                changeToolbarTitle();
             }
         } else if (requestCode == Define.TAKE_A_PICK_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
@@ -280,6 +292,7 @@ public class AlbumActivity extends AppCompatActivity {
             } else {
                 new File(albumController.getSavePath()).delete();
             }
+            changeToolbarTitle();
         }
     }
 

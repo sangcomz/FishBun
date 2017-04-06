@@ -2,8 +2,8 @@ package com.sangcomz.fishbun.adapter;
 
 import android.app.Activity;
 import android.net.Uri;
-import android.os.Handler;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +12,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.sangcomz.fishbun.R;
-import com.sangcomz.fishbun.bean.Image;
-import com.sangcomz.fishbun.bean.PickedImage;
 import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.ui.picker.PickerController;
 import com.sangcomz.fishbun.util.SquareTextView;
@@ -24,30 +22,33 @@ import java.util.Collections;
 
 
 public class PickerGridAdapter
-        extends RecyclerView.Adapter<PickerGridAdapter.ViewHolder> {
+        extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_HEADER = Integer.MIN_VALUE;
 
-    private ArrayList<PickedImage> pickedImages = new ArrayList<>();
-    private Image[] images;
+    private ArrayList<Uri> pickedImages = new ArrayList<>();
+    private Uri[] images;
     private PickerController pickerController;
     private boolean isHeader = Define.IS_CAMERA;
+    private OnPhotoActionListener actionListener;
 
     String saveDir;
 
-    public class ViewHolderImage extends ViewHolder {
+    public class ViewHolderImage extends RecyclerView.ViewHolder {
 
 
+        View item;
         ImageView imgThumbImage;
         SquareTextView txtThumbCount;
 
         public ViewHolderImage(View view) {
             super(view);
+            item = view;
             imgThumbImage = (ImageView) view.findViewById(R.id.img_thumb_image);
             txtThumbCount = (SquareTextView) view.findViewById(R.id.txt_thumb_count);
         }
     }
 
-    public class ViewHolderHeader extends ViewHolder {
+    public class ViewHolderHeader extends RecyclerView.ViewHolder {
 
 
         RelativeLayout header;
@@ -58,8 +59,9 @@ public class PickerGridAdapter
         }
     }
 
-    public PickerGridAdapter(Image[] images,
-                             ArrayList<PickedImage> pickedImages, PickerController pickerController,
+    public PickerGridAdapter(Uri[] images,
+                             ArrayList<Uri> pickedImages,
+                             PickerController pickerController,
                              String saveDir) {
         this.images = images;
         this.pickerController = pickerController;
@@ -68,7 +70,7 @@ public class PickerGridAdapter
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
 
 
@@ -82,9 +84,8 @@ public class PickerGridAdapter
         return new ViewHolderImage(view);
     }
 
-
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof ViewHolderHeader) {
             final ViewHolderHeader vh = (ViewHolderHeader) holder;
             vh.header.setOnClickListener(new View.OnClickListener() {
@@ -97,86 +98,98 @@ public class PickerGridAdapter
 
         if (holder instanceof ViewHolderImage) {
             final int imagePos;
-
-            if (isHeader)
-                imagePos = position - 1;
-            else
-                imagePos = position;
+            if (isHeader) imagePos = position - 1;
+            else imagePos = position;
 
             final ViewHolderImage vh = (ViewHolderImage) holder;
+            final Uri image = images[imagePos];
+            vh.item.setTag(image);
 
-            final Image image = images[imagePos];
-            final Uri imgUri = image.getImgPath();
-
-            if (!image.isInit()) {
-                image.setIsInit(true);
-                for (int i = 0; i < pickedImages.size(); i++) {
-                    if (imgUri.equals(pickedImages.get(i).getImgPath())) {
-                        image.setImgOrder(i + 1);
-                        pickedImages.get(i).setImgPosition(imagePos);
-                        break;
-                    }
-                }
-            }
-
-
-            if (image.getImgOrder() != -1) {
-                vh.txtThumbCount.setVisibility(View.VISIBLE);
-                if (Define.ALBUM_PICKER_COUNT == 1)
-                    vh.txtThumbCount.setText("");
-                else
-                    vh.txtThumbCount.setText(String.valueOf(image.getImgOrder()));
-            } else
-                vh.txtThumbCount.setVisibility(View.GONE);
-
-            if (imgUri != null && !imgUri.equals("")) {
+            initState(pickedImages.indexOf(image), vh);
+            if (image != null)
                 Picasso
                         .with(vh.imgThumbImage.getContext())
-                        .load(imgUri)
+                        .load(image)
                         .fit()
                         .centerCrop()
                         .into(vh.imgThumbImage);
-            }
 
 
-            vh.imgThumbImage.setOnClickListener(new View.OnClickListener() {
+            vh.item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (vh.txtThumbCount.getVisibility() == View.GONE &&
-                            Define.ALBUM_PICKER_COUNT > pickedImages.size()) {
-
-                        vh.txtThumbCount.setVisibility(View.VISIBLE);
-                        pickedImages.add(new PickedImage(pickedImages.size() + 1, imgUri, imagePos));
-
-                        pickerController.setToolbarTitle(pickedImages.size());
-                        if (Define.IS_AUTOMATIC_CLOSE
-                                && Define.ALBUM_PICKER_COUNT == pickedImages.size()) {
-                            pickerController.finishActivity(pickedImages);
-                        }
-
-                        if (Define.ALBUM_PICKER_COUNT == 1)
-                            vh.txtThumbCount.setText("");
-                        else
-                            vh.txtThumbCount.setText(String.valueOf(pickedImages.size()));
-
-                        image.setImgOrder(pickedImages.size());
-
-                    } else if (vh.txtThumbCount.getVisibility() == View.VISIBLE) {
-                        pickerController.setRecyclerViewClickable(false);
-                        pickedImages.remove(image.getImgOrder() - 1);
-                        if (Define.ALBUM_PICKER_COUNT != 1)
-                            setOrder(Integer.valueOf(vh.txtThumbCount.getText().toString()) - 1);
-                        else
-                            setOrder(0);
-                        image.setImgOrder(-1);
-                        vh.txtThumbCount.setVisibility(View.GONE);
-                        pickerController.setToolbarTitle(pickedImages.size());
-                    } else {
-                        Snackbar.make(v, Define.MESSAGE_LIMIT_REACHED, Snackbar.LENGTH_SHORT).show();
-                    }
+                    onCheckStateChange(v, image);
                 }
             });
         }
+
+    }
+
+    private void initState(int selectedIndex, ViewHolderImage vh) {
+        if (selectedIndex != -1) {
+            vh.txtThumbCount.setVisibility(View.VISIBLE);
+            animScale(vh.imgThumbImage, true, false);
+            if (Define.MAX_COUNT == 1) vh.txtThumbCount.setText("");
+            else vh.txtThumbCount.setText(String.valueOf(selectedIndex + 1));
+        } else {
+            vh.txtThumbCount.setVisibility(View.GONE);
+            animScale(vh.imgThumbImage, false, false);
+        }
+    }
+
+    private void onCheckStateChange(View v, Uri image) {
+        boolean isContained = pickedImages.contains(image);
+        if (Define.MAX_COUNT == pickedImages.size()
+                && !isContained) {
+            Snackbar.make(v, Define.MESSAGE_LIMIT_REACHED, Snackbar.LENGTH_SHORT).show();
+            return;
+        }
+        SquareTextView txtThumbCount = (SquareTextView) v.findViewById(R.id.txt_thumb_count);
+        ImageView imgThumbImage = (ImageView) v.findViewById(R.id.img_thumb_image);
+        if (isContained) {
+            pickedImages.remove(image);
+            txtThumbCount.setVisibility(View.GONE);
+            animScale(imgThumbImage, false, true);
+        } else {
+            animScale(imgThumbImage, true, true);
+            txtThumbCount.setVisibility(View.VISIBLE);
+            pickedImages.add(image);
+            if (Define.IS_AUTOMATIC_CLOSE
+                    && Define.MAX_COUNT == pickedImages.size()) {
+                pickerController.finishActivity(pickedImages);
+            }
+
+            if (Define.MAX_COUNT == 1)
+                txtThumbCount.setText("");
+            else
+                txtThumbCount.setText(String.valueOf(pickedImages.size()));
+        }
+        pickerController.setToolbarTitle(pickedImages.size());
+    }
+
+    private void animScale(View view,
+                           boolean isSelected,
+                           final boolean isAnimation) {
+        int duration = 200;
+        if (!isAnimation) duration = 0;
+        if (isSelected)
+            ViewCompat.animate(view)
+                    .setDuration(duration)
+                    .scaleX(0.7f)
+                    .scaleY(0.7f)
+                    .start();
+        else
+            ViewCompat.animate(view)
+                    .setDuration(duration)
+                    .scaleX(1f)
+                    .scaleY(1f)
+                    .withEndAction(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (isAnimation) actionListener.onDeselect();
+                        }
+                    })
+                    .start();
 
     }
 
@@ -196,58 +209,31 @@ public class PickerGridAdapter
         return super.getItemViewType(position);
     }
 
-
-    private void setOrder(int removePosition) {
-        for (int i = removePosition; i < pickedImages.size(); i++) {
-            if (pickedImages.get(i).getImgPosition() != -1) {
-                images[pickedImages.get(i).getImgPosition()]
-                        .setImgOrder(i + 1);
-                if (isHeader)
-                    notifyDataSetChanged();
-                else
-                    notifyDataSetChanged();
-            }
-        }
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                pickerController.setRecyclerViewClickable(true);
-            }
-        }, 500);
-
-    }
-
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        // Define elements of a row here
-        public ViewHolder(View itemView) {
-            super(itemView);
-            // Find view by ID and initialize here
-        }
-
-        public void bindView(int position) {
-            // bindView() method to implement actions
-        }
-    }
-
-
-    public Image[] getImages() {
+    public Uri[] getImages() {
         return images;
     }
 
 
     public void addImage(Uri path) {
-        ArrayList<Image> al = new ArrayList<>();
+        ArrayList<Uri> al = new ArrayList<>();
         Collections.addAll(al, images);
-        al.add(0, new Image(-1, path));
-
-        images = al.toArray(new Image[al.size()]);
-
-        for (int i = 0; i < pickedImages.size(); i++)
-            pickedImages.get(i).setImgPosition(pickedImages.get(i).getImgPosition() + 1);
+        al.add(0, path);
+        images = al.toArray(new Uri[al.size()]);
 
         notifyDataSetChanged();
 
         pickerController.setAddImagePath(path);
     }
 
+    public void setActionListener(OnPhotoActionListener actionListener) {
+        this.actionListener = actionListener;
+    }
+
+    public interface OnPhotoActionListener {
+        void onDeselect();
+    }
+
+    public int getPickedImageIndexOf(Uri uri) {
+        return pickedImages.indexOf(uri);
+    }
 }

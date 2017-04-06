@@ -27,7 +27,7 @@ public class AlbumListAdapter
 
     private List<Album> albumList;
     private List<Uri> thumbList = new ArrayList<>();
-    private ArrayList<Uri> pickedImagePath;
+    private ArrayList<Uri> pickedImagePath = new ArrayList<>();
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
