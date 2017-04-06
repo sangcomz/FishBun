@@ -99,9 +99,9 @@ if (project.rootProject.file('local.properties').isFile()) {
         tagName = version
         targetCommitish = 'master'
         body = """## Release Note
-* #69
-* set icon(setHomeAsUpIndicatorDrawable, setOkButtonDrawable)
-* Fix Demo App"""
+* #76, #75
+* add setMinCount()
+* setPickerCount() to setMaxCount()"""
         name = version
     }
 }

@@ -69,6 +69,7 @@ public class FishBun {
             return baseProperty;
         }
 
+        @Override
         public BaseProperty setMaxCount(int count) {
             if (count <= 0)
                 count = 1;
@@ -76,6 +77,7 @@ public class FishBun {
             return baseProperty;
         }
 
+        @Override
         public BaseProperty setMinCount(int count) {
             if (count <= 0)
                 count = 1;
@@ -231,6 +233,10 @@ public class FishBun {
         BaseProperty setPickerSpanCount(int spanCount);
 
         BaseProperty setPickerCount(int count);
+
+        BaseProperty setMaxCount(int count);
+
+        BaseProperty setMinCount(int count);
 
         BaseProperty setActionBarColor(int actionbarColor);
 
