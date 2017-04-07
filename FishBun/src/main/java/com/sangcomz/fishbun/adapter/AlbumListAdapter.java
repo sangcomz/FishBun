@@ -26,7 +26,6 @@ public class AlbumListAdapter
         extends RecyclerView.Adapter<AlbumListAdapter.ViewHolder> {
 
     private List<Album> albumList;
-    private List<Uri> thumbList = new ArrayList<>();
     private ArrayList<Uri> pickedImagePath = new ArrayList<>();
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -59,23 +58,15 @@ public class AlbumListAdapter
         return new ViewHolder(view);
     }
 
-    public void setThumbList(List<Uri> thumbList) {
-        this.thumbList = thumbList;
-        notifyDataSetChanged();
-    }
-
-
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        if (thumbList != null && thumbList.size() > position) {
-            holder.imgAlbumThumb.setImageDrawable(null);
-            Picasso
-                    .with(holder.imgAlbumThumb.getContext())
-                    .load(thumbList.get(position))
-                    .fit()
-                    .centerCrop()
-                    .into(holder.imgAlbumThumb);
-        }
+        holder.imgAlbumThumb.setImageDrawable(null);
+        Picasso
+                .with(holder.imgAlbumThumb.getContext())
+                .load(Uri.parse(albumList.get(position).thumbnailPath))
+                .fit()
+                .centerCrop()
+                .into(holder.imgAlbumThumb);
         holder.view.setTag(albumList.get(position));
         Album a = (Album) holder.view.getTag();
         holder.txtAlbumName.setText(albumList.get(position).bucketName);
@@ -115,9 +106,6 @@ public class AlbumListAdapter
         return albumList;
     }
 
-    public List<Uri> getThumbList() {
-        return thumbList;
-    }
 }
 
 

@@ -160,13 +160,13 @@ public class PickerController {
     @NonNull
     private Uri[] getAllMediaThumbnailsPath(long id) {
         String selection = MediaStore.Images.Media.BUCKET_ID + " = ?";
-        String bucketid = String.valueOf(id);
+        String bucketId = String.valueOf(id);
         String sort = MediaStore.Images.Media._ID + " DESC";
-        String[] selectionArgs = {bucketid};
+        String[] selectionArgs = {bucketId};
 
         Uri images = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
         Cursor c;
-        if (!bucketid.equals("0")) {
+        if (!bucketId.equals("0")) {
             c = resolver.query(images, null, selection, selectionArgs, sort);
         } else {
             c = resolver.query(images, null, null, null, sort);
