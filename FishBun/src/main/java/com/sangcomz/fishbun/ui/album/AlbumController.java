@@ -126,7 +126,8 @@ class AlbumController {
                 albumList = new ArrayList<>();
 //                Album totalAlbum = new Album(0, Define.TITLE_ALBUM_ALL_VIEW, "", "", 0);
 
-                albumHashMap.put((long) 0, new Album(0, Define.TITLE_ALBUM_ALL_VIEW, "", null, 0));
+//                albumHashMap.put((long) 0, new Album(0, Define.TITLE_ALBUM_ALL_VIEW, "", null, 0));
+                albumHashMap.put((long) 0, new Album(0, Define.TITLE_ALBUM_ALL_VIEW, null, 0));
 
 //                albumList.add(totalAlbum);
 
@@ -148,11 +149,18 @@ class AlbumController {
                     Album album = albumHashMap.get(bucketId);
                     if (album == null) {
                         int imgId = c.getInt(c.getColumnIndex(MediaStore.MediaColumns._ID));
+
                         Uri path = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "" + imgId);
+                        System.out.println("c.getString(bucketData) :::: " + c.getString(bucketData));
+//                        albumHashMap.put(bucketId,
+//                                new Album(bucketId,
+//                                        c.getString(bucketColumn),
+//                                        c.getString(bucketData), path.toString(), 1));
+
                         albumHashMap.put(bucketId,
                                 new Album(bucketId,
                                         c.getString(bucketColumn),
-                                        c.getString(bucketData), path.toString(), 1));
+                                        path.toString(), 1));
 
                         if (c.getPosition() == 0)
                             albumHashMap.get((long) 0).thumbnailPath = path.toString();

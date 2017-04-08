@@ -73,8 +73,8 @@ public class AlbumActivity extends AppCompatActivity {
         ArrayList<Uri> pickedImagePath = outState.getParcelableArrayList(Define.SAVE_INSTANCE_PICK_IMAGES);
 
         if (albumList != null && thumbList != null && pickedImagePath != null) {
-            adapter = new AlbumListAdapter(albumList, pickedImagePath);
-//            adapter.setThumbList(thumbList);
+            adapter = new AlbumListAdapter(pickedImagePath);
+            adapter.setAlbumList(albumList);
         }
     }
 
@@ -163,8 +163,9 @@ public class AlbumActivity extends AppCompatActivity {
     private void setAlbumListAdapter() {
         if (adapter == null) {
             ArrayList<Uri> data = getIntent().getParcelableArrayListExtra(Define.INTENT_PATH);
-            adapter = new AlbumListAdapter(albumList, data);
+            adapter = new AlbumListAdapter(data);
         }
+        adapter.setAlbumList(albumList);
         recyclerAlbumList.setAdapter(adapter);
         adapter.notifyDataSetChanged();
         changeToolbarTitle();
@@ -197,16 +198,17 @@ public class AlbumActivity extends AppCompatActivity {
 //        List<Uri> thumbList = adapter.getThumbList();
         if (imagePath.size() > 0) {
             if (position == 0) {
-                albumList.get(position).counter += imagePath.size();
-                albumList.get(defCameraAlbum).counter += imagePath.size();
-
-                albumList.get(position).thumbnailPath = imagePath.get(imagePath.size() - 1).toString();
-                albumList.get(defCameraAlbum).thumbnailPath = imagePath.get(imagePath.size() - 1).toString();
-//                thumbList.set(position, imagePath.get(imagePath.size() - 1));
-//                thumbList.set(defCameraAlbum, imagePath.get(imagePath.size() - 1));
-
-                adapter.notifyItemChanged(0);
-                adapter.notifyItemChanged(defCameraAlbum);
+//                albumList.get(position).counter += imagePath.size();
+//                albumList.get(defCameraAlbum).counter += imagePath.size();
+//
+//                albumList.get(position).thumbnailPath = imagePath.get(imagePath.size() - 1).toString();
+//                albumList.get(defCameraAlbum).thumbnailPath = imagePath.get(imagePath.size() - 1).toString();
+////                thumbList.set(position, imagePath.get(imagePath.size() - 1));
+////                thumbList.set(defCameraAlbum, imagePath.get(imagePath.size() - 1));
+//
+//                adapter.notifyItemChanged(0);
+//                adapter.notifyItemChanged(defCameraAlbum);
+                albumController.getAlbumList();
             } else {
                 albumList.get(0).counter += imagePath.size();
                 albumList.get(position).counter += imagePath.size();

@@ -46,9 +46,13 @@ public class AlbumListAdapter
         }
     }
 
-    public AlbumListAdapter(List<Album> albumList, ArrayList<Uri> pickedImagePath) {
-        this.albumList = albumList;
+    public AlbumListAdapter(ArrayList<Uri> pickedImagePath) {
         this.pickedImagePath = pickedImagePath;
+    }
+
+    public void setAlbumList(List<Album> albumList) {
+        this.albumList = albumList;
+
     }
 
     @Override
