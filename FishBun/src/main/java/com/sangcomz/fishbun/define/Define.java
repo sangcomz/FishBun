@@ -41,7 +41,6 @@ public class Define {
     public static String TITLE_ALBUM_ALL_VIEW = "";
     public static String TITLE_ACTIONBAR = "";
 
-
     public static final String SAVE_INSTANCE_ALBUM_LIST = "instance_album_list";
     public static final String SAVE_INSTANCE_ALBUM_THUMB_LIST = "instance_album_thumb_list";
 
@@ -50,6 +49,7 @@ public class Define {
     public static final String SAVE_INSTANCE_SAVED_IMAGE = "instance_saved_image";
     public static final String SAVE_INSTANCE_SAVED_IMAGE_THUMBNAILS = "instance_saved_image_thumbnails";
 
+    public static Boolean EXCEPT_GIF = false;
 
     public static Drawable homeAsUpIndicatorDrawable = null;
     public static Drawable okButtonDrawable = null;

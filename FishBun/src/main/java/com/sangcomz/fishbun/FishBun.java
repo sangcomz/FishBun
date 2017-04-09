@@ -191,6 +191,12 @@ public class FishBun {
             return baseProperty;
         }
 
+        @Override
+        public BaseProperty exceptGif(boolean isExcept) {
+            Define.EXCEPT_GIF = isExcept;
+            return baseProperty;
+        }
+
         public void startAlbum() {
             Context context = null;
             if (activity != null)
@@ -271,6 +277,8 @@ public class FishBun {
         BaseProperty setHomeAsUpIndicatorDrawable(Drawable icon);
 
         BaseProperty setOkButtonDrawable(Drawable icon);
+
+        BaseProperty exceptGif(boolean isExcept);
 
         void startAlbum();
     }

@@ -16,8 +16,11 @@ import android.view.MotionEvent;
 import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.permission.PermissionCheck;
 import com.sangcomz.fishbun.util.CameraUtil;
+import com.sangcomz.fishbun.util.RegexUtil;
 
 import java.util.ArrayList;
+
+import static com.sangcomz.fishbun.define.Define.EXCEPT_GIF;
 
 /**
  * Created by sangc on 2015-11-05.
@@ -178,7 +181,11 @@ public class PickerController {
                     setPathDir(c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA)),
                             c.getString(c.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME)));
                     int position = -1;
+                    RegexUtil regexUtil = new RegexUtil();
                     do {
+                        if (EXCEPT_GIF &&
+                                regexUtil.checkGif(c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA))))
+                            continue;
                         int imgId = c.getInt(c.getColumnIndex(MediaStore.MediaColumns._ID));
                         Uri path = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "" + imgId);
                         imageUris[++position] = path;
