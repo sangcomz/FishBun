@@ -16,8 +16,11 @@ import android.view.MotionEvent;
 import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.permission.PermissionCheck;
 import com.sangcomz.fishbun.util.CameraUtil;
+import com.sangcomz.fishbun.util.RegexUtil;
 
 import java.util.ArrayList;
+
+import static com.sangcomz.fishbun.define.Define.EXCEPT_GIF;
 
 /**
  * Created by sangc on 2015-11-05.
@@ -160,13 +163,13 @@ public class PickerController {
     @NonNull
     private Uri[] getAllMediaThumbnailsPath(long id) {
         String selection = MediaStore.Images.Media.BUCKET_ID + " = ?";
-        String bucketid = String.valueOf(id);
+        String bucketId = String.valueOf(id);
         String sort = MediaStore.Images.Media._ID + " DESC";
-        String[] selectionArgs = {bucketid};
+        String[] selectionArgs = {bucketId};
 
         Uri images = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
         Cursor c;
-        if (!bucketid.equals("0")) {
+        if (!bucketId.equals("0")) {
             c = resolver.query(images, null, selection, selectionArgs, sort);
         } else {
             c = resolver.query(images, null, null, null, sort);
@@ -178,7 +181,11 @@ public class PickerController {
                     setPathDir(c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA)),
                             c.getString(c.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME)));
                     int position = -1;
+                    RegexUtil regexUtil = new RegexUtil();
                     do {
+                        if (EXCEPT_GIF &&
+                                regexUtil.checkGif(c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA))))
+                            continue;
                         int imgId = c.getInt(c.getColumnIndex(MediaStore.MediaColumns._ID));
                         Uri path = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "" + imgId);
                         imageUris[++position] = path;
