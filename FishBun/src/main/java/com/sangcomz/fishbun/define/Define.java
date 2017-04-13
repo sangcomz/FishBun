@@ -53,4 +53,7 @@ public class Define {
 
     public static Drawable homeAsUpIndicatorDrawable = null;
     public static Drawable okButtonDrawable = null;
+
+    public static String TEXT_MENU;
+    public static int COLOR_MENU_TEXT = -1;
 }

@@ -3,6 +3,7 @@ package com.sangcomz.fishbun;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
@@ -197,6 +198,18 @@ public class FishBun {
             return baseProperty;
         }
 
+        @Override
+        public BaseProperty setMenuText(String text) {
+            Define.TEXT_MENU = text;
+            return baseProperty;
+        }
+
+        @Override
+        public BaseProperty setMenuTextColor(int textColor) {
+            Define.COLOR_MENU_TEXT = textColor;
+            return baseProperty;
+        }
+
         public void startAlbum() {
             Context context = null;
             if (activity != null)
@@ -214,6 +227,7 @@ public class FishBun {
                 Define.ALBUM_THUMBNAIL_SIZE = (int) context.getResources().getDimension(R.dimen.album_thum_size);
 
             setDefaultMessage(context);
+            setMenuTextColor();
 
             Intent i = new Intent(context, AlbumActivity.class);
             i.putParcelableArrayListExtra(Define.INTENT_PATH, arrayPaths);
@@ -224,10 +238,32 @@ public class FishBun {
             else if (fragment != null)
                 fragment.startActivityForResult(i, requestCode);
 
-
         }
 
+        private void setDefaultMessage(Context context) {
+            if (Define.MESSAGE_NOTHING_SELECTED.equals(""))
+                Define.MESSAGE_NOTHING_SELECTED = context.getResources().getString(R.string.msg_no_selected);
 
+            if (Define.MESSAGE_LIMIT_REACHED.equals(""))
+                Define.MESSAGE_LIMIT_REACHED = context.getResources().getString(R.string.msg_full_image);
+
+            if (Define.TITLE_ALBUM_ALL_VIEW.equals(""))
+                Define.TITLE_ALBUM_ALL_VIEW = context.getResources().getString(R.string.str_all_view);
+
+            if (Define.TITLE_ACTIONBAR.equals(""))
+                Define.TITLE_ACTIONBAR = context.getResources().getString(R.string.album);
+        }
+
+        private void setMenuTextColor() {
+            if (Define.okButtonDrawable != null
+                    || Define.TEXT_MENU == null
+                    || Define.COLOR_MENU_TEXT != -1) return;
+            if (Define.STYLE_STATUS_BAR_LIGHT)
+                Define.COLOR_MENU_TEXT = Color.BLACK;
+            else
+                Define.COLOR_MENU_TEXT = Color.WHITE;
+
+        }
     }
 
     interface BasePropertyImpl {
@@ -280,22 +316,12 @@ public class FishBun {
 
         BaseProperty exceptGif(boolean isExcept);
 
+        BaseProperty setMenuText(String text);
+
+        BaseProperty setMenuTextColor(int color);
+
         void startAlbum();
     }
 
-
-    private static void setDefaultMessage(Context context) {
-        if (Define.MESSAGE_NOTHING_SELECTED.equals(""))
-            Define.MESSAGE_NOTHING_SELECTED = context.getResources().getString(R.string.msg_no_selected);
-
-        if (Define.MESSAGE_LIMIT_REACHED.equals(""))
-            Define.MESSAGE_LIMIT_REACHED = context.getResources().getString(R.string.msg_full_image);
-
-        if (Define.TITLE_ALBUM_ALL_VIEW.equals(""))
-            Define.TITLE_ALBUM_ALL_VIEW = context.getResources().getString(R.string.str_all_view);
-
-        if (Define.TITLE_ACTIONBAR.equals(""))
-            Define.TITLE_ACTIONBAR = context.getResources().getString(R.string.album);
-    }
 
 }
