@@ -24,6 +24,7 @@ import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.permission.PermissionCheck;
 import com.sangcomz.fishbun.util.SingleMediaScanner;
 import com.sangcomz.fishbun.util.SquareTextView;
+import com.sangcomz.fishbun.util.TextDrawable;
 import com.sangcomz.fishbun.util.UiUtil;
 
 import java.io.File;
@@ -140,8 +141,12 @@ public class PickerActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_photo_album, menu);
-        if (okButtonDrawable != null)
-            menu.findItem(R.id.action_ok).setIcon(okButtonDrawable);
+        MenuItem item = menu.findItem(R.id.action_ok);
+        if (okButtonDrawable != null) {
+            item.setIcon(okButtonDrawable);
+        } else if (Define.TEXT_MENU != null) {
+            item.setIcon(new TextDrawable(getResources(), Define.TEXT_MENU, Define.COLOR_MENU_TEXT));
+        }
         return true;
     }
 
