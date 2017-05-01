@@ -72,7 +72,7 @@ public class WithActivityActivity extends AppCompatActivity {
                 case 0: {
                     FishBun.with(WithActivityActivity.this)
                             .setPickerCount(1)
-                            .setPickerSpanCount(5)
+                            .setPickerSpanCount(3)
                             .setActionBarColor(Color.parseColor("#FFA400"), Color.parseColor("#DF9613"), false)
                             .setActionBarTitleColor(Color.parseColor("#ffffff"))
                             .setArrayPaths(path)
@@ -114,7 +114,7 @@ public class WithActivityActivity extends AppCompatActivity {
                 //Light
                 case 2: {
                     FishBun.with(WithActivityActivity.this)
-                            .setPickerCount(10)
+                            .setPickerCount(50)
                             .setPickerSpanCount(7)
                             .setActionBarColor(Color.parseColor("#ffffff"), Color.parseColor("#ffffff"), true)
                             .setActionBarTitleColor(Color.parseColor("#000000"))

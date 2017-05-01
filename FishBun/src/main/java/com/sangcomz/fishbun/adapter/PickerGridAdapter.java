@@ -3,6 +3,7 @@ package com.sangcomz.fishbun.adapter;
 import android.app.Activity;
 import android.net.Uri;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,7 +15,7 @@ import android.widget.RelativeLayout;
 import com.sangcomz.fishbun.R;
 import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.ui.picker.PickerController;
-import com.sangcomz.fishbun.util.SquareTextView;
+import com.sangcomz.fishbun.util.RadioWithTextButton;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -38,13 +39,13 @@ public class PickerGridAdapter
 
         View item;
         ImageView imgThumbImage;
-        SquareTextView txtThumbCount;
+        RadioWithTextButton btnThumbCount;
 
         public ViewHolderImage(View view) {
             super(view);
             item = view;
             imgThumbImage = (ImageView) view.findViewById(R.id.img_thumb_image);
-            txtThumbCount = (SquareTextView) view.findViewById(R.id.txt_thumb_count);
+            btnThumbCount = (RadioWithTextButton) view.findViewById(R.id.btn_thumb_count);
         }
     }
 
@@ -72,8 +73,6 @@ public class PickerGridAdapter
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
-
-
         if (viewType == TYPE_HEADER) {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.header_item, parent, false);
             return new ViewHolderHeader(view);
@@ -104,21 +103,23 @@ public class PickerGridAdapter
             final ViewHolderImage vh = (ViewHolderImage) holder;
             final Uri image = images[imagePos];
             vh.item.setTag(image);
+            vh.btnThumbCount.setCircleColor(Define.COLOR_ACTION_BAR);
+            vh.btnThumbCount.setTextColor(Define.COLOR_ACTION_BAR_TITLE_COLOR);
 
             initState(pickedImages.indexOf(image), vh);
             if (image != null)
                 Picasso
                         .with(vh.imgThumbImage.getContext())
                         .load(image)
-                        .fit()
                         .centerCrop()
+                        .fit()
                         .into(vh.imgThumbImage);
 
 
-            vh.item.setOnClickListener(new View.OnClickListener() {
+            vh.imgThumbImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onCheckStateChange(v, image);
+                    onCheckStateChange(vh.item, image);
                 }
             });
         }
@@ -127,12 +128,9 @@ public class PickerGridAdapter
 
     private void initState(int selectedIndex, ViewHolderImage vh) {
         if (selectedIndex != -1) {
-            vh.txtThumbCount.setVisibility(View.VISIBLE);
             animScale(vh.imgThumbImage, true, false);
-            if (Define.MAX_COUNT == 1) vh.txtThumbCount.setText("");
-            else vh.txtThumbCount.setText(String.valueOf(selectedIndex + 1));
+            updateRadioButton(vh.btnThumbCount, String.valueOf(selectedIndex + 1));
         } else {
-            vh.txtThumbCount.setVisibility(View.GONE);
             animScale(vh.imgThumbImage, false, false);
         }
     }
@@ -144,27 +142,29 @@ public class PickerGridAdapter
             Snackbar.make(v, Define.MESSAGE_LIMIT_REACHED, Snackbar.LENGTH_SHORT).show();
             return;
         }
-        SquareTextView txtThumbCount = (SquareTextView) v.findViewById(R.id.txt_thumb_count);
         ImageView imgThumbImage = (ImageView) v.findViewById(R.id.img_thumb_image);
+        RadioWithTextButton btnThumbCount = (RadioWithTextButton) v.findViewById(R.id.btn_thumb_count);
         if (isContained) {
             pickedImages.remove(image);
-            txtThumbCount.setVisibility(View.GONE);
+            btnThumbCount.unselect();
             animScale(imgThumbImage, false, true);
         } else {
             animScale(imgThumbImage, true, true);
-            txtThumbCount.setVisibility(View.VISIBLE);
             pickedImages.add(image);
             if (Define.IS_AUTOMATIC_CLOSE
                     && Define.MAX_COUNT == pickedImages.size()) {
                 pickerController.finishActivity(pickedImages);
             }
-
-            if (Define.MAX_COUNT == 1)
-                txtThumbCount.setText("");
-            else
-                txtThumbCount.setText(String.valueOf(pickedImages.size()));
+            updateRadioButton(btnThumbCount, String.valueOf(pickedImages.size()));
         }
         pickerController.setToolbarTitle(pickedImages.size());
+    }
+
+    public void updateRadioButton(RadioWithTextButton v, String text) {
+        if (Define.MAX_COUNT == 1)
+            v.setDrawable(ContextCompat.getDrawable(v.getContext(), R.drawable.ic_done_white_24dp));
+        else
+            v.setText(text);
     }
 
     private void animScale(View view,
@@ -172,24 +172,29 @@ public class PickerGridAdapter
                            final boolean isAnimation) {
         int duration = 200;
         if (!isAnimation) duration = 0;
+        float toScale;
         if (isSelected)
-            ViewCompat.animate(view)
-                    .setDuration(duration)
-                    .scaleX(0.7f)
-                    .scaleY(0.7f)
-                    .start();
+            toScale = .8f;
         else
-            ViewCompat.animate(view)
-                    .setDuration(duration)
-                    .scaleX(1f)
-                    .scaleY(1f)
-                    .withEndAction(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (isAnimation) actionListener.onDeselect();
-                        }
-                    })
-                    .start();
+            toScale = 1.0f;
+
+        ViewCompat.animate(view)
+                .setDuration(duration)
+                .withStartAction(new Runnable() {
+                    @Override
+                    public void run() {
+
+                    }
+                })
+                .scaleX(toScale)
+                .scaleY(toScale)
+                .withEndAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (isAnimation) actionListener.onDeselect();
+                    }
+                })
+                .start();
 
     }
 

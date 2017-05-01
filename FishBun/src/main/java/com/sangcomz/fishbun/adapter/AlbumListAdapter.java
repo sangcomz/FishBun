@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.sangcomz.fishbun.R;
@@ -39,7 +39,7 @@ public class AlbumListAdapter
             super(view);
             this.view = view;
             imgAlbumThumb = (ImageView) view.findViewById(R.id.img_album_thumb);
-            imgAlbumThumb.setLayoutParams(new RelativeLayout.LayoutParams(Define.ALBUM_THUMBNAIL_SIZE, Define.ALBUM_THUMBNAIL_SIZE));
+            imgAlbumThumb.setLayoutParams(new LinearLayout.LayoutParams(Define.ALBUM_THUMBNAIL_SIZE, Define.ALBUM_THUMBNAIL_SIZE));
 
             txtAlbumName = (TextView) view.findViewById(R.id.txt_album_name);
             txtAlbumCount = (TextView) view.findViewById(R.id.txt_album_count);
