@@ -102,7 +102,8 @@ if (project.rootProject.file('local.properties').isFile()) {
 * #77, #74
 * add exceptGif(boolean isExcept)
 * add setMenuText(String text), setMenuTextColor(int textColor)
-* refactor album AsyncTask"""
+* refactor album AsyncTask
+* add widget RadioWithTextButton"""
         name = version
     }
 }

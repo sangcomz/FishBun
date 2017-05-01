@@ -15,11 +15,11 @@ FishBun is Image Picker for android.
 
 <img src="/pic/fishbuns.png">
 
-##What's New 0.6.4 FishBun
+##What's New 0.6.6 FishBun
 
-####● set light status bar  (#69)
-####● you can use setHomeAsUpIndicatorDrawable(Drawable icon), setOkButtonDrawable(Drawable icon)
-####● Fix Demo App
+####● add exceptGif(boolean isExcept) (#77)
+####● add setMenuText(String text), setMenuTextColor(int textColor) (#74)
+####● add widget RadioWithTextButton
 
 ##How to Use FishBun
 
@@ -86,8 +86,9 @@ you can use also this
                         .startAlbum();
 
 
-##Result Screen
-<img src="/pic/sim.gif" width=40%">
+##Customization Screen
+###normal
+
 
 ##Android M Permission
 FishBun check permission before reading external storage.
