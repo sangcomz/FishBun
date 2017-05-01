@@ -99,11 +99,7 @@ if (project.rootProject.file('local.properties').isFile()) {
         tagName = version
         targetCommitish = 'master'
         body = """## Release Note
-* #77, #74
-* add exceptGif(boolean isExcept)
-* add setMenuText(String text), setMenuTextColor(int textColor)
-* refactor album AsyncTask
-* add widget RadioWithTextButton"""
+* fix adapter bug"""
         name = version
     }
 }
