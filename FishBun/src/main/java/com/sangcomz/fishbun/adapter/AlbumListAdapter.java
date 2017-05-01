@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.sangcomz.fishbun.R;
@@ -26,7 +26,6 @@ public class AlbumListAdapter
         extends RecyclerView.Adapter<AlbumListAdapter.ViewHolder> {
 
     private List<Album> albumList;
-    private List<Uri> thumbList = new ArrayList<>();
     private ArrayList<Uri> pickedImagePath = new ArrayList<>();
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -40,16 +39,20 @@ public class AlbumListAdapter
             super(view);
             this.view = view;
             imgAlbumThumb = (ImageView) view.findViewById(R.id.img_album_thumb);
-            imgAlbumThumb.setLayoutParams(new RelativeLayout.LayoutParams(Define.ALBUM_THUMBNAIL_SIZE, Define.ALBUM_THUMBNAIL_SIZE));
+            imgAlbumThumb.setLayoutParams(new LinearLayout.LayoutParams(Define.ALBUM_THUMBNAIL_SIZE, Define.ALBUM_THUMBNAIL_SIZE));
 
             txtAlbumName = (TextView) view.findViewById(R.id.txt_album_name);
             txtAlbumCount = (TextView) view.findViewById(R.id.txt_album_count);
         }
     }
 
-    public AlbumListAdapter(List<Album> albumList, ArrayList<Uri> pickedImagePath) {
-        this.albumList = albumList;
+    public AlbumListAdapter(ArrayList<Uri> pickedImagePath) {
         this.pickedImagePath = pickedImagePath;
+    }
+
+    public void setAlbumList(List<Album> albumList) {
+        this.albumList = albumList;
+
     }
 
     @Override
@@ -59,23 +62,15 @@ public class AlbumListAdapter
         return new ViewHolder(view);
     }
 
-    public void setThumbList(List<Uri> thumbList) {
-        this.thumbList = thumbList;
-        notifyDataSetChanged();
-    }
-
-
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        if (thumbList != null && thumbList.size() > position) {
-            holder.imgAlbumThumb.setImageDrawable(null);
-            Picasso
-                    .with(holder.imgAlbumThumb.getContext())
-                    .load(thumbList.get(position))
-                    .fit()
-                    .centerCrop()
-                    .into(holder.imgAlbumThumb);
-        }
+        holder.imgAlbumThumb.setImageDrawable(null);
+        Picasso
+                .with(holder.imgAlbumThumb.getContext())
+                .load(Uri.parse(albumList.get(position).thumbnailPath))
+                .fit()
+                .centerCrop()
+                .into(holder.imgAlbumThumb);
         holder.view.setTag(albumList.get(position));
         Album a = (Album) holder.view.getTag();
         holder.txtAlbumName.setText(albumList.get(position).bucketName);
@@ -115,9 +110,6 @@ public class AlbumListAdapter
         return albumList;
     }
 
-    public List<Uri> getThumbList() {
-        return thumbList;
-    }
 }
 
 

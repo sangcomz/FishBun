@@ -28,6 +28,7 @@ import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.permission.PermissionCheck;
 import com.sangcomz.fishbun.util.ScanListener;
 import com.sangcomz.fishbun.util.SingleMediaScanner;
+import com.sangcomz.fishbun.util.TextDrawable;
 import com.sangcomz.fishbun.util.UiUtil;
 
 import java.io.File;
@@ -48,9 +49,8 @@ public class AlbumActivity extends AppCompatActivity {
     private AlbumListAdapter adapter;
     private UiUtil uiUtil = new UiUtil();
 
+    Toolbar toolbar;
     private TextView progressAlbumText;
-
-    private int defCameraAlbum = 0;
 
 
     @Override
@@ -58,7 +58,6 @@ public class AlbumActivity extends AppCompatActivity {
         if (adapter != null) {
             outState.putParcelableArrayList(Define.SAVE_INSTANCE_PICK_IMAGES, adapter.getPickedImagePath());
             outState.putParcelableArrayList(Define.SAVE_INSTANCE_ALBUM_LIST, (ArrayList<? extends Parcelable>) adapter.getAlbumList());
-            outState.putParcelableArrayList(Define.SAVE_INSTANCE_ALBUM_THUMB_LIST, (ArrayList<Uri>) adapter.getThumbList());
         }
         super.onSaveInstanceState(outState);
     }
@@ -73,8 +72,8 @@ public class AlbumActivity extends AppCompatActivity {
         ArrayList<Uri> pickedImagePath = outState.getParcelableArrayList(Define.SAVE_INSTANCE_PICK_IMAGES);
 
         if (albumList != null && thumbList != null && pickedImagePath != null) {
-            adapter = new AlbumListAdapter(albumList, pickedImagePath);
-            adapter.setThumbList(thumbList);
+            adapter = new AlbumListAdapter(pickedImagePath);
+            adapter.setAlbumList(albumList);
         }
     }
 
@@ -130,7 +129,7 @@ public class AlbumActivity extends AppCompatActivity {
     }
 
     private void initToolBar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_album_bar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar_album_bar);
         relAlbumEmpty = (RelativeLayout) findViewById(R.id.rel_album_empty);
         progressAlbumText = (TextView) findViewById(R.id.txt_album_msg);
         progressAlbumText.setText(R.string.msg_loading_image);
@@ -163,22 +162,13 @@ public class AlbumActivity extends AppCompatActivity {
     private void setAlbumListAdapter() {
         if (adapter == null) {
             ArrayList<Uri> data = getIntent().getParcelableArrayListExtra(Define.INTENT_PATH);
-            adapter = new AlbumListAdapter(albumList, data);
+            adapter = new AlbumListAdapter(data);
         }
+        adapter.setAlbumList(albumList);
         recyclerAlbumList.setAdapter(adapter);
         adapter.notifyDataSetChanged();
         changeToolbarTitle();
     }
-
-
-    protected void setDefCameraAlbum(int position) {
-        defCameraAlbum = position;
-    }
-
-    protected void setThumbnail(List<Uri> thumbList) {
-        adapter.setThumbList(thumbList);
-    }
-
 
     protected void setAlbumList(ArrayList<Album> albumList) {
         this.albumList = albumList;
@@ -186,7 +176,6 @@ public class AlbumActivity extends AppCompatActivity {
             relAlbumEmpty.setVisibility(View.GONE);
             initRecyclerView();
             setAlbumListAdapter();
-            albumController.getThumbnail(albumList);
         } else {
             relAlbumEmpty.setVisibility(View.VISIBLE);
             progressAlbumText.setText(R.string.msg_no_image);
@@ -194,23 +183,15 @@ public class AlbumActivity extends AppCompatActivity {
     }
 
     private void refreshList(int position, ArrayList<Uri> imagePath) {
-        List<Uri> thumbList = adapter.getThumbList();
         if (imagePath.size() > 0) {
             if (position == 0) {
-                albumList.get(position).counter += imagePath.size();
-                albumList.get(defCameraAlbum).counter += imagePath.size();
-
-                thumbList.set(position, imagePath.get(imagePath.size() - 1));
-                thumbList.set(defCameraAlbum, imagePath.get(imagePath.size() - 1));
-
-                adapter.notifyItemChanged(0);
-                adapter.notifyItemChanged(defCameraAlbum);
+                albumController.getAlbumList();
             } else {
                 albumList.get(0).counter += imagePath.size();
                 albumList.get(position).counter += imagePath.size();
 
-                thumbList.set(0, imagePath.get(imagePath.size() - 1));
-                thumbList.set(position, imagePath.get(imagePath.size() - 1));
+                albumList.get(0).thumbnailPath = imagePath.get(imagePath.size() - 1).toString();
+                albumList.get(position).thumbnailPath = imagePath.get(imagePath.size() - 1).toString();
 
                 adapter.notifyItemChanged(0);
                 adapter.notifyItemChanged(position);
@@ -218,14 +199,17 @@ public class AlbumActivity extends AppCompatActivity {
         }
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         if (Define.IS_BUTTON) {
             getMenuInflater().inflate(R.menu.menu_photo_album, menu);
-            if (okButtonDrawable != null)
-                menu.findItem(R.id.action_ok).setIcon(okButtonDrawable);
+            MenuItem item = menu.findItem(R.id.action_ok);
+            if (okButtonDrawable != null) {
+                item.setIcon(okButtonDrawable);
+            } else if (Define.TEXT_MENU != null) {
+                item.setIcon(new TextDrawable(getResources(), Define.TEXT_MENU, Define.COLOR_MENU_TEXT));
+            }
         }
         return true;
     }
@@ -312,5 +296,6 @@ public class AlbumActivity extends AppCompatActivity {
                 }
             }
         }
+
     }
 }

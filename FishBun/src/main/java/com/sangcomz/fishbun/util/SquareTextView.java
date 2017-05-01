@@ -3,14 +3,13 @@ package com.sangcomz.fishbun.util;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.TypedValue;
-import android.widget.TextView;
 
 import com.sangcomz.fishbun.R;
 
 /**
  * Created by sangc on 2015-12-26.
  */
-public class SquareTextView extends TextView {
+public class SquareTextView extends android.support.v7.widget.AppCompatTextView {
 
     public SquareTextView(Context context) {
         this(context, null);
