@@ -103,6 +103,7 @@ public class PickerGridAdapter
             final ViewHolderImage vh = (ViewHolderImage) holder;
             final Uri image = images[imagePos];
             vh.item.setTag(image);
+            vh.btnThumbCount.unselect();
             vh.btnThumbCount.setCircleColor(Define.COLOR_ACTION_BAR);
             vh.btnThumbCount.setTextColor(Define.COLOR_ACTION_BAR_TITLE_COLOR);
 

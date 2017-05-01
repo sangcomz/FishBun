@@ -4,7 +4,7 @@
 [![Build Status](https://travis-ci.org/sangcomz/FishBun.svg?branch=master)](https://travis-ci.org/sangcomz/FishBun)
 [![codecov](https://codecov.io/gh/sangcomz/FishBun/branch/master/graph/badge.svg)](https://codecov.io/gh/sangcomz/FishBun)
 [![Download](https://api.bintray.com/packages/sangcomz/maven/fishbun/images/download.svg)](https://bintray.com/sangcomz/maven/fishbun/_latestVersion)
-<a href="http://www.methodscount.com/?lib=com.sangcomz%3AFishBun%3A0.6.6"><img src="https://img.shields.io/badge/Methods count-core: 499 | deps: 26008-e91e63.svg"/></a>
+<a href="http://www.methodscount.com/?lib=com.sangcomz%3AFishBun%3A0.6.7"><img src="https://img.shields.io/badge/Methods count-core: 499 | deps: 26008-e91e63.svg"/></a>
 <p style="float:left;">
  <a href="https://play.google.com/store/apps/details?id=com.sangcomz.fishbundemo">
  <img HEIGHT="40" WIDTH="135" alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge.png" />
@@ -15,7 +15,7 @@ FishBun is Image Picker for android.
 
 <img src="/pic/fishbuns.png">
 
-## What's New 0.6.6 FishBun
+## What's New 0.6.7 FishBun
 
 #### ● add exceptGif(boolean isExcept) (#77)
 #### ● add setMenuText(String text), setMenuTextColor(int textColor) (#74)
@@ -30,7 +30,7 @@ FishBun is Image Picker for android.
     }
 
     dependencies {
-        compile('com.sangcomz:FishBun:0.6.6@aar') {
+        compile('com.sangcomz:FishBun:0.6.7@aar') {
             transitive = true
         }
     }
@@ -89,6 +89,8 @@ you can use also this
                         .startAlbum();
 
 ## Customization Screen
+
+You can create image pickers in various ways.
 
 ##### Normal Style
 <img src="/pic/normal1.png" width=20%> <img src="/pic/normal2.png" width=20%>
