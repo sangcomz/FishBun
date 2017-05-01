@@ -63,6 +63,7 @@ public class FishBun {
         }
 
         @Deprecated
+        @Override
         public BaseProperty setPickerCount(int count) {
             if (count <= 0)
                 count = 1;

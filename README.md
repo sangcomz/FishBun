@@ -4,7 +4,7 @@
 [![Build Status](https://travis-ci.org/sangcomz/FishBun.svg?branch=master)](https://travis-ci.org/sangcomz/FishBun)
 [![codecov](https://codecov.io/gh/sangcomz/FishBun/branch/master/graph/badge.svg)](https://codecov.io/gh/sangcomz/FishBun)
 [![Download](https://api.bintray.com/packages/sangcomz/maven/fishbun/images/download.svg)](https://bintray.com/sangcomz/maven/fishbun/_latestVersion)
-<a href="http://www.methodscount.com/?lib=com.sangcomz%3AFishBun%3A0.6.4"><img src="https://img.shields.io/badge/Methods count-core: 499 | deps: 26008-e91e63.svg"/></a>
+<a href="http://www.methodscount.com/?lib=com.sangcomz%3AFishBun%3A0.6.6"><img src="https://img.shields.io/badge/Methods count-core: 499 | deps: 26008-e91e63.svg"/></a>
 <p style="float:left;">
  <a href="https://play.google.com/store/apps/details?id=com.sangcomz.fishbundemo">
  <img HEIGHT="40" WIDTH="135" alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge.png" />
@@ -15,37 +15,38 @@ FishBun is Image Picker for android.
 
 <img src="/pic/fishbuns.png">
 
-##What's New 0.6.4 FishBun
+## What's New 0.6.6 FishBun
 
-####● set light status bar  (#69)
-####● you can use setHomeAsUpIndicatorDrawable(Drawable icon), setOkButtonDrawable(Drawable icon)
-####● Fix Demo App
+#### ● add exceptGif(boolean isExcept) (#77)
+#### ● add setMenuText(String text), setMenuTextColor(int textColor) (#74)
+#### ● add widget RadioWithTextButton
 
-##How to Use FishBun
+## How to Use FishBun
 
-###Gradle
+### Gradle
 
     repositories {
         jcenter()
     }
-    
-    ;
+
     dependencies {
-        compile('com.sangcomz:FishBun:0.6.4@aar') {
+        compile('com.sangcomz:FishBun:0.6.6@aar') {
             transitive = true
         }
     }
 
-###Manifest
+### Manifest
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-FishBun.with(Your Activity).startAlbum();
+## How to Use FishBun
+
+    FishBun.with(Your Activity).startAlbum();
 
 if you use in Fragment,
 
-FishBun.with(Your Fragment).startAlbum();
+    FishBun.with(Your Fragment).startAlbum();
 
 and add OnActivityResult
 
@@ -57,7 +58,7 @@ and add OnActivityResult
                 if (resultCode == RESULT_OK) {
                     //path = imageData.getStringArrayListExtra(Define.INTENT_PATH);
                     //You can get image path(ArrayList<String>) Under version 0.6.2
-                    
+
                     path = imageData.getParcelableArrayListExtra(Define.INTENT_PATH);
                     //You can get image path(ArrayList<Uri>) Version 0.6.2 or later
                     break;
@@ -68,7 +69,9 @@ and add OnActivityResult
 you can use also this
 
                 FishBun.with(Your Activity or Fragment)
-                        .setPickerCount(5)
+                        .setPickerCount(5) //Deprecated
+                        .setMaxCount(5)
+                        .setMinCount(1)
                         .setPickerSpanCount(6)
                         .setActionBarColor(Color.parseColor("#795548"), Color.parseColor("#5D4037"), false)
                         .setActionBarTitleColor(Color.parseColor("#ffffff"))
@@ -85,19 +88,26 @@ you can use also this
                         .textOnNothingSelected("Nothing Selected")
                         .startAlbum();
 
+## Customization Screen
 
-##Result Screen
-<img src="/pic/sim.gif" width=40%">
+##### Normal Style
+<img src="/pic/normal1.png" width=20%> <img src="/pic/normal2.png" width=20%>
 
-##Android M Permission
+##### Dark Style
+<img src="/pic/dark1.png" width=20%> <img src="/pic/dark2.png" width=20%>
+
+##### Light Style
+<img src="/pic/light1.png" width=20%> <img src="/pic/light2.png" width=20%>
+
+## Android M Permission
 FishBun check permission before reading external storage.
 
-<img src="/pic/permission.png" width=40%">
+<img src="/pic/permission.png" width=20%>
 
-#Contribute
+# Contribute
 We welcome any contributions.
 
-#License
+# License
 
     Copyright 2017 Jeong Seok-Won
 
