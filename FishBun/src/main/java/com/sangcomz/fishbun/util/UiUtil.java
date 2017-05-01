@@ -29,5 +29,4 @@ public class UiUtil {
         Configuration configuration = context.getResources().getConfiguration();
         return configuration.orientation == Configuration.ORIENTATION_LANDSCAPE;
     }
-
 }
