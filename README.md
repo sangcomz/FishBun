@@ -91,23 +91,18 @@ you can use also this
 ## Customization Screen
 
 ##### Normal Style
-<img src="/pic/normal1.png" width=30%> <img src="/pic/normal2.png" width=30%>
+<img src="/pic/normal1.png" width=20%> <img src="/pic/normal2.png" width=20%>
 
 ##### Dark Style
-<img src="/pic/dark1.png" width=30%> <img src="/pic/dark2.png" width=30%>
+<img src="/pic/dark1.png" width=20%> <img src="/pic/dark2.png" width=20%>
 
 ##### Light Style
-<img src="/pic/light1.png" width=30%> <img src="/pic/light2.png" width=30%>
+<img src="/pic/light1.png" width=20%> <img src="/pic/light2.png" width=20%>
 
 ## Android M Permission
 FishBun check permission before reading external storage.
 
-<img src="/pic/permission.png" width=40%>
-
-## Android M Permission
-FishBun check permission before reading external storage.
-
-<img src="/pic/permission.png" width=40%>
+<img src="/pic/permission.png" width=20%>
 
 # Contribute
 We welcome any contributions.
