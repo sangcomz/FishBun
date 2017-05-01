@@ -15,15 +15,15 @@ FishBun is Image Picker for android.
 
 <img src="/pic/fishbuns.png">
 
-##What's New 0.6.6 FishBun
+## What's New 0.6.6 FishBun
 
-####● add exceptGif(boolean isExcept) (#77)
-####● add setMenuText(String text), setMenuTextColor(int textColor) (#74)
-####● add widget RadioWithTextButton
+#### ● add exceptGif(boolean isExcept) (#77)
+#### ● add setMenuText(String text), setMenuTextColor(int textColor) (#74)
+#### ● add widget RadioWithTextButton
 
-##How to Use FishBun
+## How to Use FishBun
 
-###Gradle
+### Gradle
 
     repositories {
         jcenter()
@@ -36,7 +36,7 @@ FishBun is Image Picker for android.
         }
     }
 
-###Manifest
+### Manifest
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -86,19 +86,26 @@ you can use also this
                         .startAlbum();
 
 
-##Customization Screen
-###normal
+## Customization Screen
 
+##### Normal Style
+<img src="/pic/normal1.png" width=30%> <img src="/pic/normal2.png" width=30%> 
 
-##Android M Permission
+##### Dark Style
+<img src="/pic/dark1.png" width=30%> <img src="/pic/dark2.png" width=30%> 
+
+##### Light Style
+<img src="/pic/light1.png" width=30%> <img src="/pic/light2.png" width=30%> 
+
+## Android M Permission
 FishBun check permission before reading external storage.
 
-<img src="/pic/permission.png" width=40%">
+<img src="/pic/permission.png" width=40%>
 
-#Contribute
+# Contribute
 We welcome any contributions.
 
-#License
+# License
 
     Copyright 2017 Jeong Seok-Won
 
