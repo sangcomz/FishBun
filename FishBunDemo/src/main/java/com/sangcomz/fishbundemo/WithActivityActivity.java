@@ -71,6 +71,7 @@ public class WithActivityActivity extends AppCompatActivity {
                 //basic
                 case 0: {
                     FishBun.with(WithActivityActivity.this)
+                            .MultiPageMode()
                             .setPickerCount(1)
                             .setPickerSpanCount(3)
                             .setActionBarColor(Color.parseColor("#FFA400"), Color.parseColor("#DF9613"), false)
@@ -93,6 +94,7 @@ public class WithActivityActivity extends AppCompatActivity {
                 //dark
                 case 1: {
                     FishBun.with(WithActivityActivity.this)
+                            .MultiPageMode()
                             .setMaxCount(5)
                             .setMinCount(3)
                             .setPickerSpanCount(6)
@@ -115,6 +117,7 @@ public class WithActivityActivity extends AppCompatActivity {
                 //Light
                 case 2: {
                     FishBun.with(WithActivityActivity.this)
+                            .MultiPageMode()
                             .setPickerCount(50)
                             .setPickerSpanCount(4)
                             .setActionBarColor(Color.parseColor("#ffffff"), Color.parseColor("#ffffff"), true)

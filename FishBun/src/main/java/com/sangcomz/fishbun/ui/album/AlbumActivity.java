@@ -36,7 +36,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.sangcomz.fishbun.define.Define.homeAsUpIndicatorDrawable;
-import static com.sangcomz.fishbun.define.Define.okButtonDrawable;
 
 
 public class AlbumActivity extends AppCompatActivity {
@@ -52,12 +51,14 @@ public class AlbumActivity extends AppCompatActivity {
     Toolbar toolbar;
     private TextView progressAlbumText;
 
+    private Define define = new Define();
+
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         if (adapter != null) {
-            outState.putParcelableArrayList(Define.SAVE_INSTANCE_PICK_IMAGES, adapter.getPickedImagePath());
-            outState.putParcelableArrayList(Define.SAVE_INSTANCE_ALBUM_LIST, (ArrayList<? extends Parcelable>) adapter.getAlbumList());
+            outState.putParcelableArrayList(define.SAVE_INSTANCE_PICK_IMAGES, adapter.getPickedImagePath());
+            outState.putParcelableArrayList(define.SAVE_INSTANCE_ALBUM_LIST, (ArrayList<? extends Parcelable>) adapter.getAlbumList());
         }
         super.onSaveInstanceState(outState);
     }
@@ -67,9 +68,9 @@ public class AlbumActivity extends AppCompatActivity {
         // Always call the superclass so it can restore the view hierarchy
         super.onRestoreInstanceState(outState);
         // Restore state members from saved instance
-        List<Album> albumList = outState.getParcelableArrayList(Define.SAVE_INSTANCE_ALBUM_LIST);
-        List<Uri> thumbList = outState.getParcelableArrayList(Define.SAVE_INSTANCE_ALBUM_THUMB_LIST);
-        ArrayList<Uri> pickedImagePath = outState.getParcelableArrayList(Define.SAVE_INSTANCE_PICK_IMAGES);
+        List<Album> albumList = outState.getParcelableArrayList(define.SAVE_INSTANCE_ALBUM_LIST);
+        List<Uri> thumbList = outState.getParcelableArrayList(define.SAVE_INSTANCE_ALBUM_THUMB_LIST);
+        ArrayList<Uri> pickedImagePath = outState.getParcelableArrayList(define.SAVE_INSTANCE_PICK_IMAGES);
 
         if (albumList != null && thumbList != null && pickedImagePath != null) {
             adapter = new AlbumListAdapter(pickedImagePath);
@@ -161,7 +162,7 @@ public class AlbumActivity extends AppCompatActivity {
 
     private void setAlbumListAdapter() {
         if (adapter == null) {
-            ArrayList<Uri> data = getIntent().getParcelableArrayListExtra(Define.INTENT_PATH);
+            ArrayList<Uri> data = getIntent().getParcelableArrayListExtra(define.INTENT_PATH);
             adapter = new AlbumListAdapter(data);
         }
         adapter.setAlbumList(albumList);
@@ -211,6 +212,8 @@ public class AlbumActivity extends AppCompatActivity {
                 item.setIcon(new TextDrawable(getResources(), Define.TEXT_MENU, Define.COLOR_MENU_TEXT));
             }
         }
+
+
         return true;
     }
 
@@ -225,7 +228,7 @@ public class AlbumActivity extends AppCompatActivity {
                     Snackbar.make(recyclerAlbumList, Define.MESSAGE_NOTHING_SELECTED, Snackbar.LENGTH_SHORT).show();
                 } else {
                     Intent i = new Intent();
-                    i.putParcelableArrayListExtra(Define.INTENT_PATH, adapter.getPickedImagePath());
+                    i.putParcelableArrayListExtra(define.INTENT_PATH, adapter.getPickedImagePath());
                     setResult(RESULT_OK, i);
                     finish();
                 }
@@ -251,21 +254,21 @@ public class AlbumActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Define.ENTER_ALBUM_REQUEST_CODE) {
+        if (requestCode == define.ENTER_ALBUM_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 setResult(RESULT_OK, data);
                 finish();
-            } else if (resultCode == Define.TRANS_IMAGES_RESULT_CODE) {
-                ArrayList<Uri> path = data.getParcelableArrayListExtra(Define.INTENT_PATH);
-                ArrayList<Uri> addPath = data.getParcelableArrayListExtra(Define.INTENT_ADD_PATH);
-                int position = data.getIntExtra(Define.INTENT_POSITION, -1);
+            } else if (resultCode == define.TRANS_IMAGES_RESULT_CODE) {
+                ArrayList<Uri> path = data.getParcelableArrayListExtra(define.INTENT_PATH);
+                ArrayList<Uri> addPath = data.getParcelableArrayListExtra(define.INTENT_ADD_PATH);
+                int position = data.getIntExtra(define.INTENT_POSITION, -1);
                 refreshList(position, addPath);
                 if (adapter != null)
                     adapter.setPickedImagePath(path);
 
                 changeToolbarTitle();
             }
-        } else if (requestCode == Define.TAKE_A_PICK_REQUEST_CODE) {
+        } else if (requestCode == define.TAKE_A_PICK_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 new SingleMediaScanner(this, new File(albumController.getSavePath()), new ScanListener() {
                     @Override
@@ -283,8 +286,9 @@ public class AlbumActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String permissions[], @NonNull int[] grantResults) {
+
         switch (requestCode) {
-            case Define.PERMISSION_STORAGE: {
+            case define.PERMISSION_STORAGE: {
                 if (grantResults.length > 0) {
                     if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                         // permission was granted, yay!
