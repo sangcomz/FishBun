@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.sangcomz.fishbun.R;
-import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.ui.picker.PickerController;
 import com.sangcomz.fishbun.util.RadioWithTextButton;
 import com.squareup.picasso.Picasso;
@@ -29,45 +28,37 @@ public class PickerGridAdapter
     private ArrayList<Uri> pickedImages = new ArrayList<>();
     private Uri[] images;
     private PickerController pickerController;
-    private boolean isHeader = Define.IS_CAMERA;
+    private boolean isHeader;
     private OnPhotoActionListener actionListener;
+    private int circleColor;
+    private int circleTextColor;
+    int maxCount;
+    String messageLimitReached;
+    boolean isAutomaticClose;
 
     String saveDir;
 
-    public class ViewHolderImage extends RecyclerView.ViewHolder {
-
-
-        View item;
-        ImageView imgThumbImage;
-        RadioWithTextButton btnThumbCount;
-
-        public ViewHolderImage(View view) {
-            super(view);
-            item = view;
-            imgThumbImage = (ImageView) view.findViewById(R.id.img_thumb_image);
-            btnThumbCount = (RadioWithTextButton) view.findViewById(R.id.btn_thumb_count);
-        }
-    }
-
-    public class ViewHolderHeader extends RecyclerView.ViewHolder {
-
-
-        RelativeLayout header;
-
-        public ViewHolderHeader(View view) {
-            super(view);
-            header = (RelativeLayout) itemView.findViewById(R.id.rel_header_area);
-        }
-    }
 
     public PickerGridAdapter(Uri[] images,
                              ArrayList<Uri> pickedImages,
                              PickerController pickerController,
-                             String saveDir) {
+                             String saveDir,
+                             Boolean isCamera,
+                             int circleColor,
+                             int circleTextColor,
+                             int maxCount,
+                             String messageLimitReached,
+                             boolean isAutomaticClose) {
         this.images = images;
         this.pickerController = pickerController;
         this.pickedImages = pickedImages;
         this.saveDir = saveDir;
+        this.isHeader = isCamera;
+        this.circleColor = circleColor;
+        this.circleTextColor = circleTextColor;
+        this.maxCount = maxCount;
+        this.messageLimitReached = messageLimitReached;
+        this.isAutomaticClose = isAutomaticClose;
     }
 
     @Override
@@ -104,8 +95,8 @@ public class PickerGridAdapter
             final Uri image = images[imagePos];
             vh.item.setTag(image);
             vh.btnThumbCount.unselect();
-            vh.btnThumbCount.setCircleColor(Define.COLOR_ACTION_BAR);
-            vh.btnThumbCount.setTextColor(Define.COLOR_ACTION_BAR_TITLE_COLOR);
+            vh.btnThumbCount.setCircleColor(circleColor);
+            vh.btnThumbCount.setTextColor(circleTextColor);
 
             initState(pickedImages.indexOf(image), vh);
             if (image != null)
@@ -138,9 +129,9 @@ public class PickerGridAdapter
 
     private void onCheckStateChange(View v, Uri image) {
         boolean isContained = pickedImages.contains(image);
-        if (Define.MAX_COUNT == pickedImages.size()
+        if (maxCount == pickedImages.size()
                 && !isContained) {
-            Snackbar.make(v, Define.MESSAGE_LIMIT_REACHED, Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(v, messageLimitReached, Snackbar.LENGTH_SHORT).show();
             return;
         }
         ImageView imgThumbImage = (ImageView) v.findViewById(R.id.img_thumb_image);
@@ -152,8 +143,8 @@ public class PickerGridAdapter
         } else {
             animScale(imgThumbImage, true, true);
             pickedImages.add(image);
-            if (Define.IS_AUTOMATIC_CLOSE
-                    && Define.MAX_COUNT == pickedImages.size()) {
+            if (isAutomaticClose
+                    && maxCount == pickedImages.size()) {
                 pickerController.finishActivity(pickedImages);
             }
             updateRadioButton(btnThumbCount, String.valueOf(pickedImages.size()));
@@ -162,7 +153,7 @@ public class PickerGridAdapter
     }
 
     public void updateRadioButton(RadioWithTextButton v, String text) {
-        if (Define.MAX_COUNT == 1)
+        if (maxCount == 1)
             v.setDrawable(ContextCompat.getDrawable(v.getContext(), R.drawable.ic_done_white_24dp));
         else
             v.setText(text);
@@ -241,5 +232,31 @@ public class PickerGridAdapter
 
     public int getPickedImageIndexOf(Uri uri) {
         return pickedImages.indexOf(uri);
+    }
+
+    public class ViewHolderImage extends RecyclerView.ViewHolder {
+
+
+        View item;
+        ImageView imgThumbImage;
+        RadioWithTextButton btnThumbCount;
+
+        public ViewHolderImage(View view) {
+            super(view);
+            item = view;
+            imgThumbImage = (ImageView) view.findViewById(R.id.img_thumb_image);
+            btnThumbCount = (RadioWithTextButton) view.findViewById(R.id.btn_thumb_count);
+        }
+    }
+
+    public class ViewHolderHeader extends RecyclerView.ViewHolder {
+
+
+        RelativeLayout header;
+
+        public ViewHolderHeader(View view) {
+            super(view);
+            header = (RelativeLayout) itemView.findViewById(R.id.rel_header_area);
+        }
     }
 }

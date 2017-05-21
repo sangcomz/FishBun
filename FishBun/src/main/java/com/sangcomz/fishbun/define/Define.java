@@ -1,5 +1,7 @@
 package com.sangcomz.fishbun.define;
 
+import android.graphics.Color;
+
 public class Define {
 //    public static int ALBUM_THUMBNAIL_SIZE = -1;
 //    public static int MAX_COUNT = 10;
@@ -44,14 +46,21 @@ public class Define {
 //    public static String TEXT_MENU;
 //    public static int COLOR_MENU_TEXT = -1;
 
-    public final int ALBUM_REQUEST_CODE = 27;
+    public static final int ALBUM_REQUEST_CODE = 27;
     public final int PERMISSION_STORAGE = 28;
     public final int TRANS_IMAGES_RESULT_CODE = 29;
     public final int TAKE_A_PICK_REQUEST_CODE = 128;
     public final int ENTER_ALBUM_REQUEST_CODE = 129;
 
+    public int COLOR_ACTION_BAR = Color.parseColor("#3F51B5");
+    public int COLOR_ACTION_BAR_TITLE_COLOR = Color.parseColor("#ffffff");
+    public int COLOR_STATUS_BAR = Color.parseColor("#303F9F");
 
-    public final String INTENT_PATH = "intent_path";
+    public final int DEFAULT_MAX_COUNT = 10;
+    public final int DEFAULT_MIN_COUNT = 1;
+
+
+    public final static String INTENT_PATH = "intent_path";
     public final String INTENT_ADD_PATH = "intent_add_path";
     public final String INTENT_POSITION = "intent_position";
 

@@ -10,7 +10,6 @@ import android.os.Environment;
 import android.provider.MediaStore;
 
 import com.sangcomz.fishbun.bean.Album;
-import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.permission.PermissionCheck;
 import com.sangcomz.fishbun.util.CameraUtil;
 import com.sangcomz.fishbun.util.RegexUtil;
@@ -18,8 +17,6 @@ import com.sangcomz.fishbun.util.RegexUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-
-import static com.sangcomz.fishbun.define.Define.EXCEPT_GIF;
 
 class AlbumController {
 
@@ -33,6 +30,13 @@ class AlbumController {
         this.resolver = albumActivity.getContentResolver();
     }
 
+//    private void setSpanCount(int albumListSize) {
+//        if (Define.ALBUM_LANDSCAPE_SPAN_COUNT > albumListSize)
+//            Define.ALBUM_LANDSCAPE_SPAN_COUNT = albumListSize;
+//        if (Define.ALBUM_PORTRAIT_SPAN_COUNT > albumListSize)
+//            Define.ALBUM_PORTRAIT_SPAN_COUNT = albumListSize;
+//    }
+
     boolean checkPermission() {
         PermissionCheck permissionCheck = new PermissionCheck(albumActivity);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -43,18 +47,22 @@ class AlbumController {
         return false;
     }
 
-    void getAlbumList() {
-        new LoadAlbumList().execute();
-    }
-
-    private void setSpanCount(int albumListSize) {
-        if (Define.ALBUM_LANDSCAPE_SPAN_COUNT > albumListSize)
-            Define.ALBUM_LANDSCAPE_SPAN_COUNT = albumListSize;
-        if (Define.ALBUM_PORTRAIT_SPAN_COUNT > albumListSize)
-            Define.ALBUM_PORTRAIT_SPAN_COUNT = albumListSize;
+    void getAlbumList(String allViewTitle,
+                      Boolean exceptGif) {
+        new LoadAlbumList(allViewTitle, exceptGif).execute();
     }
 
     private class LoadAlbumList extends AsyncTask<Void, Void, ArrayList<Album>> {
+
+        String allViewTitle;
+        Boolean exceptGif;
+
+        LoadAlbumList(String allViewTitle,
+                      Boolean exceptGif) {
+            this.allViewTitle = allViewTitle;
+            this.exceptGif = exceptGif;
+
+        }
 
         @Override
         protected ArrayList<Album> doInBackground(Void... params) {
@@ -79,11 +87,11 @@ class AlbumController {
                 int bucketColumnId = c
                         .getColumnIndex(MediaStore.Images.Media.BUCKET_ID);
 
-                albumHashMap.put((long) 0, new Album(0, Define.TITLE_ALBUM_ALL_VIEW, null, 0));
+                albumHashMap.put((long) 0, new Album(0, allViewTitle, null, 0));
 
                 RegexUtil regexUtil = new RegexUtil();
                 while (c.moveToNext()) {
-                    if (EXCEPT_GIF && regexUtil.checkGif(c.getString(bucketData))) continue;
+                    if (exceptGif && regexUtil.checkGif(c.getString(bucketData))) continue;
                     totalCounter++;
                     long bucketId = c.getInt(bucketColumnId);
                     Album album = albumHashMap.get(bucketId);
@@ -126,9 +134,9 @@ class AlbumController {
         @Override
         protected void onPostExecute(ArrayList<Album> albumList) {
             super.onPostExecute(albumList);
-            if (albumList.size() > 0) {
-                setSpanCount(albumList.size());
-            }
+//            if (albumList.size() > 0) {
+//                setSpanCount(albumList.size());
+//            }
             albumActivity.setAlbumList(albumList);
         }
     }

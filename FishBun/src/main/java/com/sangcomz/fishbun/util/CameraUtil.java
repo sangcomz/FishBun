@@ -45,7 +45,7 @@ public class CameraUtil {
                 }
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
 
-                activity.startActivityForResult(takePictureIntent, Define.TAKE_A_PICK_REQUEST_CODE);
+                activity.startActivityForResult(takePictureIntent, new Define().TAKE_A_PICK_REQUEST_CODE);
             }
         }
     }
