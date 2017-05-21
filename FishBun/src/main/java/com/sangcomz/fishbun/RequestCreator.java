@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.sangcomz.fishbun.define.Define;
@@ -20,23 +21,14 @@ import java.util.ArrayList;
 public final class RequestCreator implements BaseProperty, CustomizationProperty {
 
     private FishBun fishBun;
-//    private Activity activity = null;
-//    private Fragment fragment = null;
-
-
     private ArrayList<Uri> arrayPaths = new ArrayList<>();
+    private Bundle bundle;
 
-    private int requestCode = Define.ALBUM_REQUEST_CODE;
+    private int requestCode = 27;
 
-//        FishBunProperty(Activity activity) {
-//            this.activity = new WeakReference<>(activity);
-//        }
-//
-//        FishBunProperty(Fragment fragment) {
-//            this.fragment = new WeakReference<>(fragment);
-//        }
 
-    RequestCreator(FishBun fishBun) {
+    RequestCreator(FishBun fishBun, Bundle bundle) {
+        this.bundle = bundle;
         this.fishBun = fishBun;
     }
 
