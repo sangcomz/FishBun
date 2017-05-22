@@ -206,7 +206,6 @@ public class PickerActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_photo_album, menu);
         MenuItem item = menu.findItem(R.id.action_ok);
-        System.out.println("okButtonDrawable :::: " + okButtonDrawable);
         if (okButtonDrawable != null) {
             item.setIcon(okButtonDrawable);
         } else if (menuText != null) {

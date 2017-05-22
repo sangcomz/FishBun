@@ -31,7 +31,6 @@ public class UiUtil {
     }
 
     public Drawable getBitmapToDrawable(Resources resources, Bitmap bitmap) {
-        System.out.println("bitmap ::: " + bitmap);
         if (bitmap == null) return null;
         return new BitmapDrawable(resources, bitmap);
     }

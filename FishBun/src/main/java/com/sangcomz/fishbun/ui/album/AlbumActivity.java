@@ -286,8 +286,8 @@ public class AlbumActivity extends AppCompatActivity {
     }
 
     public void changeToolbarTitle() {
+        if (adapter == null) return;
         int total = adapter.getPickedImagePath().size();
-
 
         if (getSupportActionBar() != null) {
             if (maxCount == 1)

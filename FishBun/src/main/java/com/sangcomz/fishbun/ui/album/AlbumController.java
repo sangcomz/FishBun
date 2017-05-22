@@ -16,7 +16,6 @@ import com.sangcomz.fishbun.util.RegexUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 
 class AlbumController {
 
@@ -118,16 +117,12 @@ class AlbumController {
                 albumHashMap.clear();
 
             ArrayList<Album> albumList = new ArrayList<>();
-            Iterator<Album> iterator = albumHashMap.values().iterator();
-            do {
-                Album album = iterator.next();
+            for (Album album : albumHashMap.values()) {
                 if (album.bucketId == 0)
                     albumList.add(0, album);
                 else
                     albumList.add(album);
-            } while (iterator.hasNext());
-
-
+            }
             return albumList;
         }
 
