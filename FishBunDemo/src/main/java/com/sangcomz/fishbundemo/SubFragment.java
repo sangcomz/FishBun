@@ -41,7 +41,7 @@ public class SubFragment extends Fragment {
         // Inflate the layout for this fragment
         imgMain = (ImageView) rootView.findViewById(R.id.img_main);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview);
-        btnAddImages = (Button)rootView.findViewById(R.id.btn_add_images);
+        btnAddImages = (Button) rootView.findViewById(R.id.btn_add_images);
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         withActivityController = new ImageController(getActivity(), imgMain);
         imageAdapter = new ImageAdapter(getActivity(), withActivityController, path);
@@ -53,6 +53,7 @@ public class SubFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FishBun.with(SubFragment.this)
+                        .MultiPageMode()
                         .setPickerCount(10)
                         .setActionBarColor(Color.parseColor("#3F51B5"), Color.parseColor("#303F9F"))
                         .setArrayPaths(path)

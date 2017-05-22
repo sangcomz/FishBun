@@ -21,6 +21,19 @@ FishBun is Image Picker for android.
 #### ● add setMenuText(String text), setMenuTextColor(int textColor) (#74)
 #### ● add widget RadioWithTextButton
 
+## Customization Screen
+
+You can create image pickers in various ways.
+
+##### Normal Style
+<img src="/pic/normal1.png" width=40%> <img src="/pic/normal2.png" width=40%>
+
+##### Dark Style
+<img src="/pic/dark1.png" width=40%> <img src="/pic/dark2.png" width=40%>
+
+##### Light Style
+<img src="/pic/light1.png" width=40%> <img src="/pic/light2.png" width=40%>
+
 ## How to Use FishBun
 
 ### Gradle
@@ -87,20 +100,7 @@ you can use also this
                         .textOnImagesSelectionLimitReached("Limit Reached!")
                         .textOnNothingSelected("Nothing Selected")
                         .startAlbum();
-
-## Customization Screen
-
-You can create image pickers in various ways.
-
-##### Normal Style
-<img src="/pic/normal1.png" width=20%> <img src="/pic/normal2.png" width=20%>
-
-##### Dark Style
-<img src="/pic/dark1.png" width=20%> <img src="/pic/dark2.png" width=20%>
-
-##### Light Style
-<img src="/pic/light1.png" width=20%> <img src="/pic/light2.png" width=20%>
-
+                        
 ## Android M Permission
 FishBun check permission before reading external storage.
 
