@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.RelativeLayout;
 
 import com.sangcomz.fishbun.BaseParams;
@@ -90,8 +91,8 @@ public class PickerActivity extends AppCompatActivity {
         homeAsUpIndicatorDrawable = uiUtil.getBitmapToDrawable(getResources(), (Bitmap) intent.getParcelableExtra(CustomizationParams.DRAWABLE_HOME_AS_UP_INDICATOR.name()));
         okButtonDrawable = uiUtil.getBitmapToDrawable(getResources(), (Bitmap) intent.getParcelableExtra(CustomizationParams.DRAWABLE_OK_BUTTON_DRAWABLE.name()));
 
-        album = intent.getParcelableExtra("album");
-        position = intent.getIntExtra("position", -1);
+        album = intent.getParcelableExtra(Define.BUNDLE_NAME.ALBUM.name());
+        position = intent.getIntExtra(Define.BUNDLE_NAME.POSITION.name(), -1);
 
         //only first init
         if (pickedImages == null) {
@@ -129,18 +130,7 @@ public class PickerActivity extends AppCompatActivity {
             ArrayList<Uri> addImages = outState.getParcelableArrayList(define.SAVE_INSTANCE_NEW_IMAGES);
             String savedImage = outState.getString(define.SAVE_INSTANCE_SAVED_IMAGE);
             Uri[] images = (Uri[]) outState.getParcelableArray(define.SAVE_INSTANCE_SAVED_IMAGE_THUMBNAILS);
-//            adapter = null;
             setAdapter(images);
-//            adapter = new PickerGridAdapter(images,
-//                    pickedImages,
-//                    pickerController,
-//                    pickerController.getPathDir(album.bucketId),
-//                    isCamera,
-//                    colorActionBar,
-//                    colorActionBarTitle,
-//                    maxCount,
-//                    messageLimitReached,
-//                    isAutomaticClose);
             if (addImages != null) {
                 pickerController.setAddImagePaths(addImages);
             }
@@ -155,6 +145,9 @@ public class PickerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+        }
         setContentView(R.layout.activity_photo_picker);
         initValue();
         initView();
@@ -247,6 +240,7 @@ public class PickerActivity extends AppCompatActivity {
     }
 
     private void initView() {
+
         recyclerView = (RecyclerView) findViewById(R.id.recycler_picker_list);
         layoutManager = new GridLayoutManager(this, photoSpanCount, GridLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);

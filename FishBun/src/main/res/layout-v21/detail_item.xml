@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <com.sangcomz.fishbun.util.RadioWithTextButton
-        android:id="@+id/btn_detail_count"
+        android:id="@+id/btn_thumb_count"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_alignParentRight="true"

@@ -1,7 +1,10 @@
 package com.sangcomz.fishbun.adapter;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
@@ -13,6 +16,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.sangcomz.fishbun.R;
+import com.sangcomz.fishbun.define.Define;
+import com.sangcomz.fishbun.ui.detail.DetailActivity;
+import com.sangcomz.fishbun.ui.picker.PickerActivity;
 import com.sangcomz.fishbun.ui.picker.PickerController;
 import com.sangcomz.fishbun.util.RadioWithTextButton;
 import com.squareup.picasso.Picasso;
@@ -32,11 +38,11 @@ public class PickerGridAdapter
     private OnPhotoActionListener actionListener;
     private int circleColor;
     private int circleTextColor;
-    int maxCount;
-    String messageLimitReached;
-    boolean isAutomaticClose;
+    private int maxCount;
+    private String messageLimitReached;
+    private boolean isAutomaticClose;
 
-    String saveDir;
+    private String saveDir;
 
 
     public PickerGridAdapter(Uri[] images,
@@ -93,6 +99,7 @@ public class PickerGridAdapter
 
             final ViewHolderImage vh = (ViewHolderImage) holder;
             final Uri image = images[imagePos];
+            final Context context = vh.item.getContext();
             vh.item.setTag(image);
             vh.btnThumbCount.unselect();
             vh.btnThumbCount.setCircleColor(circleColor);
@@ -108,10 +115,26 @@ public class PickerGridAdapter
                         .into(vh.imgThumbImage);
 
 
-            vh.imgThumbImage.setOnClickListener(new View.OnClickListener() {
+            vh.btnThumbCount.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     onCheckStateChange(vh.item, image);
+                }
+            });
+
+            vh.imgThumbImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (context instanceof PickerActivity) {
+                        PickerActivity activity = (PickerActivity) context;
+                        Intent i = new Intent(activity, DetailActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelableArray(Define.BUNDLE_NAME.IMAGES.name(), images);
+                        i.putParcelableArrayListExtra(Define.BUNDLE_NAME.PICKED_IMAGES.name(), pickedImages);
+                        i.putExtra(Define.BUNDLE_NAME.IMAGES.name(), bundle);
+                        i.putExtra(Define.BUNDLE_NAME.POSITION.name(), position);
+                        activity.startActivityForResult(i, 99);
+                    }
                 }
             });
         }

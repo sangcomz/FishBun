@@ -16,13 +16,13 @@
         <activity
             android:name=".ui.album.AlbumActivity"
             android:label="@string/album"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".ui.picker.PickerActivity"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".ui.detail.DetailActiivy"
-            android:theme="@style/AppTheme" />
+            android:name=".ui.detail.DetailActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>
 
 </manifest>

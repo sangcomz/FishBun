@@ -11,15 +11,6 @@
         <item name="@android:attr/gravity">center</item>
 
         <!-- use the next line to alter the minimum text size (uncomment first)-->
-         <item name="@attr/minTextSize">5dp</item>
-    </style>
-
-
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
-
-        <item name="android:windowContentTransitions">true</item>
-
+        <item name="@attr/minTextSize">5dp</item>
     </style>
 </resources>
