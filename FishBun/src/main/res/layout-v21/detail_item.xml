@@ -4,18 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.sangcomz.fishbun.util.RadioWithTextButton
-        android:id="@+id/btn_thumb_count"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_alignParentRight="true"
-        android:layout_margin="20dp" />
-
     <ImageView
         android:id="@+id/img_detail_image"
         android:layout_width="match_parent"
-        android:transitionName="@string/image"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:background="@android:color/black"
+        android:transitionName="@string/image" />
 
 </RelativeLayout>
 

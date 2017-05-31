@@ -27,7 +27,6 @@ public class Define {
         POSITION,
         PICKED_IMAGES,
         IMAGES,
-        ALBUM,
-        ALBUM_TITLE
+        ALBUM
     }
 }

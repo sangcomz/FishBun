@@ -5,18 +5,24 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PagerSnapHelper;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SnapHelper;
 import android.view.Window;
 
+import com.sangcomz.fishbun.BaseActivity;
 import com.sangcomz.fishbun.R;
+import com.sangcomz.fishbun.adapter.DetailViewAdapter;
 import com.sangcomz.fishbun.define.Define;
 
 import java.util.ArrayList;
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends BaseActivity {
     private ArrayList<Uri> pickedImages = new ArrayList<>();
     private Uri[] images;
     private int position;
+    private RecyclerView recyclerDetailView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +32,12 @@ public class DetailActivity extends AppCompatActivity {
         }
         setContentView(R.layout.activity_detail_actiivy);
         initValue();
+        initView();
         initAdapter();
+    }
+
+    private void initView() {
+        recyclerDetailView = (RecyclerView) findViewById(R.id.recycler_detail_view);
     }
 
     private void initValue() {
@@ -40,7 +51,22 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
-    private void initAdapter(){
+    private void initAdapter() {
+        DetailViewAdapter detailViewAdapter
+                = new DetailViewAdapter(images,
+                pickedImages,
+                colorActionBar,
+                colorActionBarTitle,
+                maxCount,
+                messageLimitReached,
+                isAutomaticClose);
 
+        recyclerDetailView.setLayoutManager(new LinearLayoutManager(this,
+                LinearLayoutManager.HORIZONTAL,
+                false));
+        recyclerDetailView.scrollToPosition(position);
+        recyclerDetailView.setAdapter(detailViewAdapter);
+        SnapHelper snapHelper = new PagerSnapHelper();
+        snapHelper.attachToRecyclerView(recyclerDetailView);
     }
 }

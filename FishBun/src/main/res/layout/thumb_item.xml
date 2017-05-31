@@ -16,8 +16,8 @@
     <com.sangcomz.fishbun.util.RadioWithTextButton
         android:id="@+id/btn_thumb_count"
         android:layout_width="30dp"
-        android:transitionName="@string/image"
         android:layout_height="30dp"
         android:layout_alignParentRight="true"
-        android:layout_margin="5dp" />
+        android:layout_margin="5dp"
+        android:transitionName="@string/image" />
 </RelativeLayout>

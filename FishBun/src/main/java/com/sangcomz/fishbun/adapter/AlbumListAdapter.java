@@ -74,7 +74,6 @@ public class AlbumListAdapter
                 Context context = holder.view.getContext();
                 Intent i = new Intent(context, PickerActivity.class);
                 i.putExtra(Define.BUNDLE_NAME.ALBUM.name(), a);
-                i.putExtra(Define.BUNDLE_NAME.ALBUM_TITLE.name(), albumList.get(position).bucketName);
                 i.putExtra(Define.BUNDLE_NAME.POSITION.name(), position);
                 i.putParcelableArrayListExtra(Define.INTENT_PATH, pickedImagePath);
                 i.putExtras(bundle);

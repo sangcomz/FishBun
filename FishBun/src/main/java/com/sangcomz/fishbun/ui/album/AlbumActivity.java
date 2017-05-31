@@ -2,15 +2,12 @@ package com.sangcomz.fishbun.ui.album;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -21,8 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.sangcomz.fishbun.BaseParams;
-import com.sangcomz.fishbun.CustomizationParams;
+import com.sangcomz.fishbun.BaseActivity;
 import com.sangcomz.fishbun.R;
 import com.sangcomz.fishbun.adapter.AlbumListAdapter;
 import com.sangcomz.fishbun.bean.Album;
@@ -31,13 +27,12 @@ import com.sangcomz.fishbun.permission.PermissionCheck;
 import com.sangcomz.fishbun.util.ScanListener;
 import com.sangcomz.fishbun.util.SingleMediaScanner;
 import com.sangcomz.fishbun.util.TextDrawable;
-import com.sangcomz.fishbun.util.UiUtil;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AlbumActivity extends AppCompatActivity {
+public class AlbumActivity extends BaseActivity {
     private AlbumController albumController;
     private ArrayList<Album> albumList = new ArrayList<>();
 
@@ -45,58 +40,7 @@ public class AlbumActivity extends AppCompatActivity {
     private RelativeLayout relAlbumEmpty;
 
     private AlbumListAdapter adapter;
-    private UiUtil uiUtil = new UiUtil();
-
-    Toolbar toolbar;
     private TextView progressAlbumText;
-
-    private Define define = new Define();
-
-    private int albumSize;
-    private int albumLandScapeSize;
-    private int albumPortraitSize;
-    private int colorActionBar;
-    private int colorActionBarTitle;
-    private int maxCount;
-    private int minCount;
-    private boolean statusBarLight;
-    private String titleActionBar;
-    private Drawable homeAsUpIndicatorDrawable;
-    private Drawable okButtonDrawable;
-    private boolean isButton;
-    private String menuText;
-    private int colorMenuText;
-    private String messageNothingSelected;
-    private String titleAllView;
-    private Boolean exceptGif;
-    private int colorStatusBar;
-
-
-    private void initValue() {
-        Intent intent = getIntent();
-        albumSize = intent.getIntExtra(CustomizationParams.INT_ALBUM_THUMBNAIL_SIZE.name(),
-                (int) getResources().getDimension(R.dimen.album_thum_size));
-        albumLandScapeSize = intent.getIntExtra(CustomizationParams.INT_ALBUM_LANDSCAPE_SPAN_COUNT.name(), 2);
-        albumPortraitSize = intent.getIntExtra(CustomizationParams.INT_ALBUM_PORTRAIT_SPAN_COUNT.name(), 1);
-        colorActionBar = intent.getIntExtra(CustomizationParams.INT_COLOR_ACTION_BAR.name(), -1);
-        colorActionBarTitle = intent.getIntExtra(CustomizationParams.INT_COLOR_ACTION_BAR_TITLE_COLOR.name(), -1);
-        maxCount = intent.getIntExtra(BaseParams.INT_MAX_COUNT.name(), define.DEFAULT_MAX_COUNT);
-        minCount = intent.getIntExtra(BaseParams.INT_MIN_COUNT.name(), define.DEFAULT_MIN_COUNT);
-        colorStatusBar = intent.getIntExtra(CustomizationParams.INT_COLOR_STATUS_BAR.name(), -1);
-        statusBarLight = intent.getBooleanExtra(CustomizationParams.BOOLEAN_STYLE_STATUS_BAR_LIGHT.name(), false);
-        isButton = intent.getBooleanExtra(CustomizationParams.BOOLEAN_IS_BUTTON.name(), false);
-        exceptGif = intent.getBooleanExtra(BaseParams.BOOLEAN_EXCEPT_GIF.name(), false);
-
-        colorMenuText = intent.getIntExtra(CustomizationParams.INT_COLOR_MENU_TEXT.name(), -1);
-
-        titleActionBar = intent.getStringExtra(CustomizationParams.STRING_TITLE_ACTIONBAR.name());
-        menuText = intent.getStringExtra(CustomizationParams.STRING_TEXT_MENU.name());
-        messageNothingSelected = intent.getStringExtra(CustomizationParams.STRING_MESSAGE_NOTHING_SELECTED.name());
-        titleAllView = intent.getStringExtra(CustomizationParams.STRING_TITLE_ALBUM_ALL_VIEW.name());
-
-        homeAsUpIndicatorDrawable = uiUtil.getBitmapToDrawable(getResources(), (Bitmap) intent.getParcelableExtra(CustomizationParams.DRAWABLE_HOME_AS_UP_INDICATOR.name()));
-        okButtonDrawable = uiUtil.getBitmapToDrawable(getResources(), (Bitmap) intent.getParcelableExtra(CustomizationParams.DRAWABLE_OK_BUTTON_DRAWABLE.name()));
-    }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -128,7 +72,6 @@ public class AlbumActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_album);
-        initValue();
         initView();
         initController();
         if (albumController.checkPermission())
@@ -176,7 +119,7 @@ public class AlbumActivity extends AppCompatActivity {
     }
 
     private void initToolBar() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar_album_bar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_album_bar);
         relAlbumEmpty = (RelativeLayout) findViewById(R.id.rel_album_empty);
         progressAlbumText = (TextView) findViewById(R.id.txt_album_msg);
         progressAlbumText.setText(R.string.msg_loading_image);
