@@ -4,10 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
@@ -112,8 +110,8 @@ public class PickerGridAdapter
                 Picasso
                         .with(vh.imgThumbImage.getContext())
                         .load(image)
-                        .centerCrop()
                         .fit()
+                        .centerCrop()
                         .into(vh.imgThumbImage);
 
 
@@ -132,21 +130,15 @@ public class PickerGridAdapter
                         Intent i = new Intent(activity, DetailActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putParcelableArray(Define.BUNDLE_NAME.IMAGES.name(), images);
+                        i.putExtras(activity.getIntent().getExtras());
+                        i.putExtra(Define.BUNDLE_NAME.BUNDLE.name(), bundle);
                         i.putParcelableArrayListExtra(Define.BUNDLE_NAME.PICKED_IMAGES.name(), pickedImages);
-                        i.putExtra(Define.BUNDLE_NAME.IMAGES.name(), bundle);
                         i.putExtra(Define.BUNDLE_NAME.POSITION.name(), position);
-                        ActivityOptionsCompat options = ActivityOptionsCompat.
-                                makeSceneTransitionAnimation(activity, vh.itemView, context.getString(R.string.image));
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            activity.startActivityForResult(i, 99, options.toBundle());
-                        } else {
-                            activity.startActivityForResult(i, 99);
-                        }
+                        activity.startActivityForResult(i, new Define().ENTER_DETAIL_REQUEST_CODE);
                     }
                 }
             });
         }
-
     }
 
     private void initState(int selectedIndex, ViewHolderImage vh) {

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.sangcomz.fishbun.R;
+import com.sangcomz.fishbun.ui.detail.DetailController;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -18,24 +19,21 @@ public class DetailViewAdapter
 
     private Uri[] images;
     private ArrayList<Uri> pickedImages;
-    private int circleColor;
-    private int circleTextColor;
+    private DetailController controller;
     private int maxCount;
     private String messageLimitReached;
     private boolean isAutomaticClose;
 
 
     public DetailViewAdapter(Uri[] images,
+                             DetailController controller,
                              ArrayList<Uri> pickedImages,
-                             int circleColor,
-                             int circleTextColor,
                              int maxCount,
                              String messageLimitReached,
                              boolean isAutomaticClose) {
         this.images = images;
+        this.controller = controller;
         this.pickedImages = pickedImages;
-        this.circleColor = circleColor;
-        this.circleTextColor = circleTextColor;
         this.maxCount = maxCount;
         this.messageLimitReached = messageLimitReached;
         this.isAutomaticClose = isAutomaticClose;
@@ -54,12 +52,10 @@ public class DetailViewAdapter
         Picasso
                 .with(holder.imgDetailImage.getContext())
                 .load(images[position])
+                .noPlaceholder()
                 .fit()
                 .centerInside()
                 .into(holder.imgDetailImage);
-//        holder.btnDetailCount.unselect();
-//        holder.btnDetailCount.setCircleColor(circleColor);
-//        holder.btnDetailCount.setTextColor(circleTextColor);
     }
 
     @Override
@@ -71,13 +67,11 @@ public class DetailViewAdapter
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private View view;
         private ImageView imgDetailImage;
-//        private RadioWithTextButton btnDetailCount;
 
         public ViewHolder(View view) {
             super(view);
             this.view = view;
             imgDetailImage = (ImageView) view.findViewById(R.id.img_detail_image);
-//            btnDetailCount = (RadioWithTextButton) view.findViewById(R.id.btn_detail_count);
         }
     }
 }

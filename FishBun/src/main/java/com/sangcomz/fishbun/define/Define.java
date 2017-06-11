@@ -7,6 +7,7 @@ public class Define {
     public final int TRANS_IMAGES_RESULT_CODE = 29;
     public final int TAKE_A_PICK_REQUEST_CODE = 128;
     public final int ENTER_ALBUM_REQUEST_CODE = 129;
+    public final int ENTER_DETAIL_REQUEST_CODE = 130;
 
     public final int DEFAULT_MAX_COUNT = 10;
     public final int DEFAULT_MIN_COUNT = 1;
@@ -27,6 +28,7 @@ public class Define {
         POSITION,
         PICKED_IMAGES,
         IMAGES,
-        ALBUM
+        ALBUM,
+        BUNDLE
     }
 }

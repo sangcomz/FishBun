@@ -7,7 +7,8 @@
     <ImageView
         android:id="@+id/img_detail_image"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:transitionName="@string/image" />
 
 </RelativeLayout>
 

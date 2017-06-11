@@ -23,7 +23,6 @@
         <activity
             android:name=".ui.detail.DetailActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".BaseActivity"></activity>
     </application>
 
 </manifest>

@@ -9,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -193,14 +194,14 @@ public class PickerActivity extends BaseActivity {
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_picker_list);
         layoutManager = new GridLayoutManager(this, photoSpanCount, GridLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(layoutManager);
+//        layoutManager = new StaggeredGridLayoutManager(photoSpanCount, StaggeredGridLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(photoSpanCount, StaggeredGridLayoutManager.VERTICAL));
         initToolBar();
     }
 
     private void initToolBar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_picker_bar);
         setSupportActionBar(toolbar);
-
         toolbar.setBackgroundColor(colorActionBar);
         toolbar.setTitleTextColor(colorActionBarTitle);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -216,7 +217,6 @@ public class PickerActivity extends BaseActivity {
         if (statusBarLight
                 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             toolbar.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-
         }
     }
 

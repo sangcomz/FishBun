@@ -107,7 +107,6 @@ public class PickerController {
         i.putParcelableArrayListExtra(Define.INTENT_PATH, path);
         pickerActivity.setResult(pickerActivity.RESULT_OK, i);
         pickerActivity.finish();
-
     }
 
     void transImageFinish(ArrayList<Uri> pickedImages, int position) {
