@@ -14,19 +14,43 @@ import java.util.ArrayList;
 public class DetailController {
 
     private DetailActivity detailActivity;
+    private ArrayList<Uri> pickedImages = new ArrayList<>();
 
     DetailController(DetailActivity detailActivity) {
         this.detailActivity = detailActivity;
     }
 
+    public void setPickedImages(ArrayList<Uri> pickedImages) {
+        this.pickedImages = pickedImages;
+    }
 
-    public void finishActivity(ArrayList<Uri> pickedImages) {
-        ArrayList<Uri> path = new ArrayList<>();
-        for (int i = 0; i < pickedImages.size(); i++) {
-            path.add(pickedImages.get(i));
+    public ArrayList<Uri> getPickedImage() {
+        return pickedImages;
+    }
+
+    public void addPickedImage(Uri image) {
+        if (!isAdded(image)) {
+            pickedImages.add(image);
         }
+        detailActivity.onCheckStateChange(image);
+    }
+
+    public void removePickedImage(Uri image) {
+        pickedImages.remove(image);
+        detailActivity.onCheckStateChange(image);
+    }
+
+    public boolean isAdded(Uri image) {
+        return pickedImages.contains(image);
+    }
+
+    public void finishActivity() {
+//        ArrayList<Uri> path = new ArrayList<>();
+//        for (int i = 0; i < pickedImages.size(); i++) {
+//            path.add(pickedImages.get(i));
+//        }
         Intent i = new Intent();
-        i.putParcelableArrayListExtra(Define.INTENT_PATH, path);
+        i.putParcelableArrayListExtra(Define.INTENT_PATH, pickedImages);
         detailActivity.setResult(detailActivity.RESULT_OK, i);
         detailActivity.finish();
     }

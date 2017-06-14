@@ -31,7 +31,6 @@ public class PickerGridAdapter
         extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_HEADER = Integer.MIN_VALUE;
 
-    private ArrayList<Uri> pickedImages = new ArrayList<>();
     private Uri[] images;
     private PickerController pickerController;
     private boolean isHeader;
@@ -46,7 +45,6 @@ public class PickerGridAdapter
 
 
     public PickerGridAdapter(Uri[] images,
-                             ArrayList<Uri> pickedImages,
                              PickerController pickerController,
                              String saveDir,
                              Boolean isCamera,
@@ -57,7 +55,6 @@ public class PickerGridAdapter
                              boolean isAutomaticClose) {
         this.images = images;
         this.pickerController = pickerController;
-        this.pickedImages = pickedImages;
         this.saveDir = saveDir;
         this.isHeader = isCamera;
         this.circleColor = circleColor;
@@ -66,6 +63,7 @@ public class PickerGridAdapter
         this.messageLimitReached = messageLimitReached;
         this.isAutomaticClose = isAutomaticClose;
     }
+
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -82,6 +80,7 @@ public class PickerGridAdapter
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+
         if (holder instanceof ViewHolderHeader) {
             final ViewHolderHeader vh = (ViewHolderHeader) holder;
             vh.header.setOnClickListener(new View.OnClickListener() {
@@ -93,6 +92,7 @@ public class PickerGridAdapter
         }
 
         if (holder instanceof ViewHolderImage) {
+            ArrayList<Uri> pickedImages = pickerController.getPickedImages();
             final int imagePos;
             if (isHeader) imagePos = position - 1;
             else imagePos = position;
@@ -132,7 +132,7 @@ public class PickerGridAdapter
                         bundle.putParcelableArray(Define.BUNDLE_NAME.IMAGES.name(), images);
                         i.putExtras(activity.getIntent().getExtras());
                         i.putExtra(Define.BUNDLE_NAME.BUNDLE.name(), bundle);
-                        i.putParcelableArrayListExtra(Define.BUNDLE_NAME.PICKED_IMAGES.name(), pickedImages);
+                        i.putParcelableArrayListExtra(Define.BUNDLE_NAME.PICKED_IMAGES.name(), pickerController.getPickedImages());
                         i.putExtra(Define.BUNDLE_NAME.POSITION.name(), position);
                         activity.startActivityForResult(i, new Define().ENTER_DETAIL_REQUEST_CODE);
                     }
@@ -151,6 +151,7 @@ public class PickerGridAdapter
     }
 
     private void onCheckStateChange(View v, Uri image) {
+        ArrayList<Uri> pickedImages = pickerController.getPickedImages();
         boolean isContained = pickedImages.contains(image);
         if (maxCount == pickedImages.size()
                 && !isContained) {
@@ -168,10 +169,11 @@ public class PickerGridAdapter
             pickedImages.add(image);
             if (isAutomaticClose
                     && maxCount == pickedImages.size()) {
-                pickerController.finishActivity(pickedImages);
+                pickerController.finishActivity();
             }
             updateRadioButton(btnThumbCount, String.valueOf(pickedImages.size()));
         }
+        pickerController.setPickedImages(pickedImages);
         pickerController.setToolbarTitle(pickedImages.size());
     }
 
@@ -182,8 +184,22 @@ public class PickerGridAdapter
             v.setText(text);
     }
 
+    public void updateRadioButton(ImageView imageView, RadioWithTextButton v, String text, boolean isSelected) {
+        if (isSelected) {
+            animScale(imageView, isSelected, false);
+            if (maxCount == 1)
+                v.setDrawable(ContextCompat.getDrawable(v.getContext(), R.drawable.ic_done_white_24dp));
+            else
+                v.setText(text);
+        } else {
+            v.unselect();
+        }
+
+    }
+
+
     private void animScale(View view,
-                           boolean isSelected,
+                           final boolean isSelected,
                            final boolean isAnimation) {
         int duration = 200;
         if (!isAnimation) duration = 0;
@@ -206,7 +222,7 @@ public class PickerGridAdapter
                 .withEndAction(new Runnable() {
                     @Override
                     public void run() {
-                        if (isAnimation) actionListener.onDeselect();
+                        if (isAnimation && !isSelected) actionListener.onDeselect();
                     }
                 })
                 .start();
@@ -251,10 +267,6 @@ public class PickerGridAdapter
 
     public interface OnPhotoActionListener {
         void onDeselect();
-    }
-
-    public int getPickedImageIndexOf(Uri uri) {
-        return pickedImages.indexOf(uri);
     }
 
     public class ViewHolderImage extends RecyclerView.ViewHolder {

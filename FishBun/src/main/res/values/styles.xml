@@ -13,4 +13,12 @@
         <!-- use the next line to alter the minimum text size (uncomment first)-->
         <item name="@attr/minTextSize">5dp</item>
     </style>
+
+    <!--Theme.AppCompat.Light.NoActionBar-->
+
+    <style name="FishBunTheme" parent="Theme.AppCompat.Light.NoActionBar" />
+
+    <style name="DetailViewTheme" parent="FishBunTheme">
+        <item name="colorControlHighlight">@android:color/white</item>
+    </style>
 </resources>

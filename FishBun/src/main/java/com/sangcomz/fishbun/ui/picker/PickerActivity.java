@@ -9,13 +9,12 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.RelativeLayout;
+import android.widget.ImageView;
 
 import com.sangcomz.fishbun.BaseActivity;
 import com.sangcomz.fishbun.R;
@@ -25,6 +24,7 @@ import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.permission.PermissionCheck;
 import com.sangcomz.fishbun.util.RadioWithTextButton;
 import com.sangcomz.fishbun.util.SingleMediaScanner;
+import com.sangcomz.fishbun.util.SquareFrameLayout;
 import com.sangcomz.fishbun.util.TextDrawable;
 
 import java.io.File;
@@ -36,7 +36,6 @@ public class PickerActivity extends BaseActivity {
     private static final String TAG = "PickerActivity";
 
     private RecyclerView recyclerView;
-    private ArrayList<Uri> pickedImages;
     private PickerController pickerController;
     private Album album;
     private int position;
@@ -47,23 +46,12 @@ public class PickerActivity extends BaseActivity {
         Intent intent = getIntent();
         album = intent.getParcelableExtra(Define.BUNDLE_NAME.ALBUM.name());
         position = intent.getIntExtra(Define.BUNDLE_NAME.POSITION.name(), -1);
-
-        //only first init
-        if (pickedImages == null) {
-            pickedImages = new ArrayList<>();
-            ArrayList<Uri> path = getIntent().getParcelableArrayListExtra(Define.INTENT_PATH);
-            if (path != null) {
-                for (int i = 0; i < path.size(); i++) {
-                    pickedImages.add(path.get(i));
-                }
-            }
-        }
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         try {
-            outState.putParcelableArrayList(define.SAVE_INSTANCE_PICK_IMAGES, pickedImages);
+            outState.putParcelableArrayList(define.SAVE_INSTANCE_PICK_IMAGES, pickerController.getPickedImages());
             outState.putString(define.SAVE_INSTANCE_SAVED_IMAGE, pickerController.getSavePath());
             outState.putParcelableArray(define.SAVE_INSTANCE_SAVED_IMAGE_THUMBNAILS, adapter.getImages());
             outState.putParcelableArrayList(define.SAVE_INSTANCE_NEW_IMAGES, pickerController.getAddImagePaths());
@@ -80,7 +68,9 @@ public class PickerActivity extends BaseActivity {
         super.onRestoreInstanceState(outState);
         // Restore state members from saved instance
         try {
-            pickedImages = outState.getParcelableArrayList(define.SAVE_INSTANCE_PICK_IMAGES);
+
+            ArrayList<Uri> pickedImages = outState.getParcelableArrayList(define.SAVE_INSTANCE_PICK_IMAGES);
+            pickerController.setPickedImages(pickedImages);
             ArrayList<Uri> addImages = outState.getParcelableArrayList(define.SAVE_INSTANCE_NEW_IMAGES);
             String savedImage = outState.getString(define.SAVE_INSTANCE_SAVED_IMAGE);
             Uri[] images = (Uri[]) outState.getParcelableArray(define.SAVE_INSTANCE_SAVED_IMAGE_THUMBNAILS);
@@ -100,16 +90,16 @@ public class PickerActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_picker);
+        initController();
         initValue();
         initView();
-        initController();
         if (pickerController.checkPermission())
             pickerController.displayImage(album.bucketId, exceptGif);
     }
 
     @Override
     public void onBackPressed() {
-        pickerController.transImageFinish(pickedImages, position);
+        pickerController.transImageFinish(position);
     }
 
     @Override
@@ -121,6 +111,14 @@ public class PickerActivity extends BaseActivity {
                 adapter.addImage(Uri.fromFile(savedFile));
             } else {
                 new File(pickerController.getSavePath()).delete();
+            }
+        } else if (requestCode == define.ENTER_DETAIL_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                ArrayList<Uri> pickedImages = data.getParcelableArrayListExtra(Define.INTENT_PATH);
+                pickerController.setPickedImages(pickedImages);
+                if (isAutomaticClose && pickerController.getPickedImages().size() == maxCount)
+                    pickerController.finishActivity();
+                refreshThumb();
             }
         }
     }
@@ -166,14 +164,14 @@ public class PickerActivity extends BaseActivity {
         // as you specify album parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_ok) {
-            if (pickedImages.size() < minCount) {
+            if (pickerController.getPickedImages().size() < minCount) {
                 Snackbar.make(recyclerView, messageNothingSelected, Snackbar.LENGTH_SHORT).show();
             } else {
-                pickerController.finishActivity(pickedImages);
+                pickerController.finishActivity();
             }
             return true;
         } else if (id == android.R.id.home)
-            pickerController.transImageFinish(pickedImages, position);
+            pickerController.transImageFinish(position);
         return super.onOptionsItemSelected(item);
     }
 
@@ -187,15 +185,23 @@ public class PickerActivity extends BaseActivity {
     }
 
     private void initController() {
+        //only first init
+        ArrayList<Uri> pickedImages = new ArrayList<>();
+        ArrayList<Uri> path = getIntent().getParcelableArrayListExtra(Define.INTENT_PATH);
+        if (path != null) {
+            for (int i = 0; i < path.size(); i++) {
+                pickedImages.add(path.get(i));
+            }
+        }
         pickerController = new PickerController(this, recyclerView);
+        pickerController.setPickedImages(pickedImages);
     }
 
     private void initView() {
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_picker_list);
         layoutManager = new GridLayoutManager(this, photoSpanCount, GridLayoutManager.VERTICAL, false);
-//        layoutManager = new StaggeredGridLayoutManager(photoSpanCount, StaggeredGridLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(photoSpanCount, StaggeredGridLayoutManager.VERTICAL));
+        recyclerView.setLayoutManager(layoutManager);
         initToolBar();
     }
 
@@ -225,7 +231,6 @@ public class PickerActivity extends BaseActivity {
         if (adapter == null) {
             adapter = new PickerGridAdapter(
                     result,
-                    pickedImages,
                     pickerController,
                     pickerController.getPathDir(album.bucketId),
                     isCamera,
@@ -242,7 +247,7 @@ public class PickerActivity extends BaseActivity {
             });
         }
         recyclerView.setAdapter(adapter);
-        showToolbarTitle(pickedImages.size());
+        showToolbarTitle(pickerController.getPickedImages().size());
     }
 
     private void refreshThumb() {
@@ -250,19 +255,24 @@ public class PickerActivity extends BaseActivity {
         int lastVisible = layoutManager.findLastVisibleItemPosition();
         for (int i = firstVisible; i <= lastVisible; i++) {
             View view = layoutManager.findViewByPosition(i);
-            if (view instanceof RelativeLayout) {
-                RelativeLayout item = (RelativeLayout) view;
+            if (view instanceof SquareFrameLayout) {
+                SquareFrameLayout item = (SquareFrameLayout) view;
                 RadioWithTextButton btnThumbCount = (RadioWithTextButton) item.findViewById(R.id.btn_thumb_count);
+                ImageView imgThumbImage = (ImageView) item.findViewById(R.id.img_thumb_image);
                 Uri image = (Uri) item.getTag();
                 if (image != null) {
-                    int index = adapter.getPickedImageIndexOf(image);
+                    int index = pickerController.getPickedImageIndexOf(image);
                     if (index != -1) {
-                        adapter.updateRadioButton(btnThumbCount, String.valueOf(index + 1));
+                        adapter.updateRadioButton(imgThumbImage, btnThumbCount, String.valueOf(index + 1), true);
+                    } else {
+                        adapter.updateRadioButton(imgThumbImage, btnThumbCount, "", false);
+                        showToolbarTitle(pickerController.getPickedImages().size());
                     }
                 }
 
             }
         }
     }
+
 
 }

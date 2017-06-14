@@ -32,6 +32,7 @@ public class PickerController {
     private ContentResolver resolver;
     private CameraUtil cameraUtil = new CameraUtil();
     private String pathDir = "";
+    private ArrayList<Uri> pickedImages;
 
 
     PickerController(PickerActivity pickerActivity, RecyclerView recyclerView) {
@@ -55,6 +56,14 @@ public class PickerController {
             public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
             }
         };
+    }
+
+    public void setPickedImages(ArrayList<Uri> pickedImages) {
+        this.pickedImages = pickedImages;
+    }
+
+    public ArrayList<Uri> getPickedImages() {
+        return pickedImages;
     }
 
     /**
@@ -98,7 +107,7 @@ public class PickerController {
         this.addImagePaths = addImagePaths;
     }
 
-    public void finishActivity(ArrayList<Uri> pickedImages) {
+    public void finishActivity() {
         ArrayList<Uri> path = new ArrayList<>();
         for (int i = 0; i < pickedImages.size(); i++) {
             path.add(pickedImages.get(i));
@@ -109,7 +118,7 @@ public class PickerController {
         pickerActivity.finish();
     }
 
-    void transImageFinish(ArrayList<Uri> pickedImages, int position) {
+    void transImageFinish(int position) {
         Define define = new Define();
         ArrayList<Uri> path = new ArrayList<>();
         for (int i = 0; i < pickedImages.size(); i++) {
@@ -211,5 +220,9 @@ public class PickerController {
             pathDir = Environment.getExternalStoragePublicDirectory(
                     Environment.DIRECTORY_DCIM + "/Camera").getAbsolutePath();
         return pathDir;
+    }
+
+    public int getPickedImageIndexOf(Uri uri) {
+        return pickedImages.indexOf(uri);
     }
 }
