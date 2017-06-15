@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.sangcomz.fishbun.BaseActivity;
+import com.sangcomz.fishbun.BaseParams;
 import com.sangcomz.fishbun.R;
 import com.sangcomz.fishbun.adapter.AlbumListAdapter;
 import com.sangcomz.fishbun.bean.Album;
@@ -152,7 +153,7 @@ public class AlbumActivity extends BaseActivity {
 
     private void setAlbumListAdapter() {
         if (adapter == null) {
-            ArrayList<Uri> data = getIntent().getParcelableArrayListExtra(Define.INTENT_PATH);
+            ArrayList<Uri> data = getIntent().getParcelableArrayListExtra(BaseParams.ARRAY_PATHS.name());
             adapter = new AlbumListAdapter(data,
                     albumSize,
                     getIntent().getExtras());

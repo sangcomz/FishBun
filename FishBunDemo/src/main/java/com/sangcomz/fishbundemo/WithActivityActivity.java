@@ -94,7 +94,7 @@ public class WithActivityActivity extends AppCompatActivity {
                             .setOkButtonDrawable(ContextCompat.getDrawable(this, R.drawable.ic_custom_ok))
                             .setAllViewTitle("All")
                             .setActionBarTitle("FishBun Dark")
-                            .textOnNothingSelected("Please pick one.")
+                            .textOnNothingSelected("Please select three or more!")
                             .startAlbum();
                     break;
                 }

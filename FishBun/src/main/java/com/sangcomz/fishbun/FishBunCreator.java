@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
-import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.ui.album.AlbumActivity;
 
 import java.util.ArrayList;
@@ -20,7 +19,7 @@ import java.util.ArrayList;
  * Created by sangcomz on 17/05/2017.
  */
 
-public final class RequestCreator implements BaseProperty, CustomizationProperty {
+public final class FishBunCreator implements BaseProperty, CustomizationProperty {
 
     private FishBun fishBun;
     private ArrayList<Uri> arrayPaths = new ArrayList<>();
@@ -29,23 +28,23 @@ public final class RequestCreator implements BaseProperty, CustomizationProperty
     private int requestCode = 27;
 
 
-    RequestCreator(FishBun fishBun, Bundle bundle) {
+    FishBunCreator(FishBun fishBun, Bundle bundle) {
         this.bundle = bundle;
         this.fishBun = fishBun;
     }
 
-    public RequestCreator setArrayPaths(ArrayList<Uri> arrayPaths) {
+    public FishBunCreator setArrayPaths(ArrayList<Uri> arrayPaths) {
         this.arrayPaths = arrayPaths;
         return this;
     }
 
-    public RequestCreator setAlbumThumbnailSize(int size) {
+    public FishBunCreator setAlbumThumbnailSize(int size) {
         bundle.putInt(CustomizationParams.INT_ALBUM_THUMBNAIL_SIZE.name(), size);
         return this;
     }
 
     @Override
-    public RequestCreator setPickerSpanCount(int spanCount) {
+    public FishBunCreator setPickerSpanCount(int spanCount) {
         if (spanCount <= 0)
             spanCount = 3;
         bundle.putInt(CustomizationParams.INT_PHOTO_SPAN_COUNT.name(), spanCount);
@@ -55,7 +54,7 @@ public final class RequestCreator implements BaseProperty, CustomizationProperty
 
     @Deprecated
     @Override
-    public RequestCreator setPickerCount(int count) {
+    public FishBunCreator setPickerCount(int count) {
         if (count <= 0)
             count = 1;
         bundle.putInt(BaseParams.INT_MAX_COUNT.name(), count);
@@ -64,7 +63,7 @@ public final class RequestCreator implements BaseProperty, CustomizationProperty
     }
 
     @Override
-    public RequestCreator setMaxCount(int count) {
+    public FishBunCreator setMaxCount(int count) {
         if (count <= 0)
             count = 1;
 
@@ -73,7 +72,7 @@ public final class RequestCreator implements BaseProperty, CustomizationProperty
     }
 
     @Override
-    public RequestCreator setMinCount(int count) {
+    public FishBunCreator setMinCount(int count) {
         if (count <= 0)
             count = 1;
         bundle.putInt(BaseParams.INT_MIN_COUNT.name(), count);
@@ -81,26 +80,26 @@ public final class RequestCreator implements BaseProperty, CustomizationProperty
     }
 
     @Override
-    public RequestCreator setActionBarColor(int actionbarColor) {
+    public FishBunCreator setActionBarColor(int actionbarColor) {
         bundle.putInt(CustomizationParams.INT_COLOR_ACTION_BAR.name(), actionbarColor);
         return this;
     }
 
     @Override
-    public RequestCreator setActionBarTitleColor(int actionbarTitleColor) {
+    public FishBunCreator setActionBarTitleColor(int actionbarTitleColor) {
         bundle.putInt(CustomizationParams.INT_COLOR_ACTION_BAR_TITLE_COLOR.name(), actionbarTitleColor);
         return this;
     }
 
     @Override
-    public RequestCreator setActionBarColor(int actionbarColor, int statusBarColor) {
+    public FishBunCreator setActionBarColor(int actionbarColor, int statusBarColor) {
         bundle.putInt(CustomizationParams.INT_COLOR_ACTION_BAR.name(), actionbarColor);
         bundle.putInt(CustomizationParams.INT_COLOR_STATUS_BAR.name(), statusBarColor);
         return this;
     }
 
     @Override
-    public RequestCreator setActionBarColor(int actionbarColor, int statusBarColor, boolean isStatusBarLight) {
+    public FishBunCreator setActionBarColor(int actionbarColor, int statusBarColor, boolean isStatusBarLight) {
         bundle.putInt(CustomizationParams.INT_COLOR_ACTION_BAR.name(), actionbarColor);
         bundle.putInt(CustomizationParams.INT_COLOR_STATUS_BAR.name(), statusBarColor);
         bundle.putBoolean(CustomizationParams.BOOLEAN_STYLE_STATUS_BAR_LIGHT.name(), isStatusBarLight);
@@ -108,100 +107,100 @@ public final class RequestCreator implements BaseProperty, CustomizationProperty
     }
 
     @Override
-    public RequestCreator setCamera(boolean isCamera) {
+    public FishBunCreator setCamera(boolean isCamera) {
         bundle.putBoolean(CustomizationParams.BOOLEAN_IS_CAMERA.name(), isCamera);
         return this;
     }
 
     @Override
-    public RequestCreator setRequestCode(int requestCode) {
+    public FishBunCreator setRequestCode(int requestCode) {
         this.requestCode = requestCode;
         return this;
     }
 
     @Override
-    public RequestCreator textOnNothingSelected(String message) {
+    public FishBunCreator textOnNothingSelected(String message) {
         bundle.putString(CustomizationParams.STRING_MESSAGE_NOTHING_SELECTED.name(), message);
         return this;
     }
 
     @Override
-    public RequestCreator textOnImagesSelectionLimitReached(String message) {
+    public FishBunCreator textOnImagesSelectionLimitReached(String message) {
         bundle.putString(CustomizationParams.STRING_MESSAGE_LIMIT_REACHED.name(), message);
         return this;
     }
 
     @Override
-    public RequestCreator setButtonInAlbumActivity(boolean isButton) {
+    public FishBunCreator setButtonInAlbumActivity(boolean isButton) {
         bundle.putBoolean(CustomizationParams.BOOLEAN_IS_BUTTON.name(), isButton);
         return this;
     }
 
     @Override
-    public RequestCreator setReachLimitAutomaticClose(boolean isAutomaticClose) {
+    public FishBunCreator setReachLimitAutomaticClose(boolean isAutomaticClose) {
         bundle.putBoolean(CustomizationParams.BOOLEAN_IS_AUTOMATIC_CLOSE.name(), isAutomaticClose);
         return this;
     }
 
     @Override
-    public RequestCreator setAlbumSpanCount(int portraitSpanCount, int landscapeSpanCount) {
+    public FishBunCreator setAlbumSpanCount(int portraitSpanCount, int landscapeSpanCount) {
         bundle.putInt(CustomizationParams.INT_ALBUM_PORTRAIT_SPAN_COUNT.name(), portraitSpanCount);
         bundle.putInt(CustomizationParams.INT_ALBUM_LANDSCAPE_SPAN_COUNT.name(), landscapeSpanCount);
         return this;
     }
 
     @Override
-    public RequestCreator setAlbumSpanCountOnlyLandscape(int landscapeSpanCount) {
+    public FishBunCreator setAlbumSpanCountOnlyLandscape(int landscapeSpanCount) {
         bundle.putInt(CustomizationParams.INT_ALBUM_LANDSCAPE_SPAN_COUNT.name(), landscapeSpanCount);
         return this;
     }
 
     @Override
-    public RequestCreator setAlbumSpanCountOnlPortrait(int portraitSpanCount) {
+    public FishBunCreator setAlbumSpanCountOnlPortrait(int portraitSpanCount) {
         bundle.putInt(CustomizationParams.INT_ALBUM_PORTRAIT_SPAN_COUNT.name(), portraitSpanCount);
         return this;
     }
 
     @Override
-    public RequestCreator setAllViewTitle(String allViewTitle) {
+    public FishBunCreator setAllViewTitle(String allViewTitle) {
         bundle.putString(CustomizationParams.STRING_TITLE_ALBUM_ALL_VIEW.name(), allViewTitle);
         return this;
     }
 
     @Override
-    public RequestCreator setActionBarTitle(String actionBarTitle) {
+    public FishBunCreator setActionBarTitle(String actionBarTitle) {
         bundle.putString(CustomizationParams.STRING_TITLE_ACTIONBAR.name(), actionBarTitle);
         return this;
     }
 
     @Override
-    public RequestCreator setHomeAsUpIndicatorDrawable(Drawable icon) {
+    public FishBunCreator setHomeAsUpIndicatorDrawable(Drawable icon) {
         bundle.putParcelable(CustomizationParams.DRAWABLE_HOME_AS_UP_INDICATOR.name(),
                 getBitmap(icon));
         return this;
     }
 
     @Override
-    public RequestCreator setOkButtonDrawable(Drawable icon) {
+    public FishBunCreator setOkButtonDrawable(Drawable icon) {
         bundle.putParcelable(CustomizationParams.DRAWABLE_OK_BUTTON_DRAWABLE.name(),
                 getBitmap(icon));
         return this;
     }
 
     @Override
-    public RequestCreator exceptGif(boolean isExcept) {
+    public FishBunCreator exceptGif(boolean isExcept) {
         bundle.putBoolean(BaseParams.BOOLEAN_EXCEPT_GIF.name(), isExcept);
         return this;
     }
 
     @Override
-    public RequestCreator setMenuText(String text) {
+    public FishBunCreator setMenuText(String text) {
         bundle.putString(CustomizationParams.STRING_TEXT_MENU.name(), text);
         return this;
     }
 
     @Override
-    public RequestCreator setMenuTextColor(int textColor) {
+    public FishBunCreator setMenuTextColor(int textColor) {
         bundle.putInt(CustomizationParams.INT_COLOR_MENU_TEXT.name(), textColor);
         return this;
     }
@@ -226,7 +225,7 @@ public final class RequestCreator implements BaseProperty, CustomizationProperty
         setMenuTextColor();
 
         Intent i = new Intent(context, AlbumActivity.class);
-        i.putParcelableArrayListExtra(Define.INTENT_PATH, arrayPaths);
+        i.putParcelableArrayListExtra(BaseParams.ARRAY_PATHS.name(), arrayPaths);
         i.putExtras(bundle);
         if (activity != null) activity.startActivityForResult(i, requestCode);
         else if (fragment != null) fragment.startActivityForResult(i, requestCode);

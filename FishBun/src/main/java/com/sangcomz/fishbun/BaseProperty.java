@@ -9,19 +9,19 @@ import java.util.ArrayList;
  */
 
 interface BaseProperty {
-    RequestCreator setArrayPaths(ArrayList<Uri> arrayPaths);
+    FishBunCreator setArrayPaths(ArrayList<Uri> arrayPaths);
 
-    RequestCreator setPickerCount(int count);
+    FishBunCreator setPickerCount(int count);
 
-    RequestCreator setMaxCount(int count);
+    FishBunCreator setMaxCount(int count);
 
-    RequestCreator setMinCount(int count);
+    FishBunCreator setMinCount(int count);
 
-    RequestCreator setRequestCode(int RequestCode);
+    FishBunCreator setRequestCode(int RequestCode);
 
-    RequestCreator setReachLimitAutomaticClose(boolean isAutomaticClose);
+    FishBunCreator setReachLimitAutomaticClose(boolean isAutomaticClose);
 
-    RequestCreator exceptGif(boolean isExcept);
+    FishBunCreator exceptGif(boolean isExcept);
 
     void startAlbum();
 }
