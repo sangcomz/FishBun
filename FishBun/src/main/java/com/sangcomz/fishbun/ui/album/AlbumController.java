@@ -29,12 +29,6 @@ class AlbumController {
         this.resolver = albumActivity.getContentResolver();
     }
 
-//    private void setSpanCount(int albumListSize) {
-//        if (Define.ALBUM_LANDSCAPE_SPAN_COUNT > albumListSize)
-//            Define.ALBUM_LANDSCAPE_SPAN_COUNT = albumListSize;
-//        if (Define.ALBUM_PORTRAIT_SPAN_COUNT > albumListSize)
-//            Define.ALBUM_PORTRAIT_SPAN_COUNT = albumListSize;
-//    }
 
     boolean checkPermission() {
         PermissionCheck permissionCheck = new PermissionCheck(albumActivity);
@@ -129,9 +123,6 @@ class AlbumController {
         @Override
         protected void onPostExecute(ArrayList<Album> albumList) {
             super.onPostExecute(albumList);
-//            if (albumList.size() > 0) {
-//                setSpanCount(albumList.size());
-//            }
             albumActivity.setAlbumList(albumList);
         }
     }
