@@ -25,14 +25,69 @@ FishBun is Image Picker for android.
 
 You can create image pickers in various ways.
 
-##### Normal Style
-<img src="/pic/default1.png" width=40%> <img src="/pic/default2.png" width=40%>
+#### Default Style
+<img src="/pic/default1.png" width=30%> <img src="/pic/default2.png" width=30%> <img src="/pic/default3.png" width=30%>
+##### Code
 
-##### Dark Style
-<img src="/pic/dark1.png" width=40%> <img src="/pic/dark2.png" width=40%>
+```java
+FishBun.with(WithActivityActivity.this)
+        .MultiPageMode()
+        .startAlbum();
+```
 
-##### Light Style
-<img src="/pic/light1.png" width=40%> <img src="/pic/light2.png" width=40%>
+#### Dark Style
+<img src="/pic/dark1.png" width=30%> <img src="/pic/dark2.png" width=30%> <img src="/pic/dark3.png" width=30%>
+
+##### Code
+
+```java
+FishBun.with(WithActivityActivity.this)
+        .MultiPageMode()
+        .setMaxCount(5)
+        .setMinCount(3)
+        .setPickerSpanCount(5)
+        .setActionBarColor(Color.parseColor("#795548"), Color.parseColor("#5D4037"), false)
+        .setActionBarTitleColor(Color.parseColor("#ffffff"))
+        .setArrayPaths(path)
+        .setAlbumSpanCount(2, 3)
+        .setButtonInAlbumActivity(false)
+        .setCamera(true)
+        .exceptGif(true)
+        .setReachLimitAutomaticClose(true)
+        .setHomeAsUpIndicatorDrawable(ContextCompat.getDrawable(this, R.drawable.ic_custom_back_white))
+        .setOkButtonDrawable(ContextCompat.getDrawable(this, R.drawable.ic_custom_ok))
+        .setAllViewTitle("All")
+        .setActionBarTitle("FishBun Dark")
+        .textOnNothingSelected("Please select three or more!")
+        .startAlbum();
+```
+
+#### Light Style
+<img src="/pic/light1.png" width=30%> <img src="/pic/light2.png" width=30%> <img src="/pic/light3.png" width=30%>
+
+##### Code
+
+```java
+FishBun.with(WithActivityActivity.this)
+        .MultiPageMode()
+        .setPickerCount(50)
+        .setPickerSpanCount(4)
+        .setActionBarColor(Color.parseColor("#ffffff"), Color.parseColor("#ffffff"), true)
+        .setActionBarTitleColor(Color.parseColor("#000000"))
+        .setArrayPaths(path)
+        .setAlbumSpanCount(1, 2)
+        .setButtonInAlbumActivity(true)
+        .setCamera(false)
+        .exceptGif(true)
+        .setReachLimitAutomaticClose(false)
+        .setHomeAsUpIndicatorDrawable(ContextCompat.getDrawable(this, R.drawable.ic_arrow_back_black_24dp))
+        .setOkButtonDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check_black_24dp))
+        .setAllViewTitle("All of your photos")
+        .setActionBarTitle("FishBun Light")
+        .textOnImagesSelectionLimitReached("You can't select any more.")
+        .textOnNothingSelected("I need a photo!")
+        .startAlbum();
+```
 
 ## How to Setup
 
