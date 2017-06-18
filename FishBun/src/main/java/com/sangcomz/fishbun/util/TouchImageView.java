@@ -414,11 +414,11 @@ public class TouchImageView extends android.support.v7.widget.AppCompatImageView
      * Set zoom parameters equal to another TouchImageView. Including scale, position,
      * and ScaleType.
      *
-     * @param TouchImageView
+     * @param touchImageView
      */
-    public void setZoom(TouchImageView img) {
-        PointF center = img.getScrollPosition();
-        setZoom(img.getCurrentZoom(), center.x, center.y, img.getScaleType());
+    public void setZoom(TouchImageView touchImageView) {
+        PointF center = touchImageView.getScrollPosition();
+        setZoom(touchImageView.getCurrentZoom(), center.x, center.y, touchImageView.getScaleType());
     }
 
     /**
