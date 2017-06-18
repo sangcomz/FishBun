@@ -15,17 +15,18 @@ FishBun is Image Picker for android.
 
 <img src="/pic/fishbuns.png">
 
-## What's New 0.7.0 FishBun
+## What's New 0.7.1 FishBun
 
 #### ● You can use Detail View (#73)
 #### ● Refactoring FishBun (#86) **[(The default usage has changed)](#how-to-use)**
+#### ● Fix Count issue (#96)
 
 ## Customization Screen
 
 You can create image pickers in various ways.
 
 ##### Normal Style
-<img src="/pic/normal1.png" width=40%> <img src="/pic/normal2.png" width=40%>
+<img src="/pic/default1.png" width=40%> <img src="/pic/default2.png" width=40%>
 
 ##### Dark Style
 <img src="/pic/dark1.png" width=40%> <img src="/pic/dark2.png" width=40%>
@@ -42,7 +43,7 @@ You can create image pickers in various ways.
     }
 
     dependencies {
-        compile('com.sangcomz:FishBun:0.7.0@aar') {
+        compile('com.sangcomz:FishBun:0.7.1@aar') {
             transitive = true
         }
     }
