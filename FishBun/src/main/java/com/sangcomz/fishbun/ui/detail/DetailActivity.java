@@ -76,7 +76,6 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void initView() {
-        initToolBar();
         btnDetailCount = (RadioWithTextButton) findViewById(R.id.btn_detail_count);
         vpDetailPager = (ViewPager) findViewById(R.id.vp_detail_pager);
         btnDetailBack = (ImageButton) findViewById(R.id.btn_detail_back);
@@ -85,6 +84,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         btnDetailCount.setTextColor(colorActionBarTitle);
         btnDetailCount.setOnClickListener(this);
         btnDetailBack.setOnClickListener(this);
+        initToolBar();
     }
 
     private void initValue() {
@@ -101,6 +101,11 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             uiUtil.setStatusBarColor(this, colorStatusBar);
         }
+        if (statusBarLight
+                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            vpDetailPager.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
+
     }
 
     private void initAdapter() {

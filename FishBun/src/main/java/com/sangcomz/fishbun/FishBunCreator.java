@@ -256,7 +256,7 @@ public final class FishBunCreator implements BaseProperty, CustomizationProperty
     private void setMenuTextColor() {
         if (bundle.getParcelable(CustomizationParams.DRAWABLE_OK_BUTTON_DRAWABLE.name()) != null
                 || bundle.getString(CustomizationParams.STRING_TEXT_MENU.name()) == null
-                || bundle.getInt(CustomizationParams.INT_COLOR_MENU_TEXT.name(), -1) != -1)
+                || bundle.getInt(CustomizationParams.INT_COLOR_MENU_TEXT.name(), Integer.MAX_VALUE) != Integer.MAX_VALUE)
             return;
 
         if (bundle.getBoolean(CustomizationParams.BOOLEAN_STYLE_STATUS_BAR_LIGHT.name(), false))

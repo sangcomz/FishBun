@@ -18,7 +18,7 @@ import android.view.WindowManager;
 public class UiUtil {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public void setStatusBarColor(Activity activity, int colorStatusBar) {
-        if (colorStatusBar == -1) return;
+        if (colorStatusBar == Integer.MAX_VALUE) return;
         Window window = activity.getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
