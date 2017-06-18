@@ -100,9 +100,10 @@ class AlbumController {
                     } else {
                         album.counter++;
                     }
-                    if (c.isLast()) {
-                        albumHashMap.get((long) 0).counter = totalCounter;
-                    }
+                }
+                Album allAlbum = albumHashMap.get((long) 0);
+                if (allAlbum != null) {
+                    allAlbum.counter = totalCounter;
                 }
                 c.close();
             }
