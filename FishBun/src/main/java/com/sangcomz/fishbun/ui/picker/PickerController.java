@@ -66,18 +66,6 @@ public class PickerController {
         return pickedImages;
     }
 
-    /**
-     * @param isAble true == can clickable
-     */
-    public void setRecyclerViewClickable(final boolean isAble) {
-        if (isAble)
-            recyclerView.removeOnItemTouchListener(OnItemTouchListener);
-        else {
-            recyclerView.addOnItemTouchListener(OnItemTouchListener);
-        }
-
-    }
-
     public void takePicture(Activity activity, String saveDir) {
         cameraUtil.takePicture(activity, saveDir);
     }

@@ -133,7 +133,7 @@ public class PickerGridAdapter
                         i.putExtras(activity.getIntent().getExtras());
                         i.putExtra(Define.BUNDLE_NAME.BUNDLE.name(), bundle);
                         i.putParcelableArrayListExtra(Define.BUNDLE_NAME.PICKED_IMAGES.name(), pickerController.getPickedImages());
-                        i.putExtra(Define.BUNDLE_NAME.POSITION.name(), position);
+                        i.putExtra(Define.BUNDLE_NAME.POSITION.name(), imagePos);
                         activity.startActivityForResult(i, new Define().ENTER_DETAIL_REQUEST_CODE);
                     }
                 }

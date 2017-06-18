@@ -45,10 +45,6 @@ public class DetailController {
     }
 
     public void finishActivity() {
-//        ArrayList<Uri> path = new ArrayList<>();
-//        for (int i = 0; i < pickedImages.size(); i++) {
-//            path.add(pickedImages.get(i));
-//        }
         Intent i = new Intent();
         i.putParcelableArrayListExtra(Define.INTENT_PATH, pickedImages);
         detailActivity.setResult(detailActivity.RESULT_OK, i);

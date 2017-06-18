@@ -7,41 +7,41 @@ import android.graphics.drawable.Drawable;
  */
 
 interface CustomizationProperty {
-    RequestCreator setAlbumThumbnailSize(int size);
+    FishBunCreator setAlbumThumbnailSize(int size);
 
-    RequestCreator setPickerSpanCount(int spanCount);
+    FishBunCreator setPickerSpanCount(int spanCount);
 
-    RequestCreator setActionBarColor(int actionbarColor);
+    FishBunCreator setActionBarColor(int actionbarColor);
 
-    RequestCreator setActionBarTitleColor(int actionbarTitleColor);
+    FishBunCreator setActionBarTitleColor(int actionbarTitleColor);
 
-    RequestCreator setActionBarColor(int actionbarColor, int statusBarColor);
+    FishBunCreator setActionBarColor(int actionbarColor, int statusBarColor);
 
-    RequestCreator setActionBarColor(int actionbarColor, int statusBarColor, boolean isStatusBarLight);
+    FishBunCreator setActionBarColor(int actionbarColor, int statusBarColor, boolean isStatusBarLight);
 
-    RequestCreator setCamera(boolean isCamera);
+    FishBunCreator setCamera(boolean isCamera);
 
-    RequestCreator textOnNothingSelected(String message);
+    FishBunCreator textOnNothingSelected(String message);
 
-    RequestCreator textOnImagesSelectionLimitReached(String message);
+    FishBunCreator textOnImagesSelectionLimitReached(String message);
 
-    RequestCreator setButtonInAlbumActivity(boolean isButton);
+    FishBunCreator setButtonInAlbumActivity(boolean isButton);
 
-    RequestCreator setAlbumSpanCount(int portraitSpanCount, int landscapeSpanCount);
+    FishBunCreator setAlbumSpanCount(int portraitSpanCount, int landscapeSpanCount);
 
-    RequestCreator setAlbumSpanCountOnlyLandscape(int landscapeSpanCount);
+    FishBunCreator setAlbumSpanCountOnlyLandscape(int landscapeSpanCount);
 
-    RequestCreator setAlbumSpanCountOnlPortrait(int portraitSpanCount);
+    FishBunCreator setAlbumSpanCountOnlPortrait(int portraitSpanCount);
 
-    RequestCreator setAllViewTitle(String allViewTitle);
+    FishBunCreator setAllViewTitle(String allViewTitle);
 
-    RequestCreator setActionBarTitle(String actionBarTitle);
+    FishBunCreator setActionBarTitle(String actionBarTitle);
 
-    RequestCreator setHomeAsUpIndicatorDrawable(Drawable icon);
+    FishBunCreator setHomeAsUpIndicatorDrawable(Drawable icon);
 
-    RequestCreator setOkButtonDrawable(Drawable icon);
+    FishBunCreator setOkButtonDrawable(Drawable icon);
 
-    RequestCreator setMenuText(String text);
+    FishBunCreator setMenuText(String text);
 
-    RequestCreator setMenuTextColor(int color);
+    FishBunCreator setMenuTextColor(int color);
 }
