@@ -26,7 +26,7 @@ FishBun is Image Picker for android.
 You can create image pickers in various ways.
 
 #### Default Style
-<img src="/pic/default1.png" width=30%> <img src="/pic/default2.png" width=30%> <img src="/pic/default3.png" width=30%>
+
 ##### Code
 
 ```java
@@ -34,9 +34,10 @@ FishBun.with(WithActivityActivity.this)
         .MultiPageMode()
         .startAlbum();
 ```
+<img src="/pic/default1.png" width=30%> <img src="/pic/default2.png" width=30%> <img src="/pic/default3.png" width=30%>
+
 
 #### Dark Style
-<img src="/pic/dark1.png" width=30%> <img src="/pic/dark2.png" width=30%> <img src="/pic/dark3.png" width=30%>
 
 ##### Code
 
@@ -62,8 +63,11 @@ FishBun.with(WithActivityActivity.this)
         .startAlbum();
 ```
 
+<img src="/pic/dark1.png" width=30%> <img src="/pic/dark2.png" width=30%> <img src="/pic/dark3.png" width=30%>
+
+
+
 #### Light Style
-<img src="/pic/light1.png" width=30%> <img src="/pic/light2.png" width=30%> <img src="/pic/light3.png" width=30%>
 
 ##### Code
 
@@ -88,6 +92,10 @@ FishBun.with(WithActivityActivity.this)
         .textOnNothingSelected("I need a photo!")
         .startAlbum();
 ```
+
+<img src="/pic/light1.png" width=30%> <img src="/pic/light2.png" width=30%> <img src="/pic/light3.png" width=30%>
+
+
 
 ## How to Setup
 
