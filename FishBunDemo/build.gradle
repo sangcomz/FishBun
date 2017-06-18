@@ -8,8 +8,8 @@ android {
         applicationId "com.sangcomz.fishbundemo"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 4
-        versionName '0.6.4'
+        versionCode gradle.versionCode
+        versionName gradle.versionName
         multiDexEnabled true
     }
     Properties signProp = new Properties()
@@ -35,7 +35,7 @@ android {
 
         }
         debug {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }

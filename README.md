@@ -15,11 +15,10 @@ FishBun is Image Picker for android.
 
 <img src="/pic/fishbuns.png">
 
-## What's New 0.6.7 FishBun
+## What's New 0.7.0 FishBun
 
-#### ● add exceptGif(boolean isExcept) (#77)
-#### ● add setMenuText(String text), setMenuTextColor(int textColor) (#74)
-#### ● add widget RadioWithTextButton
+#### ● You can use Detail View (#73)
+#### ● Refactoring FishBun (#86) **[(The default usage has changed)](#how-to-use)**
 
 ## Customization Screen
 
@@ -34,7 +33,7 @@ You can create image pickers in various ways.
 ##### Light Style
 <img src="/pic/light1.png" width=40%> <img src="/pic/light2.png" width=40%>
 
-## How to Use FishBun
+## How to Setup
 
 ### Gradle
 
@@ -43,7 +42,7 @@ You can create image pickers in various ways.
     }
 
     dependencies {
-        compile('com.sangcomz:FishBun:0.6.7@aar') {
+        compile('com.sangcomz:FishBun:0.7.0@aar') {
             transitive = true
         }
     }
@@ -53,13 +52,13 @@ You can create image pickers in various ways.
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-## How to Use FishBun
+## How to Use
 
-    FishBun.with(Your Activity).startAlbum();
+    FishBun.with(Your Activity).MultiPageMode().startAlbum();
 
 if you use in Fragment,
 
-    FishBun.with(Your Fragment).startAlbum();
+    FishBun.with(Your Fragment).MultiPageMode().startAlbum();
 
 and add OnActivityResult
 
@@ -82,6 +81,7 @@ and add OnActivityResult
 you can use also this
 
                 FishBun.with(Your Activity or Fragment)
+                        .MultiPageMode()
                         .setPickerCount(5) //Deprecated
                         .setMaxCount(5)
                         .setMinCount(1)

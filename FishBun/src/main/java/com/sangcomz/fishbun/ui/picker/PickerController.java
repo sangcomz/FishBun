@@ -20,8 +20,6 @@ import com.sangcomz.fishbun.util.RegexUtil;
 
 import java.util.ArrayList;
 
-import static com.sangcomz.fishbun.define.Define.EXCEPT_GIF;
-
 /**
  * Created by sangc on 2015-11-05.
  */
@@ -34,6 +32,7 @@ public class PickerController {
     private ContentResolver resolver;
     private CameraUtil cameraUtil = new CameraUtil();
     private String pathDir = "";
+    private ArrayList<Uri> pickedImages;
 
 
     PickerController(PickerActivity pickerActivity, RecyclerView recyclerView) {
@@ -59,16 +58,12 @@ public class PickerController {
         };
     }
 
-    /**
-     * @param isAble true == can clickable
-     */
-    public void setRecyclerViewClickable(final boolean isAble) {
-        if (isAble)
-            recyclerView.removeOnItemTouchListener(OnItemTouchListener);
-        else {
-            recyclerView.addOnItemTouchListener(OnItemTouchListener);
-        }
+    public void setPickedImages(ArrayList<Uri> pickedImages) {
+        this.pickedImages = pickedImages;
+    }
 
+    public ArrayList<Uri> getPickedImages() {
+        return pickedImages;
     }
 
     public void takePicture(Activity activity, String saveDir) {
@@ -100,7 +95,7 @@ public class PickerController {
         this.addImagePaths = addImagePaths;
     }
 
-    public void finishActivity(ArrayList<Uri> pickedImages) {
+    public void finishActivity() {
         ArrayList<Uri> path = new ArrayList<>();
         for (int i = 0; i < pickedImages.size(); i++) {
             path.add(pickedImages.get(i));
@@ -109,19 +104,19 @@ public class PickerController {
         i.putParcelableArrayListExtra(Define.INTENT_PATH, path);
         pickerActivity.setResult(pickerActivity.RESULT_OK, i);
         pickerActivity.finish();
-
     }
 
-    void transImageFinish(ArrayList<Uri> pickedImages, int position) {
+    void transImageFinish(int position) {
+        Define define = new Define();
         ArrayList<Uri> path = new ArrayList<>();
         for (int i = 0; i < pickedImages.size(); i++) {
             path.add(pickedImages.get(i));
         }
         Intent i = new Intent();
         i.putParcelableArrayListExtra(Define.INTENT_PATH, path);
-        i.putParcelableArrayListExtra(Define.INTENT_ADD_PATH, getAddImagePaths());
-        i.putExtra(Define.INTENT_POSITION, position);
-        pickerActivity.setResult(Define.TRANS_IMAGES_RESULT_CODE, i);
+        i.putParcelableArrayListExtra(define.INTENT_ADD_PATH, getAddImagePaths());
+        i.putExtra(define.INTENT_POSITION, position);
+        pickerActivity.setResult(define.TRANS_IMAGES_RESULT_CODE, i);
         pickerActivity.finish();
     }
 
@@ -136,20 +131,24 @@ public class PickerController {
     }
 
 
-    void displayImage(Long bucketId) {
-        new DisplayImage(bucketId).execute();
+    void displayImage(Long bucketId,
+                      Boolean exceptGif) {
+        new DisplayImage(bucketId, exceptGif).execute();
     }
 
     private class DisplayImage extends AsyncTask<Void, Void, Uri[]> {
         private Long bucketId;
+        Boolean exceptGif;
 
-        DisplayImage(Long bucketId) {
+        DisplayImage(Long bucketId,
+                     Boolean exceptGif) {
             this.bucketId = bucketId;
+            this.exceptGif = exceptGif;
         }
 
         @Override
         protected Uri[] doInBackground(Void... params) {
-            return getAllMediaThumbnailsPath(bucketId);
+            return getAllMediaThumbnailsPath(bucketId, exceptGif);
         }
 
         @Override
@@ -161,7 +160,8 @@ public class PickerController {
 
 
     @NonNull
-    private Uri[] getAllMediaThumbnailsPath(long id) {
+    private Uri[] getAllMediaThumbnailsPath(long id,
+                                            Boolean exceptGif) {
         String selection = MediaStore.Images.Media.BUCKET_ID + " = ?";
         String bucketId = String.valueOf(id);
         String sort = MediaStore.Images.Media._ID + " DESC";
@@ -183,7 +183,7 @@ public class PickerController {
                     int position = -1;
                     RegexUtil regexUtil = new RegexUtil();
                     do {
-                        if (EXCEPT_GIF &&
+                        if (exceptGif &&
                                 regexUtil.checkGif(c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA))))
                             continue;
                         int imgId = c.getInt(c.getColumnIndex(MediaStore.MediaColumns._ID));
@@ -208,5 +208,9 @@ public class PickerController {
             pathDir = Environment.getExternalStoragePublicDirectory(
                     Environment.DIRECTORY_DCIM + "/Camera").getAbsolutePath();
         return pathDir;
+    }
+
+    public int getPickedImageIndexOf(Uri uri) {
+        return pickedImages.indexOf(uri);
     }
 }

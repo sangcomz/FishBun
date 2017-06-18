@@ -26,6 +26,7 @@ public class PermissionCheck {
 
     @TargetApi(Build.VERSION_CODES.M)
     public boolean CheckStoragePermission() {
+        Define define = new Define();
         int permissionCheckRead = ContextCompat.checkSelfPermission(context,
                 Manifest.permission.READ_EXTERNAL_STORAGE);
         int permissionCheckWrite = ContextCompat.checkSelfPermission(context,
@@ -38,13 +39,13 @@ public class PermissionCheck {
                 // sees the explanation, try again to request the permission.
                 ActivityCompat.requestPermissions((Activity) context,
                         new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                        Define.PERMISSION_STORAGE);
+                        define.PERMISSION_STORAGE);
             } else {
                 // No explanation needed, we can request the permission.
 
                 ActivityCompat.requestPermissions((Activity) context,
                         new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                        Define.PERMISSION_STORAGE);
+                        define.PERMISSION_STORAGE);
 
                 // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
                 // app-defined int constant. The callback method gets the

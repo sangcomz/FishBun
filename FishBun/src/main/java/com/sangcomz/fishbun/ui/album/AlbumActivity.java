@@ -8,9 +8,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -20,7 +18,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.sangcomz.fishbun.ItemDecoration.DividerItemDecoration;
+import com.sangcomz.fishbun.BaseActivity;
+import com.sangcomz.fishbun.BaseParams;
 import com.sangcomz.fishbun.R;
 import com.sangcomz.fishbun.adapter.AlbumListAdapter;
 import com.sangcomz.fishbun.bean.Album;
@@ -29,17 +28,12 @@ import com.sangcomz.fishbun.permission.PermissionCheck;
 import com.sangcomz.fishbun.util.ScanListener;
 import com.sangcomz.fishbun.util.SingleMediaScanner;
 import com.sangcomz.fishbun.util.TextDrawable;
-import com.sangcomz.fishbun.util.UiUtil;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.sangcomz.fishbun.define.Define.homeAsUpIndicatorDrawable;
-import static com.sangcomz.fishbun.define.Define.okButtonDrawable;
-
-
-public class AlbumActivity extends AppCompatActivity {
+public class AlbumActivity extends BaseActivity {
     private AlbumController albumController;
     private ArrayList<Album> albumList = new ArrayList<>();
 
@@ -47,17 +41,13 @@ public class AlbumActivity extends AppCompatActivity {
     private RelativeLayout relAlbumEmpty;
 
     private AlbumListAdapter adapter;
-    private UiUtil uiUtil = new UiUtil();
-
-    Toolbar toolbar;
     private TextView progressAlbumText;
-
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         if (adapter != null) {
-            outState.putParcelableArrayList(Define.SAVE_INSTANCE_PICK_IMAGES, adapter.getPickedImagePath());
-            outState.putParcelableArrayList(Define.SAVE_INSTANCE_ALBUM_LIST, (ArrayList<? extends Parcelable>) adapter.getAlbumList());
+            outState.putParcelableArrayList(define.SAVE_INSTANCE_PICK_IMAGES, adapter.getPickedImagePath());
+            outState.putParcelableArrayList(define.SAVE_INSTANCE_ALBUM_LIST, (ArrayList<? extends Parcelable>) adapter.getAlbumList());
         }
         super.onSaveInstanceState(outState);
     }
@@ -67,12 +57,14 @@ public class AlbumActivity extends AppCompatActivity {
         // Always call the superclass so it can restore the view hierarchy
         super.onRestoreInstanceState(outState);
         // Restore state members from saved instance
-        List<Album> albumList = outState.getParcelableArrayList(Define.SAVE_INSTANCE_ALBUM_LIST);
-        List<Uri> thumbList = outState.getParcelableArrayList(Define.SAVE_INSTANCE_ALBUM_THUMB_LIST);
-        ArrayList<Uri> pickedImagePath = outState.getParcelableArrayList(Define.SAVE_INSTANCE_PICK_IMAGES);
+        List<Album> albumList = outState.getParcelableArrayList(define.SAVE_INSTANCE_ALBUM_LIST);
+        List<Uri> thumbList = outState.getParcelableArrayList(define.SAVE_INSTANCE_ALBUM_THUMB_LIST);
+        ArrayList<Uri> pickedImagePath = outState.getParcelableArrayList(define.SAVE_INSTANCE_PICK_IMAGES);
 
         if (albumList != null && thumbList != null && pickedImagePath != null) {
-            adapter = new AlbumListAdapter(pickedImagePath);
+            adapter = new AlbumListAdapter(pickedImagePath,
+                    albumSize,
+                    getIntent().getExtras());
             adapter.setAlbumList(albumList);
         }
     }
@@ -84,7 +76,7 @@ public class AlbumActivity extends AppCompatActivity {
         initView();
         initController();
         if (albumController.checkPermission())
-            albumController.getAlbumList();
+            albumController.getAlbumList(titleAllView, exceptGif);
     }
 
     @Override
@@ -94,10 +86,10 @@ public class AlbumActivity extends AppCompatActivity {
                 recyclerAlbumList.getLayoutManager() != null) {
             if (uiUtil.isLandscape(this))
                 ((GridLayoutManager) recyclerAlbumList.getLayoutManager())
-                        .setSpanCount(Define.ALBUM_LANDSCAPE_SPAN_COUNT);
+                        .setSpanCount(albumLandScapeSize);
             else
                 ((GridLayoutManager) recyclerAlbumList.getLayoutManager())
-                        .setSpanCount(Define.ALBUM_PORTRAIT_SPAN_COUNT);
+                        .setSpanCount(albumPortraitSize);
         }
     }
 
@@ -118,37 +110,37 @@ public class AlbumActivity extends AppCompatActivity {
 
         GridLayoutManager layoutManager;
         if (uiUtil.isLandscape(this))
-            layoutManager = new GridLayoutManager(this, Define.ALBUM_LANDSCAPE_SPAN_COUNT);
+            layoutManager = new GridLayoutManager(this, albumLandScapeSize);
         else
-            layoutManager = new GridLayoutManager(this, Define.ALBUM_PORTRAIT_SPAN_COUNT);
+            layoutManager = new GridLayoutManager(this, albumPortraitSize);
 
         if (recyclerAlbumList != null) {
             recyclerAlbumList.setLayoutManager(layoutManager);
         }
-        recyclerAlbumList.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
     }
 
     private void initToolBar() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar_album_bar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_album_bar);
         relAlbumEmpty = (RelativeLayout) findViewById(R.id.rel_album_empty);
         progressAlbumText = (TextView) findViewById(R.id.txt_album_msg);
         progressAlbumText.setText(R.string.msg_loading_image);
 
         setSupportActionBar(toolbar);
 
-        toolbar.setBackgroundColor(Define.COLOR_ACTION_BAR);
-        toolbar.setTitleTextColor(Define.COLOR_ACTION_BAR_TITLE_COLOR);
+        toolbar.setBackgroundColor(colorActionBar);
+        toolbar.setTitleTextColor(colorActionBarTitle);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            uiUtil.setStatusBarColor(this);
+            uiUtil.setStatusBarColor(this, colorStatusBar);
         }
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(Define.TITLE_ACTIONBAR);
+            getSupportActionBar().setTitle(titleActionBar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             if (homeAsUpIndicatorDrawable != null)
                 getSupportActionBar().setHomeAsUpIndicator(homeAsUpIndicatorDrawable);
         }
 
-        if (Define.STYLE_STATUS_BAR_LIGHT
+        if (statusBarLight
                 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             toolbar.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
@@ -161,8 +153,10 @@ public class AlbumActivity extends AppCompatActivity {
 
     private void setAlbumListAdapter() {
         if (adapter == null) {
-            ArrayList<Uri> data = getIntent().getParcelableArrayListExtra(Define.INTENT_PATH);
-            adapter = new AlbumListAdapter(data);
+            ArrayList<Uri> data = getIntent().getParcelableArrayListExtra(BaseParams.ARRAY_PATHS.name());
+            adapter = new AlbumListAdapter(data,
+                    albumSize,
+                    getIntent().getExtras());
         }
         adapter.setAlbumList(albumList);
         recyclerAlbumList.setAdapter(adapter);
@@ -185,7 +179,7 @@ public class AlbumActivity extends AppCompatActivity {
     private void refreshList(int position, ArrayList<Uri> imagePath) {
         if (imagePath.size() > 0) {
             if (position == 0) {
-                albumController.getAlbumList();
+                albumController.getAlbumList(titleAllView, exceptGif);
             } else {
                 albumList.get(0).counter += imagePath.size();
                 albumList.get(position).counter += imagePath.size();
@@ -202,13 +196,13 @@ public class AlbumActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        if (Define.IS_BUTTON) {
+        if (isButton) {
             getMenuInflater().inflate(R.menu.menu_photo_album, menu);
             MenuItem item = menu.findItem(R.id.action_ok);
             if (okButtonDrawable != null) {
                 item.setIcon(okButtonDrawable);
-            } else if (Define.TEXT_MENU != null) {
-                item.setIcon(new TextDrawable(getResources(), Define.TEXT_MENU, Define.COLOR_MENU_TEXT));
+            } else if (menuText != null) {
+                item.setIcon(new TextDrawable(getResources(), menuText, colorMenuText));
             }
         }
         return true;
@@ -221,8 +215,8 @@ public class AlbumActivity extends AppCompatActivity {
             finish();
         } else if (id == R.id.action_ok) {
             if (adapter != null) {
-                if (adapter.getPickedImagePath().size() < Define.MIN_COUNT) {
-                    Snackbar.make(recyclerAlbumList, Define.MESSAGE_NOTHING_SELECTED, Snackbar.LENGTH_SHORT).show();
+                if (adapter.getPickedImagePath().size() < minCount) {
+                    Snackbar.make(recyclerAlbumList, messageNothingSelected, Snackbar.LENGTH_SHORT).show();
                 } else {
                     Intent i = new Intent();
                     i.putParcelableArrayListExtra(Define.INTENT_PATH, adapter.getPickedImagePath());
@@ -236,14 +230,14 @@ public class AlbumActivity extends AppCompatActivity {
     }
 
     public void changeToolbarTitle() {
+        if (adapter == null) return;
         int total = adapter.getPickedImagePath().size();
 
-
         if (getSupportActionBar() != null) {
-            if (Define.MAX_COUNT == 1)
-                getSupportActionBar().setTitle(Define.TITLE_ACTIONBAR);
+            if (maxCount == 1)
+                getSupportActionBar().setTitle(titleActionBar);
             else
-                getSupportActionBar().setTitle(Define.TITLE_ACTIONBAR + "(" + String.valueOf(total) + "/" + Define.MAX_COUNT + ")");
+                getSupportActionBar().setTitle(titleActionBar + "(" + String.valueOf(total) + "/" + maxCount + ")");
         }
     }
 
@@ -251,26 +245,26 @@ public class AlbumActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Define.ENTER_ALBUM_REQUEST_CODE) {
+        if (requestCode == define.ENTER_ALBUM_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 setResult(RESULT_OK, data);
                 finish();
-            } else if (resultCode == Define.TRANS_IMAGES_RESULT_CODE) {
+            } else if (resultCode == define.TRANS_IMAGES_RESULT_CODE) {
                 ArrayList<Uri> path = data.getParcelableArrayListExtra(Define.INTENT_PATH);
-                ArrayList<Uri> addPath = data.getParcelableArrayListExtra(Define.INTENT_ADD_PATH);
-                int position = data.getIntExtra(Define.INTENT_POSITION, -1);
+                ArrayList<Uri> addPath = data.getParcelableArrayListExtra(define.INTENT_ADD_PATH);
+                int position = data.getIntExtra(define.INTENT_POSITION, -1);
                 refreshList(position, addPath);
                 if (adapter != null)
                     adapter.setPickedImagePath(path);
 
                 changeToolbarTitle();
             }
-        } else if (requestCode == Define.TAKE_A_PICK_REQUEST_CODE) {
+        } else if (requestCode == define.TAKE_A_PICK_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 new SingleMediaScanner(this, new File(albumController.getSavePath()), new ScanListener() {
                     @Override
                     protected void onScanCompleted() {
-                        albumController.getAlbumList();
+                        albumController.getAlbumList(titleAllView, exceptGif);
                     }
                 });
             } else {
@@ -283,12 +277,14 @@ public class AlbumActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String permissions[], @NonNull int[] grantResults) {
+
+
         switch (requestCode) {
-            case Define.PERMISSION_STORAGE: {
+            case 28: {
                 if (grantResults.length > 0) {
                     if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                         // permission was granted, yay!
-                        albumController.getAlbumList();
+                        albumController.getAlbumList(titleAllView, exceptGif);
                     } else {
                         new PermissionCheck(this).showPermissionDialog();
                         finish();

@@ -1,7 +1,10 @@
 package com.sangcomz.fishbun.adapter;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
@@ -14,6 +17,8 @@ import android.widget.RelativeLayout;
 
 import com.sangcomz.fishbun.R;
 import com.sangcomz.fishbun.define.Define;
+import com.sangcomz.fishbun.ui.detail.DetailActivity;
+import com.sangcomz.fishbun.ui.picker.PickerActivity;
 import com.sangcomz.fishbun.ui.picker.PickerController;
 import com.sangcomz.fishbun.util.RadioWithTextButton;
 import com.squareup.picasso.Picasso;
@@ -26,49 +31,39 @@ public class PickerGridAdapter
         extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_HEADER = Integer.MIN_VALUE;
 
-    private ArrayList<Uri> pickedImages = new ArrayList<>();
     private Uri[] images;
     private PickerController pickerController;
-    private boolean isHeader = Define.IS_CAMERA;
+    private boolean isHeader;
     private OnPhotoActionListener actionListener;
+    private int circleColor;
+    private int circleTextColor;
+    private int maxCount;
+    private String messageLimitReached;
+    private boolean isAutomaticClose;
 
-    String saveDir;
+    private String saveDir;
 
-    public class ViewHolderImage extends RecyclerView.ViewHolder {
-
-
-        View item;
-        ImageView imgThumbImage;
-        RadioWithTextButton btnThumbCount;
-
-        public ViewHolderImage(View view) {
-            super(view);
-            item = view;
-            imgThumbImage = (ImageView) view.findViewById(R.id.img_thumb_image);
-            btnThumbCount = (RadioWithTextButton) view.findViewById(R.id.btn_thumb_count);
-        }
-    }
-
-    public class ViewHolderHeader extends RecyclerView.ViewHolder {
-
-
-        RelativeLayout header;
-
-        public ViewHolderHeader(View view) {
-            super(view);
-            header = (RelativeLayout) itemView.findViewById(R.id.rel_header_area);
-        }
-    }
 
     public PickerGridAdapter(Uri[] images,
-                             ArrayList<Uri> pickedImages,
                              PickerController pickerController,
-                             String saveDir) {
+                             String saveDir,
+                             Boolean isCamera,
+                             int circleColor,
+                             int circleTextColor,
+                             int maxCount,
+                             String messageLimitReached,
+                             boolean isAutomaticClose) {
         this.images = images;
         this.pickerController = pickerController;
-        this.pickedImages = pickedImages;
         this.saveDir = saveDir;
+        this.isHeader = isCamera;
+        this.circleColor = circleColor;
+        this.circleTextColor = circleTextColor;
+        this.maxCount = maxCount;
+        this.messageLimitReached = messageLimitReached;
+        this.isAutomaticClose = isAutomaticClose;
     }
+
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -85,6 +80,7 @@ public class PickerGridAdapter
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+
         if (holder instanceof ViewHolderHeader) {
             final ViewHolderHeader vh = (ViewHolderHeader) holder;
             vh.header.setOnClickListener(new View.OnClickListener() {
@@ -96,35 +92,53 @@ public class PickerGridAdapter
         }
 
         if (holder instanceof ViewHolderImage) {
+            ArrayList<Uri> pickedImages = pickerController.getPickedImages();
             final int imagePos;
             if (isHeader) imagePos = position - 1;
             else imagePos = position;
 
             final ViewHolderImage vh = (ViewHolderImage) holder;
             final Uri image = images[imagePos];
+            final Context context = vh.item.getContext();
             vh.item.setTag(image);
             vh.btnThumbCount.unselect();
-            vh.btnThumbCount.setCircleColor(Define.COLOR_ACTION_BAR);
-            vh.btnThumbCount.setTextColor(Define.COLOR_ACTION_BAR_TITLE_COLOR);
+            vh.btnThumbCount.setCircleColor(circleColor);
+            vh.btnThumbCount.setTextColor(circleTextColor);
 
             initState(pickedImages.indexOf(image), vh);
             if (image != null)
                 Picasso
                         .with(vh.imgThumbImage.getContext())
                         .load(image)
-                        .centerCrop()
                         .fit()
+                        .centerCrop()
                         .into(vh.imgThumbImage);
 
 
-            vh.imgThumbImage.setOnClickListener(new View.OnClickListener() {
+            vh.btnThumbCount.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     onCheckStateChange(vh.item, image);
                 }
             });
-        }
 
+            vh.imgThumbImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (context instanceof PickerActivity) {
+                        PickerActivity activity = (PickerActivity) context;
+                        Intent i = new Intent(activity, DetailActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelableArray(Define.BUNDLE_NAME.IMAGES.name(), images);
+                        i.putExtras(activity.getIntent().getExtras());
+                        i.putExtra(Define.BUNDLE_NAME.BUNDLE.name(), bundle);
+                        i.putParcelableArrayListExtra(Define.BUNDLE_NAME.PICKED_IMAGES.name(), pickerController.getPickedImages());
+                        i.putExtra(Define.BUNDLE_NAME.POSITION.name(), imagePos);
+                        activity.startActivityForResult(i, new Define().ENTER_DETAIL_REQUEST_CODE);
+                    }
+                }
+            });
+        }
     }
 
     private void initState(int selectedIndex, ViewHolderImage vh) {
@@ -137,10 +151,11 @@ public class PickerGridAdapter
     }
 
     private void onCheckStateChange(View v, Uri image) {
+        ArrayList<Uri> pickedImages = pickerController.getPickedImages();
         boolean isContained = pickedImages.contains(image);
-        if (Define.MAX_COUNT == pickedImages.size()
+        if (maxCount == pickedImages.size()
                 && !isContained) {
-            Snackbar.make(v, Define.MESSAGE_LIMIT_REACHED, Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(v, messageLimitReached, Snackbar.LENGTH_SHORT).show();
             return;
         }
         ImageView imgThumbImage = (ImageView) v.findViewById(R.id.img_thumb_image);
@@ -152,24 +167,39 @@ public class PickerGridAdapter
         } else {
             animScale(imgThumbImage, true, true);
             pickedImages.add(image);
-            if (Define.IS_AUTOMATIC_CLOSE
-                    && Define.MAX_COUNT == pickedImages.size()) {
-                pickerController.finishActivity(pickedImages);
+            if (isAutomaticClose
+                    && maxCount == pickedImages.size()) {
+                pickerController.finishActivity();
             }
             updateRadioButton(btnThumbCount, String.valueOf(pickedImages.size()));
         }
+        pickerController.setPickedImages(pickedImages);
         pickerController.setToolbarTitle(pickedImages.size());
     }
 
     public void updateRadioButton(RadioWithTextButton v, String text) {
-        if (Define.MAX_COUNT == 1)
+        if (maxCount == 1)
             v.setDrawable(ContextCompat.getDrawable(v.getContext(), R.drawable.ic_done_white_24dp));
         else
             v.setText(text);
     }
 
+    public void updateRadioButton(ImageView imageView, RadioWithTextButton v, String text, boolean isSelected) {
+        if (isSelected) {
+            animScale(imageView, isSelected, false);
+            if (maxCount == 1)
+                v.setDrawable(ContextCompat.getDrawable(v.getContext(), R.drawable.ic_done_white_24dp));
+            else
+                v.setText(text);
+        } else {
+            v.unselect();
+        }
+
+    }
+
+
     private void animScale(View view,
-                           boolean isSelected,
+                           final boolean isSelected,
                            final boolean isAnimation) {
         int duration = 200;
         if (!isAnimation) duration = 0;
@@ -192,7 +222,7 @@ public class PickerGridAdapter
                 .withEndAction(new Runnable() {
                     @Override
                     public void run() {
-                        if (isAnimation) actionListener.onDeselect();
+                        if (isAnimation && !isSelected) actionListener.onDeselect();
                     }
                 })
                 .start();
@@ -239,7 +269,29 @@ public class PickerGridAdapter
         void onDeselect();
     }
 
-    public int getPickedImageIndexOf(Uri uri) {
-        return pickedImages.indexOf(uri);
+    public class ViewHolderImage extends RecyclerView.ViewHolder {
+
+
+        View item;
+        ImageView imgThumbImage;
+        RadioWithTextButton btnThumbCount;
+
+        public ViewHolderImage(View view) {
+            super(view);
+            item = view;
+            imgThumbImage = (ImageView) view.findViewById(R.id.img_thumb_image);
+            btnThumbCount = (RadioWithTextButton) view.findViewById(R.id.btn_thumb_count);
+        }
+    }
+
+    public class ViewHolderHeader extends RecyclerView.ViewHolder {
+
+
+        RelativeLayout header;
+
+        public ViewHolderHeader(View view) {
+            super(view);
+            header = (RelativeLayout) itemView.findViewById(R.id.rel_header_area);
+        }
     }
 }

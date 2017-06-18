@@ -1,4 +1,4 @@
 include ':FishBunDemo', ':FishBun'
 
-gradle.ext.versionCode = 7
-gradle.ext.versionName = '0.6.7'
+gradle.ext.versionCode = 8
+gradle.ext.versionName = '0.7.0'

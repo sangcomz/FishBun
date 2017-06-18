@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,27 +28,16 @@ public class AlbumListAdapter
 
     private List<Album> albumList;
     private ArrayList<Uri> pickedImagePath = new ArrayList<>();
+    private int albumSize;
+    private Bundle bundle;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        private View view;
-        private ImageView imgAlbumThumb;
-        private TextView txtAlbumName;
-        private TextView txtAlbumCount;
-
-        public ViewHolder(View view) {
-            super(view);
-            this.view = view;
-            imgAlbumThumb = (ImageView) view.findViewById(R.id.img_album_thumb);
-            imgAlbumThumb.setLayoutParams(new LinearLayout.LayoutParams(Define.ALBUM_THUMBNAIL_SIZE, Define.ALBUM_THUMBNAIL_SIZE));
-
-            txtAlbumName = (TextView) view.findViewById(R.id.txt_album_name);
-            txtAlbumCount = (TextView) view.findViewById(R.id.txt_album_count);
-        }
-    }
-
-    public AlbumListAdapter(ArrayList<Uri> pickedImagePath) {
+    public AlbumListAdapter(ArrayList<Uri> pickedImagePath,
+                            int albumSize,
+                            Bundle bundle) {
         this.pickedImagePath = pickedImagePath;
+        this.albumSize = albumSize;
+        this.bundle = bundle;
     }
 
     public void setAlbumList(List<Album> albumList) {
@@ -59,7 +49,7 @@ public class AlbumListAdapter
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.album_item, parent, false);
-        return new ViewHolder(view);
+        return new ViewHolder(view, albumSize);
     }
 
     @Override
@@ -83,12 +73,11 @@ public class AlbumListAdapter
                 Album a = (Album) v.getTag();
                 Context context = holder.view.getContext();
                 Intent i = new Intent(context, PickerActivity.class);
-                i.putExtra("album", a);
-                i.putExtra("album_title", albumList.get(position).bucketName);
-                i.putExtra("position", position);
-
+                i.putExtra(Define.BUNDLE_NAME.ALBUM.name(), a);
+                i.putExtra(Define.BUNDLE_NAME.POSITION.name(), position);
                 i.putParcelableArrayListExtra(Define.INTENT_PATH, pickedImagePath);
-                ((Activity) context).startActivityForResult(i, Define.ENTER_ALBUM_REQUEST_CODE);
+                i.putExtras(bundle);
+                ((Activity) context).startActivityForResult(i, new Define().ENTER_ALBUM_REQUEST_CODE);
             }
         });
     }
@@ -110,6 +99,23 @@ public class AlbumListAdapter
         return albumList;
     }
 
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        private View view;
+        private ImageView imgAlbumThumb;
+        private TextView txtAlbumName;
+        private TextView txtAlbumCount;
+
+        public ViewHolder(View view, int albumSize) {
+            super(view);
+            this.view = view;
+            imgAlbumThumb = (ImageView) view.findViewById(R.id.img_album_thumb);
+            imgAlbumThumb.setLayoutParams(new LinearLayout.LayoutParams(albumSize, albumSize));
+
+            txtAlbumName = (TextView) view.findViewById(R.id.txt_album_name);
+            txtAlbumCount = (TextView) view.findViewById(R.id.txt_album_count);
+        }
+    }
 }
 
 

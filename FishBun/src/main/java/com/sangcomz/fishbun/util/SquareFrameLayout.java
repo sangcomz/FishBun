@@ -6,16 +6,16 @@ import android.util.AttributeSet;
 /**
  * Created by sangc on 2015-12-26.
  */
-public class SquareImageView extends android.support.v7.widget.AppCompatImageView {
-    public SquareImageView(Context context) {
+public class SquareFrameLayout extends android.support.v7.widget.ContentFrameLayout {
+    public SquareFrameLayout(Context context) {
         super(context);
     }
 
-    public SquareImageView(Context context, AttributeSet attrs) {
+    public SquareFrameLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public SquareImageView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public SquareFrameLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 

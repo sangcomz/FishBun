@@ -99,7 +99,8 @@ if (project.rootProject.file('local.properties').isFile()) {
         tagName = version
         targetCommitish = 'master'
         body = """## Release Note
-* fix adapter bug"""
+* refactoring (#86)
+* add detail view(#73)"""
         name = version
     }
 }

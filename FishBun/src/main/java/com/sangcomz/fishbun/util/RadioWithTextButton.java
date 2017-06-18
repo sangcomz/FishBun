@@ -49,7 +49,7 @@ public class RadioWithTextButton extends View {
         mTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mStrokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mCirclePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mStrokePaint.setColor(Color.parseColor("#80ffffff"));
+        mStrokePaint.setColor(Color.parseColor("#c1ffffff"));
         mTextPaint.setColor(Color.parseColor("#ffffff"));
         mCirclePaint.setColor(fetchAccentColor());
         mTextPaint.setFakeBoldText(true);
@@ -61,7 +61,7 @@ public class RadioWithTextButton extends View {
         int w = getWidth();
         int h = getHeight();
 
-        mStrokePaint.setStrokeWidth(w / 20);
+        mStrokePaint.setStrokeWidth(w / 18);
 
         if (isChecked()) {
             canvas.drawCircle(w / 2, h / 2, w / 3, mCirclePaint);

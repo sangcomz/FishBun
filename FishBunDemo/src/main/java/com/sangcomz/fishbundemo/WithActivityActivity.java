@@ -71,28 +71,14 @@ public class WithActivityActivity extends AppCompatActivity {
                 //basic
                 case 0: {
                     FishBun.with(WithActivityActivity.this)
-                            .setPickerCount(1)
-                            .setPickerSpanCount(3)
-                            .setActionBarColor(Color.parseColor("#FFA400"), Color.parseColor("#DF9613"), false)
-                            .setActionBarTitleColor(Color.parseColor("#ffffff"))
-                            .setArrayPaths(path)
-                            .setAlbumSpanCount(1, 2)
-                            .setAlbumThumbnailSize(400)
-                            .setButtonInAlbumActivity(true)
-                            .setCamera(false)
-                            .exceptGif(true)
-                            .setReachLimitAutomaticClose(false)
-                            .setMenuText("Next")
-                            .setAllViewTitle("All photos")
-                            .setActionBarTitle("FishBun Basic")
-                            .textOnImagesSelectionLimitReached("Limit Reached")
-                            .textOnNothingSelected("Nothing Selected")
+                            .MultiPageMode()
                             .startAlbum();
                     break;
                 }
                 //dark
                 case 1: {
                     FishBun.with(WithActivityActivity.this)
+                            .MultiPageMode()
                             .setMaxCount(5)
                             .setMinCount(3)
                             .setPickerSpanCount(6)
@@ -102,19 +88,20 @@ public class WithActivityActivity extends AppCompatActivity {
                             .setAlbumSpanCount(1, 2)
                             .setButtonInAlbumActivity(false)
                             .setCamera(true)
-                            .exceptGif(false)
+                            .exceptGif(true)
                             .setReachLimitAutomaticClose(true)
                             .setHomeAsUpIndicatorDrawable(ContextCompat.getDrawable(this, R.drawable.ic_custom_back_white))
                             .setOkButtonDrawable(ContextCompat.getDrawable(this, R.drawable.ic_custom_ok))
                             .setAllViewTitle("All")
                             .setActionBarTitle("FishBun Dark")
-                            .textOnNothingSelected("Please pick one.")
+                            .textOnNothingSelected("Please select three or more!")
                             .startAlbum();
                     break;
                 }
                 //Light
                 case 2: {
                     FishBun.with(WithActivityActivity.this)
+                            .MultiPageMode()
                             .setPickerCount(50)
                             .setPickerSpanCount(4)
                             .setActionBarColor(Color.parseColor("#ffffff"), Color.parseColor("#ffffff"), true)
@@ -123,11 +110,10 @@ public class WithActivityActivity extends AppCompatActivity {
                             .setAlbumSpanCount(2, 4)
                             .setButtonInAlbumActivity(true)
                             .setCamera(false)
-                            .exceptGif(false)
+                            .exceptGif(true)
                             .setReachLimitAutomaticClose(false)
                             .setHomeAsUpIndicatorDrawable(ContextCompat.getDrawable(this, R.drawable.ic_arrow_back_black_24dp))
                             .setOkButtonDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check_black_24dp))
-//                            .setMenuText("Next")
                             .setAllViewTitle("All of your photos")
                             .setActionBarTitle("FishBun Light")
                             .textOnImagesSelectionLimitReached("You can't select any more.")
