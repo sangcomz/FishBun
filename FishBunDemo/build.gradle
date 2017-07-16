@@ -1,7 +1,14 @@
 apply plugin: 'com.android.application'
 
-android {
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+}
 
+
+android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
@@ -51,7 +58,9 @@ dependencies {
     compile project(':FishBun')
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta1'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta1'
-    compile 'com.android.support:support-v4:25.2.0'
+    compile "com.android.support:support-v4:$rootProject.support_version"
+
+    compile "com.squareup.picasso:picasso:$rootProject.picasso_version"
 }
 
 buildscript {
