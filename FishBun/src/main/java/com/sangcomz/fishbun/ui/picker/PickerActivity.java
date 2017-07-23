@@ -18,7 +18,7 @@ import android.widget.ImageView;
 
 import com.sangcomz.fishbun.BaseActivity;
 import com.sangcomz.fishbun.R;
-import com.sangcomz.fishbun.adapter.PickerGridAdapter;
+import com.sangcomz.fishbun.adapter.view.PickerGridAdapter;
 import com.sangcomz.fishbun.bean.Album;
 import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.permission.PermissionCheck;
