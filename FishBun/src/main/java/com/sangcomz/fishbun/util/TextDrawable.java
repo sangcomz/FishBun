@@ -30,14 +30,8 @@ public class TextDrawable extends Drawable {
         float textSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
                 DEFAULT_TEXTSIZE, res.getDisplayMetrics());
         mPaint.setTextSize(textSize);
-
-
-        if (Locale.getDefault().getLanguage().equals(Locale.ENGLISH.getLanguage())) {
-            System.out.println("Locale.getDefault().getDisplayLanguage() :::: " +
-                    Locale.getDefault().getLanguage());
+        if (Locale.getDefault().getLanguage().equals(Locale.ENGLISH.getLanguage()))
             mPaint.setFakeBoldText(true);
-
-        }
         mIntrinsicWidth = (int) (mPaint.measureText(mText, 0, mText.length()) + .5);
         mIntrinsicHeight = mPaint.getFontMetricsInt(null);
     }
