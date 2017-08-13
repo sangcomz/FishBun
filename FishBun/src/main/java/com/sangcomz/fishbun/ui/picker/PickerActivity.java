@@ -238,7 +238,8 @@ public class PickerActivity extends BaseActivity {
                     colorActionBarTitle,
                     maxCount,
                     messageLimitReached,
-                    isAutomaticClose);
+                    isAutomaticClose,
+                    isUseDetailView);
             adapter.setActionListener(new PickerGridAdapter.OnPhotoActionListener() {
                 @Override
                 public void onDeselect() {

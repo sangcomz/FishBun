@@ -30,4 +30,6 @@ public enum CustomizationParams {
     DRAWABLE_OK_BUTTON_DRAWABLE,
     STRING_TEXT_MENU,
     INT_COLOR_MENU_TEXT,
+
+    BOOLEAN_IS_USE_DETAIL_VIEW
 }

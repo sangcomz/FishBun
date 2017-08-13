@@ -72,6 +72,7 @@ public class WithActivityActivity extends AppCompatActivity {
                 case 0: {
                     FishBun.with(WithActivityActivity.this)
                             .MultiPageMode()
+                            .setIsUseDetailView(false)
                             .startAlbum();
                     break;
                 }
