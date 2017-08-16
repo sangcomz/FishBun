@@ -73,7 +73,6 @@ FishBun.with(WithActivityActivity.this)
 ```java
 FishBun.with(WithActivityActivity.this)
         .MultiPageMode()
-        .setIsUseDetailView(false)
         .setPickerCount(50)
         .setPickerSpanCount(4)
         .setActionBarColor(Color.parseColor("#ffffff"), Color.parseColor("#ffffff"), true)
@@ -146,6 +145,7 @@ you can use also this
 
                 FishBun.with(Your Activity or Fragment)
                         .MultiPageMode()
+                        .setIsUseDetailView(false)
                         .setPickerCount(5) //Deprecated
                         .setMaxCount(5)
                         .setMinCount(1)
