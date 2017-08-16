@@ -202,9 +202,15 @@ public class AlbumActivity extends BaseActivity {
             if (okButtonDrawable != null) {
                 item.setIcon(okButtonDrawable);
             } else if (menuText != null) {
-                item.setIcon(new TextDrawable(getResources(), menuText, colorMenuText));
+                if (colorMenuText != Integer.MAX_VALUE) {
+                    item.setIcon(new TextDrawable(getResources(), menuText, colorMenuText));
+                } else {
+                    item.setTitle(menuText);
+                    item.setIcon(null);
+                }
             }
         }
+
         return true;
     }
 
