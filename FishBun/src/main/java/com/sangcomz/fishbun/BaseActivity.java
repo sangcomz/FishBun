@@ -32,6 +32,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected Drawable okButtonDrawable;
     protected boolean isCamera;
     protected boolean isAutomaticClose;
+    protected boolean isUseDetailView;
     protected String menuText;
     protected int colorMenuText;
     protected String messageNothingSelected;
@@ -72,6 +73,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         photoSpanCount = intent.getIntExtra(CustomizationParams.INT_PHOTO_SPAN_COUNT.name(), 3);
         isCamera = intent.getBooleanExtra(CustomizationParams.BOOLEAN_IS_CAMERA.name(), false);
         isAutomaticClose = intent.getBooleanExtra(CustomizationParams.BOOLEAN_IS_AUTOMATIC_CLOSE.name(), false);
+        isUseDetailView = intent.getBooleanExtra(CustomizationParams.BOOLEAN_IS_USE_DETAIL_VIEW.name(), true);
         messageLimitReached = intent.getStringExtra(CustomizationParams.STRING_MESSAGE_LIMIT_REACHED.name());
     }
 }

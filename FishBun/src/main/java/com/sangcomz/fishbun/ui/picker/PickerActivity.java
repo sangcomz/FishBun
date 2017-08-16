@@ -95,6 +95,7 @@ public class PickerActivity extends BaseActivity {
         initView();
         if (pickerController.checkPermission())
             pickerController.displayImage(album.bucketId, exceptGif);
+
     }
 
     @Override
@@ -148,10 +149,16 @@ public class PickerActivity extends BaseActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_photo_album, menu);
         MenuItem item = menu.findItem(R.id.action_ok);
+
         if (okButtonDrawable != null) {
             item.setIcon(okButtonDrawable);
         } else if (menuText != null) {
-            item.setIcon(new TextDrawable(getResources(), menuText, colorMenuText));
+            if (colorMenuText != Integer.MAX_VALUE) {
+                item.setIcon(new TextDrawable(getResources(), menuText, colorMenuText));
+            } else {
+                item.setTitle(menuText);
+                item.setIcon(null);
+            }
         }
         return true;
     }
@@ -238,7 +245,8 @@ public class PickerActivity extends BaseActivity {
                     colorActionBarTitle,
                     maxCount,
                     messageLimitReached,
-                    isAutomaticClose);
+                    isAutomaticClose,
+                    isUseDetailView);
             adapter.setActionListener(new PickerGridAdapter.OnPhotoActionListener() {
                 @Override
                 public void onDeselect() {

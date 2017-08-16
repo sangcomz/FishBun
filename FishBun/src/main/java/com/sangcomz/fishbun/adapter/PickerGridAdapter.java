@@ -40,6 +40,7 @@ public class PickerGridAdapter
     private int maxCount;
     private String messageLimitReached;
     private boolean isAutomaticClose;
+    private boolean isUseDetailView;
 
     private String saveDir;
 
@@ -52,7 +53,8 @@ public class PickerGridAdapter
                              int circleTextColor,
                              int maxCount,
                              String messageLimitReached,
-                             boolean isAutomaticClose) {
+                             boolean isAutomaticClose,
+                             boolean isUseDetailView) {
         this.images = images;
         this.pickerController = pickerController;
         this.saveDir = saveDir;
@@ -62,6 +64,7 @@ public class PickerGridAdapter
         this.maxCount = maxCount;
         this.messageLimitReached = messageLimitReached;
         this.isAutomaticClose = isAutomaticClose;
+        this.isUseDetailView = isUseDetailView;
     }
 
 
@@ -125,17 +128,21 @@ public class PickerGridAdapter
             vh.imgThumbImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (context instanceof PickerActivity) {
-                        PickerActivity activity = (PickerActivity) context;
-                        Intent i = new Intent(activity, DetailActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putParcelableArray(Define.BUNDLE_NAME.IMAGES.name(), images);
-                        i.putExtras(activity.getIntent().getExtras());
-                        i.putExtra(Define.BUNDLE_NAME.BUNDLE.name(), bundle);
-                        i.putParcelableArrayListExtra(Define.BUNDLE_NAME.PICKED_IMAGES.name(), pickerController.getPickedImages());
-                        i.putExtra(Define.BUNDLE_NAME.POSITION.name(), imagePos);
-                        activity.startActivityForResult(i, new Define().ENTER_DETAIL_REQUEST_CODE);
-                    }
+                    if (isUseDetailView) {
+                        if (context instanceof PickerActivity) {
+                            PickerActivity activity = (PickerActivity) context;
+                            Intent i = new Intent(activity, DetailActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putParcelableArray(Define.BUNDLE_NAME.IMAGES.name(), images);
+                            i.putExtras(activity.getIntent().getExtras());
+                            i.putExtra(Define.BUNDLE_NAME.BUNDLE.name(), bundle);
+                            i.putParcelableArrayListExtra(Define.BUNDLE_NAME.PICKED_IMAGES.name(), pickerController.getPickedImages());
+                            i.putExtra(Define.BUNDLE_NAME.POSITION.name(), imagePos);
+                            activity.startActivityForResult(i, new Define().ENTER_DETAIL_REQUEST_CODE);
+                        }
+                    } else
+                        onCheckStateChange(vh.item, image);
+
                 }
             });
         }

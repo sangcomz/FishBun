@@ -9,6 +9,8 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.TypedValue;
 
+import java.util.Locale;
+
 /**
  * Created by sangcomz on 14/04/2017.
  */
@@ -28,7 +30,8 @@ public class TextDrawable extends Drawable {
         float textSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
                 DEFAULT_TEXTSIZE, res.getDisplayMetrics());
         mPaint.setTextSize(textSize);
-        mPaint.setFakeBoldText(true);
+        if (Locale.getDefault().getLanguage().equals(Locale.ENGLISH.getLanguage()))
+            mPaint.setFakeBoldText(true);
         mIntrinsicWidth = (int) (mPaint.measureText(mText, 0, mText.length()) + .5);
         mIntrinsicHeight = mPaint.getFontMetricsInt(null);
     }

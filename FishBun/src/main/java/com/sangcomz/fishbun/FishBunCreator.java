@@ -205,6 +205,12 @@ public final class FishBunCreator implements BaseProperty, CustomizationProperty
         return this;
     }
 
+    @Override
+    public FishBunCreator setIsUseDetailView(boolean isUse) {
+        bundle.putBoolean(CustomizationParams.BOOLEAN_IS_USE_DETAIL_VIEW.name(), isUse);
+        return this;
+    }
+
     public void startAlbum() {
         Context context = null;
         Activity activity = fishBun.activity.get();

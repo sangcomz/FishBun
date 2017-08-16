@@ -44,4 +44,6 @@ interface CustomizationProperty {
     FishBunCreator setMenuText(String text);
 
     FishBunCreator setMenuTextColor(int color);
+
+    FishBunCreator setIsUseDetailView(boolean isUse);
 }

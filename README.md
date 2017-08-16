@@ -15,11 +15,10 @@ FishBun is Image Picker for android.
 
 <img src="/pic/fishbuns.png">
 
-## What's New 0.7.1 FishBun
+## What's New 0.7.2 FishBun
 
-#### ● You can use Detail View (#73)
-#### ● Refactoring FishBun (#86) **[(The default usage has changed)](#how-to-use)**
-#### ● Fix Count issue (#96)
+#### ● Fix MenuText appearance like default menu text (#74)
+#### ● Add Customize Feature, You can choose whether or not to use the detail view (#100)
 
 ## Customization Screen
 
@@ -106,7 +105,7 @@ FishBun.with(WithActivityActivity.this)
     }
 
     dependencies {
-        compile('com.sangcomz:FishBun:0.7.1@aar') {
+        compile('com.sangcomz:FishBun:0.7.2@aar') {
             transitive = true
         }
     }
@@ -146,6 +145,7 @@ you can use also this
 
                 FishBun.with(Your Activity or Fragment)
                         .MultiPageMode()
+                        .setIsUseDetailView(false)
                         .setPickerCount(5) //Deprecated
                         .setMaxCount(5)
                         .setMinCount(1)

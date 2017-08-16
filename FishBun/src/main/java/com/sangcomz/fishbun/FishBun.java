@@ -53,8 +53,7 @@ public final class FishBun {
         customizationBundle.putBoolean(CustomizationParams.BOOLEAN_IS_BUTTON.name(), false);
         customizationBundle.putBoolean(CustomizationParams.BOOLEAN_STYLE_STATUS_BAR_LIGHT.name(), false);
         customizationBundle.putBoolean(CustomizationParams.BOOLEAN_IS_CAMERA.name(), false);
-
-
+        customizationBundle.putBoolean(CustomizationParams.BOOLEAN_IS_USE_DETAIL_VIEW.name(), true);
         return customizationBundle;
     }
 }
