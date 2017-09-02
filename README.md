@@ -11,21 +11,21 @@
  </a>
 </p>
 
-FishBun is a highly customizable image picker for Android.
+_FishBun_ is a highly customizable image picker for Android.
 
 <img src="/pic/fishbuns.png">
 
 
-## What's New in FishBun 0.7.2?
+## What's New in _FishBun_ 0.7.2?
 
-- Changed `MenuText` to look like the default menu text (#74)
+- Changed `MenuText` to look like the default menu text ([#74](https://github.com/sangcomz/FishBun/issues/74))
 - Added another customization feature;
-  - You can choose whether or not to use the detailed view (#100)
+  - You can choose whether or not to use the detailed view ([#100](https://github.com/sangcomz/FishBun/issues/100))
 
 
 ## Customizable Styles
 
-FishBun supports various visual styles and allows fine-tuning for details. Just to show some examples:
+_FishBun_ supports various visual styles and allows fine-tuning for details. Just to show some examples:
 
 #### Default
 
@@ -104,7 +104,7 @@ FishBun.with(WithActivityActivity.this)
 
 ## How to Setup
 
-Setting up FishBun requires to add this Gradle configuration:
+Setting up _FishBun_ requires to add this Gradle configuration:
 
     repositories {
         jcenter()
@@ -116,7 +116,7 @@ Setting up FishBun requires to add this Gradle configuration:
         }
     }
 
-and to give the following permissions to FishBun in your `Manifest`:
+and to allow the following permissions in your `Manifest`:
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -124,7 +124,7 @@ and to give the following permissions to FishBun in your `Manifest`:
 
 ## How to Use
 
-Use FishBun in an activity:
+Use _FishBun_ in an activity:
 
     FishBun.with(YourActivity).MultiPageMode().startAlbum();
 
@@ -177,7 +177,7 @@ Various customizable features can be controlled by chained methods as in:
 
 ## Android M Permission
 
-Running on Android M, FishBun checks if it has proper permission for you before reading an external storage.
+Running on Android M, _FishBun_ checks if it has proper permission for you before reading an external storage.
 
 <img src="/pic/permission.png" width="20%">
 
