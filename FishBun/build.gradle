@@ -3,7 +3,7 @@ apply plugin: 'jacoco-android'
 
 buildscript {
     ext {
-        support_version = '25.3.1'
+        support_version = '26.0.2'
         picasso_version = '2.5.2'
     }
 
@@ -22,15 +22,15 @@ buildscript {
 
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 26
+    buildToolsVersion "26.0.1"
 
     lintOptions {
         abortOnError false
     }
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 25
+        targetSdkVersion 26
         consumerProguardFile('proguard-rules.pro')
         versionCode gradle.versionCode
         versionName gradle.versionName

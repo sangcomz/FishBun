@@ -11,20 +11,23 @@
  </a>
 </p>
 
-FishBun is Image Picker for android.
+_FishBun_ is a highly customizable image picker for Android.
 
 <img src="/pic/fishbuns.png">
 
-## What's New 0.7.2 FishBun
 
-#### ● Fix MenuText appearance like default menu text (#74)
-#### ● Add Customize Feature, You can choose whether or not to use the detail view (#100)
+## What's New in _FishBun_ 0.7.3?
 
-## Customization Screen
+- Thanks to [mycoboco](https://github.com/sangcomz/FishBun/pull/104), README.md has become more beautiful :clap::clap::clap:
+- Support Oreo ([#105](https://github.com/sangcomz/FishBun/issues/105))
 
-You can create image pickers in various ways.
 
-#### Default Style
+
+## Customizable Styles
+
+_FishBun_ supports various visual styles and allows fine-tuning for details. Just to show some examples:
+
+#### Default
 
 ##### Code
 
@@ -33,10 +36,12 @@ FishBun.with(WithActivityActivity.this)
         .MultiPageMode()
         .startAlbum();
 ```
-<img src="/pic/default1.png" width=30%> <img src="/pic/default2.png" width=30%> <img src="/pic/default3.png" width=30%>
 
+##### Screenshots
 
-#### Dark Style
+<img src="/pic/default1.png" width="30%"> <img src="/pic/default2.png" width="30%"> <img src="/pic/default3.png" width="30%">
+
+#### Dark
 
 ##### Code
 
@@ -62,11 +67,11 @@ FishBun.with(WithActivityActivity.this)
         .startAlbum();
 ```
 
-<img src="/pic/dark1.png" width=30%> <img src="/pic/dark2.png" width=30%> <img src="/pic/dark3.png" width=30%>
+##### Screenshots
 
+<img src="/pic/dark1.png" width="30%"> <img src="/pic/dark2.png" width="30%"> <img src="/pic/dark3.png" width="30%">
 
-
-#### Light Style
+#### Light
 
 ##### Code
 
@@ -92,38 +97,42 @@ FishBun.with(WithActivityActivity.this)
         .startAlbum();
 ```
 
-<img src="/pic/light1.png" width=30%> <img src="/pic/light2.png" width=30%> <img src="/pic/light3.png" width=30%>
+##### Screenshots
 
+<img src="/pic/light1.png" width="30%"> <img src="/pic/light2.png" width="30%"> <img src="/pic/light3.png" width="30%">
 
 
 ## How to Setup
 
-### Gradle
+Setting up _FishBun_ requires to add this Gradle configuration:
 
     repositories {
         jcenter()
     }
 
     dependencies {
-        compile('com.sangcomz:FishBun:0.7.2@aar') {
+        compile('com.sangcomz:FishBun:0.7.3@aar') {
             transitive = true
         }
     }
 
-### Manifest
+and to allow the following permissions in your `Manifest`:
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
 
 ## How to Use
 
-    FishBun.with(Your Activity).MultiPageMode().startAlbum();
+Use _FishBun_ in an activity:
 
-if you use in Fragment,
+    FishBun.with(YourActivity).MultiPageMode().startAlbum();
 
-    FishBun.with(Your Fragment).MultiPageMode().startAlbum();
+or in a fragment:
 
-and add OnActivityResult
+    FishBun.with(YourFragment).MultiPageMode().startAlbum();
+
+and implement `OnActivityResult`:
 
     protected void onActivityResult(int requestCode, int resultCode,
                                     Intent imageData) {
@@ -131,47 +140,52 @@ and add OnActivityResult
         switch (requestCode) {
             case Define.ALBUM_REQUEST_CODE:
                 if (resultCode == RESULT_OK) {
-                    //path = imageData.getStringArrayListExtra(Define.INTENT_PATH);
-                    //You can get image path(ArrayList<String>) Under version 0.6.2
+                    // path = imageData.getStringArrayListExtra(Define.INTENT_PATH);
+                    // you can get an image path(ArrayList<String>) on <0.6.2
 
                     path = imageData.getParcelableArrayListExtra(Define.INTENT_PATH);
-                    //You can get image path(ArrayList<Uri>) Version 0.6.2 or later
+                    // you can get an image path(ArrayList<Uri>) on 0.6.2 and later
                     break;
                 }
         }
     }
 
-you can use also this
+Various customizable features can be controlled by chained methods as in:
 
-                FishBun.with(Your Activity or Fragment)
-                        .MultiPageMode()
-                        .setIsUseDetailView(false)
-                        .setPickerCount(5) //Deprecated
-                        .setMaxCount(5)
-                        .setMinCount(1)
-                        .setPickerSpanCount(6)
-                        .setActionBarColor(Color.parseColor("#795548"), Color.parseColor("#5D4037"), false)
-                        .setActionBarTitleColor(Color.parseColor("#ffffff"))
-                        .setArrayPaths(path)
-                        .setAlbumSpanCount(2, 4)
-                        .setButtonInAlbumActivity(false)
-                        .setCamera(true)
-                        .setReachLimitAutomaticClose(true)
-                        .setHomeAsUpIndicatorDrawable(ContextCompat.getDrawable(this, R.drawable.ic_custom_back_white))
-                        .setOkButtonDrawable(ContextCompat.getDrawable(this, R.drawable.ic_custom_ok))
-                        .setAllViewTitle("All")
-                        .setActionBarTitle("Image Library")
-                        .textOnImagesSelectionLimitReached("Limit Reached!")
-                        .textOnNothingSelected("Nothing Selected")
-                        .startAlbum();
-                        
+    FishBun.with(YourActivity or YourFragment)
+            .MultiPageMode()
+            .setIsUseDetailView(false)
+            .setPickerCount(5) //Deprecated
+            .setMaxCount(5)
+            .setMinCount(1)
+            .setPickerSpanCount(6)
+            .setActionBarColor(Color.parseColor("#795548"), Color.parseColor("#5D4037"), false)
+            .setActionBarTitleColor(Color.parseColor("#ffffff"))
+            .setArrayPaths(path)
+            .setAlbumSpanCount(2, 4)
+            .setButtonInAlbumActivity(false)
+            .setCamera(true)
+            .setReachLimitAutomaticClose(true)
+            .setHomeAsUpIndicatorDrawable(ContextCompat.getDrawable(this, R.drawable.ic_custom_back_white))
+            .setOkButtonDrawable(ContextCompat.getDrawable(this, R.drawable.ic_custom_ok))
+            .setAllViewTitle("All")
+            .setActionBarTitle("Image Library")
+            .textOnImagesSelectionLimitReached("Limit Reached!")
+            .textOnNothingSelected("Nothing Selected")
+            .startAlbum();
+
+
 ## Android M Permission
-FishBun check permission before reading external storage.
 
-<img src="/pic/permission.png" width=20%>
+Running on Android M, _FishBun_ checks if it has proper permission for you before reading an external storage.
 
-# Contribute
-We welcome any contributions.
+<img src="/pic/permission.png" width="20%">
+
+
+# Contribution
+
+Any suggestions or contributions would be welcomed.
+
 
 # License
 
