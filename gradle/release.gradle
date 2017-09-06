@@ -99,7 +99,7 @@ if (project.rootProject.file('local.properties').isFile()) {
         tagName = version
         targetCommitish = 'master'
         body = """## Release Note
-* fix MenuText appearance like default menu text (#74)
+* fix readme.md
 * add customize feature, whether or not to use the detail view (#100)"""
         name = version
     }
