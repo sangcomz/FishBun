@@ -16,11 +16,11 @@ _FishBun_ is a highly customizable image picker for Android.
 <img src="/pic/fishbuns.png">
 
 
-## What's New in _FishBun_ 0.7.2?
+## What's New in _FishBun_ 0.7.3?
 
-- Changed `MenuText` to look like the default menu text ([#74](https://github.com/sangcomz/FishBun/issues/74))
-- Added another customization feature;
-  - You can choose whether or not to use the detailed view ([#100](https://github.com/sangcomz/FishBun/issues/100))
+- Thanks to [mycoboco](https://github.com/sangcomz/FishBun/pull/104), README.md has become more beautiful :clap::clap::clap:
+- Support Oreo ([#105](https://github.com/sangcomz/FishBun/issues/105))
+
 
 
 ## Customizable Styles
@@ -111,7 +111,7 @@ Setting up _FishBun_ requires to add this Gradle configuration:
     }
 
     dependencies {
-        compile('com.sangcomz:FishBun:0.7.2@aar') {
+        compile('com.sangcomz:FishBun:0.7.3@aar') {
             transitive = true
         }
     }
