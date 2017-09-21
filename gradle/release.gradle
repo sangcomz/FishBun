@@ -100,7 +100,7 @@ if (project.rootProject.file('local.properties').isFile()) {
         targetCommitish = 'master'
         body = """## Release Note
 * fix readme.md
-* add customize feature, whether or not to use the detail view (#100)"""
+* fix do not compile bug in gradle:3.0.0 (#105)"""
         name = version
     }
 }
