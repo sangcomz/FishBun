@@ -109,13 +109,15 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void initAdapter() {
-        onCheckStateChange(images[initPosition]);
+        if(images != null) {
+            onCheckStateChange(images[0]);
 
-        DetailViewPagerAdapter adapter = new DetailViewPagerAdapter(getLayoutInflater(), images);
-        vpDetailPager.setAdapter(adapter);
-        vpDetailPager.setCurrentItem(initPosition);
+            DetailViewPagerAdapter adapter = new DetailViewPagerAdapter(getLayoutInflater(), images);
+            vpDetailPager.setAdapter(adapter);
+            vpDetailPager.setCurrentItem(0);
 
-        vpDetailPager.addOnPageChangeListener(this);
+            vpDetailPager.addOnPageChangeListener(this);
+        }
     }
 
     public void onCheckStateChange(Uri image) {

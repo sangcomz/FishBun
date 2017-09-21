@@ -53,7 +53,6 @@ public class PickerActivity extends BaseActivity {
         try {
             outState.putParcelableArrayList(define.SAVE_INSTANCE_PICK_IMAGES, pickerController.getPickedImages());
             outState.putString(define.SAVE_INSTANCE_SAVED_IMAGE, pickerController.getSavePath());
-            outState.putParcelableArray(define.SAVE_INSTANCE_SAVED_IMAGE_THUMBNAILS, adapter.getImages());
             outState.putParcelableArrayList(define.SAVE_INSTANCE_NEW_IMAGES, pickerController.getAddImagePaths());
         } catch (Exception e) {
             Log.d(TAG, e.toString());
