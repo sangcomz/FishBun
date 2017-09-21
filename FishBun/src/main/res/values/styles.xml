@@ -4,16 +4,6 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-
-    <style name="SquareTextView">
-        <!-- some graphical improvements just for the demo. feel free to remove -->
-        <!--<item name="@android:attr/padding">5dp</item>-->
-        <item name="@android:attr/gravity">center</item>
-
-        <!-- use the next line to alter the minimum text size (uncomment first)-->
-        <item name="@attr/minTextSize">5dp</item>
-    </style>
-
     <!--Theme.AppCompat.Light.NoActionBar-->
 
     <style name="FishBunTheme" parent="Theme.AppCompat.Light.NoActionBar" />
