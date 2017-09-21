@@ -16,7 +16,7 @@ _FishBun_ is a highly customizable image picker for Android.
 <img src="/pic/fishbuns.png">
 
 
-## What's New in _FishBun_ 0.7.4?
+## What's New in _FishBun_ 0.7.5?
 
 - Thanks to [mycoboco](https://github.com/sangcomz/FishBun/pull/104), README.md has become more beautiful :clap::clap::clap:
 - Support Oreo ([#105](https://github.com/sangcomz/FishBun/issues/105))
@@ -111,7 +111,7 @@ Setting up _FishBun_ requires to add this Gradle configuration:
     }
 
     dependencies {
-        compile('com.sangcomz:FishBun:0.7.4@aar') {
+        compile('com.sangcomz:FishBun:0.7.5@aar') {
             transitive = true
         }
     }
