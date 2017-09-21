@@ -133,7 +133,8 @@ public class PickerGridAdapter
                             PickerActivity activity = (PickerActivity) context;
                             Intent i = new Intent(activity, DetailActivity.class);
                             Bundle bundle = new Bundle();
-                            bundle.putParcelableArray(Define.BUNDLE_NAME.IMAGES.name(), images);
+                            Uri[] pickedImage = {images[imagePos]};
+                            bundle.putParcelableArray(Define.BUNDLE_NAME.IMAGES.name(), pickedImage);
                             i.putExtras(activity.getIntent().getExtras());
                             i.putExtra(Define.BUNDLE_NAME.BUNDLE.name(), bundle);
                             i.putParcelableArrayListExtra(Define.BUNDLE_NAME.PICKED_IMAGES.name(), pickerController.getPickedImages());
