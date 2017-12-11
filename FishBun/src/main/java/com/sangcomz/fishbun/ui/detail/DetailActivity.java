@@ -15,7 +15,7 @@ import android.widget.ImageButton;
 
 import com.sangcomz.fishbun.BaseActivity;
 import com.sangcomz.fishbun.R;
-import com.sangcomz.fishbun.adapter.DetailViewPagerAdapter;
+import com.sangcomz.fishbun.adapter.view.DetailViewPagerAdapter;
 import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.util.RadioWithTextButton;
 

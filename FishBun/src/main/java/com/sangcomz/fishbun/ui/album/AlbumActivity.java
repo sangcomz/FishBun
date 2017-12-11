@@ -21,7 +21,7 @@ import android.widget.TextView;
 import com.sangcomz.fishbun.BaseActivity;
 import com.sangcomz.fishbun.BaseParams;
 import com.sangcomz.fishbun.R;
-import com.sangcomz.fishbun.adapter.AlbumListAdapter;
+import com.sangcomz.fishbun.adapter.view.AlbumListAdapter;
 import com.sangcomz.fishbun.bean.Album;
 import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.permission.PermissionCheck;

@@ -1,4 +1,4 @@
-package com.sangcomz.fishbun.adapter;
+package com.sangcomz.fishbun.adapter.view;
 
 import android.app.Activity;
 import android.content.Context;
@@ -13,11 +13,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.sangcomz.fishbun.FishBun;
 import com.sangcomz.fishbun.R;
 import com.sangcomz.fishbun.bean.Album;
 import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.ui.picker.PickerActivity;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,12 +55,10 @@ public class AlbumListAdapter
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.imgAlbumThumb.setImageDrawable(null);
-        Picasso
-                .with(holder.imgAlbumThumb.getContext())
-                .load(Uri.parse(albumList.get(position).thumbnailPath))
-                .fit()
-                .centerCrop()
-                .into(holder.imgAlbumThumb);
+        FishBun.imageAdapter.loadImage(holder.imgAlbumThumb.getContext(),
+                holder.imgAlbumThumb,
+                Uri.parse(albumList.get(position).thumbnailPath));
+
         holder.view.setTag(albumList.get(position));
         Album a = (Album) holder.view.getTag();
         holder.txtAlbumName.setText(albumList.get(position).bucketName);

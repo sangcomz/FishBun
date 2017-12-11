@@ -5,6 +5,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
+import com.sangcomz.fishbun.adapter.image.ImageAdapter;
+
 import java.lang.ref.WeakReference;
 
 
@@ -12,6 +14,8 @@ public final class FishBun {
 
     protected WeakReference<Activity> activity = null;
     protected WeakReference<Fragment> fragment = null;
+
+    public static ImageAdapter imageAdapter = null;
 
     public static FishBun with(Activity activity) {
         return new FishBun(activity, null);
@@ -26,12 +30,20 @@ public final class FishBun {
         this.fragment = new WeakReference<>(fragment);
     }
 
-    public FishBunCreator MultiPageMode() {
+    public FishBunCreator setImageAdapter(ImageAdapter imageAdapter) {
+        FishBun.imageAdapter = imageAdapter;
         Bundle bundle = new Bundle();
         bundle.putAll(initBaseParams());
         bundle.putAll(initCustomizationParams());
         return new FishBunCreator(this, bundle);
     }
+
+//    public FishBunCreator MultiPageMode() {
+//        Bundle bundle = new Bundle();
+//        bundle.putAll(initBaseParams());
+//        bundle.putAll(initCustomizationParams());
+//        return new FishBunCreator(this, bundle);
+//    }
 
     private Bundle initBaseParams() {
         Bundle baseBundle = new Bundle();
