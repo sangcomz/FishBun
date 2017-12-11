@@ -4,6 +4,6 @@ gradle.ext.versionCode = 14
 gradle.ext.versionName = '0.7.7'
 
 gradle.ext.set('minSdk', 15)
-gradle.ext.set('targetSdk', 26)
-gradle.ext.set('compileSdk', 26)
+gradle.ext.set('targetSdk', 27)
+gradle.ext.set('compileSdk', 27)
 gradle.ext.set('buildTools', '26.0.2')
