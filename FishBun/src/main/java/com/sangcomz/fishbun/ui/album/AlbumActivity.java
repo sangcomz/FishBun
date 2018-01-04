@@ -19,7 +19,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.sangcomz.fishbun.BaseActivity;
-import com.sangcomz.fishbun.BaseParams;
 import com.sangcomz.fishbun.R;
 import com.sangcomz.fishbun.adapter.view.AlbumListAdapter;
 import com.sangcomz.fishbun.bean.Album;
@@ -46,7 +45,6 @@ public class AlbumActivity extends BaseActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         if (adapter != null) {
-            outState.putParcelableArrayList(define.SAVE_INSTANCE_PICK_IMAGES, adapter.getPickedImagePath());
             outState.putParcelableArrayList(define.SAVE_INSTANCE_ALBUM_LIST, (ArrayList<? extends Parcelable>) adapter.getAlbumList());
         }
         super.onSaveInstanceState(outState);
@@ -62,9 +60,7 @@ public class AlbumActivity extends BaseActivity {
         ArrayList<Uri> pickedImagePath = outState.getParcelableArrayList(define.SAVE_INSTANCE_PICK_IMAGES);
 
         if (albumList != null && thumbList != null && pickedImagePath != null) {
-            adapter = new AlbumListAdapter(pickedImagePath,
-                    albumSize,
-                    getIntent().getExtras());
+            adapter = new AlbumListAdapter();
             adapter.setAlbumList(albumList);
         }
     }
@@ -76,7 +72,7 @@ public class AlbumActivity extends BaseActivity {
         initView();
         initController();
         if (albumController.checkPermission())
-            albumController.getAlbumList(titleAllView, exceptGif);
+            albumController.getAlbumList(fishton.titleAlbumAllView, fishton.isExceptGif);
     }
 
     @Override
@@ -86,15 +82,15 @@ public class AlbumActivity extends BaseActivity {
                 recyclerAlbumList.getLayoutManager() != null) {
             if (uiUtil.isLandscape(this))
                 ((GridLayoutManager) recyclerAlbumList.getLayoutManager())
-                        .setSpanCount(albumLandScapeSize);
+                        .setSpanCount(fishton.albumLandscapeSpanCount);
             else
                 ((GridLayoutManager) recyclerAlbumList.getLayoutManager())
-                        .setSpanCount(albumPortraitSize);
+                        .setSpanCount(fishton.albumPortraitSpanCount);
         }
     }
 
     private void initView() {
-        LinearLayout linearAlbumCamera = (LinearLayout) findViewById(R.id.lin_album_camera);
+        LinearLayout linearAlbumCamera = findViewById(R.id.lin_album_camera);
         linearAlbumCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -106,13 +102,13 @@ public class AlbumActivity extends BaseActivity {
 
 
     private void initRecyclerView() {
-        recyclerAlbumList = (RecyclerView) findViewById(R.id.recycler_album_list);
+        recyclerAlbumList = findViewById(R.id.recycler_album_list);
 
         GridLayoutManager layoutManager;
         if (uiUtil.isLandscape(this))
-            layoutManager = new GridLayoutManager(this, albumLandScapeSize);
+            layoutManager = new GridLayoutManager(this, fishton.albumLandscapeSpanCount);
         else
-            layoutManager = new GridLayoutManager(this, albumPortraitSize);
+            layoutManager = new GridLayoutManager(this, fishton.albumPortraitSpanCount);
 
         if (recyclerAlbumList != null) {
             recyclerAlbumList.setLayoutManager(layoutManager);
@@ -120,27 +116,27 @@ public class AlbumActivity extends BaseActivity {
     }
 
     private void initToolBar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_album_bar);
-        relAlbumEmpty = (RelativeLayout) findViewById(R.id.rel_album_empty);
-        progressAlbumText = (TextView) findViewById(R.id.txt_album_msg);
+        Toolbar toolbar = findViewById(R.id.toolbar_album_bar);
+        relAlbumEmpty = findViewById(R.id.rel_album_empty);
+        progressAlbumText = findViewById(R.id.txt_album_msg);
         progressAlbumText.setText(R.string.msg_loading_image);
 
         setSupportActionBar(toolbar);
 
-        toolbar.setBackgroundColor(colorActionBar);
-        toolbar.setTitleTextColor(colorActionBarTitle);
+        toolbar.setBackgroundColor(fishton.colorActionBar);
+        toolbar.setTitleTextColor(fishton.colorActionBarTitle);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            uiUtil.setStatusBarColor(this, colorStatusBar);
+            uiUtil.setStatusBarColor(this, fishton.colorStatusBar);
         }
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(titleActionBar);
+            getSupportActionBar().setTitle(fishton.titleActionBar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            if (homeAsUpIndicatorDrawable != null)
-                getSupportActionBar().setHomeAsUpIndicator(homeAsUpIndicatorDrawable);
+            if (fishton.drawableHomeAsUpIndicator != null)
+                getSupportActionBar().setHomeAsUpIndicator(fishton.drawableHomeAsUpIndicator);
         }
 
-        if (statusBarLight
+        if (fishton.isStatusBarLight
                 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             toolbar.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
@@ -153,10 +149,7 @@ public class AlbumActivity extends BaseActivity {
 
     private void setAlbumListAdapter() {
         if (adapter == null) {
-            ArrayList<Uri> data = getIntent().getParcelableArrayListExtra(BaseParams.ARRAY_PATHS.name());
-            adapter = new AlbumListAdapter(data,
-                    albumSize,
-                    getIntent().getExtras());
+            adapter = new AlbumListAdapter();
         }
         adapter.setAlbumList(albumList);
         recyclerAlbumList.setAdapter(adapter);
@@ -179,7 +172,7 @@ public class AlbumActivity extends BaseActivity {
     private void refreshList(int position, ArrayList<Uri> imagePath) {
         if (imagePath.size() > 0) {
             if (position == 0) {
-                albumController.getAlbumList(titleAllView, exceptGif);
+                albumController.getAlbumList(fishton.titleAlbumAllView, fishton.isExceptGif);
             } else {
                 albumList.get(0).counter += imagePath.size();
                 albumList.get(position).counter += imagePath.size();
@@ -196,16 +189,16 @@ public class AlbumActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        if (isButton) {
+        if (fishton.isButton) {
             getMenuInflater().inflate(R.menu.menu_photo_album, menu);
             MenuItem item = menu.findItem(R.id.action_ok);
-            if (okButtonDrawable != null) {
-                item.setIcon(okButtonDrawable);
-            } else if (menuText != null) {
-                if (colorMenuText != Integer.MAX_VALUE) {
-                    item.setIcon(new TextDrawable(getResources(), menuText, colorMenuText));
+            if (fishton.drawableOkButton != null) {
+                item.setIcon(fishton.drawableOkButton);
+            } else if (fishton.strTextMenu != null) {
+                if (fishton.colorTextMenu != Integer.MAX_VALUE) {
+                    item.setIcon(new TextDrawable(getResources(), fishton.strTextMenu, fishton.colorTextMenu));
                 } else {
-                    item.setTitle(menuText);
+                    item.setTitle(fishton.strTextMenu);
                     item.setIcon(null);
                 }
             }
@@ -221,13 +214,10 @@ public class AlbumActivity extends BaseActivity {
             finish();
         } else if (id == R.id.action_ok) {
             if (adapter != null) {
-                if (adapter.getPickedImagePath().size() < minCount) {
-                    Snackbar.make(recyclerAlbumList, messageNothingSelected, Snackbar.LENGTH_SHORT).show();
+                if (fishton.selectedImages.size() < fishton.minCount) {
+                    Snackbar.make(recyclerAlbumList, fishton.messageNothingSelected, Snackbar.LENGTH_SHORT).show();
                 } else {
-                    Intent i = new Intent();
-                    i.putParcelableArrayListExtra(Define.INTENT_PATH, adapter.getPickedImagePath());
-                    setResult(RESULT_OK, i);
-                    finish();
+                    finishActivity();
                 }
             }
 
@@ -237,13 +227,13 @@ public class AlbumActivity extends BaseActivity {
 
     public void changeToolbarTitle() {
         if (adapter == null) return;
-        int total = adapter.getPickedImagePath().size();
+        int total = fishton.selectedImages.size();
 
         if (getSupportActionBar() != null) {
-            if (maxCount == 1)
-                getSupportActionBar().setTitle(titleActionBar);
+            if (fishton.maxCount == 1)
+                getSupportActionBar().setTitle(fishton.titleActionBar);
             else
-                getSupportActionBar().setTitle(titleActionBar + "(" + String.valueOf(total) + "/" + maxCount + ")");
+                getSupportActionBar().setTitle(fishton.titleActionBar + "(" + String.valueOf(total) + "/" + fishton.maxCount + ")");
         }
     }
 
@@ -253,16 +243,12 @@ public class AlbumActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == define.ENTER_ALBUM_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                setResult(RESULT_OK, data);
-                finish();
+                finishActivity();
             } else if (resultCode == define.TRANS_IMAGES_RESULT_CODE) {
-                ArrayList<Uri> path = data.getParcelableArrayListExtra(Define.INTENT_PATH);
+//                ArrayList<Uri> path = data.getParcelableArrayListExtra(Define.INTENT_PATH);
                 ArrayList<Uri> addPath = data.getParcelableArrayListExtra(define.INTENT_ADD_PATH);
                 int position = data.getIntExtra(define.INTENT_POSITION, -1);
                 refreshList(position, addPath);
-                if (adapter != null)
-                    adapter.setPickedImagePath(path);
-
                 changeToolbarTitle();
             }
         } else if (requestCode == define.TAKE_A_PICK_REQUEST_CODE) {
@@ -270,7 +256,7 @@ public class AlbumActivity extends BaseActivity {
                 new SingleMediaScanner(this, new File(albumController.getSavePath()), new ScanListener() {
                     @Override
                     protected void onScanCompleted() {
-                        albumController.getAlbumList(titleAllView, exceptGif);
+                        albumController.getAlbumList(fishton.titleAlbumAllView, fishton.isExceptGif);
                     }
                 });
             } else {
@@ -290,7 +276,7 @@ public class AlbumActivity extends BaseActivity {
                 if (grantResults.length > 0) {
                     if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                         // permission was granted, yay!
-                        albumController.getAlbumList(titleAllView, exceptGif);
+                        albumController.getAlbumList(fishton.titleAlbumAllView, fishton.isExceptGif);
                     } else {
                         new PermissionCheck(this).showPermissionDialog();
                         finish();
@@ -298,6 +284,13 @@ public class AlbumActivity extends BaseActivity {
                 }
             }
         }
+    }
 
+
+    private void finishActivity() {
+        Intent i = new Intent();
+        i.putParcelableArrayListExtra(Define.INTENT_PATH, fishton.selectedImages);
+        setResult(RESULT_OK, i);
+        finish();
     }
 }

@@ -2,7 +2,6 @@ package com.sangcomz.fishbun.ui.picker;
 
 import android.app.Activity;
 import android.content.ContentResolver;
-import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -10,10 +9,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
-import android.view.MotionEvent;
 
-import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.permission.PermissionCheck;
 import com.sangcomz.fishbun.util.CameraUtil;
 import com.sangcomz.fishbun.util.RegexUtil;
@@ -25,46 +21,18 @@ import java.util.ArrayList;
  */
 public class PickerController {
     private PickerActivity pickerActivity;
-    private RecyclerView recyclerView;
-    private RecyclerView.OnItemTouchListener OnItemTouchListener;
     private ArrayList<Uri> addImagePaths = new ArrayList<>();
-    private String savePath;
     private ContentResolver resolver;
     private CameraUtil cameraUtil = new CameraUtil();
     private String pathDir = "";
-    private ArrayList<Uri> pickedImages;
 
 
-    PickerController(PickerActivity pickerActivity, RecyclerView recyclerView) {
+    PickerController(PickerActivity pickerActivity) {
         this.pickerActivity = pickerActivity;
-        this.recyclerView = recyclerView;
 
         resolver = pickerActivity.getContentResolver();
-
-        OnItemTouchListener = new RecyclerView.OnItemTouchListener() {
-            @Override
-            public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-                return true;
-            }
-
-            @Override
-            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-
-            }
-
-            @Override
-            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-            }
-        };
     }
 
-    public void setPickedImages(ArrayList<Uri> pickedImages) {
-        this.pickedImages = pickedImages;
-    }
-
-    public ArrayList<Uri> getPickedImages() {
-        return pickedImages;
-    }
 
     public void takePicture(Activity activity, String saveDir) {
         cameraUtil.takePicture(activity, saveDir);
@@ -95,30 +63,6 @@ public class PickerController {
         this.addImagePaths = addImagePaths;
     }
 
-    public void finishActivity() {
-        ArrayList<Uri> path = new ArrayList<>();
-        for (int i = 0; i < pickedImages.size(); i++) {
-            path.add(pickedImages.get(i));
-        }
-        Intent i = new Intent();
-        i.putParcelableArrayListExtra(Define.INTENT_PATH, path);
-        pickerActivity.setResult(pickerActivity.RESULT_OK, i);
-        pickerActivity.finish();
-    }
-
-    void transImageFinish(int position) {
-        Define define = new Define();
-        ArrayList<Uri> path = new ArrayList<>();
-        for (int i = 0; i < pickedImages.size(); i++) {
-            path.add(pickedImages.get(i));
-        }
-        Intent i = new Intent();
-        i.putParcelableArrayListExtra(Define.INTENT_PATH, path);
-        i.putParcelableArrayListExtra(define.INTENT_ADD_PATH, getAddImagePaths());
-        i.putExtra(define.INTENT_POSITION, position);
-        pickerActivity.setResult(define.TRANS_IMAGES_RESULT_CODE, i);
-        pickerActivity.finish();
-    }
 
     boolean checkPermission() {
         PermissionCheck permissionCheck = new PermissionCheck(pickerActivity);
@@ -210,7 +154,7 @@ public class PickerController {
         return pathDir;
     }
 
-    public int getPickedImageIndexOf(Uri uri) {
-        return pickedImages.indexOf(uri);
+    public void finishActivity() {
+        pickerActivity.finishActivity();
     }
 }
