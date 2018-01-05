@@ -57,9 +57,8 @@ public class AlbumActivity extends BaseActivity {
         // Restore state members from saved instance
         List<Album> albumList = outState.getParcelableArrayList(define.SAVE_INSTANCE_ALBUM_LIST);
         List<Uri> thumbList = outState.getParcelableArrayList(define.SAVE_INSTANCE_ALBUM_THUMB_LIST);
-        ArrayList<Uri> pickedImagePath = outState.getParcelableArrayList(define.SAVE_INSTANCE_PICK_IMAGES);
 
-        if (albumList != null && thumbList != null && pickedImagePath != null) {
+        if (albumList != null && thumbList != null && fishton.selectedImages != null) {
             adapter = new AlbumListAdapter();
             adapter.setAlbumList(albumList);
         }

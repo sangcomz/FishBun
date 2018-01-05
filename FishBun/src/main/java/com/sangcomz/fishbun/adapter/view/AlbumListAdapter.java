@@ -94,8 +94,8 @@ public class AlbumListAdapter
             imgAlbumThumb = view.findViewById(R.id.img_album_thumb);
             imgAlbumThumb.setLayoutParams(new LinearLayout.LayoutParams(albumSize, albumSize));
 
-            txtAlbumName = (TextView) view.findViewById(R.id.txt_album_name);
-            txtAlbumCount = (TextView) view.findViewById(R.id.txt_album_count);
+            txtAlbumName = view.findViewById(R.id.txt_album_name);
+            txtAlbumCount =  view.findViewById(R.id.txt_album_count);
         }
     }
 }

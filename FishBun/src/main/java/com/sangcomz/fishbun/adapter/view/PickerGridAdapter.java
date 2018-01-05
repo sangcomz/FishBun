@@ -256,8 +256,8 @@ public class PickerGridAdapter
         public ViewHolderImage(View view) {
             super(view);
             item = view;
-            imgThumbImage = (ImageView) view.findViewById(R.id.img_thumb_image);
-            btnThumbCount = (RadioWithTextButton) view.findViewById(R.id.btn_thumb_count);
+            imgThumbImage = view.findViewById(R.id.img_thumb_image);
+            btnThumbCount =  view.findViewById(R.id.btn_thumb_count);
         }
     }
 
@@ -268,7 +268,7 @@ public class PickerGridAdapter
 
         public ViewHolderHeader(View view) {
             super(view);
-            header = (RelativeLayout) itemView.findViewById(R.id.rel_header_area);
+            header = itemView.findViewById(R.id.rel_header_area);
         }
     }
 }

@@ -28,9 +28,8 @@ public final class FishBunCreator implements BaseProperty, CustomizationProperty
         this.fishton = Fishton.getInstance();
     }
 
-    public FishBunCreator setArrayPaths(ArrayList<Uri> arrayPaths) {
-        fishton.selectedImages = arrayPaths;
-//        this.arrayPaths = arrayPaths;
+    public FishBunCreator setSelectedImages(ArrayList<Uri> selectedImages) {
+        fishton.selectedImages = selectedImages;
         return this;
     }
 
@@ -174,8 +173,6 @@ public final class FishBunCreator implements BaseProperty, CustomizationProperty
     @Override
     public FishBunCreator setHomeAsUpIndicatorDrawable(Drawable icon) {
         fishton.drawableHomeAsUpIndicator = icon;
-//        bundle.putParcelable(CustomizationParams.DRAWABLE_HOME_AS_UP_INDICATOR.name(),
-//                getBitmap(icon));
         return this;
     }
 
