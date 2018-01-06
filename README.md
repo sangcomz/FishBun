@@ -16,10 +16,10 @@ _FishBun_ is a highly customizable image picker for Android.
 <img src="/pic/fishbuns.png">
 
 
-## What's New in _FishBun_ 0.7.7?
+## What's New in _FishBun_ 0.8.0?
 
-- Thanks to [mycoboco](https://github.com/sangcomz/FishBun/pull/104), README.md has become more beautiful :clap::clap::clap:
-- Support Oreo ([#105](https://github.com/sangcomz/FishBun/issues/105))
+- Fix TransactionTooLargeException ([#107](https://github.com/sangcomz/FishBun/issues/107))
+- Add Image Adapter [Check How to Use](## How to Use)
 
 
 
