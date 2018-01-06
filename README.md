@@ -19,7 +19,7 @@ _FishBun_ is a highly customizable image picker for Android.
 ## What's New in _FishBun_ 0.8.0?
 
 - Fix TransactionTooLargeException ([#107](https://github.com/sangcomz/FishBun/issues/107))
-- Add Image Adapter [Check How to Use](##How to Use)
+- Add Image Adapter [Check How to Use](##how-to-use)
 
 
 
