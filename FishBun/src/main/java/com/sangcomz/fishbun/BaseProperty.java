@@ -9,7 +9,7 @@ import java.util.ArrayList;
  */
 
 interface BaseProperty {
-    FishBunCreator setArrayPaths(ArrayList<Uri> arrayPaths);
+    FishBunCreator setSelectedImages(ArrayList<Uri> arrayPaths);
 
     FishBunCreator setPickerCount(int count);
 

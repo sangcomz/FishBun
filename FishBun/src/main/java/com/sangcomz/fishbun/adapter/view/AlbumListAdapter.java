@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,31 +12,24 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.sangcomz.fishbun.FishBun;
+import com.sangcomz.fishbun.Fishton;
 import com.sangcomz.fishbun.R;
 import com.sangcomz.fishbun.bean.Album;
 import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.ui.picker.PickerActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
 public class AlbumListAdapter
         extends RecyclerView.Adapter<AlbumListAdapter.ViewHolder> {
 
+    private Fishton fishton;
     private List<Album> albumList;
-    private ArrayList<Uri> pickedImagePath = new ArrayList<>();
-    private int albumSize;
-    private Bundle bundle;
 
 
-    public AlbumListAdapter(ArrayList<Uri> pickedImagePath,
-                            int albumSize,
-                            Bundle bundle) {
-        this.pickedImagePath = pickedImagePath;
-        this.albumSize = albumSize;
-        this.bundle = bundle;
+    public AlbumListAdapter() {
+        fishton = Fishton.getInstance();
     }
 
     public void setAlbumList(List<Album> albumList) {
@@ -49,15 +41,16 @@ public class AlbumListAdapter
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.album_item, parent, false);
-        return new ViewHolder(view, albumSize);
+        return new ViewHolder(view, fishton.albumThumbnailSize);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.imgAlbumThumb.setImageDrawable(null);
-        FishBun.imageAdapter.loadImage(holder.imgAlbumThumb.getContext(),
-                holder.imgAlbumThumb,
-                Uri.parse(albumList.get(position).thumbnailPath));
+        Fishton.getInstance().imageAdapter
+                .loadImage(holder.imgAlbumThumb.getContext(),
+                        holder.imgAlbumThumb,
+                        Uri.parse(albumList.get(position).thumbnailPath));
 
         holder.view.setTag(albumList.get(position));
         Album a = (Album) holder.view.getTag();
@@ -73,8 +66,6 @@ public class AlbumListAdapter
                 Intent i = new Intent(context, PickerActivity.class);
                 i.putExtra(Define.BUNDLE_NAME.ALBUM.name(), a);
                 i.putExtra(Define.BUNDLE_NAME.POSITION.name(), position);
-                i.putParcelableArrayListExtra(Define.INTENT_PATH, pickedImagePath);
-                i.putExtras(bundle);
                 ((Activity) context).startActivityForResult(i, new Define().ENTER_ALBUM_REQUEST_CODE);
             }
         });
@@ -85,13 +76,6 @@ public class AlbumListAdapter
         return albumList.size();
     }
 
-    public ArrayList<Uri> getPickedImagePath() {
-        return pickedImagePath;
-    }
-
-    public void setPickedImagePath(ArrayList<Uri> pickedImagePath) {
-        this.pickedImagePath = pickedImagePath;
-    }
 
     public List<Album> getAlbumList() {
         return albumList;
@@ -107,11 +91,11 @@ public class AlbumListAdapter
         public ViewHolder(View view, int albumSize) {
             super(view);
             this.view = view;
-            imgAlbumThumb = (ImageView) view.findViewById(R.id.img_album_thumb);
+            imgAlbumThumb = view.findViewById(R.id.img_album_thumb);
             imgAlbumThumb.setLayoutParams(new LinearLayout.LayoutParams(albumSize, albumSize));
 
-            txtAlbumName = (TextView) view.findViewById(R.id.txt_album_name);
-            txtAlbumCount = (TextView) view.findViewById(R.id.txt_album_count);
+            txtAlbumName = view.findViewById(R.id.txt_album_name);
+            txtAlbumCount =  view.findViewById(R.id.txt_album_count);
         }
     }
 }

@@ -57,7 +57,7 @@ public class SubFragment extends Fragment {
                         .setImageAdapter(new PicassoAdapter())
                         .setPickerCount(10)
                         .setActionBarColor(Color.parseColor("#3F51B5"), Color.parseColor("#303F9F"))
-                        .setArrayPaths(path)
+                        .setSelectedImages(path)
                         .setCamera(true)
                         .startAlbum();
             }
