@@ -59,11 +59,6 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     private void initValue() {
         Intent intent = getIntent();
         initPosition = intent.getIntExtra(Define.BUNDLE_NAME.POSITION.name(), -1);
-//        Parcelable[] parcelables = intent.getBundleExtra(Define.BUNDLE_NAME.BUNDLE.name()).getParcelableArray(Define.BUNDLE_NAME.IMAGES.name());
-//        if (parcelables != null) {
-//            pickerImages = new Uri[parcelables.length];
-//            System.arraycopy(parcelables, 0, pickerImages, 0, parcelables.length);
-//        }
     }
 
     private void initToolBar() {

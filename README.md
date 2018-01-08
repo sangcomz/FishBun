@@ -16,10 +16,10 @@ _FishBun_ is a highly customizable image picker for Android.
 <img src="/pic/fishbuns.png">
 
 
-## What's New in _FishBun_ 0.7.7?
+## What's New in _FishBun_ 0.8.0?
 
-- Thanks to [mycoboco](https://github.com/sangcomz/FishBun/pull/104), README.md has become more beautiful :clap::clap::clap:
-- Support Oreo ([#105](https://github.com/sangcomz/FishBun/issues/105))
+- Fix TransactionTooLargeException ([#107](https://github.com/sangcomz/FishBun/issues/107))
+- Add Image Adapter (Picasso, Glide) (Remove MultiPageMode())[Check How to Use](#how-to-use)
 
 
 
@@ -33,7 +33,7 @@ _FishBun_ supports various visual styles and allows fine-tuning for details. Jus
 
 ```java
 FishBun.with(WithActivityActivity.this)
-        .MultiPageMode()
+        .setImageAdapter(new GlideAdapter())
         .startAlbum();
 ```
 
@@ -47,7 +47,7 @@ FishBun.with(WithActivityActivity.this)
 
 ```java
 FishBun.with(WithActivityActivity.this)
-        .MultiPageMode()
+        .setImageAdapter(new GlideAdapter())
         .setMaxCount(5)
         .setMinCount(3)
         .setPickerSpanCount(5)
@@ -77,7 +77,7 @@ FishBun.with(WithActivityActivity.this)
 
 ```java
 FishBun.with(WithActivityActivity.this)
-        .MultiPageMode()
+        .setImageAdapter(new GlideAdapter())
         .setPickerCount(50)
         .setPickerSpanCount(4)
         .setActionBarColor(Color.parseColor("#ffffff"), Color.parseColor("#ffffff"), true)
@@ -111,10 +111,12 @@ Setting up _FishBun_ requires to add this Gradle configuration:
     }
 
     dependencies {
-        compile('com.sangcomz:FishBun:0.7.7@aar') {
-            transitive = true
-        }
-    }
+        // Under the Android Plugin 3.0.0. 
+        compile 'com.sangcomz:FishBun:0.8.0'
+        
+        // Android plugin 3.0.0 or higher.
+        implementation 'com.sangcomz:FishBun:0.8.0'
+    } 
 
 and to allow the following permissions in your `Manifest`:
 
@@ -126,11 +128,11 @@ and to allow the following permissions in your `Manifest`:
 
 Use _FishBun_ in an activity:
 
-    FishBun.with(YourActivity).MultiPageMode().startAlbum();
+    FishBun.with(YourActivity).setImageAdapter(new GlideAdapter()).startAlbum();
 
 or in a fragment:
 
-    FishBun.with(YourFragment).MultiPageMode().startAlbum();
+    FishBun.with(YourFragment).setImageAdapter(new PicassoAdapter()).startAlbum();
 
 and implement `OnActivityResult`:
 
@@ -153,7 +155,7 @@ and implement `OnActivityResult`:
 Various customizable features can be controlled by chained methods as in:
 
     FishBun.with(YourActivity or YourFragment)
-            .MultiPageMode()
+            .setImageAdapter(new GlideAdapter())
             .setIsUseDetailView(false)
             .setPickerCount(5) //Deprecated
             .setMaxCount(5)
@@ -189,7 +191,7 @@ Any suggestions or contributions would be welcomed.
 
 # License
 
-    Copyright 2017 Jeong Seok-Won
+    Copyright 2018 Seok-Won Jeong
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
