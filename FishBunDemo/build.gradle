@@ -57,9 +57,7 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':FishBun')
 
-    implementation "com.android.support.constraint:constraint-layout:$rootProject.constraint_version"
     implementation "com.android.support:appcompat-v7:$rootProject.support_version"
-    implementation "com.android.support:design:$rootProject.support_version"
     implementation "com.android.support:recyclerview-v7:$rootProject.support_version"
 
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
