@@ -1,13 +1,22 @@
 apply plugin: 'com.android.application'
 
-android {
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+}
 
-    compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+
+
+
+android {
+    compileSdkVersion gradle.compileSdk
+    buildToolsVersion gradle.buildTools
     defaultConfig {
         applicationId "com.sangcomz.fishbundemo"
-        minSdkVersion 15
-        targetSdkVersion 26
+        minSdkVersion gradle.minSdk
+        targetSdkVersion gradle.targetSdk
         versionCode gradle.versionCode
         versionName gradle.versionName
         multiDexEnabled true
@@ -42,18 +51,24 @@ android {
     lintOptions {
         abortOnError false
     }
-    productFlavors {
-    }
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':FishBun')
 
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta1'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta1'
+    implementation "com.android.support.constraint:constraint-layout:$rootProject.constraint_version"
+    implementation "com.android.support:appcompat-v7:$rootProject.support_version"
+    implementation "com.android.support:design:$rootProject.support_version"
+    implementation "com.android.support:recyclerview-v7:$rootProject.support_version"
+    implementation "com.android.support.constraint:constraint-layout:$rootProject.constraint_version"
+
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
 
     implementation "com.android.support:support-v4:$rootProject.support_version"
+    implementation "com.squareup.picasso:picasso:$rootProject.picasso_version"
+    implementation "com.github.bumptech.glide:glide:$rootProject.glide_version"
 }
 
 buildscript {

@@ -1,4 +1,4 @@
-package com.sangcomz.fishbun.adapter;
+package com.sangcomz.fishbun.adapter.view;
 
 import android.net.Uri;
 import android.support.constraint.ConstraintLayout;
@@ -32,7 +32,7 @@ public class DetailViewPagerAdapter extends PagerAdapter {
         View itemView = inflater.inflate(R.layout.detail_item, container, false);
         container.addView(itemView);
 
-        TouchImageView imageView = (TouchImageView) itemView.findViewById(R.id.img_detail_image);
+        TouchImageView imageView = itemView.findViewById(R.id.img_detail_image);
 
         Picasso.with(itemView.getContext())
                 .load(images[position])

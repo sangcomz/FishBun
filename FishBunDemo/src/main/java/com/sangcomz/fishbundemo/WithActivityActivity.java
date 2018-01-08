@@ -14,6 +14,8 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 
 import com.sangcomz.fishbun.FishBun;
+import com.sangcomz.fishbun.adapter.image.impl.GlideAdapter;
+import com.sangcomz.fishbun.adapter.image.impl.PicassoAdapter;
 import com.sangcomz.fishbun.define.Define;
 
 import java.util.ArrayList;
@@ -71,7 +73,7 @@ public class WithActivityActivity extends AppCompatActivity {
                 //basic
                 case 0: {
                     FishBun.with(WithActivityActivity.this)
-                            .MultiPageMode()
+                            .setImageAdapter(new GlideAdapter())
                             .setIsUseDetailView(false)
                             .startAlbum();
                     break;
@@ -79,13 +81,13 @@ public class WithActivityActivity extends AppCompatActivity {
                 //dark
                 case 1: {
                     FishBun.with(WithActivityActivity.this)
-                            .MultiPageMode()
+                            .setImageAdapter(new PicassoAdapter())
                             .setMaxCount(5)
                             .setMinCount(3)
                             .setPickerSpanCount(5)
                             .setActionBarColor(Color.parseColor("#795548"), Color.parseColor("#5D4037"), false)
                             .setActionBarTitleColor(Color.parseColor("#ffffff"))
-                            .setArrayPaths(path)
+                            .setSelectedImages(path)
                             .setAlbumSpanCount(2, 3)
                             .setButtonInAlbumActivity(false)
                             .setCamera(true)
@@ -102,12 +104,12 @@ public class WithActivityActivity extends AppCompatActivity {
                 //Light
                 case 2: {
                     FishBun.with(WithActivityActivity.this)
-                            .MultiPageMode()
+                            .setImageAdapter(new PicassoAdapter())
                             .setPickerCount(50)
                             .setPickerSpanCount(4)
                             .setActionBarColor(Color.parseColor("#ffffff"), Color.parseColor("#ffffff"), true)
                             .setActionBarTitleColor(Color.parseColor("#000000"))
-                            .setArrayPaths(path)
+                            .setSelectedImages(path)
                             .setAlbumSpanCount(1, 2)
                             .setButtonInAlbumActivity(true)
                             .setCamera(false)

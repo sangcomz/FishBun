@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.sangcomz.fishbun.FishBun;
+import com.sangcomz.fishbun.adapter.image.impl.PicassoAdapter;
 import com.sangcomz.fishbun.define.Define;
 
 import java.util.ArrayList;
@@ -53,10 +54,10 @@ public class SubFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FishBun.with(SubFragment.this)
-                        .MultiPageMode()
+                        .setImageAdapter(new PicassoAdapter())
                         .setPickerCount(10)
                         .setActionBarColor(Color.parseColor("#3F51B5"), Color.parseColor("#303F9F"))
-                        .setArrayPaths(path)
+                        .setSelectedImages(path)
                         .setCamera(true)
                         .startAlbum();
             }

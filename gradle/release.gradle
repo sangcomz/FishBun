@@ -99,8 +99,8 @@ if (project.rootProject.file('local.properties').isFile()) {
         tagName = version
         targetCommitish = 'master'
         body = """## Release Note
-* fix readme.md
-* fix do not compile bug in gradle:3.0.0 (#105)"""
+* Fix TransactionTooLargeException (#107)
+* Add Image Adapter (Picasso, Glide)"""
         name = version
     }
 }

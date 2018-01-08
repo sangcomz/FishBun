@@ -4,28 +4,23 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageButton;
 
 import com.sangcomz.fishbun.BaseActivity;
 import com.sangcomz.fishbun.R;
-import com.sangcomz.fishbun.adapter.DetailViewPagerAdapter;
+import com.sangcomz.fishbun.adapter.view.DetailViewPagerAdapter;
 import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.util.RadioWithTextButton;
-
-import java.util.ArrayList;
 
 public class DetailActivity extends BaseActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
     private static final String TAG = "DetailActivity";
 
     private DetailController controller;
-    private Uri[] images;
     private int initPosition;
     private RadioWithTextButton btnDetailCount;
     private ViewPager vpDetailPager;
@@ -45,43 +40,17 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         initToolBar();
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        try {
-            outState.putParcelableArrayList(define.SAVE_INSTANCE_PICK_IMAGES, controller.getPickedImage());
-        } catch (Exception e) {
-            Log.d(TAG, e.toString());
-        }
-
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle outState) {
-        // Always call the superclass so it can restore the view hierarchy
-        super.onRestoreInstanceState(outState);
-        // Restore state members from saved instance
-        try {
-            ArrayList<Uri> pickedImages = outState.getParcelableArrayList(define.SAVE_INSTANCE_PICK_IMAGES);
-            controller.setPickedImages(pickedImages);
-        } catch (Exception e) {
-            Log.d(TAG, e.toString());
-        }
-    }
-
     private void initController() {
-        ArrayList<Uri> pickedImages = getIntent().getParcelableArrayListExtra(Define.BUNDLE_NAME.PICKED_IMAGES.name());
         controller = new DetailController(this);
-        controller.setPickedImages(pickedImages);
     }
 
     private void initView() {
-        btnDetailCount = (RadioWithTextButton) findViewById(R.id.btn_detail_count);
-        vpDetailPager = (ViewPager) findViewById(R.id.vp_detail_pager);
-        btnDetailBack = (ImageButton) findViewById(R.id.btn_detail_back);
+        btnDetailCount = findViewById(R.id.btn_detail_count);
+        vpDetailPager = findViewById(R.id.vp_detail_pager);
+        btnDetailBack = findViewById(R.id.btn_detail_back);
         btnDetailCount.unselect();
-        btnDetailCount.setCircleColor(colorActionBar);
-        btnDetailCount.setTextColor(colorActionBarTitle);
+        btnDetailCount.setCircleColor(fishton.colorActionBar);
+        btnDetailCount.setTextColor(fishton.colorActionBarTitle);
         btnDetailCount.setOnClickListener(this);
         btnDetailBack.setOnClickListener(this);
         initToolBar();
@@ -90,18 +59,13 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     private void initValue() {
         Intent intent = getIntent();
         initPosition = intent.getIntExtra(Define.BUNDLE_NAME.POSITION.name(), -1);
-        Parcelable[] parcelables = intent.getBundleExtra(Define.BUNDLE_NAME.BUNDLE.name()).getParcelableArray(Define.BUNDLE_NAME.IMAGES.name());
-        if (parcelables != null) {
-            images = new Uri[parcelables.length];
-            System.arraycopy(parcelables, 0, images, 0, parcelables.length);
-        }
     }
 
     private void initToolBar() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            uiUtil.setStatusBarColor(this, colorStatusBar);
+            uiUtil.setStatusBarColor(this, fishton.colorStatusBar);
         }
-        if (statusBarLight
+        if (fishton.isStatusBarLight
                 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             vpDetailPager.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
@@ -109,9 +73,9 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void initAdapter() {
-        onCheckStateChange(images[initPosition]);
+        onCheckStateChange(fishton.pickerImages[initPosition]);
 
-        DetailViewPagerAdapter adapter = new DetailViewPagerAdapter(getLayoutInflater(), images);
+        DetailViewPagerAdapter adapter = new DetailViewPagerAdapter(getLayoutInflater(), fishton.pickerImages);
         vpDetailPager.setAdapter(adapter);
         vpDetailPager.setCurrentItem(initPosition);
 
@@ -119,10 +83,10 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     }
 
     public void onCheckStateChange(Uri image) {
-        ArrayList<Uri> pickedImages = controller.getPickedImage();
-        boolean isContained = pickedImages.contains(image);
+        boolean isContained = fishton.selectedImages.contains(image);
         if (isContained) {
-            updateRadioButton(btnDetailCount, String.valueOf(pickedImages.indexOf(image) + 1));
+            updateRadioButton(btnDetailCount,
+                    String.valueOf(fishton.selectedImages.indexOf(image) + 1));
         } else {
             btnDetailCount.unselect();
         }
@@ -130,7 +94,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 
 
     public void updateRadioButton(RadioWithTextButton v, String text) {
-        if (maxCount == 1)
+        if (fishton.maxCount == 1)
             v.setDrawable(ContextCompat.getDrawable(v.getContext(), R.drawable.ic_done_white_24dp));
         else
             v.setText(text);
@@ -138,28 +102,31 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     public void onBackPressed() {
-        controller.finishActivity();
+        finishActivity();
     }
 
     @Override
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.btn_detail_count) {
-            Uri image = images[vpDetailPager.getCurrentItem()];
-            if (controller.isAdded(image)) {
-                controller.removePickedImage(image);
+            Uri image = fishton.pickerImages[vpDetailPager.getCurrentItem()];
+            if (fishton.selectedImages.contains(image)) {
+                fishton.selectedImages.remove(image);
+                onCheckStateChange(image);
             } else {
-                if (controller.getPickedImage().size() == maxCount) {
-                    Snackbar.make(v, messageLimitReached, Snackbar.LENGTH_SHORT).show();
+                if (fishton.selectedImages.size() == fishton.maxCount) {
+                    Snackbar.make(v, fishton.messageLimitReached, Snackbar.LENGTH_SHORT).show();
                 } else {
-                    controller.addPickedImage(image);
-                    if (isAutomaticClose && controller.getPickedImage().size() == maxCount)
-                        controller.finishActivity();
+                    fishton.selectedImages.add(image);
+                    onCheckStateChange(image);
+
+                    if (fishton.isAutomaticClose && fishton.selectedImages.size() == fishton.maxCount)
+                        finishActivity();
                 }
             }
 
         } else if (id == R.id.btn_detail_back) {
-            controller.finishActivity();
+            finishActivity();
         }
     }
 
@@ -170,11 +137,17 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     public void onPageSelected(int position) {
-        onCheckStateChange(images[position]);
+        onCheckStateChange(fishton.pickerImages[position]);
     }
 
     @Override
     public void onPageScrollStateChanged(int state) {
 
+    }
+
+    void finishActivity() {
+        Intent i = new Intent();
+        setResult(RESULT_OK, i);
+        finish();
     }
 }
