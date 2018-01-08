@@ -33,7 +33,7 @@ _FishBun_ supports various visual styles and allows fine-tuning for details. Jus
 
 ```java
 FishBun.with(WithActivityActivity.this)
-        .setImageAdapter(new GlideAdapter()) //GlideAdapter, PicassoAdapter or Your custom adapter
+        .setImageAdapter(new GlideAdapter())
         .startAlbum();
 ```
 
@@ -111,10 +111,12 @@ Setting up _FishBun_ requires to add this Gradle configuration:
     }
 
     dependencies {
-        compile('com.sangcomz:FishBun:0.8.0@aar') {
-            transitive = true
-        }
-    }
+        // Under the Android Plugin 3.0.0. 
+        compile 'com.sangcomz:FishBun:0.8.0'
+        
+        // Android plugin 3.0.0 or higher.
+        implementation 'com.sangcomz:FishBun:0.8.0'
+    } 
 
 and to allow the following permissions in your `Manifest`:
 
