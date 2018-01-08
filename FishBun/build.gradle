@@ -39,13 +39,10 @@ apply plugin: 'co.riiid.gradle'
 apply from: '../gradle/release.gradle'
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-
-    implementation "com.android.support.constraint:constraint-layout:$rootProject.constraint_version"
-    implementation "com.android.support:appcompat-v7:$rootProject.support_version"
-    implementation "com.android.support:design:$rootProject.support_version"
-    implementation "com.android.support:recyclerview-v7:$rootProject.support_version"
-    implementation "com.android.support.constraint:constraint-layout:$rootProject.constraint_version"
+    compileOnly "com.android.support:appcompat-v7:$rootProject.support_version"
+    compile "com.android.support.constraint:constraint-layout:$rootProject.constraint_version"
+    compile "com.android.support:design:$rootProject.support_version"
+    compile "com.android.support:recyclerview-v7:$rootProject.support_version"
 
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.2.27'
