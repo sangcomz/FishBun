@@ -191,6 +191,13 @@ Running on Android M, _FishBun_ checks if it has proper permission for you befor
 <img src="/pic/permission.png" width="20%">
 
 
+# Apps using FishBun
+
+| Project Name | Result Screen   |
+|:---------:|---|
+| Pandaz  <p style="float:left;"> <a href="https://play.google.com/store/apps/details?id=com.pwdr.panda"> <img HEIGHT="40" WIDTH="135" alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge.png" /></a></p> |  <img src="/pic/pandaz_result.gif"> |
+
+
 # Contribution
 
 Any suggestions or contributions would be welcomed.
