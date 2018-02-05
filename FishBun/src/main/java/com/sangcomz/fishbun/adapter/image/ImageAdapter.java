@@ -10,4 +10,5 @@ import android.widget.ImageView;
 
 public interface ImageAdapter {
     void loadImage(Context context, ImageView target, Uri loadUrl);
+    void loadDetailImage(Context context, ImageView target, Uri loadUrl);
 }

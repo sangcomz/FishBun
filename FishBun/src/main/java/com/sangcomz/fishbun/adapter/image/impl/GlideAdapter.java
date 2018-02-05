@@ -14,9 +14,22 @@ import com.sangcomz.fishbun.adapter.image.ImageAdapter;
 
 public class GlideAdapter implements ImageAdapter {
     @Override
-    public void loadImage(Context context, ImageView target, Uri loadUrl) {
+    public void loadImage(Context context,
+                          ImageView target,
+                          Uri loadUrl) {
         RequestOptions options = new RequestOptions();
         options.centerCrop();
+        Glide
+                .with(context)
+                .load(loadUrl)
+                .apply(options)
+                .into(target);
+    }
+
+    @Override
+    public void loadDetailImage(Context context, ImageView target, Uri loadUrl) {
+        RequestOptions options = new RequestOptions();
+        options.centerInside();
         Glide
                 .with(context)
                 .load(loadUrl)

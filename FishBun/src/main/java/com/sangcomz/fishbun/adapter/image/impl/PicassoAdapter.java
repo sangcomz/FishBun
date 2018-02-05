@@ -21,4 +21,14 @@ public class PicassoAdapter implements ImageAdapter {
                 .centerCrop()
                 .into(target);
     }
+
+    @Override
+    public void loadDetailImage(Context context, ImageView target, Uri loadUrl) {
+        Picasso
+                .with(context)
+                .load(loadUrl)
+                .fit()
+                .centerInside()
+                .into(target);
+    }
 }
