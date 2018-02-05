@@ -99,8 +99,7 @@ if (project.rootProject.file('local.properties').isFile()) {
         tagName = version
         targetCommitish = 'master'
         body = """## Release Note
-* Fix TransactionTooLargeException (#107)
-* Add Image Adapter (Picasso, Glide)"""
+* Fix Deitail ImageView (#113)"""
         name = version
     }
 }
