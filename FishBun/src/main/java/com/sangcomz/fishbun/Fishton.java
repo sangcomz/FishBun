@@ -56,6 +56,8 @@ public class Fishton {
 
     public boolean isUseDetailView;
 
+    public boolean isShowCount;
+
 
     private Fishton() {
         init();
@@ -106,7 +108,7 @@ public class Fishton {
         colorTextMenu = Integer.MAX_VALUE;
 
         isUseDetailView = true;
-
+        isShowCount = true;
     }
 
     void setDefaultMessage(Context context) {

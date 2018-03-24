@@ -176,7 +176,7 @@ public class PickerActivity extends BaseActivity {
 
     public void showToolbarTitle(int total) {
         if (getSupportActionBar() != null) {
-            if (fishton.maxCount == 1)
+            if (fishton.maxCount == 1 || !fishton.isShowCount)
                 getSupportActionBar()
                         .setTitle(album.bucketName);
             else
@@ -215,6 +215,7 @@ public class PickerActivity extends BaseActivity {
                 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             toolbar.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
+        showToolbarTitle(0);
     }
 
 

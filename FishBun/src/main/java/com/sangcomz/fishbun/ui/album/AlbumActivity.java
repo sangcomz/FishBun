@@ -229,7 +229,7 @@ public class AlbumActivity extends BaseActivity {
         int total = fishton.selectedImages.size();
 
         if (getSupportActionBar() != null) {
-            if (fishton.maxCount == 1)
+            if (fishton.maxCount == 1 || !fishton.isShowCount)
                 getSupportActionBar().setTitle(fishton.titleActionBar);
             else
                 getSupportActionBar().setTitle(fishton.titleActionBar + "(" + String.valueOf(total) + "/" + fishton.maxCount + ")");

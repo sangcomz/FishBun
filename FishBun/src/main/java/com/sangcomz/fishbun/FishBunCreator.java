@@ -206,6 +206,12 @@ public final class FishBunCreator implements BaseProperty, CustomizationProperty
         return this;
     }
 
+    @Override
+    public FishBunCreator setIsShowCount(boolean isShow) {
+        fishton.isShowCount = isShow;
+        return this;
+    }
+
     public void startAlbum() {
         Context context = null;
         Activity activity = fishBun.activity.get();
