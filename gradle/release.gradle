@@ -76,8 +76,8 @@ if (project.rootProject.file('local.properties').isFile()) {
 
 // https://github.com/bintray/gradle-bintray-plugin
     bintray {
-        user = properties.getProperty("bintray.user") ?: ''
-        key = properties.getProperty("bintray.apikey") ?: ''
+        user = properties.getProperty("bintray.user", '')
+        key = properties.getProperty("bintray.apikey", '')
         publish = true
         configurations = ['archives']
         pkg {
@@ -95,7 +95,7 @@ if (project.rootProject.file('local.properties').isFile()) {
     github {
         owner = 'sangcomz'
         repo = 'Fishbun'
-        token = properties.getProperty("github_access_tokens") ?: ''
+        token = properties.getProperty("github_access_tokens", ' ')
         tagName = version
         targetCommitish = 'master'
         body = """## Release Note
