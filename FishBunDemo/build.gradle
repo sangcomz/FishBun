@@ -24,17 +24,16 @@ android {
     Properties signProp = new Properties()
     if (project.rootProject.file('playstore/sign.properties').isFile()) {
         signProp.load(project.rootProject.file('playstore/sign.properties').newDataInputStream())
-
+        def password = signProp.get("password", "")
         signingConfigs {
             release {
-                keyAlias signProp.get("alias") ? signProp.get("alias") : ""
-                keyPassword signProp.get("password") ? signProp.get("password") : ""
+                keyAlias signProp.get("alias", "")
+                keyPassword password
                 storeFile rootProject.file("playstore/key.jks")
-                storePassword signProp.get("password") ? signProp.get("password") : ""
+                storePassword password
             }
         }
     }
-
     buildTypes {
 
         release {
