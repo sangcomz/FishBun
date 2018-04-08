@@ -8,21 +8,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.sangcomz.fishbun.Fishton;
 import com.sangcomz.fishbun.R;
 import com.sangcomz.fishbun.util.TouchImageView;
-import com.squareup.picasso.Picasso;
 
 /**
  * Created by sangcomz on 15/06/2017.
  */
 
 public class DetailViewPagerAdapter extends PagerAdapter {
+
+    private Fishton fishton;
     private LayoutInflater inflater;
     private Uri[] images;
 
     public DetailViewPagerAdapter(LayoutInflater inflater, Uri[] images) {
         this.inflater = inflater;
         this.images = images;
+        fishton = Fishton.getInstance();
     }
 
 
@@ -34,11 +37,12 @@ public class DetailViewPagerAdapter extends PagerAdapter {
 
         TouchImageView imageView = itemView.findViewById(R.id.img_detail_image);
 
-        Picasso.with(itemView.getContext())
-                .load(images[position])
-                .fit()
-                .centerInside()
-                .into(imageView);
+        fishton
+                .imageAdapter
+                .loadDetailImage(itemView.getContext(),
+                        imageView,
+                        images[position]);
+
         return itemView;
     }
 

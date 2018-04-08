@@ -74,7 +74,6 @@ public class WithActivityActivity extends AppCompatActivity {
                 case 0: {
                     FishBun.with(WithActivityActivity.this)
                             .setImageAdapter(new GlideAdapter())
-                            .setIsUseDetailView(false)
                             .startAlbum();
                     break;
                 }
