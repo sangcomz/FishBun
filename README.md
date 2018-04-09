@@ -113,6 +113,8 @@ Setting up _FishBun_ requires to add this Gradle configuration:
         // Under the Android Plugin 3.0.0. 
         compile 'com.sangcomz:FishBun:0.8.6'
         
+        compile 'com.squareup.picasso:picasso:2.71828'
+        or
         compile 'com.squareup.picasso:picasso:2.5.2'
         or
         compile 'com.github.bumptech.glide:glide:4.5.0'
@@ -120,6 +122,8 @@ Setting up _FishBun_ requires to add this Gradle configuration:
         // Android plugin 3.0.0 or higher.
         implementation 'com.sangcomz:FishBun:0.8.6'
         
+        implementation 'com.squareup.picasso:picasso:2.71828'
+        or
         implementation 'com.squareup.picasso:picasso:2.5.2'
         or
         implementation 'com.github.bumptech.glide:glide:4.5.0'
@@ -140,7 +144,9 @@ Use _FishBun_ in an activity:
 
 or in a fragment:
 
-    FishBun.with(YourFragment).setImageAdapter(new PicassoAdapter()).startAlbum();
+    FishBun.with(YourFragment).setImageAdapter(new PicassoEAdapter()).startAlbum();
+    // Use PicassoEAdapter for Picasso 2.71828 or PicassoAdapter for older versions
+    // FishBun.with(YourFragment).setImageAdapter(new PicassoAdapter()).startAlbum();
 
 and implement `OnActivityResult`:
 
