@@ -12,7 +12,6 @@ buildscript {
 
 android {
     compileSdkVersion gradle.compileSdk
-    buildToolsVersion gradle.buildTools
     defaultConfig {
         applicationId "com.sangcomz.fishbundemo"
         minSdkVersion gradle.minSdk
@@ -50,6 +49,7 @@ android {
     lintOptions {
         abortOnError false
     }
+    buildToolsVersion '27.0.3'
 }
 
 dependencies {
