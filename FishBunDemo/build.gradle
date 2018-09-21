@@ -85,3 +85,9 @@ play {
 //    userFraction = 0.2 // only necessary for 'rollout', in this case default is 0.1 (10% of the target)
     jsonFile = rootProject.file('playstore_kye.json')
 }
+
+task printProps {
+    doLast {
+        println System.properties['system']
+    }
+}
