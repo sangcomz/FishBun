@@ -28,6 +28,7 @@ public class CameraUtil {
             // Create the File where the photo should go
             File photoFile = null;
             try {
+                saveDir.mkdirs();
                 photoFile = createImageFile(saveDir); //make a file
                 setSavePath(photoFile.getAbsolutePath());
             } catch (IOException ex) {
