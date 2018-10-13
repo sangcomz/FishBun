@@ -28,7 +28,6 @@ public class CameraUtil {
             // Create the File where the photo should go
             File photoFile = null;
             try {
-                saveDir.mkdirs();
                 photoFile = createImageFile(saveDir); //make a file
                 setSavePath(photoFile.getAbsolutePath());
             } catch (IOException ex) {
@@ -56,6 +55,7 @@ public class CameraUtil {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = new File(saveDir);
+        storageDir.mkdirs();
         return File.createTempFile(
                 imageFileName,  /* prefix */
                 ".jpg",         /* suffix */
