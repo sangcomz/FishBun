@@ -14,7 +14,6 @@ import java.util.ArrayList;
  */
 
 public class Fishton {
-    private volatile static Fishton instance;
     public ImageAdapter imageAdapter;
     public Uri[] pickerImages;
 
@@ -63,21 +62,17 @@ public class Fishton {
         init();
     }
 
-    public static Fishton getNewInstance() {
-        getInstance();
-        instance.init();
-        return instance;
+    public static Fishton getRefreshInstance() {
+        FishtonHolder.INSTANCE.init();
+        return FishtonHolder.INSTANCE;
     }
 
     public static Fishton getInstance() {
-        if (instance == null) {
-            synchronized (Fishton.class) {
-                if (instance == null) {
-                    instance = new Fishton();
-                }
-            }
-        }
-        return instance;
+        return FishtonHolder.INSTANCE;
+    }
+
+    private  static class FishtonHolder{
+        public static final Fishton INSTANCE = new Fishton();
     }
 
 
@@ -140,9 +135,5 @@ public class Fishton {
     void setDefaultDimen(Context context) {
         if (albumThumbnailSize == Integer.MAX_VALUE)
             albumThumbnailSize = (int) context.getResources().getDimension(R.dimen.album_thum_size);
-    }
-
-    public static void release() {
-        instance = null;
     }
 }

@@ -28,7 +28,7 @@ public final class FishBun {
     }
 
     public FishBunCreator setImageAdapter(ImageAdapter imageAdapter) {
-        Fishton fishton = Fishton.getNewInstance();
+        Fishton fishton = Fishton.getRefreshInstance();
         fishton.imageAdapter = imageAdapter;
         return new FishBunCreator(this);
     }
