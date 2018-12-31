@@ -25,8 +25,9 @@ env:
 
 before_install:
   - chmod +x gradlew
+  - android create avd -n my_android1.1 -t 1 -b default/x86
   - android list target
-  - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi no ABIs
+  - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
   - emulator -avd test -no-skin -no-audio -no-window &
   - android-wait-for-emulator
   - adb shell input keyevent 82 &
