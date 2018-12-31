@@ -13,7 +13,6 @@ android:
     - sys-img-armeabi-v7a-android-25
     - sys-img-armeabi-v7a-android-28
     - sys-img-${ANDROID_ABI}-${ANDROID_TARGET}
-
 licenses:
     - 'android-sdk-preview-license-52d11cd2'
     - 'android-sdk-license-.+'
@@ -24,7 +23,7 @@ notifications:
 
 env:
   matrix:
-    - ANDROID_TARGET=android-25  ANDROID_ABI=armeabi-v7a
+    - ANDROID_TARGET=android-25  ANDROID_ABI=google_apis/armeabi-v7a
   global:
     - ADB_INSTALL_TIMEOUT=20
 
