@@ -35,7 +35,7 @@ env:
 before_install:
   - chmod +x gradlew
   - android list targets
-  - echo no | android create avd -n test -k "system-images;$ANDROID_TARGET;google_apis;$ANDROID_ABI"
+  - echo no | android create avd --force -n test -t "system-images;$ANDROID_TARGET;google_apis;$ANDROID_ABI"
   - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
   - emulator -avd test -no-skin -no-audio -no-window &
   - android-wait-for-emulator
