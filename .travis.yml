@@ -6,6 +6,7 @@ android:
     - platform-tools
     - build-tools-28.0.3
     - android-28
+    - android-15
     - extra
     - extra-android-m2repository
 # Images
@@ -16,7 +17,7 @@ notifications:
 
 env:
   matrix:
-    - ANDROID_TARGET=android-15  ANDROID_ABI=armeabi-v7a
+    - ANDROID_TARGET=android-25  ANDROID_ABI=armeabi-v7a
   global:
     - ADB_INSTALL_TIMEOUT=20
 
