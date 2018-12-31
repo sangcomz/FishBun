@@ -11,6 +11,7 @@ android:
     - extra-android-m2repository
 # Images
     - sys-img-armeabi-v7a-android-25
+    - sys-img-armeabi-v7a-android-28
     - sys-img-${ANDROID_ABI}-${ANDROID_TARGET}
 
 notifications:
