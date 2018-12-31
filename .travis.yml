@@ -10,19 +10,31 @@ android:
     - extra-android-m2repository
 # Images
     - sys-img-${ANDROID_ABI}-${ANDROID_TARGET}
-    
+
 notifications:
   email: true
 
 env:
   matrix:
     - ANDROID_TARGET=android-15  ANDROID_ABI=armeabi-v7a
+  global:
+    - ADB_INSTALL_TIMEOUT=20
 
-before_script:
-  - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
+
+
+before_install:
+  - chmod +x gradlew
+  - android list targets
+  - echo no | android create avd --force -n test -t android-21 --abi armeabi-v7a
   - emulator -avd test -no-skin -no-audio -no-window &
   - android-wait-for-emulator
   - adb shell input keyevent 82 &
+
+before_script:
+  - android-wait-for-emulator
+  - adb shell input keyevent 82 &
+
+
 
 #language: android
 #jdk: oraclejdk8
