@@ -7,7 +7,10 @@ android:
     - build-tools-28.0.3
     - android-28
     - android-15
+    - add-on
     - extra
+    - extra-google-google_play_services
+    - extra-google-m2repository
     - extra-android-m2repository
 # Images
     - sys-img-armeabi-v7a-android-25
@@ -23,7 +26,7 @@ notifications:
 
 env:
   matrix:
-    - ANDROID_TARGET=android-25  ANDROID_ABI=google_apis/armeabi-v7a
+    - ANDROID_TARGET=android-25  ANDROID_ABI=armeabi-v7a
   global:
     - ADB_INSTALL_TIMEOUT=20
 
