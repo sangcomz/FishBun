@@ -18,7 +18,8 @@ licenses:
     - 'android-sdk-preview-license-52d11cd2'
     - 'android-sdk-license-.+'
     - 'google-gdk-license-.+'
-    
+    - 'android-sdk-license-2742d1c5'
+
 notifications:
   email: true
 
