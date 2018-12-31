@@ -22,13 +22,16 @@ public final class FishBun {
         return new FishBun(null, fragment);
     }
 
+
     FishBun(Activity activity, Fragment fragment) {
         this.activity = new WeakReference<>(activity);
         this.fragment = new WeakReference<>(fragment);
     }
 
     public FishBunCreator setImageAdapter(ImageAdapter imageAdapter) {
-        Fishton fishton = Fishton.getRefreshInstance();
+        Fishton fishton = Fishton.getInstance();
+        fishton.refresh();
+
         fishton.imageAdapter = imageAdapter;
         return new FishBunCreator(this);
     }

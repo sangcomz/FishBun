@@ -62,21 +62,22 @@ public class Fishton {
         init();
     }
 
-    public static Fishton getRefreshInstance() {
-        FishtonHolder.INSTANCE.init();
-        return FishtonHolder.INSTANCE;
-    }
-
     public static Fishton getInstance() {
         return FishtonHolder.INSTANCE;
     }
 
-    private  static class FishtonHolder{
+    private static class FishtonHolder {
         public static final Fishton INSTANCE = new Fishton();
     }
 
+    public void refresh() {
+        init();
+    }
 
     private void init() {
+        //Adapter
+        imageAdapter = null;
+
         //BaseParams
         maxCount = 10;
         minCount = 1;
@@ -99,6 +100,17 @@ public class Fishton {
         isCamera = false;
 
         albumThumbnailSize = Integer.MAX_VALUE;
+
+        messageNothingSelected = null;
+        messageLimitReached = null;
+        titleAlbumAllView = null;
+        titleActionBar = null;
+
+        drawableHomeAsUpIndicator = null;
+        drawableOkButton = null;
+
+        strTextMenu = null;
+
 
         colorTextMenu = Integer.MAX_VALUE;
 

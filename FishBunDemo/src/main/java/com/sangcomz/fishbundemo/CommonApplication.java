@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.squareup.leakcanary.LeakCanary;
 
+
 public class CommonApplication extends Application {
     @Override
     public void onCreate() {
