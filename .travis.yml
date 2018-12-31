@@ -26,7 +26,7 @@ notifications:
 
 env:
   matrix:
-    - ANDROID_TARGET=android-25  ANDROID_ABI=armeabi-v7a
+    - ANDROID_TARGET=Google Inc.:Google APIs:15  ANDROID_ABI=armeabi-v7a
   global:
     - ADB_INSTALL_TIMEOUT=20
 
