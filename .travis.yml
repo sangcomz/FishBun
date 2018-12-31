@@ -10,6 +10,7 @@ android:
     - extra
     - extra-android-m2repository
 # Images
+    - sys-img-armeabi-v7a-android-25
     - sys-img-${ANDROID_ABI}-${ANDROID_TARGET}
 
 notifications:
@@ -25,7 +26,6 @@ env:
 
 before_install:
   - chmod +x gradlew
-  - android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
   - android list target
   - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
   - emulator -avd test -no-skin -no-audio -no-window &
