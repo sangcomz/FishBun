@@ -18,7 +18,6 @@ licenses:
     - 'android-sdk-preview-license-52d11cd2'
     - 'android-sdk-license-.+'
     - 'google-gdk-license-.+'
-    - 'android-sdk-license-2742d1c5'
 
 notifications:
   email: true
@@ -33,7 +32,6 @@ env:
 
 before_install:
   - chmod +x gradlew
-  - android update sdk -a -u -t sys-img-x86-android-23
   - android list target
   - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
   - emulator -avd test -no-skin -no-audio -no-window &
