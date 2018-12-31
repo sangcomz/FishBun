@@ -26,7 +26,7 @@ notifications:
 
 env:
   matrix:
-    - ANDROID_TARGET=Google Inc.:Google APIs:15  ANDROID_ABI=armeabi-v7a
+    - ANDROID_TARGET=android-25  ANDROID_ABI=armeabi-v7a
   global:
     - ADB_INSTALL_TIMEOUT=20
 
@@ -34,7 +34,8 @@ env:
 
 before_install:
   - chmod +x gradlew
-  - android list target
+  - android list targets
+  - echo no | android create avd -n test -k "system-images;$ANDROID_TARGET;google_apis;$ANDROID_ABI"
   - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
   - emulator -avd test -no-skin -no-audio -no-window &
   - android-wait-for-emulator
