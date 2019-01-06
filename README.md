@@ -15,9 +15,9 @@ _FishBun_ is a highly customizable image picker for Android.
 <img src="/pic/fishbuns.png">
 
 
-## What's New in _FishBun_ 0.8.6?
+## What's New in _FishBun_ 0.8.7?
 
-- Crash without Picasso ([#113](https://github.com/sangcomz/FishBun/issues/113))
+- Fix fishton
 
 
 
