@@ -30,7 +30,7 @@ install {
                 developers {
                     developer {
                         id 'sangcomz'
-                        name 'Jeong Seok Won'
+                        name 'Jeong SeokWon'
                         email 'sangcomz@naver.com'
                     }
                 }
@@ -99,7 +99,7 @@ if (project.rootProject.file('local.properties').isFile()) {
         tagName = version
         targetCommitish = 'master'
         body = """## Release Note
-* Fix Deitail ImageView (#113)"""
+* Fix Fishton """
         name = version
     }
 }

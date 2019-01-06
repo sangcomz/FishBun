@@ -206,6 +206,13 @@ public final class FishBunCreator implements BaseProperty, CustomizationProperty
         return this;
     }
 
+    @Override
+    public FishBunCreator setIsShowCount(boolean isShow) {
+        fishton.isShowCount = isShow;
+        return this;
+    }
+
+    @Override
     public void startAlbum() {
         Context context = null;
         Activity activity = fishBun.activity.get();
@@ -216,10 +223,13 @@ public final class FishBunCreator implements BaseProperty, CustomizationProperty
             context = fragment.getActivity();
         else
             try {
-                throw new Exception("Activity or Fragment Null");
+                throw new NullPointerException("Activity or Fragment Null");
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+        if (fishton.imageAdapter == null)
+            throw new NullPointerException("ImageAdapter is Null");
 
         fishton.setDefaultMessage(context);
         fishton.setMenuTextColor();

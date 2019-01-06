@@ -14,7 +14,6 @@ import java.util.ArrayList;
  */
 
 public class Fishton {
-    private volatile static Fishton instance;
     public ImageAdapter imageAdapter;
     public Uri[] pickerImages;
 
@@ -56,30 +55,29 @@ public class Fishton {
 
     public boolean isUseDetailView;
 
+    public boolean isShowCount;
+
 
     private Fishton() {
         init();
     }
 
-    public static Fishton getNewInstance() {
-        getInstance();
-        instance.init();
-        return instance;
-    }
-
     public static Fishton getInstance() {
-        if (instance == null) {
-            synchronized (Fishton.class) {
-                if (instance == null) {
-                    instance = new Fishton();
-                }
-            }
-        }
-        return instance;
+        return FishtonHolder.INSTANCE;
     }
 
+    private static class FishtonHolder {
+        public static final Fishton INSTANCE = new Fishton();
+    }
+
+    public void refresh() {
+        init();
+    }
 
     private void init() {
+        //Adapter
+        imageAdapter = null;
+
         //BaseParams
         maxCount = 10;
         minCount = 1;
@@ -103,10 +101,21 @@ public class Fishton {
 
         albumThumbnailSize = Integer.MAX_VALUE;
 
+        messageNothingSelected = null;
+        messageLimitReached = null;
+        titleAlbumAllView = null;
+        titleActionBar = null;
+
+        drawableHomeAsUpIndicator = null;
+        drawableOkButton = null;
+
+        strTextMenu = null;
+
+
         colorTextMenu = Integer.MAX_VALUE;
 
         isUseDetailView = true;
-
+        isShowCount = true;
     }
 
     void setDefaultMessage(Context context) {
@@ -138,9 +147,5 @@ public class Fishton {
     void setDefaultDimen(Context context) {
         if (albumThumbnailSize == Integer.MAX_VALUE)
             albumThumbnailSize = (int) context.getResources().getDimension(R.dimen.album_thum_size);
-    }
-
-    public static void release() {
-        instance = null;
     }
 }

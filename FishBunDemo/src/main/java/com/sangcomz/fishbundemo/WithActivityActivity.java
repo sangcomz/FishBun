@@ -35,8 +35,8 @@ public class WithActivityActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_withactivity);
         mode = getIntent().getIntExtra("mode", -1);
-        imgMain = (ImageView) findViewById(R.id.img_main);
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
+        imgMain = findViewById(R.id.img_main);
+        recyclerView = findViewById(R.id.recyclerview);
         linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         mainController = new ImageController(this, imgMain);
         imageAdapter = new ImageAdapter(this, mainController, path);
