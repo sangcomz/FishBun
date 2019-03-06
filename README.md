@@ -201,6 +201,7 @@ Running on Android M, _FishBun_ checks if it has proper permission for you befor
 # Contribution
 
 Any suggestions or contributions would be welcomed.
+[CONTRIBUTING](https://github.com/sangcomz/FishBun/blob/master/CONTRIBUTING.md)
 
 
 # License
