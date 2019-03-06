@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 
 import com.sangcomz.fishbun.FishBun;
+import com.sangcomz.fishbun.FishBunCreator;
 import com.sangcomz.fishbun.adapter.image.impl.GlideAdapter;
 import com.sangcomz.fishbun.adapter.image.impl.PicassoAdapter;
 import com.sangcomz.fishbun.define.Define;
@@ -38,7 +39,7 @@ public class WithActivityActivity extends AppCompatActivity {
         imgMain = findViewById(R.id.img_main);
         recyclerView = findViewById(R.id.recyclerview);
         linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        mainController = new ImageController(this, imgMain);
+        mainController = new ImageController(imgMain);
         imageAdapter = new ImageAdapter(this, mainController, path);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(imageAdapter);

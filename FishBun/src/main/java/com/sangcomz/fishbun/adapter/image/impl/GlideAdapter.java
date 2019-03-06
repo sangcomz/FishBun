@@ -1,6 +1,5 @@
 package com.sangcomz.fishbun.adapter.image.impl;
 
-import android.content.Context;
 import android.net.Uri;
 import android.widget.ImageView;
 
@@ -14,24 +13,20 @@ import com.sangcomz.fishbun.adapter.image.ImageAdapter;
 
 public class GlideAdapter implements ImageAdapter {
     @Override
-    public void loadImage(Context context,
-                          ImageView target,
-                          Uri loadUrl) {
-        RequestOptions options = new RequestOptions();
-        options.centerCrop();
+    public void loadImage(ImageView target, Uri loadUrl) {
+        RequestOptions options = new RequestOptions().centerCrop();
         Glide
-                .with(context)
+                .with(target.getContext())
                 .load(loadUrl)
                 .apply(options)
                 .into(target);
     }
 
     @Override
-    public void loadDetailImage(Context context, ImageView target, Uri loadUrl) {
-        RequestOptions options = new RequestOptions();
-        options.centerInside();
+    public void loadDetailImage(ImageView target, Uri loadUrl) {
+        RequestOptions options = new RequestOptions().centerInside();
         Glide
-                .with(context)
+                .with(target.getContext())
                 .load(loadUrl)
                 .apply(options)
                 .into(target);
