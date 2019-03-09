@@ -10,6 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.sangcomz.fishbun.BaseActivity;
 import com.sangcomz.fishbun.R;
@@ -73,6 +74,12 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void initAdapter() {
+        if (fishton.pickerImages == null) {
+            Toast.makeText(this, R.string.msg_error, Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
         onCheckStateChange(fishton.pickerImages[initPosition]);
 
         DetailViewPagerAdapter adapter = new DetailViewPagerAdapter(getLayoutInflater(), fishton.pickerImages);
