@@ -99,7 +99,8 @@ if (project.rootProject.file('local.properties').isFile()) {
         tagName = version
         targetCommitish = 'master'
         body = """## Release Note
-* Fix Fishton """
+* Fix Bug (#138, #137)
+* Update Glide / Picasso (#139) """
         name = version
     }
 }
