@@ -86,11 +86,10 @@ public class PickerGridAdapter
             vh.btnThumbCount.setTextColor(fishton.colorActionBarTitle);
 
             initState(fishton.selectedImages.indexOf(image), vh);
-            if (image != null)
+            if (image != null
+                    && vh.imgThumbImage != null)
                 Fishton.getInstance().imageAdapter
-                        .loadImage(vh.imgThumbImage.getContext(),
-                                vh.imgThumbImage,
-                                image);
+                        .loadImage(vh.imgThumbImage, image);
 
 
             vh.btnThumbCount.setOnClickListener(new View.OnClickListener() {
@@ -257,7 +256,7 @@ public class PickerGridAdapter
             super(view);
             item = view;
             imgThumbImage = view.findViewById(R.id.img_thumb_image);
-            btnThumbCount =  view.findViewById(R.id.btn_thumb_count);
+            btnThumbCount = view.findViewById(R.id.btn_thumb_count);
         }
     }
 

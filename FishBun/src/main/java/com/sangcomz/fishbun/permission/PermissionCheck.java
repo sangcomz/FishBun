@@ -10,6 +10,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
 
+import com.sangcomz.fishbun.R;
 import com.sangcomz.fishbun.define.Define;
 
 
@@ -17,7 +18,7 @@ import com.sangcomz.fishbun.define.Define;
  * Created by sangc on 2015-10-12.
  */
 public class PermissionCheck {
-    Context context;
+    private Context context;
 
     public PermissionCheck(Context context) {
         this.context = context;
@@ -42,7 +43,6 @@ public class PermissionCheck {
                         define.PERMISSION_STORAGE);
             } else {
                 // No explanation needed, we can request the permission.
-
                 ActivityCompat.requestPermissions((Activity) context,
                         new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
                         define.PERMISSION_STORAGE);
@@ -58,7 +58,7 @@ public class PermissionCheck {
 
 
     public void showPermissionDialog() {
-        Toast.makeText(context, "permission deny", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, R.string.msg_permission, Toast.LENGTH_SHORT).show();
     }
 
 

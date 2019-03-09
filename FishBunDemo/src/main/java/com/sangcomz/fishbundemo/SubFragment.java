@@ -44,7 +44,7 @@ public class SubFragment extends Fragment {
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview);
         btnAddImages = (Button) rootView.findViewById(R.id.btn_add_images);
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        withActivityController = new ImageController(getActivity(), imgMain);
+        withActivityController = new ImageController(imgMain);
         imageAdapter = new ImageAdapter(getActivity(), withActivityController, path);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(imageAdapter);
