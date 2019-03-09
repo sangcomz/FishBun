@@ -86,7 +86,8 @@ public class PickerGridAdapter
             vh.btnThumbCount.setTextColor(fishton.colorActionBarTitle);
 
             initState(fishton.selectedImages.indexOf(image), vh);
-            if (image != null)
+            if (image != null
+                    && vh.imgThumbImage != null)
                 Fishton.getInstance().imageAdapter
                         .loadImage(vh.imgThumbImage, image);
 

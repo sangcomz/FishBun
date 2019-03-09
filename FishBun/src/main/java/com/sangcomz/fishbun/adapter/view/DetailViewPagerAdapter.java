@@ -1,6 +1,7 @@
 package com.sangcomz.fishbun.adapter.view;
 
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -29,17 +30,20 @@ public class DetailViewPagerAdapter extends PagerAdapter {
     }
 
 
+    @NonNull
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(@NonNull ViewGroup container, int position) {
 
         View itemView = inflater.inflate(R.layout.detail_item, container, false);
         container.addView(itemView);
 
         TouchImageView imageView = itemView.findViewById(R.id.img_detail_image);
 
-        fishton
-                .imageAdapter
-                .loadDetailImage(imageView, images[position]);
+        if (imageView != null
+                && images[position] != null)
+            fishton
+                    .imageAdapter
+                    .loadDetailImage(imageView, images[position]);
 
         return itemView;
     }

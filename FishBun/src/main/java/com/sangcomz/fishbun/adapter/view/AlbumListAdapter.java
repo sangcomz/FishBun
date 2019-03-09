@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,10 +46,14 @@ public class AlbumListAdapter
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         holder.imgAlbumThumb.setImageDrawable(null);
-        Fishton.getInstance().imageAdapter
-                .loadImage(holder.imgAlbumThumb, Uri.parse(albumList.get(position).thumbnailPath));
+
+        Uri loadUrl = Uri.parse(albumList.get(position).thumbnailPath);
+
+        if (holder.imgAlbumThumb != null && loadUrl != null)
+            Fishton.getInstance().imageAdapter
+                    .loadImage(holder.imgAlbumThumb, loadUrl);
 
         holder.view.setTag(albumList.get(position));
         Album a = (Album) holder.view.getTag();
@@ -93,7 +98,7 @@ public class AlbumListAdapter
             imgAlbumThumb.setLayoutParams(new LinearLayout.LayoutParams(albumSize, albumSize));
 
             txtAlbumName = view.findViewById(R.id.txt_album_name);
-            txtAlbumCount =  view.findViewById(R.id.txt_album_count);
+            txtAlbumCount = view.findViewById(R.id.txt_album_count);
         }
     }
 }
