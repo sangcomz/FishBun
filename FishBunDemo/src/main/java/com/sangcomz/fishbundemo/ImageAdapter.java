@@ -37,7 +37,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final Uri imagePath = imagePaths.get(position);
         Picasso
-                .with(context)
+                .get()
                 .load(imagePath)
                 .fit()
                 .centerCrop()

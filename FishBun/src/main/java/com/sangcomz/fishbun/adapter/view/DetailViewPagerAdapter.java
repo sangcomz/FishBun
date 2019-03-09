@@ -39,9 +39,7 @@ public class DetailViewPagerAdapter extends PagerAdapter {
 
         fishton
                 .imageAdapter
-                .loadDetailImage(itemView.getContext(),
-                        imageView,
-                        images[position]);
+                .loadDetailImage(imageView, images[position]);
 
         return itemView;
     }

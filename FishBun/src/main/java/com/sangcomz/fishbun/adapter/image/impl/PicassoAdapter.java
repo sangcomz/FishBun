@@ -1,6 +1,5 @@
 package com.sangcomz.fishbun.adapter.image.impl;
 
-import android.content.Context;
 import android.net.Uri;
 import android.widget.ImageView;
 
@@ -13,9 +12,9 @@ import com.squareup.picasso.Picasso;
 
 public class PicassoAdapter implements ImageAdapter {
     @Override
-    public void loadImage(Context context, ImageView target, Uri loadUrl) {
+    public void loadImage(ImageView target, Uri loadUrl) {
         Picasso
-                .with(context)
+                .get()
                 .load(loadUrl)
                 .fit()
                 .centerCrop()
@@ -23,9 +22,8 @@ public class PicassoAdapter implements ImageAdapter {
     }
 
     @Override
-    public void loadDetailImage(Context context, ImageView target, Uri loadUrl) {
-        Picasso
-                .with(context)
+    public void loadDetailImage(ImageView target, Uri loadUrl) {
+        Picasso.get()
                 .load(loadUrl)
                 .fit()
                 .centerInside()

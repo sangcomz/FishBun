@@ -48,9 +48,7 @@ public class AlbumListAdapter
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.imgAlbumThumb.setImageDrawable(null);
         Fishton.getInstance().imageAdapter
-                .loadImage(holder.imgAlbumThumb.getContext(),
-                        holder.imgAlbumThumb,
-                        Uri.parse(albumList.get(position).thumbnailPath));
+                .loadImage(holder.imgAlbumThumb, Uri.parse(albumList.get(position).thumbnailPath));
 
         holder.view.setTag(albumList.get(position));
         Album a = (Album) holder.view.getTag();
