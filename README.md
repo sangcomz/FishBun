@@ -17,8 +17,7 @@ _FishBun_ is a highly customizable image picker for Android.
 
 ## What's New in _FishBun_ 0.8.8?
 
-- Fix Bug (#138, #137)
-- Update Glide / Picasso (#139) 
+- New Feature / setSelectCircleStrokeColor(Color) ([#145](https://github.com/sangcomz/FishBun/issues/145))
 
 
 
@@ -182,6 +181,7 @@ Various customizable features can be controlled by chained methods as in:
             .setActionBarTitle("Image Library")
             .textOnImagesSelectionLimitReached("Limit Reached!")
             .textOnNothingSelected("Nothing Selected")
+            .setSelectCircleStrokeColor(Color.BLACK)
             .startAlbum();
 
 
@@ -207,7 +207,7 @@ Any suggestions or contributions would be welcomed.
 
 # License
 
-    Copyright 2018 Seok-Won Jeong
+    Copyright 2019 Seokwon Jeong
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.

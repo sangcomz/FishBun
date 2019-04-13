@@ -213,6 +213,12 @@ public final class FishBunCreator implements BaseProperty, CustomizationProperty
     }
 
     @Override
+    public FishBunCreator setSelectCircleStrokeColor(int strokeColor) {
+        fishton.colorSelectCircleStroke = strokeColor;
+        return this;
+    }
+
+    @Override
     public void startAlbum() {
         Context context = null;
         Activity activity = fishBun.activity.get();
