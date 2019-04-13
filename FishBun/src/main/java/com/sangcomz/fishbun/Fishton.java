@@ -59,6 +59,8 @@ public class Fishton {
 
     public int colorSelectCircleStroke;
 
+    public boolean isStartInAllView;
+
 
     private Fishton() {
         init();
@@ -120,6 +122,7 @@ public class Fishton {
         isShowCount = true;
 
         colorSelectCircleStroke = Color.parseColor("#c1ffffff");
+        isStartInAllView = false;
     }
 
     void setDefaultMessage(Context context) {

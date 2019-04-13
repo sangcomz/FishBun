@@ -50,4 +50,6 @@ interface CustomizationProperty {
     FishBunCreator setIsShowCount(boolean isShow);
 
     FishBunCreator setSelectCircleStrokeColor(int strokeColor);
+
+    FishBunCreator isStartInAllView(boolean isStartInAllView);
 }

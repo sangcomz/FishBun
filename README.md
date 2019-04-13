@@ -18,6 +18,7 @@ _FishBun_ is a highly customizable image picker for Android.
 ## What's New in _FishBun_ 0.8.8?
 
 - New Feature / setSelectCircleStrokeColor(Color) ([#145](https://github.com/sangcomz/FishBun/issues/145))
+- New Feature / isStartInAllView(boolean) ([#143](https://github.com/sangcomz/FishBun/issues/143))
 
 
 
@@ -182,6 +183,7 @@ Various customizable features can be controlled by chained methods as in:
             .textOnImagesSelectionLimitReached("Limit Reached!")
             .textOnNothingSelected("Nothing Selected")
             .setSelectCircleStrokeColor(Color.BLACK)
+            .isStartInAllView(false)
             .startAlbum();
 
 

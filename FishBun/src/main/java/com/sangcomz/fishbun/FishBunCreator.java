@@ -7,7 +7,10 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 
+import com.sangcomz.fishbun.bean.Album;
+import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.ui.album.AlbumActivity;
+import com.sangcomz.fishbun.ui.picker.PickerActivity;
 
 import java.util.ArrayList;
 
@@ -219,6 +222,12 @@ public final class FishBunCreator implements BaseProperty, CustomizationProperty
     }
 
     @Override
+    public FishBunCreator isStartInAllView(boolean isStartInAllView) {
+        fishton.isStartInAllView = isStartInAllView;
+        return this;
+    }
+
+    @Override
     public void startAlbum() {
         Context context = null;
         Activity activity = fishBun.activity.get();
@@ -241,9 +250,18 @@ public final class FishBunCreator implements BaseProperty, CustomizationProperty
         fishton.setMenuTextColor();
         fishton.setDefaultDimen(context);
 
-        Intent i = new Intent(context, AlbumActivity.class);
-        if (activity != null) activity.startActivityForResult(i, requestCode);
-        else if (fragment != null) fragment.startActivityForResult(i, requestCode);
+
+        if (fishton.isStartInAllView) {
+            Intent i = new Intent(context, PickerActivity.class);
+            i.putExtra(Define.BUNDLE_NAME.ALBUM.name(), new Album(0, fishton.titleAlbumAllView, null, 0));
+            i.putExtra(Define.BUNDLE_NAME.POSITION.name(), 0);
+            if (activity != null) activity.startActivityForResult(i, requestCode);
+            else if (fragment != null) fragment.startActivityForResult(i, requestCode);
+        } else {
+            Intent i = new Intent(context, AlbumActivity.class);
+            if (activity != null) activity.startActivityForResult(i, requestCode);
+            else if (fragment != null) fragment.startActivityForResult(i, requestCode);
+        }
 
     }
 }
