@@ -3,7 +3,6 @@ package com.sangcomz.fishbun.util;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
@@ -49,11 +48,9 @@ public class RadioWithTextButton extends View {
         mTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mStrokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mCirclePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mStrokePaint.setColor(Color.parseColor("#c1ffffff"));
-        mTextPaint.setColor(Color.parseColor("#ffffff"));
-        mCirclePaint.setColor(fetchAccentColor());
         mTextPaint.setFakeBoldText(true);
     }
+
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -88,6 +85,11 @@ public class RadioWithTextButton extends View {
     public void setTextColor(int color) {
         if (mTextPaint != null)
             mTextPaint.setColor(color);
+    }
+
+    public void setStrokeColor(int color) {
+        if (mStrokePaint != null)
+            mStrokePaint.setColor(color);
     }
 
     public void setText(String text) {

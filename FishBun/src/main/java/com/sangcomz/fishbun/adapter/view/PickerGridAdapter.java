@@ -84,6 +84,7 @@ public class PickerGridAdapter
             vh.btnThumbCount.unselect();
             vh.btnThumbCount.setCircleColor(fishton.colorActionBar);
             vh.btnThumbCount.setTextColor(fishton.colorActionBarTitle);
+            vh.btnThumbCount.setStrokeColor(fishton.colorSelectCircleStroke);
 
             initState(fishton.selectedImages.indexOf(image), vh);
             if (image != null

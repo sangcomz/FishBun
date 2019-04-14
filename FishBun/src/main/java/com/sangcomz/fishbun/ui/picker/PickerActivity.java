@@ -277,6 +277,8 @@ public class PickerActivity extends BaseActivity {
     public void finishActivity() {
         Intent i = new Intent();
         setResult(RESULT_OK, i);
+        if (fishton.isStartInAllView)
+            i.putParcelableArrayListExtra(Define.INTENT_PATH, fishton.selectedImages);
         finish();
     }
 
