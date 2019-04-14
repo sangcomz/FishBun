@@ -4,6 +4,9 @@
 [![Build Status](https://travis-ci.org/sangcomz/FishBun.svg?branch=master)](https://travis-ci.org/sangcomz/FishBun)
 [![codecov](https://codecov.io/gh/sangcomz/FishBun/branch/master/graph/badge.svg)](https://codecov.io/gh/sangcomz/FishBun)
 [![Download](https://api.bintray.com/packages/sangcomz/maven/fishbun/images/download.svg)](https://bintray.com/sangcomz/maven/fishbun/_latestVersion)
+<a href="https://paypal.me/sangcomz">
+    <img src="https://img.shields.io/badge/$-donate-ff69b4.svg?maxAge=2592000&amp;style=flat">
+  </a>
 <p style="float:left;">
  <a href="https://play.google.com/store/apps/details?id=com.sangcomz.fishbundemo">
  <img HEIGHT="40" WIDTH="135" alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge.png" />
@@ -15,7 +18,7 @@ _FishBun_ is a highly customizable image picker for Android.
 <img src="/pic/fishbuns.png">
 
 
-## What's New in _FishBun_ 0.8.8?
+## What's New in _FishBun_ 0.9.0?
 
 - New Feature / setSelectCircleStrokeColor(Color) ([#145](https://github.com/sangcomz/FishBun/issues/145))
 - New Feature / isStartInAllView(boolean) ([#143](https://github.com/sangcomz/FishBun/issues/143))
@@ -111,14 +114,14 @@ Setting up _FishBun_ requires to add this Gradle configuration:
 
     dependencies {
         // Under the Android Plugin 3.0.0. 
-        compile 'com.sangcomz:FishBun:0.8.8'
+        compile 'com.sangcomz:FishBun:0.9.0'
         
         compile 'com.squareup.picasso:picasso:2.71828'
         or
         compile 'com.github.bumptech.glide:glide:4.9.0'
                 
         // Android plugin 3.0.0 or higher.
-        implementation 'com.sangcomz:FishBun:0.8.8'
+        implementation 'com.sangcomz:FishBun:0.9.0'
         
         implementation 'com.squareup.picasso:picasso:2.71828'
         or
