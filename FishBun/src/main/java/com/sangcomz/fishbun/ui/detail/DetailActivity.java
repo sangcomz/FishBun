@@ -52,6 +52,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         btnDetailCount.unselect();
         btnDetailCount.setCircleColor(fishton.colorActionBar);
         btnDetailCount.setTextColor(fishton.colorActionBarTitle);
+        btnDetailCount.setStrokeColor(fishton.colorSelectCircleStroke);
         btnDetailCount.setOnClickListener(this);
         btnDetailBack.setOnClickListener(this);
         initToolBar();
