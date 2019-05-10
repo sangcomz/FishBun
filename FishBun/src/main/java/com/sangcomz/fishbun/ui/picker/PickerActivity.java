@@ -181,7 +181,7 @@ public class PickerActivity extends BaseActivity {
                         .setTitle(album.bucketName);
             else
                 getSupportActionBar()
-                        .setTitle(album.bucketName + "(" + String.valueOf(total) + "/" + fishton.maxCount + ")");
+                        .setTitle(album.bucketName + " (" + String.valueOf(total) + "/" + fishton.maxCount + ")");
         }
     }
 
