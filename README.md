@@ -18,10 +18,9 @@ _FishBun_ is a highly customizable image picker for Android.
 <img src="/pic/fishbuns.png">
 
 
-## What's New in _FishBun_ 0.9.0?
+## What's New in _FishBun_ 0.9.1?
 
-- New Feature / setSelectCircleStrokeColor(Color) ([#145](https://github.com/sangcomz/FishBun/issues/145))
-- New Feature / isStartInAllView(boolean) ([#143](https://github.com/sangcomz/FishBun/issues/143))
+- Use custom file provider to avoid collision with other plugins ([#151](https://github.com/sangcomz/FishBun/pull/151))
 
 
 
@@ -114,14 +113,14 @@ Setting up _FishBun_ requires to add this Gradle configuration:
 
     dependencies {
         // Under the Android Plugin 3.0.0. 
-        compile 'com.sangcomz:FishBun:0.9.0'
+        compile 'com.sangcomz:FishBun:0.9.1'
         
         compile 'com.squareup.picasso:picasso:2.71828'
         or
         compile 'com.github.bumptech.glide:glide:4.9.0'
                 
         // Android plugin 3.0.0 or higher.
-        implementation 'com.sangcomz:FishBun:0.9.0'
+        implementation 'com.sangcomz:FishBun:0.9.1'
         
         implementation 'com.squareup.picasso:picasso:2.71828'
         or
