@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 /**
  * Created by sangc on 2015-12-26.
  */
-public class SquareFrameLayout extends android.support.v7.widget.ContentFrameLayout {
+public class SquareFrameLayout extends androidx.appcompat.widget.ContentFrameLayout {
     public SquareFrameLayout(Context context) {
         super(context);
     }
