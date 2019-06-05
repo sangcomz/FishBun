@@ -1,7 +1,7 @@
 package com.sangcomz.fishbun.util;
 
-import android.support.v7.widget.PagerSnapHelper;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.PagerSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by sangcomz on 11/06/2017.
