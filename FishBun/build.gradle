@@ -38,10 +38,10 @@ apply plugin: 'co.riiid.gradle'
 apply from: '../gradle/release.gradle'
 
 dependencies {
-    compileOnly "androidx.appcompat:appcompat:$rootProject.support_version"
+    compileOnly "androidx.appcompat:appcompat:$rootProject.androidx_version"
     compile "androidx.constraintlayout:constraintlayout:$rootProject.constraint_version"
-    compile "com.google.android.material:material:$rootProject.support_version"
-    compile "androidx.recyclerview:recyclerview:$rootProject.support_version"
+    compile "com.google.android.material:material:$rootProject.material_version"
+    compile "androidx.recyclerview:recyclerview:$rootProject.androidx_version"
 
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.8.9'

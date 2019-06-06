@@ -3,7 +3,8 @@
 
 buildscript {
     ext {
-        support_version = '1.0.0'
+        androidx_version = '1.0.0'
+        material_version = '1.0.0'
         picasso_version = '2.71828'
         glide_version = '4.9.0'
         constraint_version = '1.1.2'

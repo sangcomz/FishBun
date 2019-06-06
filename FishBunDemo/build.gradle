@@ -57,13 +57,13 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':FishBun')
 
-    implementation "androidx.appcompat:appcompat:$rootProject.support_version"
-    implementation "androidx.recyclerview:recyclerview:$rootProject.support_version"
+    implementation "androidx.appcompat:appcompat:$rootProject.androidx_version"
+    implementation "androidx.recyclerview:recyclerview:$rootProject.androidx_version"
 
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.2'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.2'
 
-    implementation "androidx.legacy:legacy-support-v4:$rootProject.support_version"
+    implementation "androidx.legacy:legacy-support-v4:$rootProject.androidx_version"
     implementation "com.squareup.picasso:picasso:$rootProject.picasso_version"
     implementation "com.github.bumptech.glide:glide:$rootProject.glide_version"
 }
