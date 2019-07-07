@@ -99,8 +99,8 @@ if (project.rootProject.file('local.properties').isFile()) {
         tagName = version
         targetCommitish = 'master'
         body = """## Release Note
-* Fix Bug (#138, #137)
-* Update Glide / Picasso (#139) """
+* Migrate to AndroidX
+"""
         name = version
     }
 }

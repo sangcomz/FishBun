@@ -18,9 +18,9 @@ _FishBun_ is a highly customizable image picker for Android.
 <img src="/pic/fishbuns.png">
 
 
-## What's New in _FishBun_ 0.9.1?
+## What's New in _FishBun_ 0.10.0?
 
-- Use custom file provider to avoid collision with other plugins ([#151](https://github.com/sangcomz/FishBun/pull/151))
+- Migrate to AndroidX 
 
 
 
@@ -104,6 +104,7 @@ FishBun.with(WithActivityActivity.this)
 
 
 ## How to Setup
+Fishbun 0.10.0 and above only supports projects that have been migrated to [androidx](https://developer.android.com/jetpack/androidx/). For more information, read Google's [migration guide](https://developer.android.com/jetpack/androidx/migrate).
 
 Setting up _FishBun_ requires to add this Gradle configuration:
 
@@ -113,21 +114,21 @@ Setting up _FishBun_ requires to add this Gradle configuration:
 
     dependencies {
         // Under the Android Plugin 3.0.0. 
-        compile 'com.sangcomz:FishBun:0.9.1'
+        compile 'com.sangcomz:FishBun:0.10.0'
         
         compile 'com.squareup.picasso:picasso:2.71828'
         or
         compile 'com.github.bumptech.glide:glide:4.9.0'
                 
         // Android plugin 3.0.0 or higher.
-        implementation 'com.sangcomz:FishBun:0.9.1'
+        implementation 'com.sangcomz:FishBun:0.10.0'
         
         implementation 'com.squareup.picasso:picasso:2.71828'
         or
         implementation 'com.github.bumptech.glide:glide:4.9.0'
 
     } 
-
+    
 and to allow the following permissions in your `Manifest`:
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -197,6 +198,7 @@ Running on Android M, _FishBun_ checks if it has proper permission for you befor
 
 
 # Apps using FishBun
+## If you are using this library in your app, let me know.
 
 | Project Name | Result Screen   |
 |:---------:|---|
