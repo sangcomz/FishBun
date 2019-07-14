@@ -16,6 +16,11 @@
         android:clipToPadding="false"
         android:cropToPadding="false" />
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:background="@drawable/drawable_detail_gradient"
+        android:layout_height="match_parent" />
+
     <com.sangcomz.fishbun.util.RadioWithTextButton
         android:id="@+id/btn_thumb_count"
         android:layout_width="30dp"
