@@ -2,8 +2,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_ok"
+        android:id="@+id/action_done"
         android:icon="@drawable/ic_done_white_24dp"
         android:title="@string/done"
+        app:showAsAction="withText|ifRoom" />
+
+    <item
+        android:id="@+id/action_all_done"
+        android:icon="@drawable/ic_done_all_white_24dp"
+        android:title="@string/done_all"
         app:showAsAction="withText|ifRoom" />
 </menu>

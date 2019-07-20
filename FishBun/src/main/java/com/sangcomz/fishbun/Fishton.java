@@ -47,9 +47,12 @@ public class Fishton {
     public String titleActionBar;
 
     public Drawable drawableHomeAsUpIndicator;
-    public Drawable drawableOkButton;
+    public Drawable drawableDoneButton;
+    public Drawable drawableAllDoneButton;
+    public boolean isUseAllDoneButton;
 
-    public String strTextMenu;
+    public String strDoneMenu;
+    public String strAllDoneMenu;
 
     public int colorTextMenu;
 
@@ -111,13 +114,16 @@ public class Fishton {
         titleActionBar = null;
 
         drawableHomeAsUpIndicator = null;
-        drawableOkButton = null;
+        drawableDoneButton = null;
+        drawableAllDoneButton = null;
 
-        strTextMenu = null;
+        strDoneMenu = null;
+        strAllDoneMenu = null;
 
 
         colorTextMenu = Integer.MAX_VALUE;
 
+        isUseAllDoneButton = false;
         isUseDetailView = true;
         isShowCount = true;
 
@@ -140,15 +146,14 @@ public class Fishton {
     }
 
     void setMenuTextColor() {
-        if (drawableOkButton != null
-                || strTextMenu == null
+        if (drawableDoneButton != null
+                || drawableAllDoneButton != null
+                || strDoneMenu == null
                 || colorTextMenu != Integer.MAX_VALUE)
             return;
 
         if (isStatusBarLight)
             colorTextMenu = Color.BLACK;
-        else
-            colorTextMenu = Color.WHITE;
     }
 
     void setDefaultDimen(Context context) {

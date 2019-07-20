@@ -4,14 +4,15 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ImageView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.sangcomz.fishbun.FishBun;
 import com.sangcomz.fishbun.adapter.image.impl.GlideAdapter;
@@ -74,6 +75,9 @@ public class WithActivityActivity extends AppCompatActivity {
                 case 0: {
                     FishBun.with(WithActivityActivity.this)
                             .setImageAdapter(new GlideAdapter())
+                            .setIsUseAllDoneButton(true)
+                            .setMenuDoneText("완료")
+                            .setMenuAllDoneText("전부 완료")
                             .startAlbum();
                     break;
                 }
@@ -93,7 +97,7 @@ public class WithActivityActivity extends AppCompatActivity {
                             .exceptGif(true)
                             .setReachLimitAutomaticClose(true)
                             .setHomeAsUpIndicatorDrawable(ContextCompat.getDrawable(this, R.drawable.ic_custom_back_white))
-                            .setOkButtonDrawable(ContextCompat.getDrawable(this, R.drawable.ic_custom_ok))
+                            .setDoneButtonDrawable(ContextCompat.getDrawable(this, R.drawable.ic_custom_ok))
                             .setAllViewTitle("All")
                             .setActionBarTitle("FishBun Dark")
                             .textOnNothingSelected("Please select three or more!")
@@ -115,7 +119,14 @@ public class WithActivityActivity extends AppCompatActivity {
                             .exceptGif(true)
                             .setReachLimitAutomaticClose(false)
                             .setHomeAsUpIndicatorDrawable(ContextCompat.getDrawable(this, R.drawable.ic_arrow_back_black_24dp))
-                            .setOkButtonDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check_black_24dp))
+//                            .setDoneButtonDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check_black_24dp))
+//                            .setAllDoneButtonDrawable(ContextCompat.getDrawable(this, R.drawable.ic_done_all_black_24dp))
+
+                            .setIsUseAllDoneButton(true)
+                            .setMenuDoneText("완료")
+                            .setMenuAllDoneText("전부 완료")
+
+                            .setIsUseAllDoneButton(true)
                             .setAllViewTitle("All of your photos")
                             .setActionBarTitle("FishBun Light")
                             .textOnImagesSelectionLimitReached("You can't select any more.")

@@ -6,11 +6,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
-import androidx.annotation.NonNull;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +15,12 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.snackbar.Snackbar;
 import com.sangcomz.fishbun.BaseActivity;
 import com.sangcomz.fishbun.R;
 import com.sangcomz.fishbun.adapter.view.AlbumListAdapter;
@@ -26,7 +29,6 @@ import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.permission.PermissionCheck;
 import com.sangcomz.fishbun.util.ScanListener;
 import com.sangcomz.fishbun.util.SingleMediaScanner;
-import com.sangcomz.fishbun.util.TextDrawable;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -190,16 +192,19 @@ public class AlbumActivity extends BaseActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         if (fishton.isButton) {
             getMenuInflater().inflate(R.menu.menu_photo_album, menu);
-            MenuItem item = menu.findItem(R.id.action_ok);
-            if (fishton.drawableOkButton != null) {
-                item.setIcon(fishton.drawableOkButton);
-            } else if (fishton.strTextMenu != null) {
+            MenuItem menuDoneItem = menu.findItem(R.id.action_done);
+            menu.findItem(R.id.action_all_done).setVisible(false);
+            if (fishton.drawableDoneButton != null) {
+                menuDoneItem.setIcon(fishton.drawableDoneButton);
+            } else if (fishton.strDoneMenu != null) {
                 if (fishton.colorTextMenu != Integer.MAX_VALUE) {
-                    item.setIcon(new TextDrawable(getResources(), fishton.strTextMenu, fishton.colorTextMenu));
+                    SpannableString spanString = new SpannableString(fishton.strDoneMenu);
+                    spanString.setSpan(new ForegroundColorSpan(fishton.colorTextMenu), 0, spanString.length(), 0); //fi
+                    menuDoneItem.setTitle(spanString);
                 } else {
-                    item.setTitle(fishton.strTextMenu);
-                    item.setIcon(null);
+                    menuDoneItem.setTitle(fishton.strDoneMenu);
                 }
+                menuDoneItem.setIcon(null);
             }
         }
 
@@ -211,7 +216,7 @@ public class AlbumActivity extends BaseActivity {
         int id = item.getItemId();
         if (id == android.R.id.home) {
             finish();
-        } else if (id == R.id.action_ok) {
+        } else if (id == R.id.action_done) {
             if (adapter != null) {
                 if (fishton.selectedImages.size() < fishton.minCount) {
                     Snackbar.make(recyclerAlbumList, fishton.messageNothingSelected, Snackbar.LENGTH_SHORT).show();
@@ -244,7 +249,6 @@ public class AlbumActivity extends BaseActivity {
             if (resultCode == RESULT_OK) {
                 finishActivity();
             } else if (resultCode == define.TRANS_IMAGES_RESULT_CODE) {
-//                ArrayList<Uri> path = data.getParcelableArrayListExtra(Define.INTENT_PATH);
                 ArrayList<Uri> addPath = data.getParcelableArrayListExtra(define.INTENT_ADD_PATH);
                 int position = data.getIntExtra(define.INTENT_POSITION, -1);
                 refreshList(position, addPath);

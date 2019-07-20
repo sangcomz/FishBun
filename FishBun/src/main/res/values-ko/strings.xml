@@ -3,6 +3,7 @@
     <string name="album">앨범</string>
     <string name="camera">카메라</string>
     <string name="done">완료</string>
+    <string name="done_all">모두 선택 완료</string>
     <string name="msg_no_selected">선택된 이미지가 없습니다.</string>
     <string name="str_all_view">전체사진</string>
     <string name="msg_permission">권한이 거부 됐습니다.</string>

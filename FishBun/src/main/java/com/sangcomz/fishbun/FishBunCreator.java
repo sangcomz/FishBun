@@ -180,8 +180,18 @@ public final class FishBunCreator implements BaseProperty, CustomizationProperty
     }
 
     @Override
-    public FishBunCreator setOkButtonDrawable(Drawable icon) {
-        fishton.drawableOkButton = icon;
+    public FishBunCreator setDoneButtonDrawable(Drawable icon) {
+        fishton.drawableDoneButton = icon;
+        return this;
+    }
+
+    public FishBunCreator setAllDoneButtonDrawable(Drawable icon) {
+        fishton.drawableAllDoneButton = icon;
+        return this;
+    }
+
+    public FishBunCreator setIsUseAllDoneButton(Boolean isUse){
+        fishton.isUseAllDoneButton = isUse;
         return this;
     }
 
@@ -192,8 +202,13 @@ public final class FishBunCreator implements BaseProperty, CustomizationProperty
     }
 
     @Override
-    public FishBunCreator setMenuText(String text) {
-        fishton.strTextMenu = text;
+    public FishBunCreator setMenuDoneText(String text) {
+        fishton.strDoneMenu = text;
+        return this;
+    }
+
+    public FishBunCreator setMenuAllDoneText(String text){
+        fishton.strAllDoneMenu = text;
         return this;
     }
 
@@ -249,7 +264,6 @@ public final class FishBunCreator implements BaseProperty, CustomizationProperty
         fishton.setDefaultMessage(context);
         fishton.setMenuTextColor();
         fishton.setDefaultDimen(context);
-
 
         if (fishton.isStartInAllView) {
             Intent i = new Intent(context, PickerActivity.class);

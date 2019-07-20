@@ -2,6 +2,7 @@
     <string name="album">Album</string>
     <string name="camera">camera</string>
     <string name="done">done</string>
+    <string name="done_all">done all</string>
     <string name="msg_no_selected">There is no selected image.</string>
     <string name="str_all_view">All view</string>
     <string name="msg_permission">Permission denied.</string>

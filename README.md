@@ -18,9 +18,14 @@ _FishBun_ is a highly customizable image picker for Android.
 <img src="/pic/fishbuns.png">
 
 
-## What's New in _FishBun_ 0.10.0?
+## What's New in _FishBun_ 0.11.0?
 
-- Migrate to AndroidX 
+- Select all button[#140](https://github.com/sangcomz/FishBun/issues/140)
+    - setAllDoneButtonDrawable()
+    - setIsUseAllDoneButton()
+    - setMenuAllDoneText()
+- Add gradient to top of images when selecting.[#148](https://github.com/sangcomz/FishBun/issues/148)
+- Change Method Name `setOkButtonDrawable` -> `setDoneButtonDrawable`
 
 
 
@@ -61,8 +66,11 @@ FishBun.with(WithActivityActivity.this)
         .exceptGif(true)
         .setReachLimitAutomaticClose(true)
         .setHomeAsUpIndicatorDrawable(ContextCompat.getDrawable(this, R.drawable.ic_custom_back_white))
-        .setOkButtonDrawable(ContextCompat.getDrawable(this, R.drawable.ic_custom_ok))
+        .setDoneButtonDrawable(ContextCompat.getDrawable(this, R.drawable.ic_custom_ok))
+        .setAllDoneButtonDrawable(ContextCompat.getDrawable(this, R.drawable.ic_custom_ok))
+        .setIsUseAllDoneButton(ContextCompat.getDrawable(this, R.drawable.ic_custom_ok))
         .setAllViewTitle("All")
+        .setMenuAllDoneText("All Done")
         .setActionBarTitle("FishBun Dark")
         .textOnNothingSelected("Please select three or more!")
         .startAlbum();
@@ -121,7 +129,7 @@ Setting up _FishBun_ requires to add this Gradle configuration:
         compile 'com.github.bumptech.glide:glide:4.9.0'
                 
         // Android plugin 3.0.0 or higher.
-        implementation 'com.sangcomz:FishBun:0.10.0'
+        implementation 'com.sangcomz:FishBun:0.11.0'
         
         implementation 'com.squareup.picasso:picasso:2.71828'
         or
