@@ -5,17 +5,20 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.appcompat.app.ActionBar;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.snackbar.Snackbar;
 import com.sangcomz.fishbun.BaseActivity;
 import com.sangcomz.fishbun.R;
 import com.sangcomz.fishbun.adapter.view.PickerGridAdapter;
@@ -25,7 +28,6 @@ import com.sangcomz.fishbun.permission.PermissionCheck;
 import com.sangcomz.fishbun.util.RadioWithTextButton;
 import com.sangcomz.fishbun.util.SingleMediaScanner;
 import com.sangcomz.fishbun.util.SquareFrameLayout;
-import com.sangcomz.fishbun.util.TextDrawable;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -140,17 +142,37 @@ public class PickerActivity extends BaseActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_photo_album, menu);
-        MenuItem item = menu.findItem(R.id.action_ok);
+        MenuItem menuDoneItem = menu.findItem(R.id.action_done);
+        MenuItem menuAllDoneItem = menu.findItem(R.id.action_all_done);
 
-        if (fishton.drawableOkButton != null) {
-            item.setIcon(fishton.drawableOkButton);
-        } else if (fishton.strTextMenu != null) {
+        if (fishton.drawableDoneButton != null) {
+            menuDoneItem.setIcon(fishton.drawableDoneButton);
+        } else if (fishton.strDoneMenu != null) {
             if (fishton.colorTextMenu != Integer.MAX_VALUE) {
-                item.setIcon(new TextDrawable(getResources(), fishton.strTextMenu, fishton.colorTextMenu));
+                SpannableString spanString = new SpannableString(fishton.strDoneMenu);
+                spanString.setSpan(new ForegroundColorSpan(fishton.colorTextMenu), 0, spanString.length(), 0); //fi
+                menuDoneItem.setTitle(spanString);
             } else {
-                item.setTitle(fishton.strTextMenu);
-                item.setIcon(null);
+                menuDoneItem.setTitle(fishton.strDoneMenu);
             }
+            menuDoneItem.setIcon(null);
+        }
+        if (fishton.isUseAllDoneButton){
+            menuAllDoneItem.setVisible(true);
+            if (fishton.drawableAllDoneButton != null) {
+                menuAllDoneItem.setIcon(fishton.drawableAllDoneButton);
+            } else if (fishton.strAllDoneMenu != null) {
+                if (fishton.colorTextMenu != Integer.MAX_VALUE) {
+                    SpannableString spanString = new SpannableString(fishton.strAllDoneMenu);
+                    spanString.setSpan(new ForegroundColorSpan(fishton.colorTextMenu), 0, spanString.length(), 0); //fi
+                    menuAllDoneItem.setTitle(spanString);
+                } else {
+                    menuAllDoneItem.setTitle(fishton.strAllDoneMenu);
+                }
+                menuAllDoneItem.setIcon(null);
+            }
+        }else{
+            menuAllDoneItem.setVisible(false);
         }
         return true;
     }
@@ -162,14 +184,25 @@ public class PickerActivity extends BaseActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify album parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_ok) {
+        if (id == R.id.action_done) {
             if (fishton.selectedImages.size() < fishton.minCount) {
                 Snackbar.make(recyclerView, fishton.messageNothingSelected, Snackbar.LENGTH_SHORT).show();
             } else {
                 finishActivity();
             }
             return true;
-        } else if (id == android.R.id.home)
+        } else if (id == R.id.action_all_done){
+            for (Uri pickerImage : fishton.pickerImages) {
+                if (fishton.selectedImages.size() == fishton.maxCount){
+                    break;
+                }
+                if (!fishton.selectedImages.contains(pickerImage)){
+                    fishton.selectedImages.add(pickerImage);
+                }
+            }
+            finishActivity();
+        }
+        else if (id == android.R.id.home)
             transImageFinish(position);
         return super.onOptionsItemSelected(item);
     }
@@ -191,7 +224,7 @@ public class PickerActivity extends BaseActivity {
 
     private void initView() {
         recyclerView = findViewById(R.id.recycler_picker_list);
-        layoutManager = new GridLayoutManager(this, fishton.photoSpanCount, GridLayoutManager.VERTICAL, false);
+        layoutManager = new GridLayoutManager(this, fishton.photoSpanCount, RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         initToolBar();
     }

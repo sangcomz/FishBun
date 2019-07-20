@@ -39,9 +39,15 @@ interface CustomizationProperty {
 
     FishBunCreator setHomeAsUpIndicatorDrawable(Drawable icon);
 
-    FishBunCreator setOkButtonDrawable(Drawable icon);
+    FishBunCreator setDoneButtonDrawable(Drawable icon);
 
-    FishBunCreator setMenuText(String text);
+    FishBunCreator setAllDoneButtonDrawable(Drawable icon);
+
+    FishBunCreator setIsUseAllDoneButton(Boolean isUse);
+
+    FishBunCreator setMenuDoneText(String text);
+
+    FishBunCreator setMenuAllDoneText(String text);
 
     FishBunCreator setMenuTextColor(int color);
 
