@@ -237,7 +237,7 @@ public class AlbumActivity extends BaseActivity {
             if (fishton.maxCount == 1 || !fishton.isShowCount)
                 getSupportActionBar().setTitle(fishton.titleActionBar);
             else
-                getSupportActionBar().setTitle(fishton.titleActionBar + "(" + String.valueOf(total) + "/" + fishton.maxCount + ")");
+                getSupportActionBar().setTitle(fishton.titleActionBar + " (" + total + "/" + fishton.maxCount + ")");
         }
     }
 
