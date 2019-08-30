@@ -39,7 +39,7 @@ public class CameraUtil {
                 Uri uri;
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     uri = FileProvider.getUriForFile(activity,
-                            activity.getApplicationContext().getPackageName() + ".provider", photoFile);
+                            activity.getApplicationContext().getPackageName() + ".fishbunfileprovider", photoFile);
                 } else {
                     uri = Uri.fromFile(photoFile);
                 }

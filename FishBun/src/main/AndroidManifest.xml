@@ -5,7 +5,7 @@
     <application>
         <provider
             android:name="com.sangcomz.fishbun.FishBunFileProvider"
-            android:authorities="${applicationId}.provider"
+            android:authorities="${applicationId}.fishbunfileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
