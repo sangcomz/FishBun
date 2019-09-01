@@ -10,7 +10,7 @@ buildscript {
     dependencies {
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
         classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3"
-        classpath 'com.dicedmelon.gradle:jacoco-android:0.1.1'
+        classpath 'com.dicedmelon.gradle:jacoco-android:0.1.4'
         classpath 'co.riiid:gradle-github-plugin:0.4.2'
     }
 }
@@ -41,7 +41,7 @@ dependencies {
     compileOnly "androidx.appcompat:appcompat:$rootProject.androidx_version"
     compile "androidx.constraintlayout:constraintlayout:$rootProject.constraint_version"
     compile "com.google.android.material:material:$rootProject.material_version"
-    compile "androidx.recyclerview:recyclerview:$rootProject.androidx_version"
+    compile "androidx.recyclerview:recyclerview:$rootProject.recyclerview_version"
 
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.8.9'
