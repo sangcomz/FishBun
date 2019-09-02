@@ -15,15 +15,10 @@ _FishBun_ is a highly customizable image picker for Android.
 <img src="/pic/fishbuns.png">
 
 
-## What's New in _FishBun_ 0.11.0?
+## What's New in _FishBun_ 0.11.1?
 
-- Select all button[#140](https://github.com/sangcomz/FishBun/issues/140)
-    - setAllDoneButtonDrawable()
-    - setIsUseAllDoneButton()
-    - setMenuAllDoneText()
-- Add gradient to top of images when selecting.[#148](https://github.com/sangcomz/FishBun/issues/148)
-- Change Method Name `setOkButtonDrawable` -> `setDoneButtonDrawable`
-
+- Missing space in title[#163](https://github.com/sangcomz/FishBun/issues/163)
+- [CRASH] When used in flutter, Fileprovider paths can be overwritten.[#162](https://github.com/sangcomz/FishBun/issues/162)
 
 
 ## Customizable Styles
