@@ -99,7 +99,8 @@ if (project.rootProject.file('local.properties').isFile()) {
         tagName = version
         targetCommitish = 'master'
         body = """## Release Note
-* Migrate to AndroidX
+* Missing space in title[#163](https://github.com/sangcomz/FishBun/issues/163)
+* [CRASH] When used in flutter, Fileprovider paths can be overwritten.[#162](https://github.com/sangcomz/FishBun/issues/162)
 """
         name = version
     }
