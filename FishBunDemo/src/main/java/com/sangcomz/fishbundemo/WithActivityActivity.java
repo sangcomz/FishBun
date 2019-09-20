@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.sangcomz.fishbun.FishBun;
 import com.sangcomz.fishbun.adapter.image.impl.GlideAdapter;
-import com.sangcomz.fishbun.adapter.image.impl.PicassoAdapter;
 import com.sangcomz.fishbun.define.Define;
 
 import java.util.ArrayList;
@@ -76,6 +75,7 @@ public class WithActivityActivity extends AppCompatActivity {
                     FishBun.with(WithActivityActivity.this)
                             .setImageAdapter(new GlideAdapter())
                             .setIsUseAllDoneButton(true)
+                            .setIsUseDetailView(false)
                             .setMenuDoneText("완료")
                             .setMenuAllDoneText("전부 완료")
                             .startAlbum();
@@ -84,7 +84,7 @@ public class WithActivityActivity extends AppCompatActivity {
                 //dark
                 case 1: {
                     FishBun.with(WithActivityActivity.this)
-                            .setImageAdapter(new PicassoAdapter())
+                            .setImageAdapter(new GlideAdapter())
                             .setMaxCount(5)
                             .setMinCount(3)
                             .setPickerSpanCount(5)
@@ -107,7 +107,7 @@ public class WithActivityActivity extends AppCompatActivity {
                 //Light
                 case 2: {
                     FishBun.with(WithActivityActivity.this)
-                            .setImageAdapter(new PicassoAdapter())
+                            .setImageAdapter(new GlideAdapter())
                             .setPickerCount(50)
                             .setPickerSpanCount(4)
                             .setActionBarColor(Color.parseColor("#ffffff"), Color.parseColor("#ffffff"), true)
