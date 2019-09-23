@@ -192,7 +192,7 @@ Various customizable features can be controlled by chained methods as in:
 
 ## Android M Permission
 
-Running on Android M, _FishBun_ checks if it has proper permission for you before reading an external storage.
+Running on Android M, _FishBun_ checks if it has proper permission for you before reading an external storage and using camera.
 
 <img src="/pic/permission.png" width="20%">
 

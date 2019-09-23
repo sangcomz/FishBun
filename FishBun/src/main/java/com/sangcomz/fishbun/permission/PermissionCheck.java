@@ -20,6 +20,12 @@ import com.sangcomz.fishbun.define.Define;
 public class PermissionCheck {
     private Context context;
 
+    private final String[] permissions = new String[] {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.CAMERA
+    };
+
     public PermissionCheck(Context context) {
         this.context = context;
     }
@@ -27,25 +33,16 @@ public class PermissionCheck {
 
     @TargetApi(Build.VERSION_CODES.M)
     public boolean CheckStoragePermission() {
-        Define define = new Define();
-        int permissionCheckRead = ContextCompat.checkSelfPermission(context,
-                Manifest.permission.READ_EXTERNAL_STORAGE);
-        int permissionCheckWrite = ContextCompat.checkSelfPermission(context,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        if (permissionCheckRead != PackageManager.PERMISSION_GRANTED || permissionCheckWrite != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context,
-                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                // Show an expanation to the user *asynchronously* -- don't block
+        if (isNecessaryToCheckPermissions()) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    (Activity) context, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                // Show an explanation to the user *asynchronously* -- don't block
                 // this thread waiting for the user's response! After the user
                 // sees the explanation, try again to request the permission.
-                ActivityCompat.requestPermissions((Activity) context,
-                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                        define.PERMISSION_STORAGE);
+                requestPermissions();
             } else {
                 // No explanation needed, we can request the permission.
-                ActivityCompat.requestPermissions((Activity) context,
-                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                        define.PERMISSION_STORAGE);
+                requestPermissions();
 
                 // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
                 // app-defined int constant. The callback method gets the
@@ -56,6 +53,20 @@ public class PermissionCheck {
             return true;
     }
 
+    private boolean isNecessaryToCheckPermissions() {
+        for(int i = 0; i < permissions.length; i++) {
+            int result = ContextCompat.checkSelfPermission(context, permissions[i]);
+            if(result != PackageManager.PERMISSION_GRANTED) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void requestPermissions() {
+        final Define define = new Define();
+        ActivityCompat.requestPermissions((Activity) context, permissions, define.PERMISSION_STORAGE);
+    }
 
     public void showPermissionDialog() {
         Toast.makeText(context, R.string.msg_permission, Toast.LENGTH_SHORT).show();
