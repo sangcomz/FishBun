@@ -2,15 +2,13 @@ package com.sangcomz.fishbundemo;
 
 import android.content.Context;
 import android.net.Uri;
-
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -38,9 +36,10 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final Uri imagePath = imagePaths.get(position);
-        Glide.with(holder.imageView)
+        Picasso
+                .get()
                 .load(imagePath)
-                .fitCenter()
+                .fit()
                 .centerCrop()
                 .into(holder.imageView);
         holder.imageView.setOnClickListener(new View.OnClickListener() {
