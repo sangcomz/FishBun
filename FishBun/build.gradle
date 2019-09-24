@@ -39,13 +39,13 @@ apply from: '../gradle/release.gradle'
 
 dependencies {
     compileOnly "androidx.appcompat:appcompat:$rootProject.androidx_version"
-    compile "androidx.constraintlayout:constraintlayout:$rootProject.constraint_version"
-    compile "com.google.android.material:material:$rootProject.material_version"
-    compile "androidx.recyclerview:recyclerview:$rootProject.recyclerview_version"
+    implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraint_version"
+    implementation "com.google.android.material:material:$rootProject.material_version"
+    implementation "androidx.recyclerview:recyclerview:$rootProject.recyclerview_version"
 
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.8.9'
 
-    //compileOnly "com.squareup.picasso:picasso:$rootProject.picasso_version"
+    compileOnly "com.squareup.picasso:picasso:$rootProject.picasso_version"
     compileOnly "com.github.bumptech.glide:glide:$rootProject.glide_version"
 }

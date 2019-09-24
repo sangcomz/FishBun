@@ -3,7 +3,7 @@ package com.sangcomz.fishbundemo;
 import android.net.Uri;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by sangc on 2015-11-06.
@@ -16,9 +16,10 @@ class ImageController {
     }
 
     void setImgMain(Uri path) {
-        Glide.with(imgMain)
+        Picasso
+                .get()
                 .load(path)
-                .fitCenter()
+                .fit()
                 .centerCrop()
                 .into(imgMain);
     }
