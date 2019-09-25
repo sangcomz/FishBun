@@ -28,7 +28,7 @@ public class PermissionCheck {
 
 
     @TargetApi(Build.VERSION_CODES.M)
-    public boolean CheckStoragePermission() {
+    public boolean CheckCameraAndStoragePermission() {
         Define define = new Define();
         int permissionCheckRead = ContextCompat.checkSelfPermission(context,
                 Manifest.permission.READ_EXTERNAL_STORAGE);

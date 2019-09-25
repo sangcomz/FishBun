@@ -33,7 +33,7 @@ class AlbumController {
     boolean checkPermission() {
         PermissionCheck permissionCheck = new PermissionCheck(albumActivity);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (permissionCheck.CheckStoragePermission())
+            if (permissionCheck.CheckCameraAndStoragePermission())
                 return true;
         } else
             return true;

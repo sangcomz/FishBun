@@ -67,7 +67,7 @@ public class PickerController {
     boolean checkPermission() {
         PermissionCheck permissionCheck = new PermissionCheck(pickerActivity);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (permissionCheck.CheckStoragePermission())
+            if (permissionCheck.CheckCameraAndStoragePermission())
                 return true;
         } else
             return true;
