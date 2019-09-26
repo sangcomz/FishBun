@@ -1,6 +1,5 @@
 package com.sangcomz.fishbun
 
-import android.app.Activity
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.net.Uri
@@ -8,7 +7,6 @@ import com.sangcomz.fishbun.bean.Album
 import com.sangcomz.fishbun.define.Define
 import com.sangcomz.fishbun.ui.album.AlbumActivity
 import com.sangcomz.fishbun.ui.picker.PickerActivity
-import java.lang.ClassCastException
 import java.util.*
 
 /**
