@@ -9,28 +9,12 @@ I actively welcome your pull requests.
 
 How to report a bug
 -------------------
-- Describe the problem as detailed as possible. 
-- If possible, add instructions on how to reproduce the bug.
-- If possible, add a logfile to your post.
-- Please use the following **template**: 
 
-**App version**: 
+please check [template to report a bug](https://github.com/sangcomz/FishBun/blob/master/.github/ISSUE_TEMPLATE/bug_report.md) 
 
-**Android version**:
 
-**Device model**: 
+How to request feature
+-------------------
 
-**Expected behaviour**: 
-
-**Current behaviour**: 
-
-**Steps to reproduce**:
-
-1. Do this
-1. Do that
-
-**Stacktrace/Logcat**: [if available]
-```
-...
-```
+please check [template to request feature](https://github.com/sangcomz/FishBun/blob/master/.github/ISSUE_TEMPLATE/feature_request.md) 
 

@@ -213,7 +213,7 @@ Any suggestions or contributions would be welcomed.
 # Feedback
 
 Bug reports and feature requests can be submitted [here](https://github.com/sangcomz/FishBun/issues) 
-(please read the [instructions](https://github.com/sangcomz/FishBun/blob/master/CONTRIBUTING.md) on how to report a bug).
+(please read the [instructions](https://github.com/sangcomz/FishBun/blob/master/CONTRIBUTING.md) on how to report a bug and request feature).
 
 # License
 
