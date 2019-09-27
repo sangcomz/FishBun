@@ -2,8 +2,9 @@ package com.sangcomz.fishbun;
 
 import android.os.Build;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.Window;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.util.UiUtil;
