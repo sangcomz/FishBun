@@ -210,6 +210,10 @@ Running on Android M, _FishBun_ checks if it has proper permission for you befor
 Any suggestions or contributions would be welcomed.
 [CONTRIBUTING](https://github.com/sangcomz/FishBun/blob/master/CONTRIBUTING.md)
 
+# Feedback
+
+Bug reports and feature requests can be submitted [here](https://github.com/sangcomz/FishBun/issues) 
+(please read the [instructions](https://github.com/sangcomz/FishBun/blob/master/CONTRIBUTING.md) on how to report a bug).
 
 # License
 
