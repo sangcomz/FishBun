@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 apply plugin: 'jacoco-android'
 
 buildscript {
@@ -38,6 +39,7 @@ apply plugin: 'co.riiid.gradle'
 apply from: '../gradle/release.gradle'
 
 dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     compileOnly "androidx.appcompat:appcompat:$rootProject.androidx_version"
     compile "androidx.constraintlayout:constraintlayout:$rootProject.constraint_version"
     compile "com.google.android.material:material:$rootProject.material_version"
