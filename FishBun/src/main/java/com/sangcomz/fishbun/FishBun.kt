@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment
 import com.sangcomz.fishbun.adapter.image.ImageAdapter
 import java.lang.ref.WeakReference
 
-class FishBun(context: Activity?) {
+class FishBun private constructor(context: Activity?) {
 
     private val _context: WeakReference<Activity?> = WeakReference(context)
 
