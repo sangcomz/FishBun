@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.widget.ImageView;
 
 import com.sangcomz.fishbun.adapter.image.ImageAdapter;
+import com.sangcomz.fishbun.util.ImageRotateTransformation;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -18,6 +19,7 @@ public class PicassoAdapter implements ImageAdapter {
                 .load(loadUrl)
                 .fit()
                 .centerCrop()
+                .transform(new ImageRotateTransformation(target, loadUrl))
                 .into(target);
     }
 
@@ -27,6 +29,7 @@ public class PicassoAdapter implements ImageAdapter {
                 .load(loadUrl)
                 .fit()
                 .centerInside()
+                .transform(new ImageRotateTransformation(target, loadUrl))
                 .into(target);
     }
 }
