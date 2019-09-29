@@ -95,7 +95,9 @@ public class AlbumActivity extends BaseActivity {
         linearAlbumCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                albumController.takePicture(AlbumActivity.this, albumController.getPathDir());
+                if (albumController.checkCameraPermission()) {
+                    albumController.takePicture(AlbumActivity.this, albumController.getPathDir());
+                }
             }
         });
         initToolBar();
