@@ -8,8 +8,11 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 
+import com.sangcomz.fishbun.R;
 import com.sangcomz.fishbun.permission.PermissionCheck;
 import com.sangcomz.fishbun.util.CameraUtil;
 import com.sangcomz.fishbun.util.RegexUtil;
@@ -84,6 +87,10 @@ public class PickerController {
         return false;
     }
 
+    public boolean isCameraPermissionDeclared() {
+        PermissionCheck permissionCheck = new PermissionCheck(pickerActivity);
+        return permissionCheck.isCameraPermissionDeclared();
+    }
 
     void displayImage(Long bucketId,
                       Boolean exceptGif) {
@@ -166,5 +173,9 @@ public class PickerController {
 
     public void finishActivity() {
         pickerActivity.finishActivity();
+    }
+
+    public void showDeclarePermissionDialog() {
+        Toast.makeText(pickerActivity, R.string.please_add_camera_permission, Toast.LENGTH_LONG).show();
     }
 }

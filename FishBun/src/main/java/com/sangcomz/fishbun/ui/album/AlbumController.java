@@ -40,7 +40,7 @@ class AlbumController {
         return false;
     }
 
-    public boolean checkCameraPermission() {
+    boolean checkCameraPermission() {
         PermissionCheck permissionCheck = new PermissionCheck(albumActivity);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (permissionCheck.CheckCameraPermission())
@@ -48,6 +48,11 @@ class AlbumController {
         } else
             return true;
         return false;
+    }
+
+    boolean isCameraPermissionDeclared() {
+        PermissionCheck permissionCheck = new PermissionCheck(albumActivity);
+        return permissionCheck.isCameraPermissionDeclared();
     }
 
     void getAlbumList(String allViewTitle,

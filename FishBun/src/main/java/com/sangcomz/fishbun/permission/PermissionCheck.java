@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.widget.Toast;
@@ -25,6 +26,27 @@ public class PermissionCheck {
         this.context = context;
     }
 
+    public boolean isCameraPermissionDeclared() {
+
+        boolean isCameraPermissionDeclared = false;
+
+        try {
+            PackageInfo info = context.getPackageManager().getPackageInfo(context.getPackageName(), PackageManager.GET_PERMISSIONS);
+            String[] permissions = info.requestedPermissions;//This array contains the requested permissions.
+
+            if (permissions != null && permissions.length > 0) {
+                for (String permission : permissions) {
+                    if (permission.equals("android.permission.CAMERA")) {
+                        isCameraPermissionDeclared = true;
+                        break;
+                    }
+                }
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return isCameraPermissionDeclared;
+    }
 
     @TargetApi(Build.VERSION_CODES.M)
     public boolean CheckStoragePermission() {
@@ -92,4 +114,7 @@ public class PermissionCheck {
     }
 
 
+    public void showDeclarePermissionDialog() {
+        Toast.makeText(context, R.string.please_add_camera_permission, Toast.LENGTH_LONG).show();
+    }
 }

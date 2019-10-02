@@ -70,8 +70,12 @@ public class PickerGridAdapter
             vh.header.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (pickerController.checkCameraPermission()) {
-                        pickerController.takePicture((Activity) vh.header.getContext(), saveDir);
+                    if (pickerController.isCameraPermissionDeclared()) {
+                        if (pickerController.checkCameraPermission()) {
+                            pickerController.takePicture((Activity) vh.header.getContext(), saveDir);
+                        }
+                    } else {
+                        pickerController.showDeclarePermissionDialog();
                     }
                 }
             });
