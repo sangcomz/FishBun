@@ -12,5 +12,4 @@
     <string name="image">image</string>
 
     <string name="msg_error">There was a temporary error. Please try again in a few minutes.</string>
-    <string name="please_add_camera_permission">To use this feature please add camera permission to your project.</string>
 </resources>

@@ -87,11 +87,6 @@ public class PickerController {
         return false;
     }
 
-    public boolean isCameraPermissionDeclared() {
-        PermissionCheck permissionCheck = new PermissionCheck(pickerActivity);
-        return permissionCheck.isCameraPermissionDeclared();
-    }
-
     void displayImage(Long bucketId,
                       Boolean exceptGif) {
         new DisplayImage(bucketId, exceptGif).execute();
@@ -173,9 +168,5 @@ public class PickerController {
 
     public void finishActivity() {
         pickerActivity.finishActivity();
-    }
-
-    public void showDeclarePermissionDialog() {
-        Toast.makeText(pickerActivity, R.string.please_add_camera_permission, Toast.LENGTH_LONG).show();
     }
 }

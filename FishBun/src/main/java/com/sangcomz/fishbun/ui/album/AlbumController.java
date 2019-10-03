@@ -50,11 +50,6 @@ class AlbumController {
         return false;
     }
 
-    boolean isCameraPermissionDeclared() {
-        PermissionCheck permissionCheck = new PermissionCheck(albumActivity);
-        return permissionCheck.isCameraPermissionDeclared();
-    }
-
     void getAlbumList(String allViewTitle,
                       Boolean exceptGif) {
         new LoadAlbumList(allViewTitle, exceptGif).execute();
