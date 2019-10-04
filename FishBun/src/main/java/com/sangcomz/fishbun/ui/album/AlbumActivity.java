@@ -95,7 +95,9 @@ public class AlbumActivity extends BaseActivity {
         linearAlbumCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                albumController.takePicture(AlbumActivity.this, albumController.getPathDir());
+                if (albumController.checkCameraPermission()) {
+                    albumController.takePicture(AlbumActivity.this, albumController.getPathDir());
+                }
             }
         });
         initToolBar();
@@ -285,6 +287,18 @@ public class AlbumActivity extends BaseActivity {
                         finish();
                     }
                 }
+                break;
+            }
+            case 29: {
+                if (grantResults.length > 0) {
+                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        // permission was granted, yay!
+                        albumController.takePicture(AlbumActivity.this, albumController.getPathDir());
+                    } else {
+                        new PermissionCheck(this).showPermissionDialog();
+                    }
+                }
+                break;
             }
         }
     }

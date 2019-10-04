@@ -8,8 +8,11 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 
+import com.sangcomz.fishbun.R;
 import com.sangcomz.fishbun.permission.PermissionCheck;
 import com.sangcomz.fishbun.util.CameraUtil;
 import com.sangcomz.fishbun.util.RegexUtil;
@@ -74,6 +77,15 @@ public class PickerController {
         return false;
     }
 
+    public boolean checkCameraPermission() {
+        PermissionCheck permissionCheck = new PermissionCheck(pickerActivity);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (permissionCheck.CheckCameraPermission())
+                return true;
+        } else
+            return true;
+        return false;
+    }
 
     void displayImage(Long bucketId,
                       Boolean exceptGif) {

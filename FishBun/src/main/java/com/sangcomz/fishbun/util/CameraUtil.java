@@ -51,6 +51,12 @@ public class CameraUtil {
     }
 
     private File createImageFile(String saveDir) throws IOException {
+
+        File dir = new File(saveDir);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";

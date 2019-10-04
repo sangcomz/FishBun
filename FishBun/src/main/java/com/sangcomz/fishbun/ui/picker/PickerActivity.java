@@ -25,6 +25,7 @@ import com.sangcomz.fishbun.adapter.view.PickerGridAdapter;
 import com.sangcomz.fishbun.bean.Album;
 import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.permission.PermissionCheck;
+import com.sangcomz.fishbun.ui.album.AlbumActivity;
 import com.sangcomz.fishbun.util.RadioWithTextButton;
 import com.sangcomz.fishbun.util.SingleMediaScanner;
 import com.sangcomz.fishbun.util.SquareFrameLayout;
@@ -133,6 +134,18 @@ public class PickerActivity extends BaseActivity {
                         finish();
                     }
                 }
+                break;
+            }
+            case 29: {
+                if (grantResults.length > 0) {
+                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        // permission was granted, yay!
+                        pickerController.takePicture(this, pickerController.getPathDir(album.bucketId));
+                    } else {
+                        new PermissionCheck(this).showPermissionDialog();
+                    }
+                }
+                break;
             }
 
         }
@@ -157,7 +170,7 @@ public class PickerActivity extends BaseActivity {
             }
             menuDoneItem.setIcon(null);
         }
-        if (fishton.isUseAllDoneButton){
+        if (fishton.isUseAllDoneButton) {
             menuAllDoneItem.setVisible(true);
             if (fishton.drawableAllDoneButton != null) {
                 menuAllDoneItem.setIcon(fishton.drawableAllDoneButton);
@@ -171,7 +184,7 @@ public class PickerActivity extends BaseActivity {
                 }
                 menuAllDoneItem.setIcon(null);
             }
-        }else{
+        } else {
             menuAllDoneItem.setVisible(false);
         }
         return true;
@@ -191,18 +204,17 @@ public class PickerActivity extends BaseActivity {
                 finishActivity();
             }
             return true;
-        } else if (id == R.id.action_all_done){
+        } else if (id == R.id.action_all_done) {
             for (Uri pickerImage : fishton.pickerImages) {
-                if (fishton.selectedImages.size() == fishton.maxCount){
+                if (fishton.selectedImages.size() == fishton.maxCount) {
                     break;
                 }
-                if (!fishton.selectedImages.contains(pickerImage)){
+                if (!fishton.selectedImages.contains(pickerImage)) {
                     fishton.selectedImages.add(pickerImage);
                 }
             }
             finishActivity();
-        }
-        else if (id == android.R.id.home)
+        } else if (id == android.R.id.home)
             transImageFinish(position);
         return super.onOptionsItemSelected(item);
     }

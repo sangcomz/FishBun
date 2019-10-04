@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+<!--    <uses-permission android:name="android.permission.CAMERA" />-->
 
     <application
         android:name="com.sangcomz.fishbundemo.CommonApplication"
@@ -21,7 +22,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.sangcomz.fishbundemo.WithFragmentActivity"/>
+        <activity android:name="com.sangcomz.fishbundemo.WithFragmentActivity" />
     </application>
 
 </manifest>

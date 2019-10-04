@@ -4,10 +4,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+
 import com.google.android.material.snackbar.Snackbar;
+
 import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,7 +70,9 @@ public class PickerGridAdapter
             vh.header.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    pickerController.takePicture((Activity) vh.header.getContext(), saveDir);
+                    if (pickerController.checkCameraPermission()) {
+                        pickerController.takePicture((Activity) vh.header.getContext(), saveDir);
+                    }
                 }
             });
         }
