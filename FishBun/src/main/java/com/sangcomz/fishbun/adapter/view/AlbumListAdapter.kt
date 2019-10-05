@@ -5,7 +5,6 @@ import android.content.Intent
 import android.net.Uri
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 
@@ -24,27 +23,21 @@ class AlbumListAdapter : RecyclerView.Adapter<AlbumListAdapter.ViewHolder>() {
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.album_item, parent, false)
-        return ViewHolder(view, fishton.albumThumbnailSize)
+        return ViewHolder(parent, fishton.albumThumbnailSize)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val uri: Uri = Uri.parse(albumList[position].thumbnailPath)
-        holder.itemView.img_album_thumb.apply {
-            layoutParams = LinearLayout.LayoutParams(holder.albumSize, holder.albumSize)
-            fishton.imageAdapter.loadImage(this, uri)
-        }
+        fishton.imageAdapter.loadImage(holder.imgALbumThumb, uri)
 
-        holder.itemView.setTag(albumList[position])
-        val album = holder.itemView.getTag() as Album
-        holder.itemView.txt_album_name.text = albumList[position].bucketName
-        holder.itemView.txt_album_count.text = album.counter.toString()
+        holder.itemView.tag = albumList[position]
+        holder.txtAlbumName.text = albumList[position].bucketName
+        holder.txtAlbumCount.text = albumList[position].counter.toString()
 
         holder.itemView.setOnClickListener {
-            val iAlbum = it.getTag() as Album
             val intent = Intent(it.context, PickerActivity::class.java)
             intent.apply {
-                putExtra(Define.BUNDLE_NAME.ALBUM.name, iAlbum)
+                putExtra(Define.BUNDLE_NAME.ALBUM.name, albumList[position])
                 putExtra(Define.BUNDLE_NAME.POSITION.name, position)
             }
             (it.context as Activity).startActivityForResult(intent, Define().ENTER_ALBUM_REQUEST_CODE)
@@ -53,5 +46,14 @@ class AlbumListAdapter : RecyclerView.Adapter<AlbumListAdapter.ViewHolder>() {
 
     override fun getItemCount(): Int = albumList.size
 
-    class ViewHolder(itemView: View, val albumSize: Int) : RecyclerView.ViewHolder(itemView)
+    class ViewHolder(parent: ViewGroup, albumSize: Int) : RecyclerView.ViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.album_item, parent, false)) {
+        val imgALbumThumb = itemView.img_album_thumb
+        val txtAlbumName = itemView.txt_album_name
+        val txtAlbumCount = itemView.txt_album_count
+
+        init {
+            imgALbumThumb.layoutParams = LinearLayout.LayoutParams(albumSize, albumSize)
+        }
+    }
 }
