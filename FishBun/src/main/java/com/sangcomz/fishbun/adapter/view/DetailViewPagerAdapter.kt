@@ -23,8 +23,7 @@ class DetailViewPagerAdapter(private val inflater: LayoutInflater, private val i
         val itemView = inflater.inflate(R.layout.detail_item, container, false)
         container.addView(itemView)
 
-        fishton.imageAdapter
-                .loadDetailImage(itemView.img_detail_image, images[position])
+        fishton.imageAdapter?.loadDetailImage(itemView.img_detail_image, images[position])
 
         return itemView
     }

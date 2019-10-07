@@ -28,7 +28,7 @@ class AlbumListAdapter : RecyclerView.Adapter<AlbumListAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val uri: Uri = Uri.parse(albumList[position].thumbnailPath)
-        fishton.imageAdapter.loadImage(holder.imgALbumThumb, uri)
+        fishton.imageAdapter?.loadImage(holder.imgALbumThumb, uri)
 
         holder.itemView.tag = albumList[position]
         holder.txtAlbumName.text = albumList[position].bucketName
