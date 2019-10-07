@@ -2,9 +2,11 @@ package com.sangcomz.fishbun.ui.picker;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
@@ -13,16 +15,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.android.material.snackbar.Snackbar;
 import com.sangcomz.fishbun.BaseActivity;
 import com.sangcomz.fishbun.R;
 import com.sangcomz.fishbun.adapter.view.PickerGridAdapter;
 import com.sangcomz.fishbun.bean.Album;
+import com.sangcomz.fishbun.bean.PickerImage;
 import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.permission.PermissionCheck;
 import com.sangcomz.fishbun.util.RadioWithTextButton;
@@ -30,7 +28,13 @@ import com.sangcomz.fishbun.util.SingleMediaScanner;
 import com.sangcomz.fishbun.util.SquareFrameLayout;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 
 public class PickerActivity extends BaseActivity {
@@ -54,7 +58,7 @@ public class PickerActivity extends BaseActivity {
     protected void onSaveInstanceState(Bundle outState) {
         try {
             outState.putString(define.SAVE_INSTANCE_SAVED_IMAGE, pickerController.getSavePath());
-            outState.putParcelableArrayList(define.SAVE_INSTANCE_NEW_IMAGES, pickerController.getAddImagePaths());
+            outState.putParcelableArrayList(define.SAVE_INSTANCE_NEW_IMAGES, (ArrayList<? extends Parcelable>) pickerController.getAddPickerImages());
         } catch (Exception e) {
             Log.d(TAG, e.toString());
         }
@@ -68,11 +72,11 @@ public class PickerActivity extends BaseActivity {
         super.onRestoreInstanceState(outState);
         // Restore state members from saved instance
         try {
-            ArrayList<Uri> addImages = outState.getParcelableArrayList(define.SAVE_INSTANCE_NEW_IMAGES);
+            ArrayList<PickerImage> addImages = outState.getParcelableArrayList(define.SAVE_INSTANCE_NEW_IMAGES);
             String savedImage = outState.getString(define.SAVE_INSTANCE_SAVED_IMAGE);
             setAdapter(fishton.pickerImages);
             if (addImages != null) {
-                pickerController.setAddImagePaths(addImages);
+                pickerController.setAddPickerImages(addImages);
             }
             if (savedImage != null) {
                 pickerController.setSavePath(savedImage);
@@ -105,7 +109,8 @@ public class PickerActivity extends BaseActivity {
             if (resultCode == RESULT_OK) {
                 File savedFile = new File(pickerController.getSavePath());
                 new SingleMediaScanner(this, savedFile);
-                adapter.addImage(Uri.fromFile(savedFile));
+                PickerImage pickerImage = new PickerImage(Uri.fromFile(savedFile), getOrientation(savedFile));
+                adapter.addImage(pickerImage);
             } else {
                 new File(pickerController.getSavePath()).delete();
             }
@@ -192,12 +197,12 @@ public class PickerActivity extends BaseActivity {
             }
             return true;
         } else if (id == R.id.action_all_done){
-            for (Uri pickerImage : fishton.pickerImages) {
+            for (PickerImage pickerImage : fishton.pickerImages) {
                 if (fishton.selectedImages.size() == fishton.maxCount){
                     break;
                 }
-                if (!fishton.selectedImages.contains(pickerImage)){
-                    fishton.selectedImages.add(pickerImage);
+                if (!fishton.selectedImages.contains(pickerImage.path)){
+                    fishton.selectedImages.add(pickerImage.path);
                 }
             }
             finishActivity();
@@ -252,7 +257,7 @@ public class PickerActivity extends BaseActivity {
     }
 
 
-    public void setAdapter(Uri[] result) {
+    public void setAdapter(PickerImage[] result) {
         fishton.pickerImages = result;
         if (adapter == null) {
             adapter = new PickerGridAdapter(pickerController,
@@ -301,7 +306,7 @@ public class PickerActivity extends BaseActivity {
     void transImageFinish(int position) {
         Define define = new Define();
         Intent i = new Intent();
-        i.putParcelableArrayListExtra(define.INTENT_ADD_PATH, pickerController.getAddImagePaths());
+        i.putParcelableArrayListExtra(define.INTENT_ADD_PATH, pickerController.getAddPickerImages());
         i.putExtra(define.INTENT_POSITION, position);
         setResult(define.TRANS_IMAGES_RESULT_CODE, i);
         finish();
@@ -313,6 +318,33 @@ public class PickerActivity extends BaseActivity {
         if (fishton.isStartInAllView)
             i.putParcelableArrayListExtra(Define.INTENT_PATH, fishton.selectedImages);
         finish();
+    }
+
+    public int getOrientation(File imageFile) {
+        int orientation = 0;
+        if (imageFile == null) return orientation;
+        try {
+            ExifInterface exif = new ExifInterface(imageFile.getAbsolutePath());
+            orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+            switch (orientation) {
+                case ExifInterface.ORIENTATION_NORMAL:
+                    orientation = 0;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_90 :
+                    orientation = 90;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_180 :
+                    orientation = 180;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_270 :
+                    orientation = 270;
+                    break;
+            }
+        } catch (IOException ex) {
+
+        }
+        return orientation;
+
     }
 
 }

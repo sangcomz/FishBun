@@ -8,6 +8,6 @@ import android.widget.ImageView;
  */
 
 public interface ImageAdapter {
-    void loadImage(ImageView target, Uri loadUrl);
-    void loadDetailImage(ImageView target, Uri loadUrl);
+    void loadImage(ImageView target, Uri loadUrl, int orientation);
+    void loadDetailImage(ImageView target, Uri loadUrl, int orientation);
 }

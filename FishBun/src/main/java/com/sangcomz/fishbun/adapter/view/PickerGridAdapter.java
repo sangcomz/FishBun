@@ -4,18 +4,16 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.core.content.ContextCompat;
-import androidx.core.view.ViewCompat;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.sangcomz.fishbun.Fishton;
 import com.sangcomz.fishbun.R;
+import com.sangcomz.fishbun.bean.PickerImage;
 import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.ui.detail.DetailActivity;
 import com.sangcomz.fishbun.ui.picker.PickerActivity;
@@ -24,6 +22,10 @@ import com.sangcomz.fishbun.util.RadioWithTextButton;
 
 import java.util.ArrayList;
 import java.util.Collections;
+
+import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 
 public class PickerGridAdapter
@@ -78,7 +80,8 @@ public class PickerGridAdapter
             else imagePos = position;
 
             final ViewHolderImage vh = (ViewHolderImage) holder;
-            final Uri image = fishton.pickerImages[imagePos];
+            final Uri image = fishton.pickerImages[imagePos].path;
+            final int orientation = fishton.pickerImages[imagePos].orientation;
             final Context context = vh.item.getContext();
             vh.item.setTag(image);
             vh.btnThumbCount.unselect();
@@ -90,7 +93,7 @@ public class PickerGridAdapter
             if (image != null
                     && vh.imgThumbImage != null)
                 Fishton.getInstance().imageAdapter
-                        .loadImage(vh.imgThumbImage, image);
+                        .loadImage(vh.imgThumbImage, image, orientation);
 
 
             vh.btnThumbCount.setOnClickListener(new View.OnClickListener() {
@@ -227,15 +230,15 @@ public class PickerGridAdapter
     }
 
 
-    public void addImage(Uri path) {
-        ArrayList<Uri> al = new ArrayList<>();
+    public void addImage(PickerImage pickerImage) {
+        ArrayList<PickerImage> al = new ArrayList<>();
         Collections.addAll(al, fishton.pickerImages);
-        al.add(0, path);
-        fishton.pickerImages = al.toArray(new Uri[al.size()]);
+        al.add(0, pickerImage);
+        fishton.pickerImages = al.toArray(new PickerImage[al.size()]);
 
         notifyDataSetChanged();
 
-        pickerController.setAddImagePath(path);
+        pickerController.setAddPickerImage(pickerImage);
     }
 
     public void setActionListener(OnPhotoActionListener actionListener) {

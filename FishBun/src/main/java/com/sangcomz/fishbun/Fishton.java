@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 
 import com.sangcomz.fishbun.adapter.image.ImageAdapter;
+import com.sangcomz.fishbun.bean.PickerImage;
 
 import java.util.ArrayList;
 
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 
 public class Fishton {
     public ImageAdapter imageAdapter;
-    public Uri[] pickerImages;
+    public PickerImage[] pickerImages;
 
     //BaseParams
     public int maxCount;

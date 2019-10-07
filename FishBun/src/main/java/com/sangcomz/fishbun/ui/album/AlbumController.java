@@ -65,7 +65,8 @@ class AlbumController {
                     MediaStore.Images.Media.DATA,
                     MediaStore.Images.Media._ID,
                     MediaStore.Images.Media.BUCKET_DISPLAY_NAME,
-                    MediaStore.Images.Media.BUCKET_ID};
+                    MediaStore.Images.Media.BUCKET_ID,
+                    MediaStore.Images.Media.ORIENTATION};
 
             Cursor c = resolver.query(
                     MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection,
@@ -80,7 +81,7 @@ class AlbumController {
                 int bucketColumnId = c
                         .getColumnIndex(MediaStore.Images.Media.BUCKET_ID);
 
-                albumHashMap.put((long) 0, new Album(0, allViewTitle, null, 0));
+                albumHashMap.put((long) 0, new Album(0, allViewTitle, null, 0, 0));
 
                 RegexUtil regexUtil = new RegexUtil();
                 while (c.moveToNext()) {
@@ -91,10 +92,11 @@ class AlbumController {
                     if (album == null) {
                         int imgId = c.getInt(c.getColumnIndex(MediaStore.MediaColumns._ID));
                         Uri path = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "" + imgId);
+                        int orientation = c.getInt(c.getColumnIndex(MediaStore.Images.Media.ORIENTATION));
                         albumHashMap.put(bucketId,
                                 new Album(bucketId,
                                         c.getString(bucketColumn),
-                                        path.toString(), 1));
+                                        path.toString(), 1, orientation));
                         if (albumHashMap.get((long) 0).thumbnailPath == null)
                             albumHashMap.get((long) 0).thumbnailPath = path.toString();
                     } else {

@@ -1,17 +1,18 @@
 package com.sangcomz.fishbun.adapter.view;
 
-import android.net.Uri;
-import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.sangcomz.fishbun.Fishton;
 import com.sangcomz.fishbun.R;
+import com.sangcomz.fishbun.bean.PickerImage;
 import com.sangcomz.fishbun.util.TouchImageView;
+
+import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 /**
  * Created by sangcomz on 15/06/2017.
@@ -21,9 +22,9 @@ public class DetailViewPagerAdapter extends PagerAdapter {
 
     private Fishton fishton;
     private LayoutInflater inflater;
-    private Uri[] images;
+    private PickerImage[] images;
 
-    public DetailViewPagerAdapter(LayoutInflater inflater, Uri[] images) {
+    public DetailViewPagerAdapter(LayoutInflater inflater, PickerImage[] images) {
         this.inflater = inflater;
         this.images = images;
         fishton = Fishton.getInstance();
@@ -43,7 +44,7 @@ public class DetailViewPagerAdapter extends PagerAdapter {
                 && images[position] != null)
             fishton
                     .imageAdapter
-                    .loadDetailImage(imageView, images[position]);
+                    .loadDetailImage(imageView, images[position].path, images[position].orientation);
 
         return itemView;
     }

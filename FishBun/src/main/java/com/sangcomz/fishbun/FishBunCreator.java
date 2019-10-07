@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import androidx.fragment.app.Fragment;
 
 import com.sangcomz.fishbun.bean.Album;
 import com.sangcomz.fishbun.define.Define;
@@ -13,6 +12,8 @@ import com.sangcomz.fishbun.ui.album.AlbumActivity;
 import com.sangcomz.fishbun.ui.picker.PickerActivity;
 
 import java.util.ArrayList;
+
+import androidx.fragment.app.Fragment;
 
 /**
  * Created by sangcomz on 17/05/2017.
@@ -267,7 +268,7 @@ public final class FishBunCreator implements BaseProperty, CustomizationProperty
 
         if (fishton.isStartInAllView) {
             Intent i = new Intent(context, PickerActivity.class);
-            i.putExtra(Define.BUNDLE_NAME.ALBUM.name(), new Album(0, fishton.titleAlbumAllView, null, 0));
+            i.putExtra(Define.BUNDLE_NAME.ALBUM.name(), new Album(0, fishton.titleAlbumAllView, null, 0, 0));
             i.putExtra(Define.BUNDLE_NAME.POSITION.name(), 0);
             if (activity != null) activity.startActivityForResult(i, requestCode);
             else if (fragment != null) fragment.startActivityForResult(i, requestCode);

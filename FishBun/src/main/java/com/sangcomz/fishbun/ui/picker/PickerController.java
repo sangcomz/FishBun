@@ -8,20 +8,22 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
-import androidx.annotation.NonNull;
 
+import com.sangcomz.fishbun.bean.PickerImage;
 import com.sangcomz.fishbun.permission.PermissionCheck;
 import com.sangcomz.fishbun.util.CameraUtil;
 import com.sangcomz.fishbun.util.RegexUtil;
 
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
+
 /**
  * Created by sangc on 2015-11-05.
  */
 public class PickerController {
     private PickerActivity pickerActivity;
-    private ArrayList<Uri> addImagePaths = new ArrayList<>();
+    private ArrayList<PickerImage> addPickerImages = new ArrayList<>();
     private ContentResolver resolver;
     private CameraUtil cameraUtil = new CameraUtil();
     private String pathDir = "";
@@ -51,16 +53,16 @@ public class PickerController {
         cameraUtil.setSavePath(savePath);
     }
 
-    public void setAddImagePath(Uri imagePath) {
-        this.addImagePaths.add(imagePath);
+    public void setAddPickerImage(PickerImage pickerImage) {
+        this.addPickerImages.add(pickerImage);
     }
 
-    protected ArrayList<Uri> getAddImagePaths() {
-        return addImagePaths;
+    protected ArrayList<PickerImage> getAddPickerImages() {
+        return addPickerImages;
     }
 
-    public void setAddImagePaths(ArrayList<Uri> addImagePaths) {
-        this.addImagePaths = addImagePaths;
+    public void setAddPickerImages(ArrayList<PickerImage> addPickerImages) {
+        this.addPickerImages = addPickerImages;
     }
 
 
@@ -80,7 +82,7 @@ public class PickerController {
         new DisplayImage(bucketId, exceptGif).execute();
     }
 
-    private class DisplayImage extends AsyncTask<Void, Void, Uri[]> {
+    private class DisplayImage extends AsyncTask<Void, Void, PickerImage[]> {
         private Long bucketId;
         Boolean exceptGif;
 
@@ -91,12 +93,12 @@ public class PickerController {
         }
 
         @Override
-        protected Uri[] doInBackground(Void... params) {
+        protected PickerImage[] doInBackground(Void... params) {
             return getAllMediaThumbnailsPath(bucketId, exceptGif);
         }
 
         @Override
-        protected void onPostExecute(Uri[] result) {
+        protected void onPostExecute(PickerImage[] result) {
             super.onPostExecute(result);
             pickerActivity.setAdapter(result);
         }
@@ -104,7 +106,7 @@ public class PickerController {
 
 
     @NonNull
-    private Uri[] getAllMediaThumbnailsPath(long id,
+    private PickerImage[] getAllMediaThumbnailsPath(long id,
                                             Boolean exceptGif) {
         String selection = MediaStore.Images.Media.BUCKET_ID + " = ?";
         String bucketId = String.valueOf(id);
@@ -118,7 +120,8 @@ public class PickerController {
         } else {
             c = resolver.query(images, null, null, null, sort);
         }
-        Uri[] imageUris = new Uri[c == null ? 0 : c.getCount()];
+        //Uri[] imageUris = new Uri[c == null ? 0 : c.getCount()];
+        PickerImage[] pickerImages = new PickerImage[c == null ? 0 : c.getCount()];
         if (c != null) {
             try {
                 if (c.moveToFirst()) {
@@ -132,7 +135,10 @@ public class PickerController {
                             continue;
                         int imgId = c.getInt(c.getColumnIndex(MediaStore.MediaColumns._ID));
                         Uri path = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "" + imgId);
-                        imageUris[++position] = path;
+                        int orientation = c.getInt(c.getColumnIndex(MediaStore.Images.Media.ORIENTATION));
+                        PickerImage image = new PickerImage(path, orientation);
+                        //imageUris[++position] = path;
+                        pickerImages[++position] = image;
                     } while (c.moveToNext());
                 }
                 c.close();
@@ -140,7 +146,7 @@ public class PickerController {
                 if (!c.isClosed()) c.close();
             }
         }
-        return imageUris;
+        return pickerImages;
     }
 
     private String setPathDir(String path, String fileName) {

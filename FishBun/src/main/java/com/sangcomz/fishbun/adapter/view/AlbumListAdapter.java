@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +18,9 @@ import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.ui.picker.PickerActivity;
 
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 
 public class AlbumListAdapter
@@ -50,10 +51,11 @@ public class AlbumListAdapter
         holder.imgAlbumThumb.setImageDrawable(null);
 
         Uri loadUrl = Uri.parse(albumList.get(position).thumbnailPath);
+        int orientation = albumList.get(position).orientation;
 
         if (holder.imgAlbumThumb != null && loadUrl != null)
             Fishton.getInstance().imageAdapter
-                    .loadImage(holder.imgAlbumThumb, loadUrl);
+                    .loadImage(holder.imgAlbumThumb, loadUrl, orientation);
 
         holder.view.setTag(albumList.get(position));
         Album a = (Album) holder.view.getTag();

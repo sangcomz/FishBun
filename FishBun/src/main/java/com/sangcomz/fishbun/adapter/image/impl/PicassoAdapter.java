@@ -4,7 +4,6 @@ import android.net.Uri;
 import android.widget.ImageView;
 
 import com.sangcomz.fishbun.adapter.image.ImageAdapter;
-import com.sangcomz.fishbun.util.ImageRotateTransformation;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -13,23 +12,23 @@ import com.squareup.picasso.Picasso;
 
 public class PicassoAdapter implements ImageAdapter {
     @Override
-    public void loadImage(ImageView target, Uri loadUrl) {
+    public void loadImage(ImageView target, Uri loadUrl, int orientation) {
         Picasso
                 .get()
                 .load(loadUrl)
                 .fit()
                 .centerCrop()
-                .transform(new ImageRotateTransformation(target, loadUrl))
+                .rotate(orientation)
                 .into(target);
     }
 
     @Override
-    public void loadDetailImage(ImageView target, Uri loadUrl) {
+    public void loadDetailImage(ImageView target, Uri loadUrl, int orientation) {
         Picasso.get()
                 .load(loadUrl)
                 .fit()
                 .centerInside()
-                .transform(new ImageRotateTransformation(target, loadUrl))
+                .rotate(orientation)
                 .into(target);
     }
 }

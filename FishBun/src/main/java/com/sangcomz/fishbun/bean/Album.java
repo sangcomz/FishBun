@@ -9,13 +9,15 @@ public class Album implements Parcelable {
     final public String bucketName;
     public int counter;
     public String thumbnailPath;
+    public int orientation;
 
 
-    public Album(long bucketId, String bucketName, String thumbnailPath, int counter) {
+    public Album(long bucketId, String bucketName, String thumbnailPath, int counter, int orientation) {
         this.bucketId = bucketId;
         this.bucketName = bucketName;
         this.counter = counter;
         this.thumbnailPath = thumbnailPath;
+        this.orientation = orientation;
     }
 
     protected Album(Parcel in) {
@@ -23,6 +25,7 @@ public class Album implements Parcelable {
         bucketName = in.readString();
         counter = in.readInt();
         thumbnailPath = in.readString();
+        orientation = in.readInt();
     }
 
     public static final Creator<Album> CREATOR = new Creator<Album>() {
@@ -48,5 +51,6 @@ public class Album implements Parcelable {
         parcel.writeString(bucketName);
         parcel.writeInt(counter);
         parcel.writeString(thumbnailPath);
+        parcel.writeInt(orientation);
     }
 }

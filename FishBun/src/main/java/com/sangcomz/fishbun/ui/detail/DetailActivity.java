@@ -4,19 +4,20 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.core.content.ContextCompat;
-import androidx.viewpager.widget.ViewPager;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.sangcomz.fishbun.BaseActivity;
 import com.sangcomz.fishbun.R;
 import com.sangcomz.fishbun.adapter.view.DetailViewPagerAdapter;
 import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.util.RadioWithTextButton;
+
+import androidx.core.content.ContextCompat;
+import androidx.viewpager.widget.ViewPager;
 
 public class DetailActivity extends BaseActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
     private static final String TAG = "DetailActivity";
@@ -81,7 +82,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
             return;
         }
 
-        onCheckStateChange(fishton.pickerImages[initPosition]);
+        onCheckStateChange(fishton.pickerImages[initPosition].path);
 
         DetailViewPagerAdapter adapter = new DetailViewPagerAdapter(getLayoutInflater(), fishton.pickerImages);
         vpDetailPager.setAdapter(adapter);
@@ -117,7 +118,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.btn_detail_count) {
-            Uri image = fishton.pickerImages[vpDetailPager.getCurrentItem()];
+            Uri image = fishton.pickerImages[vpDetailPager.getCurrentItem()].path;
             if (fishton.selectedImages.contains(image)) {
                 fishton.selectedImages.remove(image);
                 onCheckStateChange(image);
@@ -145,7 +146,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     public void onPageSelected(int position) {
-        onCheckStateChange(fishton.pickerImages[position]);
+        onCheckStateChange(fishton.pickerImages[position].path);
     }
 
     @Override

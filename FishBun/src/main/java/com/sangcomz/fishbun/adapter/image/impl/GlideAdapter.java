@@ -13,7 +13,7 @@ import com.sangcomz.fishbun.adapter.image.ImageAdapter;
 
 public class GlideAdapter implements ImageAdapter {
     @Override
-    public void loadImage(ImageView target, Uri loadUrl) {
+    public void loadImage(ImageView target, Uri loadUrl, int orientation) {
         RequestOptions options = new RequestOptions().centerCrop();
         Glide
                 .with(target.getContext())
@@ -23,7 +23,7 @@ public class GlideAdapter implements ImageAdapter {
     }
 
     @Override
-    public void loadDetailImage(ImageView target, Uri loadUrl) {
+    public void loadDetailImage(ImageView target, Uri loadUrl, int orientation) {
         RequestOptions options = new RequestOptions().centerInside();
         Glide
                 .with(target.getContext())
