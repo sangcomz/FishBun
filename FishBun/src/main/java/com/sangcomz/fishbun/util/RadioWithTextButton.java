@@ -7,6 +7,8 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
+
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
@@ -49,6 +51,14 @@ public class RadioWithTextButton extends View {
         mStrokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mCirclePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mTextPaint.setFakeBoldText(true);
+    }
+
+    @VisibleForTesting(otherwise = VisibleForTesting.NONE)
+    RadioWithTextButton(Context context, Paint textPaint, Paint strokePaint, Paint circlePaint) {
+        super(context);
+        mTextPaint = textPaint;
+        mStrokePaint = strokePaint;
+        mCirclePaint = circlePaint;
     }
 
 
@@ -129,7 +139,8 @@ public class RadioWithTextButton extends View {
      * @param paint        the Paint to set the text size for
      * @param desiredWidth the desired width
      */
-    private static void setTextSizeForWidth(Paint paint, String text, float desiredWidth) {
+    @VisibleForTesting
+    static void setTextSizeForWidth(Paint paint, String text, float desiredWidth) {
 
         // Pick a reasonably large value for the test. Larger values produce
         // more accurate results, but may cause problems with hardware
@@ -141,6 +152,7 @@ public class RadioWithTextButton extends View {
         paint.getTextBounds(text, 0, text.length(), textBounds);
         // Calculate the desired size as a proportion of our testTextSize.
         if (textBounds.width() > desiredWidth) {
+
             float desiredTextSize = defaultTextSize * (desiredWidth / textBounds.width());
 
             // Set the paint for that size.

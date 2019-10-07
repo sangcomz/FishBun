@@ -29,6 +29,8 @@ android {
         consumerProguardFile('proguard-rules.pro')
         versionCode gradle.versionCode
         versionName gradle.versionName
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 }
 
@@ -46,7 +48,9 @@ dependencies {
     compile "androidx.recyclerview:recyclerview:$rootProject.recyclerview_version"
 
     testImplementation 'junit:junit:4.12'
-    testImplementation 'org.mockito:mockito-core:2.8.9'
+    testImplementation 'org.mockito:mockito-core:3.0.0'
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'org.mockito:mockito-android:3.0.0'
 
     compileOnly "com.squareup.picasso:picasso:$rootProject.picasso_version"
     compileOnly "com.github.bumptech.glide:glide:$rootProject.glide_version"
