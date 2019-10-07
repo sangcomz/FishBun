@@ -69,29 +69,33 @@ public class PickerGridAdapter
             vh.header.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    pickerController.takePicture((Activity) vh.header.getContext(), saveDir);
+                    if (pickerController.checkCameraPermission()) {
+                        pickerController.takePicture((Activity) vh.header.getContext(), saveDir);
+                    }
                 }
             });
         }
 
         if (holder instanceof ViewHolderImage) {
             final int imagePos;
-            if (fishton.isCamera) imagePos = position - 1;
+            if (fishton.isCamera()) imagePos = position - 1;
             else imagePos = position;
 
             final ViewHolderImage vh = (ViewHolderImage) holder;
+
             final Uri image = fishton.pickerImages[imagePos].path;
             final int orientation = fishton.pickerImages[imagePos].orientation;
             final Context context = vh.item.getContext();
             vh.item.setTag(image);
             vh.btnThumbCount.unselect();
-            vh.btnThumbCount.setCircleColor(fishton.colorActionBar);
-            vh.btnThumbCount.setTextColor(fishton.colorActionBarTitle);
-            vh.btnThumbCount.setStrokeColor(fishton.colorSelectCircleStroke);
+            vh.btnThumbCount.setCircleColor(fishton.getColorActionBar());
+            vh.btnThumbCount.setTextColor(fishton.getColorActionBarTitle());
+            vh.btnThumbCount.setStrokeColor(fishton.getColorSelectCircleStroke());
 
-            initState(fishton.selectedImages.indexOf(image), vh);
+            initState(fishton.getSelectedImages().indexOf(image), vh);
             if (image != null
                     && vh.imgThumbImage != null)
+
                 Fishton.getInstance().imageAdapter
                         .loadImage(vh.imgThumbImage, image, orientation);
 
@@ -106,7 +110,7 @@ public class PickerGridAdapter
             vh.imgThumbImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (fishton.isUseDetailView) {
+                    if (fishton.isUseDetailView()) {
                         if (context instanceof PickerActivity) {
                             PickerActivity activity = (PickerActivity) context;
                             Intent i = new Intent(activity, DetailActivity.class);
@@ -131,11 +135,11 @@ public class PickerGridAdapter
     }
 
     private void onCheckStateChange(View v, Uri image) {
-        ArrayList<Uri> pickedImages = fishton.selectedImages;
+        ArrayList<Uri> pickedImages = fishton.getSelectedImages();
         boolean isContained = pickedImages.contains(image);
-        if (fishton.maxCount == pickedImages.size()
+        if (fishton.getMaxCount() == pickedImages.size()
                 && !isContained) {
-            Snackbar.make(v, fishton.messageLimitReached, Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(v, fishton.getMessageLimitReached(), Snackbar.LENGTH_SHORT).show();
             return;
         }
         ImageView imgThumbImage = v.findViewById(R.id.img_thumb_image);
@@ -147,8 +151,8 @@ public class PickerGridAdapter
         } else {
             animScale(imgThumbImage, true, true);
             pickedImages.add(image);
-            if (fishton.isAutomaticClose
-                    && fishton.maxCount == pickedImages.size()) {
+            if (fishton.isAutomaticClose()
+                    && fishton.getMaxCount() == pickedImages.size()) {
                 pickerController.finishActivity();
             }
             updateRadioButton(btnThumbCount, String.valueOf(pickedImages.size()));
@@ -157,7 +161,7 @@ public class PickerGridAdapter
     }
 
     public void updateRadioButton(RadioWithTextButton v, String text) {
-        if (fishton.maxCount == 1)
+        if (fishton.getMaxCount() == 1)
             v.setDrawable(ContextCompat.getDrawable(v.getContext(), R.drawable.ic_done_white_24dp));
         else
             v.setText(text);
@@ -166,7 +170,7 @@ public class PickerGridAdapter
     public void updateRadioButton(ImageView imageView, RadioWithTextButton v, String text, boolean isSelected) {
         if (isSelected) {
             animScale(imageView, isSelected, false);
-            if (fishton.maxCount == 1)
+            if (fishton.getMaxCount() == 1)
                 v.setDrawable(ContextCompat.getDrawable(v.getContext(), R.drawable.ic_done_white_24dp));
             else
                 v.setText(text);
@@ -211,23 +215,24 @@ public class PickerGridAdapter
     @Override
     public int getItemCount() {
         int count;
-        if (fishton.pickerImages == null) count = 0;
-        else count = fishton.pickerImages.length;
+        if (fishton.getPickerImages() == null) count = 0;
+        else count = fishton.getPickerImages().length;
 
-        if (fishton.isCamera)
+        if (fishton.isCamera())
             return count + 1;
 
-        if (fishton.pickerImages == null) return 0;
+        if (fishton.getPickerImages() == null) return 0;
         else return count;
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (position == 0 && fishton.isCamera) {
+        if (position == 0 && fishton.isCamera()) {
             return TYPE_HEADER;
         }
         return super.getItemViewType(position);
     }
+
 
 
     public void addImage(PickerImage pickerImage) {

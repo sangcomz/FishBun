@@ -40,6 +40,16 @@ class AlbumController {
         return false;
     }
 
+    boolean checkCameraPermission() {
+        PermissionCheck permissionCheck = new PermissionCheck(albumActivity);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (permissionCheck.CheckCameraPermission())
+                return true;
+        } else
+            return true;
+        return false;
+    }
+
     void getAlbumList(String allViewTitle,
                       Boolean exceptGif) {
         new LoadAlbumList(allViewTitle, exceptGif).execute();

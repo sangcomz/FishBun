@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'jacoco-android'
+apply plugin: 'kotlin-android-extensions'
 
 buildscript {
     repositories {
@@ -50,4 +51,8 @@ dependencies {
 
     compileOnly "com.squareup.picasso:picasso:$rootProject.picasso_version"
     compileOnly "com.github.bumptech.glide:glide:$rootProject.glide_version"
+}
+
+tasks.withType(Javadoc).all {
+    enabled = false
 }

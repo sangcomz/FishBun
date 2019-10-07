@@ -60,7 +60,7 @@ public class AlbumActivity extends BaseActivity {
         List<Album> albumList = outState.getParcelableArrayList(define.SAVE_INSTANCE_ALBUM_LIST);
         List<Uri> thumbList = outState.getParcelableArrayList(define.SAVE_INSTANCE_ALBUM_THUMB_LIST);
 
-        if (albumList != null && thumbList != null && fishton.selectedImages != null) {
+        if (albumList != null && thumbList != null && fishton.getSelectedImages() != null) {
             adapter = new AlbumListAdapter();
             adapter.setAlbumList(albumList);
         }
@@ -73,7 +73,7 @@ public class AlbumActivity extends BaseActivity {
         initView();
         initController();
         if (albumController.checkPermission())
-            albumController.getAlbumList(fishton.titleAlbumAllView, fishton.isExceptGif);
+            albumController.getAlbumList(fishton.getTitleAlbumAllView(), fishton.isExceptGif());
     }
 
     @Override
@@ -83,10 +83,10 @@ public class AlbumActivity extends BaseActivity {
                 recyclerAlbumList.getLayoutManager() != null) {
             if (uiUtil.isLandscape(this))
                 ((GridLayoutManager) recyclerAlbumList.getLayoutManager())
-                        .setSpanCount(fishton.albumLandscapeSpanCount);
+                        .setSpanCount(fishton.getAlbumLandscapeSpanCount());
             else
                 ((GridLayoutManager) recyclerAlbumList.getLayoutManager())
-                        .setSpanCount(fishton.albumPortraitSpanCount);
+                        .setSpanCount(fishton.getAlbumPortraitSpanCount());
         }
     }
 
@@ -95,7 +95,9 @@ public class AlbumActivity extends BaseActivity {
         linearAlbumCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                albumController.takePicture(AlbumActivity.this, albumController.getPathDir());
+                if (albumController.checkCameraPermission()) {
+                    albumController.takePicture(AlbumActivity.this, albumController.getPathDir());
+                }
             }
         });
         initToolBar();
@@ -107,9 +109,9 @@ public class AlbumActivity extends BaseActivity {
 
         GridLayoutManager layoutManager;
         if (uiUtil.isLandscape(this))
-            layoutManager = new GridLayoutManager(this, fishton.albumLandscapeSpanCount);
+            layoutManager = new GridLayoutManager(this, fishton.getAlbumLandscapeSpanCount());
         else
-            layoutManager = new GridLayoutManager(this, fishton.albumPortraitSpanCount);
+            layoutManager = new GridLayoutManager(this, fishton.getAlbumPortraitSpanCount());
 
         if (recyclerAlbumList != null) {
             recyclerAlbumList.setLayoutManager(layoutManager);
@@ -124,20 +126,20 @@ public class AlbumActivity extends BaseActivity {
 
         setSupportActionBar(toolbar);
 
-        toolbar.setBackgroundColor(fishton.colorActionBar);
-        toolbar.setTitleTextColor(fishton.colorActionBarTitle);
+        toolbar.setBackgroundColor(fishton.getColorActionBar());
+        toolbar.setTitleTextColor(fishton.getColorActionBarTitle());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            uiUtil.setStatusBarColor(this, fishton.colorStatusBar);
+            uiUtil.setStatusBarColor(this, fishton.getColorStatusBar());
         }
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(fishton.titleActionBar);
+            getSupportActionBar().setTitle(fishton.getTitleActionBar());
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            if (fishton.drawableHomeAsUpIndicator != null)
-                getSupportActionBar().setHomeAsUpIndicator(fishton.drawableHomeAsUpIndicator);
+            if (fishton.getDrawableHomeAsUpIndicator() != null)
+                getSupportActionBar().setHomeAsUpIndicator(fishton.getDrawableHomeAsUpIndicator());
         }
 
-        if (fishton.isStatusBarLight
+        if (fishton.isStatusBarLight()
                 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             toolbar.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
@@ -173,7 +175,7 @@ public class AlbumActivity extends BaseActivity {
     private void refreshList(int position, ArrayList<Uri> imagePath) {
         if (imagePath.size() > 0) {
             if (position == 0) {
-                albumController.getAlbumList(fishton.titleAlbumAllView, fishton.isExceptGif);
+                albumController.getAlbumList(fishton.getTitleAlbumAllView(), fishton.isExceptGif());
             } else {
                 albumList.get(0).counter += imagePath.size();
                 albumList.get(position).counter += imagePath.size();
@@ -190,19 +192,19 @@ public class AlbumActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        if (fishton.isButton) {
+        if (fishton.isButton()) {
             getMenuInflater().inflate(R.menu.menu_photo_album, menu);
             MenuItem menuDoneItem = menu.findItem(R.id.action_done);
             menu.findItem(R.id.action_all_done).setVisible(false);
-            if (fishton.drawableDoneButton != null) {
-                menuDoneItem.setIcon(fishton.drawableDoneButton);
-            } else if (fishton.strDoneMenu != null) {
-                if (fishton.colorTextMenu != Integer.MAX_VALUE) {
-                    SpannableString spanString = new SpannableString(fishton.strDoneMenu);
-                    spanString.setSpan(new ForegroundColorSpan(fishton.colorTextMenu), 0, spanString.length(), 0); //fi
+            if (fishton.getDrawableDoneButton() != null) {
+                menuDoneItem.setIcon(fishton.getDrawableDoneButton());
+            } else if (fishton.getStrDoneMenu() != null) {
+                if (fishton.getColorTextMenu() != Integer.MAX_VALUE) {
+                    SpannableString spanString = new SpannableString(fishton.getStrDoneMenu());
+                    spanString.setSpan(new ForegroundColorSpan(fishton.getColorTextMenu()), 0, spanString.length(), 0); //fi
                     menuDoneItem.setTitle(spanString);
                 } else {
-                    menuDoneItem.setTitle(fishton.strDoneMenu);
+                    menuDoneItem.setTitle(fishton.getStrDoneMenu());
                 }
                 menuDoneItem.setIcon(null);
             }
@@ -218,8 +220,8 @@ public class AlbumActivity extends BaseActivity {
             finish();
         } else if (id == R.id.action_done) {
             if (adapter != null) {
-                if (fishton.selectedImages.size() < fishton.minCount) {
-                    Snackbar.make(recyclerAlbumList, fishton.messageNothingSelected, Snackbar.LENGTH_SHORT).show();
+                if (fishton.getSelectedImages().size() < fishton.getMinCount()) {
+                    Snackbar.make(recyclerAlbumList, fishton.getMessageNothingSelected(), Snackbar.LENGTH_SHORT).show();
                 } else {
                     finishActivity();
                 }
@@ -231,13 +233,13 @@ public class AlbumActivity extends BaseActivity {
 
     public void changeToolbarTitle() {
         if (adapter == null) return;
-        int total = fishton.selectedImages.size();
+        int total = fishton.getSelectedImages().size();
 
         if (getSupportActionBar() != null) {
-            if (fishton.maxCount == 1 || !fishton.isShowCount)
-                getSupportActionBar().setTitle(fishton.titleActionBar);
+            if (fishton.getMaxCount() == 1 || !fishton.isShowCount())
+                getSupportActionBar().setTitle(fishton.getTitleActionBar());
             else
-                getSupportActionBar().setTitle(fishton.titleActionBar + " (" + total + "/" + fishton.maxCount + ")");
+                getSupportActionBar().setTitle(fishton.getTitleActionBar() + " (" + total + "/" + fishton.getMaxCount() + ")");
         }
     }
 
@@ -259,7 +261,7 @@ public class AlbumActivity extends BaseActivity {
                 new SingleMediaScanner(this, new File(albumController.getSavePath()), new ScanListener() {
                     @Override
                     protected void onScanCompleted() {
-                        albumController.getAlbumList(fishton.titleAlbumAllView, fishton.isExceptGif);
+                        albumController.getAlbumList(fishton.getTitleAlbumAllView(), fishton.isExceptGif());
                     }
                 });
             } else {
@@ -279,12 +281,24 @@ public class AlbumActivity extends BaseActivity {
                 if (grantResults.length > 0) {
                     if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                         // permission was granted, yay!
-                        albumController.getAlbumList(fishton.titleAlbumAllView, fishton.isExceptGif);
+                        albumController.getAlbumList(fishton.getTitleAlbumAllView(), fishton.isExceptGif());
                     } else {
                         new PermissionCheck(this).showPermissionDialog();
                         finish();
                     }
                 }
+                break;
+            }
+            case 29: {
+                if (grantResults.length > 0) {
+                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        // permission was granted, yay!
+                        albumController.takePicture(AlbumActivity.this, albumController.getPathDir());
+                    } else {
+                        new PermissionCheck(this).showPermissionDialog();
+                    }
+                }
+                break;
             }
         }
     }
@@ -292,7 +306,7 @@ public class AlbumActivity extends BaseActivity {
 
     private void finishActivity() {
         Intent i = new Intent();
-        i.putParcelableArrayListExtra(Define.INTENT_PATH, fishton.selectedImages);
+        i.putParcelableArrayListExtra(Define.INTENT_PATH, fishton.getSelectedImages());
         setResult(RESULT_OK, i);
         finish();
     }
