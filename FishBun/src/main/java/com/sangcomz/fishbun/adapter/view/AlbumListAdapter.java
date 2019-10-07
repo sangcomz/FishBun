@@ -42,7 +42,7 @@ public class AlbumListAdapter
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.album_item, parent, false);
-        return new ViewHolder(view, fishton.albumThumbnailSize);
+        return new ViewHolder(view, fishton.getAlbumThumbnailSize());
     }
 
     @Override
@@ -52,7 +52,7 @@ public class AlbumListAdapter
         Uri loadUrl = Uri.parse(albumList.get(position).thumbnailPath);
 
         if (holder.imgAlbumThumb != null && loadUrl != null)
-            Fishton.getInstance().imageAdapter
+            Fishton.getInstance().getImageAdapter()
                     .loadImage(holder.imgAlbumThumb, loadUrl);
 
         holder.view.setTag(albumList.get(position));

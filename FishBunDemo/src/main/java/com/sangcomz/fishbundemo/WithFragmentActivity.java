@@ -1,6 +1,9 @@
 package com.sangcomz.fishbundemo;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.RelativeLayout;
 
@@ -18,5 +21,13 @@ public class WithFragmentActivity extends AppCompatActivity {
 
         getSupportFragmentManager().beginTransaction().add(areaContainer.getId(), subFragment).commit();
 
+    }
+
+    /**
+     * Send onActivityResult method to SubFragment
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        subFragment.onActivityResult(requestCode, resultCode, data);
     }
 }
