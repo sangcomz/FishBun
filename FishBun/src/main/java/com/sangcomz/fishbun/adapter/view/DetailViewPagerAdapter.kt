@@ -10,20 +10,21 @@ import android.view.ViewGroup
 
 import com.sangcomz.fishbun.Fishton
 import com.sangcomz.fishbun.R
+import com.sangcomz.fishbun.bean.PickerImage
 import kotlinx.android.synthetic.main.detail_item.view.*
 
 /**
  * Created by sangcomz on 15/06/2017.
  */
 
-class DetailViewPagerAdapter(private val inflater: LayoutInflater, private val images: Array<Uri>) : PagerAdapter() {
+class DetailViewPagerAdapter(private val inflater: LayoutInflater, private val images: Array<PickerImage>) : PagerAdapter() {
     private val fishton = Fishton.getInstance()
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val itemView = inflater.inflate(R.layout.detail_item, container, false)
         container.addView(itemView)
 
-        fishton.imageAdapter?.loadDetailImage(itemView.img_detail_image, images[position])
+        fishton.imageAdapter?.loadDetailImage(itemView.img_detail_image, images[position].path, images[position].orientation)
 
         return itemView
     }

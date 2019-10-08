@@ -8,6 +8,6 @@ import android.widget.ImageView
  */
 
 interface ImageAdapter {
-    fun loadImage(target: ImageView, loadUrl: Uri, orientation: Float)
-    fun loadDetailImage(target: ImageView, loadUrl: Uri, orientation: Float)
+    fun loadImage(target: ImageView, loadUrl: Uri, orientation: Int)
+    fun loadDetailImage(target: ImageView, loadUrl: Uri, orientation: Int)
 }

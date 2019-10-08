@@ -83,7 +83,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         }
 
 
-        onCheckStateChange(fishton.pickerImages[initPosition].path);
+        onCheckStateChange(fishton.getPickerImages()[initPosition].path);
 
 
         DetailViewPagerAdapter adapter = new DetailViewPagerAdapter(getLayoutInflater(), fishton.getPickerImages());
@@ -122,9 +122,9 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         if (id == R.id.btn_detail_count) {
 
 
-            Uri image = fishton.pickerImages[vpDetailPager.getCurrentItem()].path;
-            if (fishton.selectedImages.contains(image)) {
-                fishton.selectedImages.remove(image);
+            Uri image = fishton.getPickerImages()[vpDetailPager.getCurrentItem()].path;
+            if (fishton.getSelectedImages().contains(image)) {
+                fishton.getSelectedImages().remove(image);
                 onCheckStateChange(image);
             } else {
                 if (fishton.getSelectedImages().size() == fishton.getMaxCount()) {
@@ -150,7 +150,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     public void onPageSelected(int position) {
-        onCheckStateChange(fishton.pickerImages[position].path);
+        onCheckStateChange(fishton.getPickerImages()[position].path);
     }
 
     @Override

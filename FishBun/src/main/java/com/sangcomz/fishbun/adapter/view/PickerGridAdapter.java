@@ -83,8 +83,8 @@ public class PickerGridAdapter
 
             final ViewHolderImage vh = (ViewHolderImage) holder;
 
-            final Uri image = fishton.pickerImages[imagePos].path;
-            final int orientation = fishton.pickerImages[imagePos].orientation;
+            final Uri image = fishton.getPickerImages()[imagePos].path;
+            final int orientation = fishton.getPickerImages()[imagePos].orientation;
             final Context context = vh.item.getContext();
             vh.item.setTag(image);
             vh.btnThumbCount.unselect();
@@ -96,7 +96,7 @@ public class PickerGridAdapter
             if (image != null
                     && vh.imgThumbImage != null)
 
-                Fishton.getInstance().imageAdapter
+                Fishton.getInstance().getImageAdapter()
                         .loadImage(vh.imgThumbImage, image, orientation);
 
 
@@ -237,9 +237,9 @@ public class PickerGridAdapter
 
     public void addImage(PickerImage pickerImage) {
         ArrayList<PickerImage> al = new ArrayList<>();
-        Collections.addAll(al, fishton.pickerImages);
+        Collections.addAll(al, fishton.getPickerImages());
         al.add(0, pickerImage);
-        fishton.pickerImages = al.toArray(new PickerImage[al.size()]);
+        fishton.setPickerImages(al.toArray(new PickerImage[al.size()]));
 
         notifyDataSetChanged();
 

@@ -11,20 +11,20 @@ import com.squareup.picasso.Picasso
  */
 
 class PicassoAdapter : ImageAdapter {
-    override fun loadImage(target: ImageView, loadUrl: Uri, orientation: Float) =
+    override fun loadImage(target: ImageView, loadUrl: Uri, orientation: Int) =
             Picasso
                     .get()
                     .load(loadUrl)
                     .fit()
                     .centerCrop()
-                    .rotate(orientation)
+                    .rotate(orientation.toFloat())
                     .into(target)
 
-    override fun loadDetailImage(target: ImageView, loadUrl: Uri, orientation: Float) =
+    override fun loadDetailImage(target: ImageView, loadUrl: Uri, orientation: Int) =
             Picasso.get()
                     .load(loadUrl)
                     .fit()
                     .centerInside()
-                    .rotate(orientation)
+                    .rotate(orientation.toFloat())
                     .into(target)
 }

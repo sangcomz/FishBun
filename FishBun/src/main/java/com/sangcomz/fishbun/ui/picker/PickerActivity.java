@@ -23,7 +23,6 @@ import com.sangcomz.fishbun.bean.Album;
 import com.sangcomz.fishbun.bean.PickerImage;
 import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.permission.PermissionCheck;
-import com.sangcomz.fishbun.ui.album.AlbumActivity;
 import com.sangcomz.fishbun.util.RadioWithTextButton;
 import com.sangcomz.fishbun.util.SingleMediaScanner;
 import com.sangcomz.fishbun.util.SquareFrameLayout;
@@ -211,12 +210,12 @@ public class PickerActivity extends BaseActivity {
             return true;
         } else if (id == R.id.action_all_done){
 
-            for (PickerImage pickerImage : fishton.pickerImages) {
-                if (fishton.selectedImages.size() == fishton.maxCount){
+            for (PickerImage pickerImage : fishton.getPickerImages()) {
+                if (fishton.getSelectedImages().size() == fishton.getMaxCount()){
                     break;
                 }
-                if (!fishton.selectedImages.contains(pickerImage.path)){
-                    fishton.selectedImages.add(pickerImage.path);
+                if (!fishton.getSelectedImages().contains(pickerImage.path)){
+                    fishton.getSelectedImages().add(pickerImage.path);
                 }
             }
             finishActivity();
@@ -272,7 +271,7 @@ public class PickerActivity extends BaseActivity {
 
 
     public void setAdapter(PickerImage[] result) {
-        fishton.pickerImages = result;
+        fishton.setPickerImages(result);
 
         if (adapter == null) {
             adapter = new PickerGridAdapter(pickerController,

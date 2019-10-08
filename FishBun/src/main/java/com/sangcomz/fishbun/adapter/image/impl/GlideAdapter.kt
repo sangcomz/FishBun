@@ -12,7 +12,7 @@ import com.sangcomz.fishbun.adapter.image.ImageAdapter
  */
 
 class GlideAdapter : ImageAdapter {
-    override fun loadImage(target: ImageView, loadUrl: Uri, orientation: Float) {
+    override fun loadImage(target: ImageView, loadUrl: Uri, orientation: Int) {
         val options = RequestOptions().centerCrop()
         Glide
                 .with(target.context)
@@ -21,7 +21,7 @@ class GlideAdapter : ImageAdapter {
                 .into(target)
     }
 
-    override fun loadDetailImage(target: ImageView, loadUrl: Uri, orientation: Float) {
+    override fun loadDetailImage(target: ImageView, loadUrl: Uri, orientation: Int) {
         val options = RequestOptions().centerInside()
         Glide
                 .with(target.context)
