@@ -107,8 +107,10 @@ class AlbumController {
                                 new Album(bucketId,
                                         c.getString(bucketColumn),
                                         path.toString(), 1, orientation));
-                        if (albumHashMap.get((long) 0).thumbnailPath == null)
+                        if (albumHashMap.get((long) 0).thumbnailPath == null) {
                             albumHashMap.get((long) 0).thumbnailPath = path.toString();
+                            albumHashMap.get((long) 0).orientation = orientation;
+                        }
                     } else {
                         album.counter++;
                     }
