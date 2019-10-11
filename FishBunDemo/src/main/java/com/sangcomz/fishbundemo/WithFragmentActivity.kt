@@ -3,6 +3,9 @@ package com.sangcomz.fishbundemo
 import android.os.Bundle
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
+import androidx.annotation.Nullable
+
 
 class WithFragmentActivity : AppCompatActivity() {
 
@@ -18,5 +21,12 @@ class WithFragmentActivity : AppCompatActivity() {
 
         supportFragmentManager.beginTransaction().add(areaContainer.id, subFragment).commit()
 
+    }
+
+    /**
+     * Send onActivityResult method to SubFragment
+     */
+    override fun onActivityResult(requestCode: Int, resultCode: Int, @Nullable data: Intent?) {
+        subFragment.onActivityResult(requestCode, resultCode, data)
     }
 }
