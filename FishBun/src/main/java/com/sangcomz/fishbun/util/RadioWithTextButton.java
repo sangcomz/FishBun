@@ -61,7 +61,6 @@ public class RadioWithTextButton extends View {
         mCirclePaint = circlePaint;
     }
 
-
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -152,7 +151,6 @@ public class RadioWithTextButton extends View {
         paint.getTextBounds(text, 0, text.length(), textBounds);
         // Calculate the desired size as a proportion of our testTextSize.
         if (textBounds.width() > desiredWidth) {
-
             float desiredTextSize = defaultTextSize * (desiredWidth / textBounds.width());
 
             // Set the paint for that size.
