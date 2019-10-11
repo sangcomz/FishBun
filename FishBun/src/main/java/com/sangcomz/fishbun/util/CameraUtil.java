@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
 
-import androidx.annotation.VisibleForTesting;
 import androidx.core.content.FileProvider;
 
 import com.sangcomz.fishbun.define.Define;
@@ -52,8 +51,7 @@ public class CameraUtil {
         }
     }
 
-    @VisibleForTesting
-    File createImageFile(String saveDir) throws IOException {
+    private File createImageFile(String saveDir) throws IOException {
 
         File dir = new File(saveDir);
         if (!dir.exists()) {
