@@ -14,7 +14,7 @@ import java.util.*
  */
 class ImageAdapter(
     private var imageController: ImageController,
-    private var imagePaths: ArrayList<Uri>
+    private var imagePaths: List<Uri> = emptyList()
 ) : RecyclerView.Adapter<ImageAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
