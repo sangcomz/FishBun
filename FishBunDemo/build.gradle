@@ -9,9 +9,6 @@ buildscript {
     }
 }
 
-
-
-
 android {
     compileSdkVersion gradle.compileSdk
     buildToolsVersion gradle.buildTools
@@ -37,6 +34,7 @@ android {
             }
         }
     }
+
     buildTypes {
 
         release {
