@@ -69,4 +69,8 @@ class SubFragment : Fragment() {
             }
         }
     }
+
+    companion object {
+        fun newInstance() = SubFragment()
+    }
 }

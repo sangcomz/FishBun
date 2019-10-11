@@ -1,10 +1,10 @@
 package com.sangcomz.fishbundemo
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.RelativeLayout
-import androidx.appcompat.app.AppCompatActivity
-import android.content.Intent
 import androidx.annotation.Nullable
+import androidx.appcompat.app.AppCompatActivity
 
 
 class WithFragmentActivity : AppCompatActivity() {
@@ -17,7 +17,7 @@ class WithFragmentActivity : AppCompatActivity() {
         setContentView(R.layout.activity_withfragment)
 
         areaContainer = findViewById(R.id.area_container)
-        subFragment = SubFragment()
+        subFragment = SubFragment.newInstance()
 
         supportFragmentManager.beginTransaction().add(areaContainer.id, subFragment).commit()
 
@@ -29,4 +29,5 @@ class WithFragmentActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, @Nullable data: Intent?) {
         subFragment.onActivityResult(requestCode, resultCode, data)
     }
+
 }
