@@ -8,14 +8,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.sangcomz.fishbun.FishBun
 import com.sangcomz.fishbun.adapter.image.impl.PicassoAdapter
 import com.sangcomz.fishbun.define.Define
+import kotlinx.android.synthetic.main.fragment_sub.*
+import kotlinx.android.synthetic.main.fragment_sub.view.*
 import java.util.*
 
 /**
@@ -24,9 +23,6 @@ import java.util.*
 class SubFragment : Fragment() {
 
     var path = ArrayList<Uri>()
-    private lateinit var imgMain: ImageView
-    private lateinit var btnAddImages: Button
-    private lateinit var recyclerView: RecyclerView
     private lateinit var imageAdapter: ImageAdapter
 
     override fun onCreateView(
@@ -35,20 +31,13 @@ class SubFragment : Fragment() {
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_sub, container, false)
 
-        // Inflate the layout for this fragment
-        with(rootView) {
-            imgMain = findViewById(R.id.img_main)
-            recyclerView = findViewById(R.id.recyclerview)
-            btnAddImages = findViewById(R.id.btn_add_images)
-        }
-
-        with(recyclerView) {
+        with(recyclerview) {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            imageAdapter = ImageAdapter(ImageController(imgMain), path)
+            imageAdapter = ImageAdapter(ImageController(img_main), path)
             adapter = imageAdapter
         }
 
-        btnAddImages.setOnClickListener {
+        btn_add_images.setOnClickListener {
             FishBun.with(this@SubFragment)
                 .setImageAdapter(PicassoAdapter())
                 .setMaxCount(10)

@@ -6,22 +6,19 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.sangcomz.fishbun.FishBun
 import com.sangcomz.fishbun.adapter.image.impl.GlideAdapter
 import com.sangcomz.fishbun.adapter.image.impl.PicassoAdapter
 import com.sangcomz.fishbun.define.Define
+import kotlinx.android.synthetic.main.activity_withactivity.*
 import java.util.*
 
 class WithActivityActivity : AppCompatActivity() {
 
     var path = ArrayList<Uri>()
-    private lateinit var imgMain: ImageView
-    private lateinit var recyclerView: RecyclerView
     private lateinit var imageAdapter: ImageAdapter
     private var mode: Int = 0
 
@@ -30,17 +27,15 @@ class WithActivityActivity : AppCompatActivity() {
         setContentView(R.layout.activity_withactivity)
 
         mode = intent.getIntExtra("mode", -1)
-        imgMain = findViewById(R.id.img_main)
-        recyclerView = findViewById(R.id.recyclerview)
 
-        with(recyclerView) {
+        with(recyclerview) {
             layoutManager = LinearLayoutManager(
                 this@WithActivityActivity,
                 LinearLayoutManager.HORIZONTAL,
                 false
             )
 
-            imageAdapter = ImageAdapter(ImageController(imgMain), path)
+            imageAdapter = ImageAdapter(ImageController(img_main), path)
             adapter = imageAdapter
         }
     }

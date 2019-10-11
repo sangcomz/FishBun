@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.item.view.*
 import java.util.*
 
 /**
@@ -43,6 +44,6 @@ class ImageAdapter(
     override fun getItemCount(): Int = imagePaths.size
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val imageView = itemView.findViewById(R.id.img_item) as ImageView
+        val imageView = itemView.img_item as ImageView
     }
 }
