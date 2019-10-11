@@ -42,7 +42,7 @@ class ImageAdapter(
 
     override fun getItemCount(): Int = imagePaths.size
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imageView = itemView.findViewById(R.id.img_item) as ImageView
     }
 }
