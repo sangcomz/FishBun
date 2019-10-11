@@ -23,6 +23,7 @@ coverage:
         flags: null
         paths: null
     patch: yes
+      threshold: 1.0%
     changes: no
 
 parsers:
