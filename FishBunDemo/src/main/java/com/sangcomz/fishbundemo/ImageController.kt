@@ -7,7 +7,7 @@ import com.squareup.picasso.Picasso
 /**
  * Created by sangc on 2015-11-06.
  */
-class ImageController(var imgMain: ImageView) {
+class ImageController(private val imgMain: ImageView) {
 
     fun setImgMain(path: Uri) {
         Picasso
