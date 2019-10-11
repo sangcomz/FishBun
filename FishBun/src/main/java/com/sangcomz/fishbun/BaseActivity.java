@@ -7,11 +7,9 @@ import android.view.Window;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.sangcomz.fishbun.define.Define;
-import com.sangcomz.fishbun.util.UiUtil;
 
 public abstract class BaseActivity extends AppCompatActivity {
     protected Define define = new Define();
-    protected UiUtil uiUtil = new UiUtil();
     protected Fishton fishton;
 
     @Override

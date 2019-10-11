@@ -17,6 +17,7 @@ import com.sangcomz.fishbun.R;
 import com.sangcomz.fishbun.adapter.view.DetailViewPagerAdapter;
 import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.util.RadioWithTextButton;
+import com.sangcomz.fishbun.util.UiUtil;
 
 public class DetailActivity extends BaseActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
     private static final String TAG = "DetailActivity";
@@ -65,7 +66,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 
     private void initToolBar() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            uiUtil.setStatusBarColor(this, fishton.getColorStatusBar());
+            UiUtil.setStatusBarColor(this, fishton.getColorStatusBar());
         }
         if (fishton.isStatusBarLight()
                 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

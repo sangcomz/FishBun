@@ -29,6 +29,7 @@ import com.sangcomz.fishbun.ui.album.AlbumActivity;
 import com.sangcomz.fishbun.util.RadioWithTextButton;
 import com.sangcomz.fishbun.util.SingleMediaScanner;
 import com.sangcomz.fishbun.util.SquareFrameLayout;
+import com.sangcomz.fishbun.util.UiUtil;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -247,7 +248,7 @@ public class PickerActivity extends BaseActivity {
         toolbar.setBackgroundColor(fishton.getColorActionBar());
         toolbar.setTitleTextColor(fishton.getColorActionBarTitle());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            uiUtil.setStatusBarColor(this, fishton.getColorStatusBar());
+            UiUtil.setStatusBarColor(this, fishton.getColorStatusBar());
         }
         ActionBar bar = getSupportActionBar();
         if (bar != null) {

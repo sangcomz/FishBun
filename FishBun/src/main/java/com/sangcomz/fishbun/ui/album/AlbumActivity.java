@@ -29,6 +29,7 @@ import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.permission.PermissionCheck;
 import com.sangcomz.fishbun.util.ScanListener;
 import com.sangcomz.fishbun.util.SingleMediaScanner;
+import com.sangcomz.fishbun.util.UiUtil;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -81,7 +82,7 @@ public class AlbumActivity extends BaseActivity {
         super.onResume();
         if (recyclerAlbumList != null &&
                 recyclerAlbumList.getLayoutManager() != null) {
-            if (uiUtil.isLandscape(this))
+            if (UiUtil.isLandscape(this))
                 ((GridLayoutManager) recyclerAlbumList.getLayoutManager())
                         .setSpanCount(fishton.getAlbumLandscapeSpanCount());
             else
@@ -108,7 +109,7 @@ public class AlbumActivity extends BaseActivity {
         recyclerAlbumList = findViewById(R.id.recycler_album_list);
 
         GridLayoutManager layoutManager;
-        if (uiUtil.isLandscape(this))
+        if (UiUtil.isLandscape(this))
             layoutManager = new GridLayoutManager(this, fishton.getAlbumLandscapeSpanCount());
         else
             layoutManager = new GridLayoutManager(this, fishton.getAlbumPortraitSpanCount());
@@ -130,7 +131,7 @@ public class AlbumActivity extends BaseActivity {
         toolbar.setTitleTextColor(fishton.getColorActionBarTitle());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            uiUtil.setStatusBarColor(this, fishton.getColorStatusBar());
+            UiUtil.setStatusBarColor(this, fishton.getColorStatusBar());
         }
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(fishton.getTitleActionBar());
