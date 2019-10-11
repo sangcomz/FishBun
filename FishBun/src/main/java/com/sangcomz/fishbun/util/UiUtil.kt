@@ -31,7 +31,7 @@ fun Activity.setStatusBarColor(colorStatusBar: Int) {
 
 fun Context.isLandscape() = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
-fun <T : Context> T.isLandscape(block: () -> Unit) = if (isLandscape()) block() else Unit
+inline fun <T : Context> T.isLandscape(block: () -> Unit) = if (isLandscape()) block() else Unit
 
 fun Context.getDimension(@DimenRes id: Int) = resources.getDimension(id).toInt()
 
