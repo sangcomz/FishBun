@@ -17,7 +17,7 @@ class ImageController {
 
     void setImgMain(Uri path) {
         Picasso
-                .get()
+                .with(imgMain.getContext())
                 .load(path)
                 .fit()
                 .centerCrop()

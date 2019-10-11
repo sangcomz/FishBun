@@ -2,7 +2,6 @@ package com.sangcomz.fishbundemo;
 
 import android.content.Context;
 import android.net.Uri;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +10,8 @@ import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by sangc on 2015-11-06.
@@ -37,7 +38,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final Uri imagePath = imagePaths.get(position);
         Picasso
-                .get()
+                .with(context)
                 .load(imagePath)
                 .fit()
                 .centerCrop()
