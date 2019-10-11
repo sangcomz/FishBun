@@ -44,7 +44,8 @@ class SubFragment : Fragment() {
 
         with(recyclerView) {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = ImageAdapter(ImageController(imgMain), path)
+            imageAdapter = ImageAdapter(ImageController(imgMain), path)
+            adapter = imageAdapter
         }
 
         btnAddImages.setOnClickListener {

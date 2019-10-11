@@ -39,7 +39,9 @@ class WithActivityActivity : AppCompatActivity() {
                 LinearLayoutManager.HORIZONTAL,
                 false
             )
-            adapter = ImageAdapter(ImageController(imgMain), path)
+
+            imageAdapter = ImageAdapter(ImageController(imgMain), path)
+            adapter = imageAdapter
         }
     }
 
