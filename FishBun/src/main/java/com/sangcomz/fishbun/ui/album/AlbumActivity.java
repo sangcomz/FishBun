@@ -27,13 +27,15 @@ import com.sangcomz.fishbun.adapter.view.AlbumListAdapter;
 import com.sangcomz.fishbun.bean.Album;
 import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.permission.PermissionCheck;
-import com.sangcomz.fishbun.util.ScanListener;
 import com.sangcomz.fishbun.util.SingleMediaScanner;
 import com.sangcomz.fishbun.util.UiUtil;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import kotlin.Unit;
+import kotlin.jvm.functions.Function0;
 
 public class AlbumActivity extends BaseActivity {
     private AlbumController albumController;
@@ -259,10 +261,11 @@ public class AlbumActivity extends BaseActivity {
             }
         } else if (requestCode == define.TAKE_A_PICK_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                new SingleMediaScanner(this, new File(albumController.getSavePath()), new ScanListener() {
+                new SingleMediaScanner(this, new File(albumController.getSavePath()), new Function0<Unit>() {
                     @Override
-                    protected void onScanCompleted() {
+                    public Unit invoke() {
                         albumController.getAlbumList(fishton.getTitleAlbumAllView(), fishton.isExceptGif());
+                        return Unit.INSTANCE;
                     }
                 });
             } else {
