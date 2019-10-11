@@ -27,25 +27,25 @@ class SubFragment : Fragment() {
     private lateinit var imgMain: ImageView
     private lateinit var btnAddImages: Button
     private lateinit var recyclerView: RecyclerView
-    private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var imageAdapter: ImageAdapter
-    private lateinit var withActivityController: ImageController
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_sub, container, false)
-        // Inflate the layout for this fragment
-        imgMain = rootView.findViewById(R.id.img_main)
-        recyclerView = rootView.findViewById(R.id.recyclerview)
-        btnAddImages = rootView.findViewById(R.id.btn_add_images)
 
-        linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        withActivityController = ImageController(imgMain)
-        imageAdapter = ImageAdapter(withActivityController, path)
-        recyclerView.layoutManager = linearLayoutManager
-        recyclerView.adapter = imageAdapter
+        // Inflate the layout for this fragment
+        with(rootView) {
+            imgMain = findViewById(R.id.img_main)
+            recyclerView = findViewById(R.id.recyclerview)
+            btnAddImages = findViewById(R.id.btn_add_images)
+        }
+
+        with(recyclerView) {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = ImageAdapter(ImageController(imgMain), path)
+        }
 
         btnAddImages.setOnClickListener {
             FishBun.with(this@SubFragment)
@@ -56,6 +56,7 @@ class SubFragment : Fragment() {
                 .setCamera(true)
                 .startAlbum()
         }
+
         return rootView
     }
 

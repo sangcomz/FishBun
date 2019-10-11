@@ -22,10 +22,8 @@ class WithActivityActivity : AppCompatActivity() {
     var path = ArrayList<Uri>()
     private lateinit var imgMain: ImageView
     private lateinit var recyclerView: RecyclerView
-    private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var imageAdapter: ImageAdapter
-    private lateinit var mainController: ImageController
-    var mode: Int = 0
+    private var mode: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,11 +33,14 @@ class WithActivityActivity : AppCompatActivity() {
         imgMain = findViewById(R.id.img_main)
         recyclerView = findViewById(R.id.recyclerview)
 
-        linearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        mainController = ImageController(imgMain)
-        imageAdapter = ImageAdapter(mainController, path)
-        recyclerView.layoutManager = linearLayoutManager
-        recyclerView.adapter = imageAdapter
+        with(recyclerView) {
+            layoutManager = LinearLayoutManager(
+                this@WithActivityActivity,
+                LinearLayoutManager.HORIZONTAL,
+                false
+            )
+            adapter = ImageAdapter(ImageController(imgMain), path)
+        }
     }
 
     override fun onActivityResult(
@@ -48,11 +49,9 @@ class WithActivityActivity : AppCompatActivity() {
     ) {
         super.onActivityResult(requestCode, resultCode, imageData)
 
-        when (requestCode) {
-            Define.ALBUM_REQUEST_CODE -> if (resultCode == RESULT_OK) {
-                path = imageData!!.getParcelableArrayListExtra(Define.INTENT_PATH)
-                imageAdapter.changePath(path)
-            }
+        if (requestCode == Define.ALBUM_REQUEST_CODE && resultCode == RESULT_OK) {
+            path = imageData!!.getParcelableArrayListExtra(Define.INTENT_PATH)
+            imageAdapter.changePath(path)
         }
     }
 
