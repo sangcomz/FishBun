@@ -86,7 +86,7 @@ public class PickerGridAdapter
             final Uri image = fishton.getPickerImages()[imagePos];
             final Context context = vh.item.getContext();
             vh.item.setTag(image);
-            vh.btnThumbCount.unselect();
+            vh.btnThumbCount.unSelect();
             vh.btnThumbCount.setCircleColor(fishton.getColorActionBar());
             vh.btnThumbCount.setTextColor(fishton.getColorActionBarTitle());
             vh.btnThumbCount.setStrokeColor(fishton.getColorSelectCircleStroke());
@@ -144,7 +144,7 @@ public class PickerGridAdapter
         RadioWithTextButton btnThumbCount = v.findViewById(R.id.btn_thumb_count);
         if (isContained) {
             pickedImages.remove(image);
-            btnThumbCount.unselect();
+            btnThumbCount.unSelect();
             animScale(imgThumbImage, false, true);
         } else {
             animScale(imgThumbImage, true, true);
@@ -173,7 +173,7 @@ public class PickerGridAdapter
             else
                 v.setText(text);
         } else {
-            v.unselect();
+            v.unSelect();
         }
 
     }
