@@ -131,8 +131,6 @@ class WithActivityActivity : AppCompatActivity() {
                                 R.drawable.ic_arrow_back_black_24dp
                             )
                         )
-                        //                            .setDoneButtonDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check_black_24dp))
-                        //                            .setAllDoneButtonDrawable(ContextCompat.getDrawable(this, R.drawable.ic_done_all_black_24dp))
 
                         .setIsUseAllDoneButton(true)
                         .setMenuDoneText("Choose")
