@@ -24,9 +24,10 @@ sealed class RadioType {
         return this
     }
 
-    inline infix fun isRadioNone(block: None.() -> Unit) {
+    inline infix fun isRadioNone(block: None.() -> Unit): RadioType {
         if (this is None) {
             block()
         }
+        return this
     }
 }

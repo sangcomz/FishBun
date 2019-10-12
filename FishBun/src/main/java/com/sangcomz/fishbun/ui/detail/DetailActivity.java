@@ -50,7 +50,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         btnDetailCount = findViewById(R.id.btn_detail_count);
         vpDetailPager = findViewById(R.id.vp_detail_pager);
         btnDetailBack = findViewById(R.id.btn_detail_back);
-        btnDetailCount.unSelect();
+        btnDetailCount.unselect();
         btnDetailCount.setCircleColor(fishton.getColorActionBar());
         btnDetailCount.setTextColor(fishton.getColorActionBarTitle());
         btnDetailCount.setStrokeColor(fishton.getColorSelectCircleStroke());
@@ -97,7 +97,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
             updateRadioButton(btnDetailCount,
                     String.valueOf(fishton.getSelectedImages().indexOf(image) + 1));
         } else {
-            btnDetailCount.unSelect();
+            btnDetailCount.unselect();
         }
     }
 

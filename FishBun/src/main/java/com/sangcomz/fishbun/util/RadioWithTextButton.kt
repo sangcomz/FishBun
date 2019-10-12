@@ -9,8 +9,6 @@ import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
 import androidx.annotation.ColorInt
-import androidx.annotation.ColorRes
-import androidx.annotation.DrawableRes
 
 import com.sangcomz.fishbun.R
 
@@ -64,14 +62,14 @@ class RadioWithTextButton @JvmOverloads constructor(
         invalidate()
     }
 
-    fun unSelect() {
+    fun unselect() {
         radioType = RadioType.None
         invalidate()
     }
 
     override fun onDraw(canvas: Canvas) {
         strokePaint.strokeWidth = (width / 18).toFloat()
-        isChecked {
+        isSelected {
             canvas.drawCircle((width / 2).toFloat(), (height / 2).toFloat(), (width / 3).toFloat(), circlePaint)
         }
         with(radioType) {
@@ -87,7 +85,7 @@ class RadioWithTextButton @JvmOverloads constructor(
         }
     }
 
-    private fun isChecked(block: () -> Unit) = if (radioType != RadioType.None) block() else Unit
+    private fun isSelected(block: () -> Unit) = if (radioType != RadioType.None) block() else Unit
 
     private fun drawTextCentered(canvas: Canvas, paint: Paint, text: String, cx: Float, cy: Float) {
         val textBounds = Rect()
