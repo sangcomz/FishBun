@@ -9,6 +9,7 @@ import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
 import androidx.annotation.ColorInt
+import androidx.annotation.VisibleForTesting
 
 import com.sangcomz.fishbun.R
 
@@ -22,13 +23,20 @@ class RadioWithTextButton @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
 
-    private val strokePaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
-    private val circlePaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
-    private val textPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        isFakeBoldText = true
+    @VisibleForTesting(otherwise = VisibleForTesting.NONE)
+    constructor(context: Context, textPaint: Paint, strokePaint: Paint, circlePaint: Paint) : this(context) {
+        this.textPaint = textPaint
+        this.strokePaint = strokePaint
+        this.circlePaint = circlePaint
     }
 
     private var radioType: RadioType = RadioType.None
+
+    private var textPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        isFakeBoldText = true
+    }
+    private var strokePaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private var circlePaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     private val textWidth: Float
         get() = (width / 3) * 2 - PADDING_TEXT
@@ -89,34 +97,11 @@ class RadioWithTextButton @JvmOverloads constructor(
 
     private fun drawTextCentered(canvas: Canvas, paint: Paint, text: String, cx: Float, cy: Float) {
         val textBounds = Rect()
-        setTextSizeForWidth(paint, text, textWidth)
-        paint.getTextBounds(text, 0, text.length, textBounds)
-        canvas.drawText(text, cx - textBounds.exactCenterX(), cy - textBounds.exactCenterY(), paint)
-    }
-
-    /**
-     * Sets the text size for a Paint object so a given string of text will be a
-     * given width.
-     *
-     * @param paint        the Paint to set the text size for
-     * @param desiredWidth the desired width
-     */
-    private fun setTextSizeForWidth(paint: Paint, text: String, desiredWidth: Float) = paint.run {
-
-        // Pick a reasonably large value for the test. Larger values produce
-        // more accurate results, but may cause problems with hardware
-        // acceleration. But there are workarounds for that, too; refer to
-        // http://stackoverflow.com/questions/6253528/font-size-too-large-to-fit-in-cache
-        val defaultTextSize = 44f
-        val textBounds = Rect()
-        textSize = defaultTextSize
-        getTextBounds(text, 0, text.length, textBounds)
-        // Calculate the desired size as a proportion of our testTextSize.
-        if (textBounds.width() > desiredWidth) {
-            val desiredTextSize = defaultTextSize * (desiredWidth / textBounds.width())
-            // Set the paint for that size.
-            textSize = desiredTextSize
+        with(paint) {
+            setTextSizeForWidth(text, textWidth)
+            getTextBounds(text, 0, text.length, textBounds)
         }
+        canvas.drawText(text, cx - textBounds.exactCenterX(), cy - textBounds.exactCenterY(), paint)
     }
 
     private fun fetchAccentColor(): Int {
@@ -128,6 +113,6 @@ class RadioWithTextButton @JvmOverloads constructor(
     }
 
     companion object {
-        const val PADDING_TEXT = 20.toFloat()
+        private const val PADDING_TEXT = 20.toFloat()
     }
 }
