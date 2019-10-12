@@ -49,10 +49,10 @@ class RadioWithTextButtonTest {
 
         verify(mockStrokePaint, Times(1)).setStyle(Paint.Style.STROKE)
         verify(mockCanvas, Times(1)).drawCircle(
-            radioWithTextButton.width.toCircleXY(),
-            radioWithTextButton.height.toCircleXY(),
-            radioWithTextButton.width.toCircleRadio(),
-            mockStrokePaint)
+                radioWithTextButton.width.toCircleXY(),
+                radioWithTextButton.height.toCircleXY(),
+                radioWithTextButton.width.toCircleRadio(),
+                mockStrokePaint)
     }
 
     @Test
@@ -65,10 +65,10 @@ class RadioWithTextButtonTest {
 
         radioWithTextButton.draw(mockCanvas)
         verify(mockCanvas, Times(1)).drawCircle(
-            radioWithTextButton.width.toCircleXY(),
-            radioWithTextButton.height.toCircleXY(),
-            radioWithTextButton.width.toCircleRadio(),
-            mockCirclePaint)
+                radioWithTextButton.width.toCircleXY(),
+                radioWithTextButton.height.toCircleXY(),
+                radioWithTextButton.width.toCircleRadio(),
+                mockCirclePaint)
         verify(mockDrawable, Times(1)).setBounds(any(Rect::class.java))
         verify(mockDrawable, Times(1)).draw(mockCanvas)
     }
@@ -82,15 +82,15 @@ class RadioWithTextButtonTest {
 
         radioWithTextButton.draw(mockCanvas)
         verify(mockCanvas, Times(1)).drawCircle(
-            radioWithTextButton.width.toCircleXY(),
-            radioWithTextButton.height.toCircleXY(),
-            radioWithTextButton.width.toCircleRadio(),
-            mockCirclePaint)
+                radioWithTextButton.width.toCircleXY(),
+                radioWithTextButton.height.toCircleXY(),
+                radioWithTextButton.width.toCircleRadio(),
+                mockCirclePaint)
         verify(mockCanvas, Times(1)).drawText(
-            text,
-            radioWithTextButton.width.toCircleXY(),
-            radioWithTextButton.height.toCircleXY(),
-            mockTextPaint)
+                text,
+                radioWithTextButton.width.toCircleXY(),
+                radioWithTextButton.height.toCircleXY(),
+                mockTextPaint)
     }
 
     @Test
