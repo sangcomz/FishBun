@@ -7,6 +7,8 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
+
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
@@ -51,6 +53,13 @@ public class RadioWithTextButton extends View {
         mTextPaint.setFakeBoldText(true);
     }
 
+    @VisibleForTesting(otherwise = VisibleForTesting.NONE)
+    RadioWithTextButton(Context context, Paint textPaint, Paint strokePaint, Paint circlePaint) {
+        super(context);
+        mTextPaint = textPaint;
+        mStrokePaint = strokePaint;
+        mCirclePaint = circlePaint;
+    }
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -129,7 +138,8 @@ public class RadioWithTextButton extends View {
      * @param paint        the Paint to set the text size for
      * @param desiredWidth the desired width
      */
-    private static void setTextSizeForWidth(Paint paint, String text, float desiredWidth) {
+    @VisibleForTesting
+    static void setTextSizeForWidth(Paint paint, String text, float desiredWidth) {
 
         // Pick a reasonably large value for the test. Larger values produce
         // more accurate results, but may cause problems with hardware
