@@ -11,7 +11,7 @@ class ImageController(private val imgMain: ImageView) {
 
     fun setImgMain(path: Uri) {
         Picasso
-            .get()
+            .with(imgMain.context)
             .load(path)
             .fit()
             .centerCrop()

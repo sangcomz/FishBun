@@ -1,5 +1,6 @@
 package com.sangcomz.fishbundemo
 
+import android.content.Context
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +15,8 @@ import java.util.*
  * Created by sangc on 2015-11-06.
  */
 class ImageAdapter(
-    private var imageController: ImageController,
+    private val context: Context,
+    private val imageController: ImageController,
     private var imagePaths: List<Uri> = emptyList()
 ) : RecyclerView.Adapter<ImageAdapter.ViewHolder>() {
 
@@ -27,11 +29,11 @@ class ImageAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val imagePath = imagePaths[position]
         Picasso
-            .get()
+            .with(context)
             .load(imagePath)
             .fit()
             .centerCrop()
-            .into(holder.imageView)
+            .into(holder.imageView);
         holder.imageView.setOnClickListener { imageController.setImgMain(imagePath) }
     }
 

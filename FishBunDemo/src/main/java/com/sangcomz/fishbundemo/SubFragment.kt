@@ -33,7 +33,7 @@ class SubFragment : Fragment() {
 
         with(recyclerview) {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            imageAdapter = ImageAdapter(ImageController(img_main), path)
+            imageAdapter = ImageAdapter(activity!!, ImageController(img_main), path)
             adapter = imageAdapter
         }
 
