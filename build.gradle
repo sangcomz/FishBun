@@ -7,7 +7,7 @@ buildscript {
         androidx_version = '1.0.0'
         recyclerview_version = '1.0.0'
         material_version = '1.0.0'
-        picasso_version = '2.71828'
+        picasso_version = '2.5.2'
         glide_version = '4.9.0'
         constraint_version = '1.1.3'
     }
