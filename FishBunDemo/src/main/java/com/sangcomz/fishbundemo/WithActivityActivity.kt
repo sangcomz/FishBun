@@ -35,7 +35,7 @@ class WithActivityActivity : AppCompatActivity() {
                 false
             )
 
-            imageAdapter = ImageAdapter(ImageController(img_main), path)
+            imageAdapter = ImageAdapter(context, ImageController(img_main), path)
             adapter = imageAdapter
         }
     }
