@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.sangcomz.fishbun.define.Define;
-import com.sangcomz.fishbun.util.UiUtil;
 
 /**
  * Created by sangcomz on 04/06/2017.
@@ -17,7 +16,6 @@ import com.sangcomz.fishbun.util.UiUtil;
 public class BaseFragment extends Fragment {
 
     protected Define define = new Define();
-    protected UiUtil uiUtil = new UiUtil();
 
     @Nullable
     @Override

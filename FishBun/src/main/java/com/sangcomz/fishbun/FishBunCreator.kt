@@ -27,7 +27,7 @@ class FishBunCreator(private val fishBun: FishBun, private val fishton: Fishton)
         fishton.photoSpanCount = if (spanCount <= 0) 3 else spanCount
     }
 
-    @Deprecated("instead setMaxCount(count)", ReplaceWith("setPickerCount(count)"))
+    @Deprecated("instead setMaxCount(count)", ReplaceWith("setMaxCount(count)"))
     override fun setPickerCount(count: Int): FishBunCreator = this.apply {
         setMaxCount(count)
     }

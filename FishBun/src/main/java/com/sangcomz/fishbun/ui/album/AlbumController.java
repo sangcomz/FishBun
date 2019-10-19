@@ -92,9 +92,8 @@ class AlbumController {
 
                 albumHashMap.put((long) 0, new Album(0, allViewTitle, null, 0));
 
-                RegexUtil regexUtil = new RegexUtil();
                 while (c.moveToNext()) {
-                    if (exceptGif && regexUtil.checkGif(c.getString(bucketData))) continue;
+                    if (exceptGif && RegexUtil.checkGif(c.getString(bucketData))) continue;
                     totalCounter++;
                     long bucketId = c.getInt(bucketColumnId);
                     Album album = albumHashMap.get(bucketId);

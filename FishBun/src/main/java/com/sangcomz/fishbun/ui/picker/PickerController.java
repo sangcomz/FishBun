@@ -137,10 +137,9 @@ public class PickerController {
                     setPathDir(c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA)),
                             c.getString(c.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME)));
                     int position = -1;
-                    RegexUtil regexUtil = new RegexUtil();
                     do {
                         if (exceptGif &&
-                                regexUtil.checkGif(c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA))))
+                                RegexUtil.checkGif(c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA))))
                             continue;
                         int imgId = c.getInt(c.getColumnIndex(MediaStore.MediaColumns._ID));
                         Uri path = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "" + imgId);

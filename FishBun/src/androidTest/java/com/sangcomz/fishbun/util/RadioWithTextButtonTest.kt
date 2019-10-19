@@ -45,7 +45,7 @@ class RadioWithTextButtonTest {
     @Test
     fun onDraw_drawCircle() {
         val mockCanvas = mock(Canvas::class.java)
-        radioWithTextButton.onDraw(mockCanvas)
+        radioWithTextButton.draw(mockCanvas)
 
         verify(mockStrokePaint, Times(1)).setStyle(Paint.Style.STROKE)
         verify(mockCanvas, Times(1)).drawCircle(
@@ -63,7 +63,7 @@ class RadioWithTextButtonTest {
         val mockCanvas = mock(Canvas::class.java)
         doNothing().`when`(mockCanvas).drawCircle(anyFloat(), anyFloat(), anyFloat(), any(Paint::class.java))
 
-        radioWithTextButton.onDraw(mockCanvas)
+        radioWithTextButton.draw(mockCanvas)
         verify(mockCanvas, Times(1)).drawCircle(
                 radioWithTextButton.width.toCircleXY(),
                 radioWithTextButton.height.toCircleXY(),
@@ -80,7 +80,7 @@ class RadioWithTextButtonTest {
         val mockCanvas = mock(Canvas::class.java)
         radioWithTextButton.setText(text)
 
-        radioWithTextButton.onDraw(mockCanvas)
+        radioWithTextButton.draw(mockCanvas)
         verify(mockCanvas, Times(1)).drawCircle(
                 radioWithTextButton.width.toCircleXY(),
                 radioWithTextButton.height.toCircleXY(),
@@ -101,7 +101,7 @@ class RadioWithTextButtonTest {
         val desiredWidth = 10f
         val text = "test"
 
-        RadioWithTextButton.setTextSizeForWidth(mockPaint, text, desiredWidth)
+        mockPaint.setTextSizeForWidth(text, desiredWidth)
         verify(mockPaint).setTextSize(anyFloat())
         verify(mockPaint).getTextBounds(eq(text), anyInt(), anyInt(), any(Rect::class.java))
         verifyNoMoreInteractions(mockPaint)
@@ -115,7 +115,7 @@ class RadioWithTextButtonTest {
         val desiredWidth = 1f
         val text = "test"
 
-        RadioWithTextButton.setTextSizeForWidth(mockPaint, text, desiredWidth)
+        mockPaint.setTextSizeForWidth(text, desiredWidth)
         verify(mockPaint).setTextSize(anyFloat())
         verify(mockPaint).getTextBounds(eq(text), anyInt(), anyInt(), any(Rect::class.java))
         verify(mockPaint).setTextSize(anyFloat())
