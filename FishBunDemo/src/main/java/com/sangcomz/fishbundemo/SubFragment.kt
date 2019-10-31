@@ -14,7 +14,6 @@ import com.sangcomz.fishbun.FishBun
 import com.sangcomz.fishbun.adapter.image.impl.PicassoAdapter
 import com.sangcomz.fishbun.define.Define
 import kotlinx.android.synthetic.main.fragment_sub.*
-import kotlinx.android.synthetic.main.fragment_sub.view.*
 import java.util.*
 
 /**
@@ -28,9 +27,11 @@ class SubFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val rootView = inflater.inflate(R.layout.fragment_sub, container, false)
+    ): View = inflater.inflate(R.layout.fragment_sub, container, false)
 
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         with(recyclerview) {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             imageAdapter = ImageAdapter(activity!!, ImageController(img_main), path)
@@ -46,8 +47,6 @@ class SubFragment : Fragment() {
                 .setCamera(true)
                 .startAlbum()
         }
-
-        return rootView
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
