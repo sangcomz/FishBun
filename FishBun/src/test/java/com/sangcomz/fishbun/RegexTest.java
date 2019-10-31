@@ -13,11 +13,9 @@ import static org.junit.Assert.assertEquals;
 public class RegexTest {
     @Test
     public void checkGif_isCorrect() throws Exception {
-        RegexUtil regexUtil = new RegexUtil();
-        assertEquals(regexUtil.checkGif("/storage/emulated/0/Download/giphy.gif"), true);
-        assertEquals(regexUtil.checkGif("/storage/emulated/0/Download/gif.gif.png"), false);
-        assertEquals(regexUtil.checkGif("/storage/emulated/0/Download/gif.png"), false);
-        assertEquals(regexUtil.checkGif("/storage/emulated/0/Download/giphy (1).gif"), true);
-
+        assertEquals(RegexUtil.checkGif("/storage/emulated/0/Download/giphy.gif"), true);
+        assertEquals(RegexUtil.checkGif("/storage/emulated/0/Download/gif.gif.png"), false);
+        assertEquals(RegexUtil.checkGif("/storage/emulated/0/Download/gif.png"), false);
+        assertEquals(RegexUtil.checkGif("/storage/emulated/0/Download/giphy (1).gif"), true);
     }
 }

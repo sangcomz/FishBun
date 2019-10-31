@@ -8,8 +8,11 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 
+import com.sangcomz.fishbun.R;
 import com.sangcomz.fishbun.permission.PermissionCheck;
 import com.sangcomz.fishbun.util.CameraUtil;
 import com.sangcomz.fishbun.util.RegexUtil;
@@ -74,6 +77,15 @@ public class PickerController {
         return false;
     }
 
+    public boolean checkCameraPermission() {
+        PermissionCheck permissionCheck = new PermissionCheck(pickerActivity);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (permissionCheck.CheckCameraPermission())
+                return true;
+        } else
+            return true;
+        return false;
+    }
 
     void displayImage(Long bucketId,
                       Boolean exceptGif) {
@@ -125,10 +137,9 @@ public class PickerController {
                     setPathDir(c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA)),
                             c.getString(c.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME)));
                     int position = -1;
-                    RegexUtil regexUtil = new RegexUtil();
                     do {
                         if (exceptGif &&
-                                regexUtil.checkGif(c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA))))
+                                RegexUtil.checkGif(c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA))))
                             continue;
                         int imgId = c.getInt(c.getColumnIndex(MediaStore.MediaColumns._ID));
                         Uri path = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "" + imgId);

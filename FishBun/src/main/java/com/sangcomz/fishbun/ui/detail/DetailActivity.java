@@ -17,6 +17,7 @@ import com.sangcomz.fishbun.R;
 import com.sangcomz.fishbun.adapter.view.DetailViewPagerAdapter;
 import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.util.RadioWithTextButton;
+import com.sangcomz.fishbun.util.UiUtil;
 
 public class DetailActivity extends BaseActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
     private static final String TAG = "DetailActivity";
@@ -50,9 +51,9 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         vpDetailPager = findViewById(R.id.vp_detail_pager);
         btnDetailBack = findViewById(R.id.btn_detail_back);
         btnDetailCount.unselect();
-        btnDetailCount.setCircleColor(fishton.colorActionBar);
-        btnDetailCount.setTextColor(fishton.colorActionBarTitle);
-        btnDetailCount.setStrokeColor(fishton.colorSelectCircleStroke);
+        btnDetailCount.setCircleColor(fishton.getColorActionBar());
+        btnDetailCount.setTextColor(fishton.getColorActionBarTitle());
+        btnDetailCount.setStrokeColor(fishton.getColorSelectCircleStroke());
         btnDetailCount.setOnClickListener(this);
         btnDetailBack.setOnClickListener(this);
         initToolBar();
@@ -65,9 +66,9 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 
     private void initToolBar() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            uiUtil.setStatusBarColor(this, fishton.colorStatusBar);
+            UiUtil.setStatusBarColor(this, fishton.getColorStatusBar());
         }
-        if (fishton.isStatusBarLight
+        if (fishton.isStatusBarLight()
                 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             vpDetailPager.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
@@ -75,15 +76,15 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void initAdapter() {
-        if (fishton.pickerImages == null) {
+        if (fishton.getPickerImages() == null) {
             Toast.makeText(this, R.string.msg_error, Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
 
-        onCheckStateChange(fishton.pickerImages[initPosition]);
+        onCheckStateChange(fishton.getPickerImages()[initPosition]);
 
-        DetailViewPagerAdapter adapter = new DetailViewPagerAdapter(getLayoutInflater(), fishton.pickerImages);
+        DetailViewPagerAdapter adapter = new DetailViewPagerAdapter(getLayoutInflater(), fishton.getPickerImages());
         vpDetailPager.setAdapter(adapter);
         vpDetailPager.setCurrentItem(initPosition);
 
@@ -91,10 +92,10 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     }
 
     public void onCheckStateChange(Uri image) {
-        boolean isContained = fishton.selectedImages.contains(image);
+        boolean isContained = fishton.getSelectedImages().contains(image);
         if (isContained) {
             updateRadioButton(btnDetailCount,
-                    String.valueOf(fishton.selectedImages.indexOf(image) + 1));
+                    String.valueOf(fishton.getSelectedImages().indexOf(image) + 1));
         } else {
             btnDetailCount.unselect();
         }
@@ -102,7 +103,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 
 
     public void updateRadioButton(RadioWithTextButton v, String text) {
-        if (fishton.maxCount == 1)
+        if (fishton.getMaxCount() == 1)
             v.setDrawable(ContextCompat.getDrawable(v.getContext(), R.drawable.ic_done_white_24dp));
         else
             v.setText(text);
@@ -117,18 +118,18 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.btn_detail_count) {
-            Uri image = fishton.pickerImages[vpDetailPager.getCurrentItem()];
-            if (fishton.selectedImages.contains(image)) {
-                fishton.selectedImages.remove(image);
+            Uri image = fishton.getPickerImages()[vpDetailPager.getCurrentItem()];
+            if (fishton.getSelectedImages().contains(image)) {
+                fishton.getSelectedImages().remove(image);
                 onCheckStateChange(image);
             } else {
-                if (fishton.selectedImages.size() == fishton.maxCount) {
-                    Snackbar.make(v, fishton.messageLimitReached, Snackbar.LENGTH_SHORT).show();
+                if (fishton.getSelectedImages().size() == fishton.getMaxCount()) {
+                    Snackbar.make(v, fishton.getMessageLimitReached(), Snackbar.LENGTH_SHORT).show();
                 } else {
-                    fishton.selectedImages.add(image);
+                    fishton.getSelectedImages().add(image);
                     onCheckStateChange(image);
 
-                    if (fishton.isAutomaticClose && fishton.selectedImages.size() == fishton.maxCount)
+                    if (fishton.isAutomaticClose() && fishton.getSelectedImages().size() == fishton.getMaxCount())
                         finishActivity();
                 }
             }
@@ -145,7 +146,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     public void onPageSelected(int position) {
-        onCheckStateChange(fishton.pickerImages[position]);
+        onCheckStateChange(fishton.getPickerImages()[position]);
     }
 
     @Override

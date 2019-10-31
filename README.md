@@ -15,10 +15,14 @@ _FishBun_ is a highly customizable image picker for Android.
 <img src="/pic/fishbuns.png">
 
 
-## What's New in _FishBun_ 0.11.1?
+## What's New in _FishBun_ 0.11.2? :tada:
 
-- Missing space in title[#163](https://github.com/sangcomz/FishBun/issues/163)
-- [CRASH] When used in flutter, Fileprovider paths can be overwritten.[#162](https://github.com/sangcomz/FishBun/issues/162)
+- added some guide for reporting issue[#176](https://github.com/sangcomz/FishBun/pull/176)
+- Java to Kotlin[#174](https://github.com/sangcomz/FishBun/pull/174), [#175](https://github.com/sangcomz/FishBun/pull/175), [#179](https://github.com/sangcomz/FishBun/pull/179), [#185](https://github.com/sangcomz/FishBun/pull/185), [#187](https://github.com/sangcomz/FishBun/pull/187)
+- fix README.md for App used[#180](https://github.com/sangcomz/FishBun/pull/180)
+- Runtime permission for camera [#116](https://github.com/sangcomz/FishBun/issue/116) 
+- Implement Instrument test code [#186](https://github.com/sangcomz/FishBun/pull/186)
+- Fix bug, when Image displays in wrong orientation [#184](https://github.com/sangcomz/FishBun/pull/184)  
 
 
 ## Customizable Styles
@@ -121,9 +125,9 @@ Setting up _FishBun_ requires to add this Gradle configuration:
         compile 'com.github.bumptech.glide:glide:4.9.0'
                 
         // Android plugin 3.0.0 or higher.
-        implementation 'com.sangcomz:FishBun:0.11.0'
+        implementation 'com.sangcomz:FishBun:0.11.2'
         
-        implementation 'com.squareup.picasso:picasso:2.71828'
+        implementation 'com.squareup.picasso:picasso:2.5.2'
         or
         implementation 'com.github.bumptech.glide:glide:4.9.0'
 
@@ -203,6 +207,7 @@ Running on Android M, _FishBun_ checks if it has proper permission for you befor
 | Project Name | Result Screen   |
 |:---------:|---|
 | Pandaz  <p style="float:left;"> <a href="https://play.google.com/store/apps/details?id=com.pwdr.panda"> <img HEIGHT="40" WIDTH="135" alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge.png" /></a></p> |  <img src="/pic/pandaz_result.gif"> |
+| Multi photo resize compress crop in batch PicTools  <p style="float:left;"> <a href="https://play.google.com/store/apps/details?id=omkar.tenkale.pictoolsandroid&hl=en_US"> <img HEIGHT="40" WIDTH="135" alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge.png" /></a></p> |  <img src="/pic/multi_photo_result.gif"> |
 
 
 # Contribution
@@ -210,6 +215,10 @@ Running on Android M, _FishBun_ checks if it has proper permission for you befor
 Any suggestions or contributions would be welcomed.
 [CONTRIBUTING](https://github.com/sangcomz/FishBun/blob/master/CONTRIBUTING.md)
 
+# Feedback
+
+Bug reports and feature requests can be submitted [here](https://github.com/sangcomz/FishBun/issues) 
+(please read the [instructions](https://github.com/sangcomz/FishBun/blob/master/CONTRIBUTING.md) on how to report a bug and request feature).
 
 # License
 

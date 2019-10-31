@@ -28,6 +28,7 @@ import com.sangcomz.fishbun.permission.PermissionCheck;
 import com.sangcomz.fishbun.util.RadioWithTextButton;
 import com.sangcomz.fishbun.util.SingleMediaScanner;
 import com.sangcomz.fishbun.util.SquareFrameLayout;
+import com.sangcomz.fishbun.util.UiUtil;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -70,7 +71,7 @@ public class PickerActivity extends BaseActivity {
         try {
             ArrayList<Uri> addImages = outState.getParcelableArrayList(define.SAVE_INSTANCE_NEW_IMAGES);
             String savedImage = outState.getString(define.SAVE_INSTANCE_SAVED_IMAGE);
-            setAdapter(fishton.pickerImages);
+            setAdapter(fishton.getPickerImages());
             if (addImages != null) {
                 pickerController.setAddImagePaths(addImages);
             }
@@ -90,7 +91,7 @@ public class PickerActivity extends BaseActivity {
         initValue();
         initView();
         if (pickerController.checkPermission())
-            pickerController.displayImage(album.bucketId, fishton.isExceptGif);
+            pickerController.displayImage(album.bucketId, fishton.isExceptGif());
 
     }
 
@@ -111,7 +112,7 @@ public class PickerActivity extends BaseActivity {
             }
         } else if (requestCode == define.ENTER_DETAIL_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                if (fishton.isAutomaticClose && fishton.selectedImages.size() == fishton.maxCount)
+                if (fishton.isAutomaticClose() && fishton.getSelectedImages().size() == fishton.getMaxCount())
                     finishActivity();
                 refreshThumb();
             }
@@ -125,7 +126,7 @@ public class PickerActivity extends BaseActivity {
             case 28: {
                 if (grantResults.length > 0) {
                     if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                        pickerController.displayImage(album.bucketId, fishton.isExceptGif);
+                        pickerController.displayImage(album.bucketId, fishton.isExceptGif());
                         // permission was granted, yay! do the
                         // calendar task you need to do.
                     } else {
@@ -133,6 +134,18 @@ public class PickerActivity extends BaseActivity {
                         finish();
                     }
                 }
+                break;
+            }
+            case 29: {
+                if (grantResults.length > 0) {
+                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        // permission was granted, yay!
+                        pickerController.takePicture(this, pickerController.getPathDir(album.bucketId));
+                    } else {
+                        new PermissionCheck(this).showPermissionDialog();
+                    }
+                }
+                break;
             }
 
         }
@@ -145,33 +158,33 @@ public class PickerActivity extends BaseActivity {
         MenuItem menuDoneItem = menu.findItem(R.id.action_done);
         MenuItem menuAllDoneItem = menu.findItem(R.id.action_all_done);
 
-        if (fishton.drawableDoneButton != null) {
-            menuDoneItem.setIcon(fishton.drawableDoneButton);
-        } else if (fishton.strDoneMenu != null) {
-            if (fishton.colorTextMenu != Integer.MAX_VALUE) {
-                SpannableString spanString = new SpannableString(fishton.strDoneMenu);
-                spanString.setSpan(new ForegroundColorSpan(fishton.colorTextMenu), 0, spanString.length(), 0); //fi
+        if (fishton.getDrawableDoneButton() != null) {
+            menuDoneItem.setIcon(fishton.getDrawableDoneButton());
+        } else if (fishton.getStrDoneMenu() != null) {
+            if (fishton.getColorTextMenu() != Integer.MAX_VALUE) {
+                SpannableString spanString = new SpannableString(fishton.getStrDoneMenu());
+                spanString.setSpan(new ForegroundColorSpan(fishton.getColorTextMenu()), 0, spanString.length(), 0); //fi
                 menuDoneItem.setTitle(spanString);
             } else {
-                menuDoneItem.setTitle(fishton.strDoneMenu);
+                menuDoneItem.setTitle(fishton.getStrDoneMenu());
             }
             menuDoneItem.setIcon(null);
         }
-        if (fishton.isUseAllDoneButton){
+        if (fishton.isUseAllDoneButton()){
             menuAllDoneItem.setVisible(true);
-            if (fishton.drawableAllDoneButton != null) {
-                menuAllDoneItem.setIcon(fishton.drawableAllDoneButton);
-            } else if (fishton.strAllDoneMenu != null) {
-                if (fishton.colorTextMenu != Integer.MAX_VALUE) {
-                    SpannableString spanString = new SpannableString(fishton.strAllDoneMenu);
-                    spanString.setSpan(new ForegroundColorSpan(fishton.colorTextMenu), 0, spanString.length(), 0); //fi
+            if (fishton.getDrawableAllDoneButton() != null) {
+                menuAllDoneItem.setIcon(fishton.getDrawableAllDoneButton());
+            } else if (fishton.getStrAllDoneMenu() != null) {
+                if (fishton.getColorTextMenu() != Integer.MAX_VALUE) {
+                    SpannableString spanString = new SpannableString(fishton.getStrAllDoneMenu());
+                    spanString.setSpan(new ForegroundColorSpan(fishton.getColorTextMenu()), 0, spanString.length(), 0); //fi
                     menuAllDoneItem.setTitle(spanString);
                 } else {
-                    menuAllDoneItem.setTitle(fishton.strAllDoneMenu);
+                    menuAllDoneItem.setTitle(fishton.getStrAllDoneMenu());
                 }
                 menuAllDoneItem.setIcon(null);
             }
-        }else{
+        } else {
             menuAllDoneItem.setVisible(false);
         }
         return true;
@@ -185,36 +198,35 @@ public class PickerActivity extends BaseActivity {
         // as you specify album parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_done) {
-            if (fishton.selectedImages.size() < fishton.minCount) {
-                Snackbar.make(recyclerView, fishton.messageNothingSelected, Snackbar.LENGTH_SHORT).show();
+            if (fishton.getSelectedImages().size() < fishton.getMinCount()) {
+                Snackbar.make(recyclerView, fishton.getMessageNothingSelected(), Snackbar.LENGTH_SHORT).show();
             } else {
                 finishActivity();
             }
             return true;
         } else if (id == R.id.action_all_done){
-            for (Uri pickerImage : fishton.pickerImages) {
-                if (fishton.selectedImages.size() == fishton.maxCount){
+            for (Uri pickerImage : fishton.getPickerImages()) {
+                if (fishton.getSelectedImages().size() == fishton.getMaxCount()){
                     break;
                 }
-                if (!fishton.selectedImages.contains(pickerImage)){
-                    fishton.selectedImages.add(pickerImage);
+                if (!fishton.getSelectedImages().contains(pickerImage)){
+                    fishton.getSelectedImages().add(pickerImage);
                 }
             }
             finishActivity();
-        }
-        else if (id == android.R.id.home)
+        } else if (id == android.R.id.home)
             transImageFinish(position);
         return super.onOptionsItemSelected(item);
     }
 
     public void showToolbarTitle(int total) {
         if (getSupportActionBar() != null) {
-            if (fishton.maxCount == 1 || !fishton.isShowCount)
+            if (fishton.getMaxCount() == 1 || !fishton.isShowCount())
                 getSupportActionBar()
                         .setTitle(album.bucketName);
             else
                 getSupportActionBar()
-                        .setTitle(album.bucketName + " (" + total + "/" + fishton.maxCount + ")");
+                        .setTitle(album.bucketName + " (" + total + "/" + fishton.getMaxCount() + ")");
         }
     }
 
@@ -224,7 +236,7 @@ public class PickerActivity extends BaseActivity {
 
     private void initView() {
         recyclerView = findViewById(R.id.recycler_picker_list);
-        layoutManager = new GridLayoutManager(this, fishton.photoSpanCount, RecyclerView.VERTICAL, false);
+        layoutManager = new GridLayoutManager(this, fishton.getPhotoSpanCount(), RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         initToolBar();
     }
@@ -232,19 +244,19 @@ public class PickerActivity extends BaseActivity {
     private void initToolBar() {
         Toolbar toolbar = findViewById(R.id.toolbar_picker_bar);
         setSupportActionBar(toolbar);
-        toolbar.setBackgroundColor(fishton.colorActionBar);
-        toolbar.setTitleTextColor(fishton.colorActionBarTitle);
+        toolbar.setBackgroundColor(fishton.getColorActionBar());
+        toolbar.setTitleTextColor(fishton.getColorActionBarTitle());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            uiUtil.setStatusBarColor(this, fishton.colorStatusBar);
+            UiUtil.setStatusBarColor(this, fishton.getColorStatusBar());
         }
         ActionBar bar = getSupportActionBar();
         if (bar != null) {
             bar.setDisplayHomeAsUpEnabled(true);
-            if (fishton.drawableHomeAsUpIndicator != null)
-                getSupportActionBar().setHomeAsUpIndicator(fishton.drawableHomeAsUpIndicator);
+            if (fishton.getDrawableHomeAsUpIndicator() != null)
+                getSupportActionBar().setHomeAsUpIndicator(fishton.getDrawableHomeAsUpIndicator());
         }
 
-        if (fishton.isStatusBarLight
+        if (fishton.isStatusBarLight()
                 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             toolbar.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
@@ -253,7 +265,7 @@ public class PickerActivity extends BaseActivity {
 
 
     public void setAdapter(Uri[] result) {
-        fishton.pickerImages = result;
+        fishton.setPickerImages(result);
         if (adapter == null) {
             adapter = new PickerGridAdapter(pickerController,
                     pickerController.getPathDir(album.bucketId));
@@ -265,7 +277,7 @@ public class PickerActivity extends BaseActivity {
             });
         }
         recyclerView.setAdapter(adapter);
-        showToolbarTitle(fishton.selectedImages.size());
+        showToolbarTitle(fishton.getSelectedImages().size());
     }
 
     private void refreshThumb() {
@@ -279,7 +291,7 @@ public class PickerActivity extends BaseActivity {
                 ImageView imgThumbImage = item.findViewById(R.id.img_thumb_image);
                 Uri image = (Uri) item.getTag();
                 if (image != null) {
-                    int index = fishton.selectedImages.indexOf(image);
+                    int index = fishton.getSelectedImages().indexOf(image);
                     if (index != -1) {
                         adapter.updateRadioButton(imgThumbImage,
                                 btnThumbCount,
@@ -290,7 +302,7 @@ public class PickerActivity extends BaseActivity {
                                 btnThumbCount,
                                 "",
                                 false);
-                        showToolbarTitle(fishton.selectedImages.size());
+                        showToolbarTitle(fishton.getSelectedImages().size());
                     }
                 }
 
@@ -310,8 +322,8 @@ public class PickerActivity extends BaseActivity {
     public void finishActivity() {
         Intent i = new Intent();
         setResult(RESULT_OK, i);
-        if (fishton.isStartInAllView)
-            i.putParcelableArrayListExtra(Define.INTENT_PATH, fishton.selectedImages);
+        if (fishton.isStartInAllView())
+            i.putParcelableArrayListExtra(Define.INTENT_PATH, fishton.getSelectedImages());
         finish();
     }
 

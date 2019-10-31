@@ -4,6 +4,7 @@ public class Define {
 
     public static final int ALBUM_REQUEST_CODE = 27;
     public final int PERMISSION_STORAGE = 28;
+    public final int PERMISSION_CAMERA = 29;
     public final int TRANS_IMAGES_RESULT_CODE = 29;
     public final int TAKE_A_PICK_REQUEST_CODE = 128;
     public final int ENTER_ALBUM_REQUEST_CODE = 129;
