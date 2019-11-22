@@ -1,8 +1,6 @@
 package com.sangcomz.fishbundemo
 
-import android.content.Intent
 import android.os.Bundle
-import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_withfragment.*
 
@@ -17,12 +15,4 @@ class WithFragmentActivity : AppCompatActivity() {
         subFragment = SubFragment.newInstance()
         supportFragmentManager.beginTransaction().add(area_container.id, subFragment).commit()
     }
-
-    /**
-     * Send onActivityResult method to SubFragment
-     */
-    override fun onActivityResult(requestCode: Int, resultCode: Int, @Nullable data: Intent?) {
-        subFragment.onActivityResult(requestCode, resultCode, data)
-    }
-
 }
