@@ -67,6 +67,7 @@ class WithActivityActivity : AppCompatActivity() {
                     FishBun.with(this@WithActivityActivity)
                         .setImageAdapter(GlideAdapter())
                         .setIsUseAllDoneButton(true)
+                        .setMaxCount(1)
                         .setMenuDoneText("Choose")
                         .setMenuAllDoneText("Choose All")
                         .startAlbum()

@@ -4,19 +4,17 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-
-import com.google.android.material.snackbar.Snackbar;
-
-import androidx.core.content.ContextCompat;
-import androidx.core.view.ViewCompat;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.snackbar.Snackbar;
 import com.sangcomz.fishbun.Fishton;
 import com.sangcomz.fishbun.R;
 import com.sangcomz.fishbun.define.Define;
@@ -117,7 +115,6 @@ public class PickerGridAdapter
                         }
                     } else
                         onCheckStateChange(vh.item, image);
-
                 }
             });
         }
@@ -136,7 +133,8 @@ public class PickerGridAdapter
         ArrayList<Uri> pickedImages = fishton.getSelectedImages();
         boolean isContained = pickedImages.contains(image);
         if (fishton.getMaxCount() == pickedImages.size()
-                && !isContained) {
+                && !isContained
+                && fishton.getMaxCount() != 1) {
             Snackbar.make(v, fishton.getMessageLimitReached(), Snackbar.LENGTH_SHORT).show();
             return;
         }
@@ -147,6 +145,10 @@ public class PickerGridAdapter
             btnThumbCount.unselect();
             animScale(imgThumbImage, false, true);
         } else {
+            if (fishton.getMaxCount() == 1) {
+                pickedImages.clear();
+                actionListener.onDeselect();
+            }
             animScale(imgThumbImage, true, true);
             pickedImages.add(image);
             if (fishton.isAutomaticClose()
@@ -167,15 +169,16 @@ public class PickerGridAdapter
 
     public void updateRadioButton(ImageView imageView, RadioWithTextButton v, String text, boolean isSelected) {
         if (isSelected) {
-            animScale(imageView, isSelected, false);
+            animScale(imageView, true, false);
             if (fishton.getMaxCount() == 1)
                 v.setDrawable(ContextCompat.getDrawable(v.getContext(), R.drawable.ic_done_white_24dp));
             else
                 v.setText(text);
         } else {
+            if (fishton.getMaxCount() == 1)
+                animScale(imageView, false, true);
             v.unselect();
         }
-
     }
 
 
