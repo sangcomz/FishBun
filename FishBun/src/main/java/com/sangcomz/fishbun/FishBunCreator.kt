@@ -12,7 +12,8 @@ import java.util.*
 /**
  * Created by sangcomz on 17/05/2017.
  */
-class FishBunCreator(private val fishBun: FishBun, private val fishton: Fishton) : BaseProperty, CustomizationProperty {
+class FishBunCreator(private val fishBun: FishBun, private val fishton: Fishton) : BaseProperty,
+    CustomizationProperty {
     private var requestCode = 27
 
     override fun setSelectedImages(selectedImages: ArrayList<Uri>): FishBunCreator = this.apply {
@@ -48,12 +49,17 @@ class FishBunCreator(private val fishBun: FishBun, private val fishton: Fishton)
         fishton.colorActionBar = actionbarColor
     }
 
-    override fun setActionBarColor(actionbarColor: Int, statusBarColor: Int): FishBunCreator = this.apply {
-        fishton.colorActionBar = actionbarColor
-        fishton.colorStatusBar = statusBarColor
-    }
+    override fun setActionBarColor(actionbarColor: Int, statusBarColor: Int): FishBunCreator =
+        this.apply {
+            fishton.colorActionBar = actionbarColor
+            fishton.colorStatusBar = statusBarColor
+        }
 
-    override fun setActionBarColor(actionbarColor: Int, statusBarColor: Int, isStatusBarLight: Boolean): FishBunCreator = this.apply {
+    override fun setActionBarColor(
+        actionbarColor: Int,
+        statusBarColor: Int,
+        isStatusBarLight: Boolean
+    ): FishBunCreator = this.apply {
         fishton.colorActionBar = actionbarColor
         fishton.colorStatusBar = statusBarColor
         fishton.isStatusBarLight = isStatusBarLight
@@ -79,18 +85,23 @@ class FishBunCreator(private val fishBun: FishBun, private val fishton: Fishton)
         fishton.isButton = isButton
     }
 
-    override fun setReachLimitAutomaticClose(isAutomaticClose: Boolean): FishBunCreator = this.apply {
-        fishton.isAutomaticClose = isAutomaticClose
-    }
+    override fun setReachLimitAutomaticClose(isAutomaticClose: Boolean): FishBunCreator =
+        this.apply {
+            fishton.isAutomaticClose = isAutomaticClose
+        }
 
-    override fun setAlbumSpanCount(portraitSpanCount: Int, landscapeSpanCount: Int): FishBunCreator = this.apply {
+    override fun setAlbumSpanCount(
+        portraitSpanCount: Int,
+        landscapeSpanCount: Int
+    ): FishBunCreator = this.apply {
         fishton.albumPortraitSpanCount = portraitSpanCount
         fishton.albumLandscapeSpanCount = landscapeSpanCount
     }
 
-    override fun setAlbumSpanCountOnlyLandscape(landscapeSpanCount: Int): FishBunCreator = this.apply {
-        fishton.albumLandscapeSpanCount = landscapeSpanCount
-    }
+    override fun setAlbumSpanCountOnlyLandscape(landscapeSpanCount: Int): FishBunCreator =
+        this.apply {
+            fishton.albumLandscapeSpanCount = landscapeSpanCount
+        }
 
     override fun setAlbumSpanCountOnlPortrait(portraitSpanCount: Int): FishBunCreator = this.apply {
         fishton.albumPortraitSpanCount = portraitSpanCount
@@ -152,23 +163,33 @@ class FishBunCreator(private val fishBun: FishBun, private val fishton: Fishton)
         fishton.isStartInAllView = isStartInAllView
     }
 
-    override fun startAlbum() =
-        fishBun.context?.let { context ->
-            with(fishton) {
-                setDefaultMessage(context)
-                setMenuTextColor()
-                setDefaultDimen(context)
-            }
-            val intent: Intent =
-                if (fishton.isStartInAllView) {
-                    Intent(context, PickerActivity::class.java).apply {
-                        putExtra(Define.BUNDLE_NAME.ALBUM.name, Album(0, fishton.titleAlbumAllView, null, 0))
-                        putExtra(Define.BUNDLE_NAME.POSITION.name, 0)
-                    }
-                } else {
-                    Intent(context, AlbumActivity::class.java)
+
+    override fun startAlbum() {
+        val fishBunContext = fishBun.fishBunContext
+        val context = fishBunContext.getContext()
+
+        if (fishton.imageAdapter == null) throw NullPointerException("ImageAdapter is Null")
+
+        with(fishton) {
+            setDefaultMessage(context)
+            setMenuTextColor()
+            setDefaultDimen(context)
+        }
+
+        val intent: Intent =
+            if (fishton.isStartInAllView) {
+                Intent(context, PickerActivity::class.java).apply {
+                    putExtra(
+                        Define.BUNDLE_NAME.ALBUM.name,
+                        Album(0, fishton.titleAlbumAllView, null, 0)
+                    )
+                    putExtra(Define.BUNDLE_NAME.POSITION.name, 0)
                 }
-            context.startActivityForResult(intent, requestCode)
-        } ?: throw NullPointerException("Activity or Fragment Null")
+            } else {
+                Intent(context, AlbumActivity::class.java)
+            }
+
+        fishBunContext.startActivityForResult(intent, requestCode)
+    }
 }
 

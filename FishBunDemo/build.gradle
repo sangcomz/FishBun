@@ -62,8 +62,7 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$rootProject.androidx_version"
     implementation "androidx.recyclerview:recyclerview:$rootProject.recyclerview_version"
 
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.2'
-    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.2'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0-beta-4'
 
     implementation "androidx.legacy:legacy-support-v4:1.0.0"
     implementation "com.squareup.picasso:picasso:$rootProject.picasso_version"

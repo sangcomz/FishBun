@@ -99,12 +99,9 @@ if (project.rootProject.file('local.properties').isFile()) {
         tagName = version
         targetCommitish = 'master'
         body = """## Release Note
-* added some guide for reporting issue[#176](https://github.com/sangcomz/FishBun/pull/176)
-* Java to Kotlin[#174](https://github.com/sangcomz/FishBun/pull/174), [#175](https://github.com/sangcomz/FishBun/pull/175), [#179](https://github.com/sangcomz/FishBun/pull/179), [#185](https://github.com/sangcomz/FishBun/pull/185), [#187](https://github.com/sangcomz/FishBun/pull/187)
-* fix README.md for App used[#180](https://github.com/sangcomz/FishBun/pull/180)
-* Runtime permission for camera [#116](https://github.com/sangcomz/FishBun/issue/116) 
-* Implement Instrument test code [#186](https://github.com/sangcomz/FishBun/pull/186) 
-* Fix bug, when Image displays in wrong orientation [#184](https://github.com/sangcomz/FishBun/pull/184) 
+* Fix to respond to onActivityResult in fragment
+* Update LeakCanary
+* Fix glide requestOptions
 """
         name = version
     }
