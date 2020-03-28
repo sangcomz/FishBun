@@ -32,6 +32,7 @@ import com.sangcomz.fishbun.util.UiUtil;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import kotlin.Unit;
@@ -39,7 +40,7 @@ import kotlin.jvm.functions.Function0;
 
 public class AlbumActivity extends BaseActivity {
     private AlbumController albumController;
-    private ArrayList<Album> albumList = new ArrayList<>();
+    private List<Album> albumList = Collections.emptyList();
 
     private RecyclerView recyclerAlbumList;
     private RelativeLayout relAlbumEmpty;
@@ -76,7 +77,7 @@ public class AlbumActivity extends BaseActivity {
         initView();
         initController();
         if (albumController.checkPermission())
-            albumController.getAlbumList(fishton.getTitleAlbumAllView(), fishton.isExceptGif());
+            albumController.getAlbumList(fishton.getTitleAlbumAllView(), fishton.getExceptMimeTypeList());
     }
 
     @Override
@@ -163,7 +164,7 @@ public class AlbumActivity extends BaseActivity {
         changeToolbarTitle();
     }
 
-    protected void setAlbumList(ArrayList<Album> albumList) {
+    protected void setAlbumList(List<Album> albumList) {
         this.albumList = albumList;
         if (albumList.size() > 0) {
             relAlbumEmpty.setVisibility(View.GONE);
@@ -178,7 +179,7 @@ public class AlbumActivity extends BaseActivity {
     private void refreshList(int position, ArrayList<Uri> imagePath) {
         if (imagePath.size() > 0) {
             if (position == 0) {
-                albumController.getAlbumList(fishton.getTitleAlbumAllView(), fishton.isExceptGif());
+                albumController.getAlbumList(fishton.getTitleAlbumAllView(), fishton.getExceptMimeTypeList());
             } else {
                 albumList.get(0).counter += imagePath.size();
                 albumList.get(position).counter += imagePath.size();
@@ -264,7 +265,7 @@ public class AlbumActivity extends BaseActivity {
                 new SingleMediaScanner(this, new File(albumController.getSavePath()), new Function0<Unit>() {
                     @Override
                     public Unit invoke() {
-                        albumController.getAlbumList(fishton.getTitleAlbumAllView(), fishton.isExceptGif());
+                        albumController.getAlbumList(fishton.getTitleAlbumAllView(), fishton.getExceptMimeTypeList());
                         return Unit.INSTANCE;
                     }
                 });
@@ -285,7 +286,7 @@ public class AlbumActivity extends BaseActivity {
                 if (grantResults.length > 0) {
                     if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                         // permission was granted, yay!
-                        albumController.getAlbumList(fishton.getTitleAlbumAllView(), fishton.isExceptGif());
+                        albumController.getAlbumList(fishton.getTitleAlbumAllView(), fishton.getExceptMimeTypeList());
                     } else {
                         new PermissionCheck(this).showPermissionDialog();
                         finish();

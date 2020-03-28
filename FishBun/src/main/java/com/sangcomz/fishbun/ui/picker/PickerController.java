@@ -8,16 +8,16 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.sangcomz.fishbun.R;
+import com.sangcomz.fishbun.MimeType;
+import com.sangcomz.fishbun.ext.MimeTypeExt;
 import com.sangcomz.fishbun.permission.PermissionCheck;
 import com.sangcomz.fishbun.util.CameraUtil;
-import com.sangcomz.fishbun.util.RegexUtil;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by sangc on 2015-11-05.
@@ -88,27 +88,27 @@ public class PickerController {
     }
 
     void displayImage(Long bucketId,
-                      Boolean exceptGif) {
-        new DisplayImage(bucketId, exceptGif).execute();
+                      List<MimeType> exceptMimeType) {
+        new DisplayImage(bucketId, exceptMimeType).execute();
     }
 
-    private class DisplayImage extends AsyncTask<Void, Void, Uri[]> {
+    private class DisplayImage extends AsyncTask<Void, Void, List<Uri>> {
         private Long bucketId;
-        Boolean exceptGif;
+        List<MimeType> exceptMimeType;
 
         DisplayImage(Long bucketId,
-                     Boolean exceptGif) {
+                     List<MimeType> exceptMimeType) {
             this.bucketId = bucketId;
-            this.exceptGif = exceptGif;
+            this.exceptMimeType = exceptMimeType;
         }
 
         @Override
-        protected Uri[] doInBackground(Void... params) {
-            return getAllMediaThumbnailsPath(bucketId, exceptGif);
+        protected List<Uri> doInBackground(Void... params) {
+            return getAllMediaThumbnailsPath(bucketId, exceptMimeType);
         }
 
         @Override
-        protected void onPostExecute(Uri[] result) {
+        protected void onPostExecute(List<Uri> result) {
             super.onPostExecute(result);
             pickerActivity.setAdapter(result);
         }
@@ -116,8 +116,8 @@ public class PickerController {
 
 
     @NonNull
-    private Uri[] getAllMediaThumbnailsPath(long id,
-                                            Boolean exceptGif) {
+    private List<Uri> getAllMediaThumbnailsPath(long id,
+                                                List<MimeType> exceptMimeTypeList) {
         String selection = MediaStore.Images.Media.BUCKET_ID + " = ?";
         String bucketId = String.valueOf(id);
         String sort = MediaStore.Images.Media._ID + " DESC";
@@ -130,20 +130,20 @@ public class PickerController {
         } else {
             c = resolver.query(images, null, null, null, sort);
         }
-        Uri[] imageUris = new Uri[c == null ? 0 : c.getCount()];
+        ArrayList<Uri> imageUris = new ArrayList<>();
         if (c != null) {
             try {
                 if (c.moveToFirst()) {
                     setPathDir(c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA)),
                             c.getString(c.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME)));
-                    int position = -1;
                     do {
-                        if (exceptGif &&
-                                RegexUtil.checkGif(c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA))))
-                            continue;
+                        String mimeType = c.getString(c.getColumnIndex("mime_type"));
+                        if (isExceptMemeType(exceptMimeTypeList, mimeType)) continue;
+
                         int imgId = c.getInt(c.getColumnIndex(MediaStore.MediaColumns._ID));
                         Uri path = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "" + imgId);
-                        imageUris[++position] = path;
+                        imageUris.add(path);
+
                     } while (c.moveToNext());
                 }
                 c.close();
@@ -154,11 +154,11 @@ public class PickerController {
         return imageUris;
     }
 
-    private String setPathDir(String path, String fileName) {
-        return pathDir = path.replace("/" + fileName, "");
+    private void setPathDir(String path, String fileName) {
+        pathDir = path.replace("/" + fileName, "");
     }
 
-    public String getPathDir(Long bucketId) {
+    String getPathDir(Long bucketId) {
         if (pathDir.equals("") || bucketId == 0)
             pathDir = Environment.getExternalStoragePublicDirectory(
                     Environment.DIRECTORY_DCIM + "/Camera").getAbsolutePath();
@@ -167,5 +167,13 @@ public class PickerController {
 
     public void finishActivity() {
         pickerActivity.finishActivity();
+    }
+
+    private boolean isExceptMemeType(List<MimeType> mimeTypes, String mimeType){
+        for (MimeType type : mimeTypes) {
+            if (MimeTypeExt.equalsMimeType(type, mimeType))
+                return true;
+        }
+        return false;
     }
 }

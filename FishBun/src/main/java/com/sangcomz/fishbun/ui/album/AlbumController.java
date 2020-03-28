@@ -9,13 +9,15 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 
+import com.sangcomz.fishbun.MimeType;
 import com.sangcomz.fishbun.bean.Album;
+import com.sangcomz.fishbun.ext.MimeTypeExt;
 import com.sangcomz.fishbun.permission.PermissionCheck;
 import com.sangcomz.fishbun.util.CameraUtil;
-import com.sangcomz.fishbun.util.RegexUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 class AlbumController {
 
@@ -51,30 +53,30 @@ class AlbumController {
     }
 
     void getAlbumList(String allViewTitle,
-                      Boolean exceptGif) {
-        new LoadAlbumList(allViewTitle, exceptGif).execute();
+                      List<MimeType> exceptMimeTypeList) {
+        new LoadAlbumList(allViewTitle, exceptMimeTypeList).execute();
     }
 
-    private class LoadAlbumList extends AsyncTask<Void, Void, ArrayList<Album>> {
+    private class LoadAlbumList extends AsyncTask<Void, Void, List<Album>> {
 
         String allViewTitle;
-        Boolean exceptGif;
+        List<MimeType> exceptMimeTypeList;
 
         LoadAlbumList(String allViewTitle,
-                      Boolean exceptGif) {
+                      List<MimeType> exceptMimeTypeList) {
             this.allViewTitle = allViewTitle;
-            this.exceptGif = exceptGif;
+            this.exceptMimeTypeList = exceptMimeTypeList;
 
         }
 
         @Override
-        protected ArrayList<Album> doInBackground(Void... params) {
+        protected List<Album> doInBackground(Void... params) {
             HashMap<Long, Album> albumHashMap = new HashMap<>();
             final String orderBy = MediaStore.Images.Media._ID + " DESC";
             String[] projection = new String[]{
-                    MediaStore.Images.Media.DATA,
                     MediaStore.Images.Media._ID,
                     MediaStore.Images.Media.BUCKET_DISPLAY_NAME,
+                    MediaStore.Images.Media.MIME_TYPE,
                     MediaStore.Images.Media.BUCKET_ID};
 
             Cursor c = resolver.query(
@@ -83,8 +85,7 @@ class AlbumController {
 
             int totalCounter = 0;
             if (c != null) {
-                int bucketData = c
-                        .getColumnIndex(MediaStore.Images.Media.DATA);
+                int bucketMimeType = c.getColumnIndex(MediaStore.Images.Media.MIME_TYPE);
                 int bucketColumn = c
                         .getColumnIndex(MediaStore.Images.Media.BUCKET_DISPLAY_NAME);
                 int bucketColumnId = c
@@ -93,7 +94,9 @@ class AlbumController {
                 albumHashMap.put((long) 0, new Album(0, allViewTitle, null, 0));
 
                 while (c.moveToNext()) {
-                    if (exceptGif && RegexUtil.checkGif(c.getString(bucketData))) continue;
+                    if (isExceptMemeType(exceptMimeTypeList, c.getString(bucketMimeType)))
+                        continue;
+
                     totalCounter++;
                     long bucketId = c.getInt(bucketColumnId);
                     Album album = albumHashMap.get(bucketId);
@@ -131,7 +134,7 @@ class AlbumController {
         }
 
         @Override
-        protected void onPostExecute(ArrayList<Album> albumList) {
+        protected void onPostExecute(List<Album> albumList) {
             super.onPostExecute(albumList);
             albumActivity.setAlbumList(albumList);
         }
@@ -149,5 +152,13 @@ class AlbumController {
     String getPathDir() {
         return Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_DCIM + "/Camera").getAbsolutePath();
+    }
+
+    private boolean isExceptMemeType(List<MimeType> mimeTypes, String mimeType){
+        for (MimeType type : mimeTypes) {
+            if (MimeTypeExt.equalsMimeType(type, mimeType))
+                return true;
+        }
+        return false;
     }
 }

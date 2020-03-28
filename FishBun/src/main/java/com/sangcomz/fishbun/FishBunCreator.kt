@@ -8,6 +8,7 @@ import com.sangcomz.fishbun.define.Define
 import com.sangcomz.fishbun.ui.album.AlbumActivity
 import com.sangcomz.fishbun.ui.picker.PickerActivity
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Created by sangcomz on 17/05/2017.
@@ -131,8 +132,13 @@ class FishBunCreator(private val fishBun: FishBun, private val fishton: Fishton)
         fishton.isUseAllDoneButton = isUse
     }
 
+    @Deprecated("instead setMaxCount(count)", ReplaceWith("exceptMimeType(mimeType)"))
     override fun exceptGif(isExcept: Boolean): FishBunCreator = this.apply {
-        fishton.isExceptGif = isExcept
+        fishton.exceptMimeTypeList = arrayListOf(MimeType.GIF)
+    }
+
+    override fun exceptMimeType(exceptMimeTypeList: List<MimeType>) = this.apply {
+        fishton.exceptMimeTypeList = exceptMimeTypeList
     }
 
     override fun setMenuDoneText(text: String?): FishBunCreator = this.apply {
