@@ -53,20 +53,23 @@ class AlbumController {
     }
 
     void getAlbumList(String allViewTitle,
-                      List<MimeType> exceptMimeTypeList) {
-        new LoadAlbumList(allViewTitle, exceptMimeTypeList).execute();
+                      List<MimeType> exceptMimeTypeList,
+                      List<String> specifyFolderList) {
+        new LoadAlbumList(allViewTitle, exceptMimeTypeList, specifyFolderList).execute();
     }
 
     private class LoadAlbumList extends AsyncTask<Void, Void, List<Album>> {
 
         String allViewTitle;
         List<MimeType> exceptMimeTypeList;
+        List<String> specifyFolderList;
 
         LoadAlbumList(String allViewTitle,
-                      List<MimeType> exceptMimeTypeList) {
+                      List<MimeType> exceptMimeTypeList,
+                      List<String> specifyFolderList) {
             this.allViewTitle = allViewTitle;
             this.exceptMimeTypeList = exceptMimeTypeList;
-
+            this.specifyFolderList = specifyFolderList;
         }
 
         @Override
@@ -91,10 +94,16 @@ class AlbumController {
                 int bucketColumnId = c
                         .getColumnIndex(MediaStore.Images.Media.BUCKET_ID);
 
-                albumHashMap.put((long) 0, new Album(0, allViewTitle, null, 0));
+                if (!isNotContainsSpecifyFolderList(specifyFolderList, allViewTitle)) {
+                    albumHashMap.put((long) 0, new Album(0, allViewTitle, null, 0));
+                }
 
                 while (c.moveToNext()) {
-                    if (isExceptMemeType(exceptMimeTypeList, c.getString(bucketMimeType)))
+                    String mimeType = c.getString(bucketMimeType);
+                    String folderName = c.getString(bucketColumn);
+
+                    if (isExceptMemeType(exceptMimeTypeList, mimeType)
+                            || isNotContainsSpecifyFolderList(specifyFolderList, folderName))
                         continue;
 
                     totalCounter++;
@@ -103,12 +112,10 @@ class AlbumController {
                     if (album == null) {
                         int imgId = c.getInt(c.getColumnIndex(MediaStore.MediaColumns._ID));
                         Uri path = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "" + imgId);
-                        albumHashMap.put(bucketId,
-                                new Album(bucketId,
-                                        c.getString(bucketColumn),
-                                        path.toString(), 1));
-                        if (albumHashMap.get((long) 0).thumbnailPath == null)
-                            albumHashMap.get((long) 0).thumbnailPath = path.toString();
+                        albumHashMap.put(bucketId, new Album(bucketId, folderName, path.toString(), 1));
+                        if (albumHashMap.get(0L) != null
+                                && albumHashMap.get(0L).thumbnailPath == null)
+                            albumHashMap.get(0L).thumbnailPath = path.toString();
                     } else {
                         album.counter++;
                     }
@@ -154,11 +161,16 @@ class AlbumController {
                 Environment.DIRECTORY_DCIM + "/Camera").getAbsolutePath();
     }
 
-    private boolean isExceptMemeType(List<MimeType> mimeTypes, String mimeType){
+    private boolean isExceptMemeType(List<MimeType> mimeTypes, String mimeType) {
         for (MimeType type : mimeTypes) {
             if (MimeTypeExt.equalsMimeType(type, mimeType))
                 return true;
         }
         return false;
+    }
+
+    private boolean isNotContainsSpecifyFolderList(List<String> specifyFolderList, String displayBundleName) {
+        if (specifyFolderList.isEmpty()) return false;
+        return !specifyFolderList.contains(displayBundleName);
     }
 }

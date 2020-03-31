@@ -88,23 +88,26 @@ public class PickerController {
     }
 
     void displayImage(Long bucketId,
-                      List<MimeType> exceptMimeType) {
-        new DisplayImage(bucketId, exceptMimeType).execute();
+                      List<MimeType> exceptMimeType,
+                      List<String> specifyFolderList) {
+        new DisplayImage(bucketId, exceptMimeType, specifyFolderList).execute();
     }
 
     private class DisplayImage extends AsyncTask<Void, Void, List<Uri>> {
         private Long bucketId;
         List<MimeType> exceptMimeType;
+        List<String> specifyFolderList;
 
         DisplayImage(Long bucketId,
-                     List<MimeType> exceptMimeType) {
+                     List<MimeType> exceptMimeType, List<String> specifyFolderList) {
             this.bucketId = bucketId;
             this.exceptMimeType = exceptMimeType;
+            this.specifyFolderList = specifyFolderList;
         }
 
         @Override
         protected List<Uri> doInBackground(Void... params) {
-            return getAllMediaThumbnailsPath(bucketId, exceptMimeType);
+            return getAllMediaThumbnailsPath(bucketId, exceptMimeType, specifyFolderList);
         }
 
         @Override
@@ -117,7 +120,8 @@ public class PickerController {
 
     @NonNull
     private List<Uri> getAllMediaThumbnailsPath(long id,
-                                                List<MimeType> exceptMimeTypeList) {
+                                                List<MimeType> exceptMimeTypeList,
+                                                List<String> specifyFolderList) {
         String selection = MediaStore.Images.Media.BUCKET_ID + " = ?";
         String bucketId = String.valueOf(id);
         String sort = MediaStore.Images.Media._ID + " DESC";
@@ -137,8 +141,10 @@ public class PickerController {
                     setPathDir(c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA)),
                             c.getString(c.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME)));
                     do {
-                        String mimeType = c.getString(c.getColumnIndex("mime_type"));
-                        if (isExceptMemeType(exceptMimeTypeList, mimeType)) continue;
+                        String mimeType = c.getString(c.getColumnIndex(MediaStore.Images.Media.MIME_TYPE));
+                        String folderName = c.getString(c.getColumnIndex(MediaStore.Images.Media.BUCKET_DISPLAY_NAME));
+                        if (isExceptMemeType(exceptMimeTypeList, mimeType)
+                                || isNotContainsSpecifyFolderList(specifyFolderList, folderName)) continue;
 
                         int imgId = c.getInt(c.getColumnIndex(MediaStore.MediaColumns._ID));
                         Uri path = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "" + imgId);
@@ -175,5 +181,10 @@ public class PickerController {
                 return true;
         }
         return false;
+    }
+
+    private boolean isNotContainsSpecifyFolderList(List<String> specifyFolderList, String displayBundleName) {
+        if (specifyFolderList.isEmpty()) return false;
+        return !specifyFolderList.contains(displayBundleName);
     }
 }

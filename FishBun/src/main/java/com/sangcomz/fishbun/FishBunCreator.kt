@@ -169,10 +169,15 @@ class FishBunCreator(private val fishBun: FishBun, private val fishton: Fishton)
         fishton.isStartInAllView = isStartInAllView
     }
 
+    override fun setSpecifyFolderList(specifyFolderList: List<String>) = this.apply {
+        fishton.specifyFolderList = specifyFolderList
+    }
 
     override fun startAlbum() {
         val fishBunContext = fishBun.fishBunContext
         val context = fishBunContext.getContext()
+
+        exceptionHandling()
 
         if (fishton.imageAdapter == null) throw NullPointerException("ImageAdapter is Null")
 
@@ -196,6 +201,13 @@ class FishBunCreator(private val fishBun: FishBun, private val fishton: Fishton)
             }
 
         fishBunContext.startActivityForResult(intent, requestCode)
+    }
+
+    private fun exceptionHandling() {
+        //TODO support camera
+        if (fishton.isCamera) {
+            fishton.isCamera = fishton.specifyFolderList.isEmpty()
+        }
     }
 }
 

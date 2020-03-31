@@ -22,6 +22,7 @@ class Fishton {
     var selectedImages = ArrayList<Uri>()
 
     //CustomizationParams
+    var specifyFolderList = emptyList<String>()
     var photoSpanCount: Int = 0
     var albumPortraitSpanCount: Int = 0
     var albumLandscapeSpanCount: Int = 0
@@ -78,6 +79,7 @@ class Fishton {
         selectedImages = ArrayList()
 
         //CustomizationParams
+        specifyFolderList = emptyList()
         photoSpanCount = 3
         albumPortraitSpanCount = 1
         albumLandscapeSpanCount = 2

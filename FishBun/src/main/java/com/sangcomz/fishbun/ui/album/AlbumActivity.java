@@ -77,7 +77,9 @@ public class AlbumActivity extends BaseActivity {
         initView();
         initController();
         if (albumController.checkPermission())
-            albumController.getAlbumList(fishton.getTitleAlbumAllView(), fishton.getExceptMimeTypeList());
+            albumController.getAlbumList(fishton.getTitleAlbumAllView(),
+                    fishton.getExceptMimeTypeList(),
+                    fishton.getSpecifyFolderList());
     }
 
     @Override
@@ -179,7 +181,7 @@ public class AlbumActivity extends BaseActivity {
     private void refreshList(int position, ArrayList<Uri> imagePath) {
         if (imagePath.size() > 0) {
             if (position == 0) {
-                albumController.getAlbumList(fishton.getTitleAlbumAllView(), fishton.getExceptMimeTypeList());
+                albumController.getAlbumList(fishton.getTitleAlbumAllView(), fishton.getExceptMimeTypeList(), fishton.getSpecifyFolderList());
             } else {
                 albumList.get(0).counter += imagePath.size();
                 albumList.get(position).counter += imagePath.size();
@@ -265,7 +267,9 @@ public class AlbumActivity extends BaseActivity {
                 new SingleMediaScanner(this, new File(albumController.getSavePath()), new Function0<Unit>() {
                     @Override
                     public Unit invoke() {
-                        albumController.getAlbumList(fishton.getTitleAlbumAllView(), fishton.getExceptMimeTypeList());
+                        albumController.getAlbumList(fishton.getTitleAlbumAllView(),
+                                fishton.getExceptMimeTypeList(),
+                                fishton.getSpecifyFolderList());
                         return Unit.INSTANCE;
                     }
                 });
@@ -286,7 +290,9 @@ public class AlbumActivity extends BaseActivity {
                 if (grantResults.length > 0) {
                     if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                         // permission was granted, yay!
-                        albumController.getAlbumList(fishton.getTitleAlbumAllView(), fishton.getExceptMimeTypeList());
+                        albumController.getAlbumList(fishton.getTitleAlbumAllView(),
+                                fishton.getExceptMimeTypeList(),
+                                fishton.getSpecifyFolderList());
                     } else {
                         new PermissionCheck(this).showPermissionDialog();
                         finish();
