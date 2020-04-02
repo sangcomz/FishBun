@@ -209,15 +209,11 @@ public class PickerGridAdapter
 
     @Override
     public int getItemCount() {
-        int count;
-        if (fishton.getPickerImages() == null) count = 0;
-        else count = fishton.getPickerImages().size();
+        int count = fishton.getPickerImages().size();
 
-        if (fishton.isCamera())
-            return count + 1;
+        if (fishton.isCamera()) return count + 1;
 
-        if (fishton.getPickerImages() == null) return 0;
-        else return count;
+        return count;
     }
 
     @Override
@@ -230,10 +226,7 @@ public class PickerGridAdapter
 
 
     public void addImage(Uri path) {
-        ArrayList<Uri> al = new ArrayList<>();
-        if (fishton.getPickerImages() != null){
-            al.addAll(fishton.getPickerImages());
-        }
+        ArrayList<Uri> al = new ArrayList<>(fishton.getPickerImages());
         al.add(0, path);
         fishton.setPickerImages(al);
 

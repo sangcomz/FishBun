@@ -20,10 +20,12 @@ import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.util.RadioWithTextButton;
 import com.sangcomz.fishbun.util.UiUtil;
 
-public class DetailActivity extends BaseActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
+public class DetailActivity extends BaseActivity
+        implements DetailView, View.OnClickListener, ViewPager.OnPageChangeListener {
+
     private static final String TAG = "DetailActivity";
 
-    private DetailController controller;
+    private DetailPresenter presenter;
     private int initPosition;
     private RadioWithTextButton btnDetailCount;
     private ViewPager vpDetailPager;
@@ -35,28 +37,24 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
         }
-        setContentView(R.layout.activity_detail_actiivy);
-        initController();
+        setContentView(R.layout.activity_detail_activity);
+        initPresenter();
         initValue();
         initView();
-        initAdapter();
-        initToolBar();
+        initPager();
     }
 
-    private void initController() {
-        controller = new DetailController(this);
+    private void initPresenter() {
+        presenter = new DetailPresenter(this);
     }
 
     private void initView() {
-        btnDetailCount = findViewById(R.id.btn_detail_count);
         vpDetailPager = findViewById(R.id.vp_detail_pager);
+        btnDetailCount = findViewById(R.id.btn_detail_count);
         btnDetailBack = findViewById(R.id.btn_detail_back);
-        btnDetailCount.unselect();
-        btnDetailCount.setCircleColor(fishton.getColorActionBar());
-        btnDetailCount.setTextColor(fishton.getColorActionBarTitle());
-        btnDetailCount.setStrokeColor(fishton.getColorSelectCircleStroke());
-        btnDetailCount.setOnClickListener(this);
-        btnDetailBack.setOnClickListener(this);
+
+        initCountButton();
+        initBackButton();
         initToolBar();
     }
 
@@ -73,22 +71,32 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
                 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             vpDetailPager.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
-
     }
 
-    private void initAdapter() {
-        if (fishton.getPickerImages() == null) {
+    private void initCountButton(){
+        btnDetailCount.unselect();
+        btnDetailCount.setCircleColor(fishton.getColorActionBar());
+        btnDetailCount.setTextColor(fishton.getColorActionBarTitle());
+        btnDetailCount.setStrokeColor(fishton.getColorSelectCircleStroke());
+        btnDetailCount.setOnClickListener(this);
+    }
+
+    private void initBackButton(){
+        btnDetailBack.setOnClickListener(this);
+    }
+
+    private void initPager(){
+        if (fishton.getPickerImages().isEmpty()) {
             Toast.makeText(this, R.string.msg_error, Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
-
         onCheckStateChange(fishton.getPickerImages().get(initPosition));
 
-        DetailViewPagerAdapter adapter = new DetailViewPagerAdapter(getLayoutInflater(), fishton.getPickerImages());
+        DetailViewPagerAdapter adapter = new DetailViewPagerAdapter(fishton.getPickerImages());
+
         vpDetailPager.setAdapter(adapter);
         vpDetailPager.setCurrentItem(initPosition);
-
         vpDetailPager.addOnPageChangeListener(this);
     }
 
@@ -117,7 +125,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-        if (fishton.getPickerImages() == null) return;
+        if (fishton.getPickerImages().isEmpty()) return;
         int id = v.getId();
         if (id == R.id.btn_detail_count) {
             Uri image = fishton.getPickerImages().get(vpDetailPager.getCurrentItem());
@@ -148,7 +156,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     public void onPageSelected(int position) {
-        if (fishton.getPickerImages() != null){
+        if (!fishton.getPickerImages().isEmpty()) {
             onCheckStateChange(fishton.getPickerImages().get(position));
         }
     }

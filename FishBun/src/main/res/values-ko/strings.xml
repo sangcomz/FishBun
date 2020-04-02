@@ -9,6 +9,7 @@
     <string name="msg_permission">권한이 거부 됐습니다.</string>
     <string name="msg_no_image">앨범이 없습니다.\n사진을 찍어보세요!</string>
     <string name="msg_full_image">더 이상 선택할 수 없습니다.</string>
+    <string name="msg_loading_image">이미지 불러오는중</string>
+    <string name="image">이미지</string>
     <string name="msg_error">일시적인 오류가 발생했습니다. 잠시후에 다시 시도해주세요.</string>
-
 </resources>

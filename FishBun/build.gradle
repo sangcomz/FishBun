@@ -49,9 +49,12 @@ apply from: '../gradle/release.gradle'
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     compileOnly "androidx.appcompat:appcompat:$rootProject.androidx_version"
+
+    compile "androidx.viewpager2:viewpager2:$rootProject.viewpager2_version"
     compile "androidx.constraintlayout:constraintlayout:$rootProject.constraint_version"
     compile "com.google.android.material:material:$rootProject.material_version"
     compile "androidx.recyclerview:recyclerview:$rootProject.recyclerview_version"
+
 
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:3.0.0'

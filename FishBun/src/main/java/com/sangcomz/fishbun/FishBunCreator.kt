@@ -74,11 +74,11 @@ class FishBunCreator(private val fishBun: FishBun, private val fishton: Fishton)
         this.requestCode = requestCode
     }
 
-    override fun textOnNothingSelected(message: String?): FishBunCreator = this.apply {
+    override fun textOnNothingSelected(message: String): FishBunCreator = this.apply {
         fishton.messageNothingSelected = message
     }
 
-    override fun textOnImagesSelectionLimitReached(message: String?): FishBunCreator = this.apply {
+    override fun textOnImagesSelectionLimitReached(message: String): FishBunCreator = this.apply {
         fishton.messageLimitReached = message
     }
 
@@ -108,11 +108,11 @@ class FishBunCreator(private val fishBun: FishBun, private val fishton: Fishton)
         fishton.albumPortraitSpanCount = portraitSpanCount
     }
 
-    override fun setAllViewTitle(allViewTitle: String?): FishBunCreator = this.apply {
+    override fun setAllViewTitle(allViewTitle: String): FishBunCreator = this.apply {
         fishton.titleAlbumAllView = allViewTitle
     }
 
-    override fun setActionBarTitle(actionBarTitle: String?): FishBunCreator = this.apply {
+    override fun setActionBarTitle(actionBarTitle: String): FishBunCreator = this.apply {
         fishton.titleActionBar = actionBarTitle
     }
 

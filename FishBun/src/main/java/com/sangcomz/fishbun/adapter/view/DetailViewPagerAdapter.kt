@@ -16,11 +16,12 @@ import kotlinx.android.synthetic.main.detail_item.view.*
  * Created by sangcomz on 15/06/2017.
  */
 
-class DetailViewPagerAdapter(private val inflater: LayoutInflater, private val images: List<Uri>) : PagerAdapter() {
+class DetailViewPagerAdapter(private val images: List<Uri>) : PagerAdapter() {
     private val fishton = Fishton.getInstance()
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        val itemView = inflater.inflate(R.layout.detail_item, container, false)
+        val itemView =
+            LayoutInflater.from(container.context).inflate(R.layout.detail_item, container, false)
         container.addView(itemView)
 
         fishton.imageAdapter?.loadDetailImage(itemView.img_detail_image, images[position])

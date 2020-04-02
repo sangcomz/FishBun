@@ -1,7 +1,6 @@
 package com.sangcomz.fishbun.define;
 
 public class Define {
-
     public static final int ALBUM_REQUEST_CODE = 27;
     public final int PERMISSION_STORAGE = 28;
     public final int PERMISSION_CAMERA = 29;

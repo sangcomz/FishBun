@@ -24,6 +24,8 @@ import com.sangcomz.fishbun.R;
 import com.sangcomz.fishbun.adapter.view.PickerGridAdapter;
 import com.sangcomz.fishbun.bean.Album;
 import com.sangcomz.fishbun.define.Define;
+import com.sangcomz.fishbun.model.ImageDataSourceImpl;
+import com.sangcomz.fishbun.model.PickerRepositoryImpl;
 import com.sangcomz.fishbun.permission.PermissionCheck;
 import com.sangcomz.fishbun.util.RadioWithTextButton;
 import com.sangcomz.fishbun.util.SingleMediaScanner;
@@ -172,7 +174,7 @@ public class PickerActivity extends BaseActivity {
             }
             menuDoneItem.setIcon(null);
         }
-        if (fishton.isUseAllDoneButton()){
+        if (fishton.isUseAllDoneButton()) {
             menuAllDoneItem.setVisible(true);
             if (fishton.getDrawableAllDoneButton() != null) {
                 menuAllDoneItem.setIcon(fishton.getDrawableAllDoneButton());
@@ -206,12 +208,12 @@ public class PickerActivity extends BaseActivity {
                 finishActivity();
             }
             return true;
-        } else if (id == R.id.action_all_done){
+        } else if (id == R.id.action_all_done) {
             for (Uri pickerImage : fishton.getPickerImages()) {
-                if (fishton.getSelectedImages().size() == fishton.getMaxCount()){
+                if (fishton.getSelectedImages().size() == fishton.getMaxCount()) {
                     break;
                 }
-                if (!fishton.getSelectedImages().contains(pickerImage)){
+                if (!fishton.getSelectedImages().contains(pickerImage)) {
                     fishton.getSelectedImages().add(pickerImage);
                 }
             }
@@ -233,7 +235,7 @@ public class PickerActivity extends BaseActivity {
     }
 
     private void initController() {
-        pickerController = new PickerController(this);
+        pickerController = new PickerController(this, new PickerRepositoryImpl(new ImageDataSourceImpl(this.getContentResolver())));
     }
 
     private void initView() {

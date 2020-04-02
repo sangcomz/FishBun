@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@android:color/black">
 
-
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/vp_detail_pager"
         android:layout_width="0dp"

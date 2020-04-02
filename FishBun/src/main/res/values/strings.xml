@@ -8,8 +8,7 @@
     <string name="msg_permission">Permission denied.</string>
     <string name="msg_no_image">There is no album.\nTake a Picture!</string>
     <string name="msg_full_image">Selection full. Deselect an image to choose another.</string>
-    <string name="msg_loading_image">Loading...</string>
+    <string name="msg_loading_image">Loading…</string>
     <string name="image">image</string>
-
     <string name="msg_error">There was a temporary error. Please try again in a few minutes.</string>
 </resources>
