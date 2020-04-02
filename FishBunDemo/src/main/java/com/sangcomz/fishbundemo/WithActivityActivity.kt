@@ -70,6 +70,7 @@ class WithActivityActivity : AppCompatActivity() {
                         .setIsUseAllDoneButton(true)
                         .isStartInAllView(true)
                         .setCamera(true)
+                        .exceptMimeType(listOf(MimeType.GIF))
                         .setSpecifyFolderList(arrayListOf("Screenshots", "Camera"))
                         .setMenuDoneText("Choose")
                         .setMenuAllDoneText("Choose All")

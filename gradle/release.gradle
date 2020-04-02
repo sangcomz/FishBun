@@ -99,9 +99,7 @@ if (project.rootProject.file('local.properties').isFile()) {
         tagName = version
         targetCommitish = 'master'
         body = """## Release Note
-* Fix to respond to onActivityResult in fragment
-* Update LeakCanary
-* Fix glide requestOptions
+* Can specify a detailed folder📁 [#205](https://github.com/sangcomz/FishBun/issues/205)
 """
         name = version
     }
