@@ -20,5 +20,7 @@ interface BaseProperty {
 
     fun exceptGif(isExcept: Boolean): FishBunCreator
 
+    fun exceptMimeType(exceptMimeTypeList: List<MimeType>): FishBunCreator
+
     fun startAlbum()
 }

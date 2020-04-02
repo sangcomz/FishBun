@@ -4,19 +4,17 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-
-import com.google.android.material.snackbar.Snackbar;
-
-import androidx.core.content.ContextCompat;
-import androidx.core.view.ViewCompat;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.snackbar.Snackbar;
 import com.sangcomz.fishbun.Fishton;
 import com.sangcomz.fishbun.R;
 import com.sangcomz.fishbun.define.Define;
@@ -26,7 +24,6 @@ import com.sangcomz.fishbun.ui.picker.PickerController;
 import com.sangcomz.fishbun.util.RadioWithTextButton;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 
 public class PickerGridAdapter
@@ -83,7 +80,7 @@ public class PickerGridAdapter
             else imagePos = position;
 
             final ViewHolderImage vh = (ViewHolderImage) holder;
-            final Uri image = fishton.getPickerImages()[imagePos];
+            final Uri image = fishton.getPickerImages().get(imagePos);
             final Context context = vh.item.getContext();
             vh.item.setTag(image);
             vh.btnThumbCount.unselect();
@@ -214,7 +211,7 @@ public class PickerGridAdapter
     public int getItemCount() {
         int count;
         if (fishton.getPickerImages() == null) count = 0;
-        else count = fishton.getPickerImages().length;
+        else count = fishton.getPickerImages().size();
 
         if (fishton.isCamera())
             return count + 1;
@@ -234,9 +231,11 @@ public class PickerGridAdapter
 
     public void addImage(Uri path) {
         ArrayList<Uri> al = new ArrayList<>();
-        Collections.addAll(al, fishton.getPickerImages());
+        if (fishton.getPickerImages() != null){
+            al.addAll(fishton.getPickerImages());
+        }
         al.add(0, path);
-        fishton.setPickerImages(al.toArray(new Uri[al.size()]));
+        fishton.setPickerImages(al);
 
         notifyDataSetChanged();
 

@@ -57,4 +57,6 @@ interface CustomizationProperty {
     fun setSelectCircleStrokeColor(strokeColor: Int): FishBunCreator
 
     fun isStartInAllView(isStartInAllView: Boolean): FishBunCreator
+
+    fun setSpecifyFolderList(specifyFolderList: List<String>): FishBunCreator
 }

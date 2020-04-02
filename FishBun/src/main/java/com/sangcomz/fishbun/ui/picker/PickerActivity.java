@@ -32,6 +32,7 @@ import com.sangcomz.fishbun.util.UiUtil;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class PickerActivity extends BaseActivity {
@@ -91,7 +92,7 @@ public class PickerActivity extends BaseActivity {
         initValue();
         initView();
         if (pickerController.checkPermission())
-            pickerController.displayImage(album.bucketId, fishton.isExceptGif());
+            pickerController.displayImage(album.bucketId, fishton.getExceptMimeTypeList(), fishton.getSpecifyFolderList());
 
     }
 
@@ -102,6 +103,7 @@ public class PickerActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == define.TAKE_A_PICK_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 File savedFile = new File(pickerController.getSavePath());
@@ -126,7 +128,7 @@ public class PickerActivity extends BaseActivity {
             case 28: {
                 if (grantResults.length > 0) {
                     if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                        pickerController.displayImage(album.bucketId, fishton.isExceptGif());
+                        pickerController.displayImage(album.bucketId, fishton.getExceptMimeTypeList(), fishton.getSpecifyFolderList());
                         // permission was granted, yay! do the
                         // calendar task you need to do.
                     } else {
@@ -264,7 +266,7 @@ public class PickerActivity extends BaseActivity {
     }
 
 
-    public void setAdapter(Uri[] result) {
+    public void setAdapter(List<Uri> result) {
         fishton.setPickerImages(result);
         if (adapter == null) {
             adapter = new PickerGridAdapter(pickerController,

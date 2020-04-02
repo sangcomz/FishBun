@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sangcomz.fishbun.FishBun
+import com.sangcomz.fishbun.MimeType
 import com.sangcomz.fishbun.adapter.image.impl.GlideAdapter
 import com.sangcomz.fishbun.adapter.image.impl.PicassoAdapter
 import com.sangcomz.fishbun.define.Define
@@ -67,6 +68,10 @@ class WithActivityActivity : AppCompatActivity() {
                     FishBun.with(this@WithActivityActivity)
                         .setImageAdapter(GlideAdapter())
                         .setIsUseAllDoneButton(true)
+                        .isStartInAllView(true)
+                        .setCamera(true)
+                        .exceptMimeType(listOf(MimeType.GIF))
+                        .setSpecifyFolderList(arrayListOf("Screenshots", "Camera"))
                         .setMenuDoneText("Choose")
                         .setMenuAllDoneText("Choose All")
                         .startAlbum()

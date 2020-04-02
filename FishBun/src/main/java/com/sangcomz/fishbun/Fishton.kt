@@ -13,15 +13,16 @@ import java.util.ArrayList
  */
 class Fishton {
     var imageAdapter: ImageAdapter? = null
-    var pickerImages: Array<Uri>? = null
+    var pickerImages: List<Uri>? = null
 
     //BaseParams
     var maxCount: Int = 0
     var minCount: Int = 0
-    var isExceptGif: Boolean = false
+    var exceptMimeTypeList = emptyList<MimeType>()
     var selectedImages = ArrayList<Uri>()
 
     //CustomizationParams
+    var specifyFolderList = emptyList<String>()
     var photoSpanCount: Int = 0
     var albumPortraitSpanCount: Int = 0
     var albumLandscapeSpanCount: Int = 0
@@ -74,10 +75,11 @@ class Fishton {
         //BaseParams
         maxCount = 10
         minCount = 1
-        isExceptGif = true
+        exceptMimeTypeList = emptyList()
         selectedImages = ArrayList()
 
         //CustomizationParams
+        specifyFolderList = emptyList()
         photoSpanCount = 3
         albumPortraitSpanCount = 1
         albumLandscapeSpanCount = 2

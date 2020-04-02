@@ -4,14 +4,15 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.core.content.ContextCompat;
-import androidx.viewpager.widget.ViewPager;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import androidx.core.content.ContextCompat;
+import androidx.viewpager.widget.ViewPager;
+
+import com.google.android.material.snackbar.Snackbar;
 import com.sangcomz.fishbun.BaseActivity;
 import com.sangcomz.fishbun.R;
 import com.sangcomz.fishbun.adapter.view.DetailViewPagerAdapter;
@@ -82,7 +83,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
             return;
         }
 
-        onCheckStateChange(fishton.getPickerImages()[initPosition]);
+        onCheckStateChange(fishton.getPickerImages().get(initPosition));
 
         DetailViewPagerAdapter adapter = new DetailViewPagerAdapter(getLayoutInflater(), fishton.getPickerImages());
         vpDetailPager.setAdapter(adapter);
@@ -116,9 +117,10 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
+        if (fishton.getPickerImages() == null) return;
         int id = v.getId();
         if (id == R.id.btn_detail_count) {
-            Uri image = fishton.getPickerImages()[vpDetailPager.getCurrentItem()];
+            Uri image = fishton.getPickerImages().get(vpDetailPager.getCurrentItem());
             if (fishton.getSelectedImages().contains(image)) {
                 fishton.getSelectedImages().remove(image);
                 onCheckStateChange(image);
@@ -146,7 +148,9 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     public void onPageSelected(int position) {
-        onCheckStateChange(fishton.getPickerImages()[position]);
+        if (fishton.getPickerImages() != null){
+            onCheckStateChange(fishton.getPickerImages().get(position));
+        }
     }
 
     @Override
