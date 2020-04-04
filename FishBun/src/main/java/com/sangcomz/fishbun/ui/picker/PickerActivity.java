@@ -23,6 +23,8 @@ import com.google.android.material.snackbar.Snackbar;
 import com.sangcomz.fishbun.BaseActivity;
 import com.sangcomz.fishbun.FishBun;
 import com.sangcomz.fishbun.R;
+import com.sangcomz.fishbun.datasource.FishBunDataSource;
+import com.sangcomz.fishbun.datasource.FishBunDataSourceImpl;
 import com.sangcomz.fishbun.datasource.ImageDataSource;
 import com.sangcomz.fishbun.datasource.ImageDataSourceImpl;
 import com.sangcomz.fishbun.permission.PermissionCheck;
@@ -246,13 +248,15 @@ public class PickerActivity extends BaseActivity implements PickerView {
     }
 
     private PickerRepository getRepository() {
-        return new PickerRepositoryImpl(getImageDataSource());
+        return new PickerRepositoryImpl(getImageDataSource(), getFishBunDataSource());
     }
 
     private ImageDataSource getImageDataSource() {
-        return new ImageDataSourceImpl(this.getContentResolver(),
-                getFishton().getExceptMimeTypeList(),
-                getFishton().getSpecifyFolderList());
+        return new ImageDataSourceImpl(this.getContentResolver());
+    }
+
+    private FishBunDataSource getFishBunDataSource() {
+        return new FishBunDataSourceImpl(getFishton());
     }
 
     private void initView() {

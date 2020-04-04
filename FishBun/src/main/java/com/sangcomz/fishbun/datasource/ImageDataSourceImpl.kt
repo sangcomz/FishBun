@@ -14,16 +14,14 @@ import java.util.concurrent.Executors
 import java.util.concurrent.Future
 import kotlin.collections.LinkedHashMap
 
-class ImageDataSourceImpl(
-    private val contentResolver: ContentResolver,
-    private val exceptMimeTypeList: List<MimeType>,
-    private val specifyFolderList: List<String>
-) :
-    ImageDataSource {
+class ImageDataSourceImpl(private val contentResolver: ContentResolver) : ImageDataSource {
 
     private val executorService = Executors.newSingleThreadExecutor()
 
-    override fun getAlbumList(allViewTitle: String): Future<List<Album>> {
+    override fun getAlbumList(
+        allViewTitle: String, exceptMimeTypeList: List<MimeType>,
+        specifyFolderList: List<String>
+    ): Future<List<Album>> {
         return executorService.submit(Callable<List<Album>> {
             val albumDataMap = LinkedHashMap<Long, AlbumData>()
             val orderBy = "$_ID DESC"
@@ -110,7 +108,11 @@ class ImageDataSourceImpl(
 
     }
 
-    override fun getAllMediaThumbnailsPath(bucketId: Long): Future<List<Uri>> {
+    override fun getAllMediaThumbnailsPath(
+        bucketId: Long,
+        exceptMimeTypeList: List<MimeType>,
+        specifyFolderList: List<String>
+    ): Future<List<Uri>> {
         return executorService.submit(Callable<List<Uri>> {
             val imageUris = arrayListOf<Uri>()
             val selection = "$BUCKET_ID = ?"
@@ -149,7 +151,11 @@ class ImageDataSourceImpl(
         })
     }
 
-    override fun getAlbumMetaData(bucketId: Long): Future<AlbumMetaData> {
+    override fun getAlbumMetaData(
+        bucketId: Long,
+        exceptMimeTypeList: List<MimeType>,
+        specifyFolderList: List<String>
+    ): Future<AlbumMetaData> {
         return executorService.submit(Callable<AlbumMetaData> {
             val selection = "$BUCKET_ID = ?"
             val bucketId: String = bucketId.toString()

@@ -21,6 +21,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.sangcomz.fishbun.BaseActivity
 import com.sangcomz.fishbun.FishBun
 import com.sangcomz.fishbun.R
+import com.sangcomz.fishbun.datasource.FishBunDataSourceImpl
 import com.sangcomz.fishbun.ui.album.model.Album
 import com.sangcomz.fishbun.ext.showSnackBar
 import com.sangcomz.fishbun.ui.album.model.repository.AlbumRepositoryImpl
@@ -43,11 +44,8 @@ class AlbumActivity : BaseActivity(),
         AlbumPresenter(
             this,
             AlbumRepositoryImpl(
-                ImageDataSourceImpl(
-                    contentResolver,
-                    fishton.exceptMimeTypeList,
-                    fishton.specifyFolderList
-                )
+                ImageDataSourceImpl(contentResolver),
+                FishBunDataSourceImpl(fishton)
             )
         )
     }
@@ -283,7 +281,9 @@ class AlbumActivity : BaseActivity(),
     }
 
     private fun loadAlbumList() {
-        albumPresenter.loadAlbumList(allViewTitle = fishton.titleAlbumAllView ?: getString(R.string.str_all_view))
+        albumPresenter.loadAlbumList(
+            allViewTitle = fishton.titleAlbumAllView ?: getString(R.string.str_all_view)
+        )
     }
 
     private fun refreshAlbumItem(

@@ -2,6 +2,7 @@ package com.sangcomz.fishbun.datasource
 
 import android.net.Uri
 import com.sangcomz.fishbun.Fishton
+import com.sangcomz.fishbun.MimeType
 import com.sangcomz.fishbun.ui.detail.model.DetailImageViewData
 
 class FishBunDataSourceImpl(private val fishton: Fishton) : FishBunDataSource {
@@ -14,6 +15,16 @@ class FishBunDataSourceImpl(private val fishton: Fishton) : FishBunDataSource {
     override fun getIsAutomaticClose(): Boolean = fishton.isAutomaticClose
 
     override fun getMessageLimitReached() = fishton.messageLimitReached
+    override fun getExceptMimeTypeList() = fishton.exceptMimeTypeList
+    override fun getSpecifyFolderList() = fishton.specifyFolderList
+
+    override fun selectImage(imageUri: Uri) {
+        fishton.selectedImages.add(imageUri)
+    }
+
+    override fun unselectImage(imageUri: Uri) {
+        fishton.selectedImages.remove(imageUri)
+    }
 
     override fun getDetailImageModel() = DetailImageViewData(
         fishton.colorStatusBar,
@@ -23,12 +34,5 @@ class FishBunDataSourceImpl(private val fishton: Fishton) : FishBunDataSource {
         fishton.colorSelectCircleStroke
     )
 
-    override fun selectImage(imageUri: Uri) {
-        fishton.selectedImages.add(imageUri)
-    }
-
-    override fun unselectImage(imageUri: Uri) {
-        fishton.selectedImages.remove(imageUri)
-    }
 
 }
