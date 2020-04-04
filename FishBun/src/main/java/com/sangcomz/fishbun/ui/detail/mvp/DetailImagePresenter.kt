@@ -23,10 +23,11 @@ class DetailImagePresenter(
     }
 
     override fun getDesignViewData() {
-        with(detailImageRepository.getDetailPickerViewData()) {
-            detailView.setToolBar(colorStatusBar, isStatusBarLight)
-            detailView.setCountButton(colorActionBar, colorActionBarTitle, colorSelectCircleStroke)
-            detailView.setBackButton()
+        val detailImageViewData = detailImageRepository.getDetailPickerViewData()
+        with(detailView) {
+            setToolBar(detailImageViewData)
+            setCountButton(detailImageViewData)
+            setBackButton()
         }
     }
 

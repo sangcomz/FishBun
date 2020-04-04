@@ -1,20 +1,25 @@
 package com.sangcomz.fishbun.ui.album.model.repository
 
+import android.net.Uri
 import com.sangcomz.fishbun.MimeType
 import com.sangcomz.fishbun.datasource.FishBunDataSource
 import com.sangcomz.fishbun.datasource.ImageDataSource
 import com.sangcomz.fishbun.ui.album.model.Album
+import com.sangcomz.fishbun.ui.album.model.AlbumMenuViewData
 import com.sangcomz.fishbun.ui.album.model.AlbumMetaData
+import com.sangcomz.fishbun.ui.album.model.AlbumViewData
 import java.util.concurrent.Future
 
 class AlbumRepositoryImpl(
     private val imageDataSource: ImageDataSource,
     private val fishBunDataSource: FishBunDataSource
-) :
-    AlbumRepository {
-    override fun getAlbumList(allViewTitle: String): Future<List<Album>> {
+) : AlbumRepository {
+
+    private var viewData: AlbumViewData? = null
+
+    override fun getAlbumList(): Future<List<Album>> {
         return imageDataSource.getAlbumList(
-            allViewTitle,
+            fishBunDataSource.getAllViewTitle(),
             fishBunDataSource.getExceptMimeTypeList(),
             fishBunDataSource.getSpecifyFolderList()
         )
@@ -27,4 +32,17 @@ class AlbumRepositoryImpl(
             fishBunDataSource.getSpecifyFolderList()
         )
     }
+
+    override fun getAlbumViewData(): AlbumViewData {
+        return viewData ?: fishBunDataSource.getAlbumViewData().also { viewData = it }
+    }
+
+    override fun isNotEnoughSelectedImages(): Boolean {
+        return fishBunDataSource.getSelectedImageList().size < fishBunDataSource.getMinCount()
+    }
+
+    override fun getImageAdapter() = fishBunDataSource.getImageAdapter()
+    override fun selectedImages() = fishBunDataSource.getSelectedImageList()
+    override fun getAlbumMenuViewData() = fishBunDataSource.gatAlbumMenuViewData()
+    override fun getMessageNotingSelected() = fishBunDataSource.getMessageNothingSelected()
 }

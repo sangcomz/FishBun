@@ -80,7 +80,7 @@ class FishBunCreator(private val fishBun: FishBun, private val fishton: Fishton)
     }
 
     override fun setButtonInAlbumActivity(isButton: Boolean): FishBunCreator = this.apply {
-        fishton.isButton = isButton
+        fishton.hasButtonInAlbumActivity = isButton
     }
 
     override fun setReachLimitAutomaticClose(isAutomaticClose: Boolean): FishBunCreator =

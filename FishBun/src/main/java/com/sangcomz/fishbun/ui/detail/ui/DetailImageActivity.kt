@@ -15,11 +15,13 @@ import androidx.viewpager.widget.ViewPager
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.google.android.material.snackbar.Snackbar
 import com.sangcomz.fishbun.BaseActivity
+import com.sangcomz.fishbun.Fishton
 import com.sangcomz.fishbun.R
 import com.sangcomz.fishbun.datasource.FishBunDataSourceImpl
 import com.sangcomz.fishbun.ui.detail.DetailImageContract
 import com.sangcomz.fishbun.ui.detail.adapter.DetailViewPagerAdapter
 import com.sangcomz.fishbun.ui.detail.model.DetailImageRepositoryImpl
+import com.sangcomz.fishbun.ui.detail.model.DetailImageViewData
 import com.sangcomz.fishbun.ui.detail.mvp.DetailImagePresenter
 import com.sangcomz.fishbun.util.RadioWithTextButton
 import com.sangcomz.fishbun.util.setStatusBarColor
@@ -29,7 +31,7 @@ class DetailImageActivity : BaseActivity(), DetailImageContract.View, OnPageChan
     private val presenter: DetailImageContract.Presenter by lazy {
         DetailImagePresenter(
             this,
-            DetailImageRepositoryImpl(FishBunDataSourceImpl(fishton))
+            DetailImageRepositoryImpl(FishBunDataSourceImpl(Fishton.getInstance()))
         )
     }
     private var initPosition = -1
@@ -85,25 +87,21 @@ class DetailImageActivity : BaseActivity(), DetailImageContract.View, OnPageChan
         finish()
     }
 
-    override fun setToolBar(colorStatusBar: Int, isStatusBarLight: Boolean) {
+    override fun setToolBar(detailImageViewData: DetailImageViewData) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            this.setStatusBarColor(colorStatusBar)
+            this.setStatusBarColor(detailImageViewData.colorStatusBar)
         }
-        if (isStatusBarLight && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (detailImageViewData.isStatusBarLight && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             vpDetailPager?.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         }
     }
 
-    override fun setCountButton(
-        colorActionBar: Int,
-        colorActionBarTitle: Int,
-        colorSelectCircleStroke: Int
-    ) {
+    override fun setCountButton(detailImageViewData: DetailImageViewData) {
         btnDetailCount?.run {
             unselect()
-            setCircleColor(colorActionBar)
-            setTextColor(colorActionBarTitle)
-            setStrokeColor(colorSelectCircleStroke)
+            setCircleColor(detailImageViewData.colorActionBar)
+            setTextColor(detailImageViewData.colorActionBarTitle)
+            setStrokeColor(detailImageViewData.colorSelectCircleStroke)
             setOnClickListener {
                 val currentPosition = vpDetailPager?.currentItem ?: return@setOnClickListener
                 presenter.onCountClick(currentPosition)

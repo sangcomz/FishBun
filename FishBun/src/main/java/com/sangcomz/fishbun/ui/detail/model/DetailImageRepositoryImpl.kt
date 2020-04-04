@@ -28,5 +28,5 @@ class DetailImageRepositoryImpl(private val fishBunDataSource: FishBunDataSource
     override fun getMessageLimitReached() = fishBunDataSource.getMessageLimitReached()
     override fun getMaxCount() = fishBunDataSource.getMaxCount()
 
-    override fun getDetailPickerViewData() = fishBunDataSource.getDetailImageModel()
+    override fun getDetailPickerViewData() = fishBunDataSource.getDetailViewData()
 }

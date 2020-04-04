@@ -12,7 +12,7 @@ import java.util.ArrayList
  * Created by seokwon.jeong on 04/01/2018.
  */
 class Fishton {
-    var imageAdapter: ImageAdapter? = null
+    lateinit var imageAdapter: ImageAdapter
     var pickerImages: List<Uri> = emptyList()
 
     //BaseParams
@@ -28,7 +28,7 @@ class Fishton {
     var albumLandscapeSpanCount: Int = 0
 
     var isAutomaticClose: Boolean = false
-    var isButton: Boolean = false
+    var hasButtonInAlbumActivity: Boolean = false
 
     var colorActionBar: Int = 0
     var colorActionBarTitle: Int = 0
@@ -63,15 +63,12 @@ class Fishton {
     var isStartInAllView: Boolean = false
 
     init {
-        init()
+        initValue()
     }
 
-    fun refresh() = init()
+    fun refresh() = initValue()
 
-    private fun init() {
-        //Adapter
-        imageAdapter = null
-
+    private fun initValue() {
         //BaseParams
         maxCount = 10
         minCount = 1
@@ -85,7 +82,7 @@ class Fishton {
         albumLandscapeSpanCount = 2
 
         isAutomaticClose = false
-        isButton = false
+        hasButtonInAlbumActivity = false
 
         colorActionBar = Color.parseColor("#3F51B5")
         colorActionBarTitle = Color.parseColor("#ffffff")

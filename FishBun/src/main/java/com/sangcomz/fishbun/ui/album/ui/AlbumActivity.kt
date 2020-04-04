@@ -20,23 +20,26 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.sangcomz.fishbun.BaseActivity
 import com.sangcomz.fishbun.FishBun
+import com.sangcomz.fishbun.Fishton
 import com.sangcomz.fishbun.R
+import com.sangcomz.fishbun.adapter.image.ImageAdapter
 import com.sangcomz.fishbun.datasource.FishBunDataSourceImpl
 import com.sangcomz.fishbun.ui.album.model.Album
 import com.sangcomz.fishbun.ext.showSnackBar
 import com.sangcomz.fishbun.ui.album.model.repository.AlbumRepositoryImpl
 import com.sangcomz.fishbun.datasource.ImageDataSourceImpl
-import com.sangcomz.fishbun.permission.PermissionCheck
 import com.sangcomz.fishbun.ui.album.AlbumContract
 import com.sangcomz.fishbun.ui.album.mvp.AlbumPresenter
 import com.sangcomz.fishbun.ui.album.adapter.AlbumListAdapter
 import com.sangcomz.fishbun.ui.album.listener.AlbumClickListener
+import com.sangcomz.fishbun.ui.album.model.AlbumMenuViewData
+import com.sangcomz.fishbun.ui.album.model.AlbumViewData
 import com.sangcomz.fishbun.ui.picker.PickerActivity
 import com.sangcomz.fishbun.util.SingleMediaScanner
 import com.sangcomz.fishbun.util.isLandscape
 import com.sangcomz.fishbun.util.setStatusBarColor
 import java.io.File
-import java.util.*
+import kotlin.collections.ArrayList
 
 class AlbumActivity : BaseActivity(),
     AlbumContract.View, AlbumClickListener {
@@ -45,7 +48,7 @@ class AlbumActivity : BaseActivity(),
             this,
             AlbumRepositoryImpl(
                 ImageDataSourceImpl(contentResolver),
-                FishBunDataSourceImpl(fishton)
+                FishBunDataSourceImpl(Fishton.getInstance())
             )
         )
     }
@@ -58,12 +61,12 @@ class AlbumActivity : BaseActivity(),
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_photo_album)
         initView()
-        if (checkPermission()) loadAlbumList()
+        if (checkPermission()) albumPresenter.loadAlbumList()
     }
 
     override fun onResume() {
         super.onResume()
-        setRecyclerViewSpanCount()
+        albumPresenter.onResume()
     }
 
     override fun onDestroy() {
@@ -85,65 +88,64 @@ class AlbumActivity : BaseActivity(),
                 )
             }
         }
-        initToolBar()
     }
 
-    private fun initRecyclerView() {
+    override fun setRecyclerView(albumViewData: AlbumViewData) {
         val layoutManager =
-            if (this.isLandscape()) GridLayoutManager(this, fishton.albumLandscapeSpanCount)
-            else GridLayoutManager(this, fishton.albumPortraitSpanCount)
+            if (this.isLandscape()) GridLayoutManager(this, albumViewData.albumLandscapeSpanCount)
+            else GridLayoutManager(this, albumViewData.albumPortraitSpanCount)
 
         recyclerAlbumList?.layoutManager = layoutManager
     }
 
-    private fun initToolBar() {
+    override fun setToolBar(albumViewData: AlbumViewData) {
         val toolbar = findViewById<Toolbar>(R.id.toolbar_album_bar)
 
         txtAlbumMessage?.setText(R.string.msg_loading_image)
         setSupportActionBar(toolbar)
-        toolbar.setBackgroundColor(fishton.colorActionBar)
-        toolbar.setTitleTextColor(fishton.colorActionBarTitle)
+        toolbar.setBackgroundColor(albumViewData.colorActionBar)
+        toolbar.setTitleTextColor(albumViewData.colorActionBarTitle)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            this.setStatusBarColor(fishton.colorStatusBar)
+            this.setStatusBarColor(albumViewData.colorStatusBar)
         }
 
         supportActionBar?.let {
-            it.title = fishton.titleActionBar
+            it.title = albumViewData.titleActionBar
             it.setDisplayHomeAsUpEnabled(true)
-            if (fishton.drawableHomeAsUpIndicator != null) {
-                it.setHomeAsUpIndicator(fishton.drawableHomeAsUpIndicator)
+            if (albumViewData.drawableHomeAsUpIndicator != null) {
+                it.setHomeAsUpIndicator(albumViewData.drawableHomeAsUpIndicator)
             }
         }
 
-        if (fishton.isStatusBarLight
-            && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-        ) {
+        if (albumViewData.isStatusBarLight && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             toolbar.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
-        if (fishton.isButton) {
-            menuInflater.inflate(R.menu.menu_photo_album, menu)
-            val menuDoneItem = menu.findItem(R.id.action_done)
-            menu.findItem(R.id.action_all_done).isVisible = false
-            if (fishton.drawableDoneButton != null) {
-                menuDoneItem.icon = fishton.drawableDoneButton
-            } else if (fishton.strDoneMenu != null) {
-                if (fishton.colorTextMenu != Int.MAX_VALUE) {
-                    val spanString = SpannableString(fishton.strDoneMenu)
-                    spanString.setSpan(
-                        ForegroundColorSpan(fishton.colorTextMenu),
-                        0,
-                        spanString.length,
-                        0
-                    ) //fi
-                    menuDoneItem.title = spanString
-                } else {
-                    menuDoneItem.title = fishton.strDoneMenu
+        albumPresenter.getAlbumMenuViewData { albumMenuViewData ->
+            if (albumMenuViewData.hasButtonInAlbumActivity) {
+                menuInflater.inflate(R.menu.menu_photo_album, menu)
+                val menuDoneItem = menu.findItem(R.id.action_done)
+                menu.findItem(R.id.action_all_done).isVisible = false
+                if (albumMenuViewData.drawableDoneButton != null) {
+                    menuDoneItem.icon = albumMenuViewData.drawableDoneButton
+                } else if (albumMenuViewData.strDoneMenu != null) {
+                    if (albumMenuViewData.colorTextMenu != Int.MAX_VALUE) {
+                        val spanString = SpannableString(albumMenuViewData.strDoneMenu)
+                        spanString.setSpan(
+                            ForegroundColorSpan(albumMenuViewData.colorTextMenu),
+                            0,
+                            spanString.length,
+                            0
+                        ) //fi
+                        menuDoneItem.title = spanString
+                    } else {
+                        menuDoneItem.title = albumMenuViewData.strDoneMenu
+                    }
+                    menuDoneItem.icon = null
                 }
-                menuDoneItem.icon = null
             }
         }
         return true
@@ -155,14 +157,7 @@ class AlbumActivity : BaseActivity(),
             finish()
         } else if (id == R.id.action_done) {
             if (adapter != null) {
-                if (fishton.selectedImages.size < fishton.minCount) {
-                    recyclerAlbumList?.showSnackBar(
-                        fishton.messageNothingSelected,
-                        Snackbar.LENGTH_SHORT
-                    )
-                } else {
-                    finishActivityWithResult()
-                }
+                albumPresenter.done()
             }
         }
         return super.onOptionsItemSelected(item)
@@ -174,25 +169,33 @@ class AlbumActivity : BaseActivity(),
         data: Intent?
     ) {
         super.onActivityResult(requestCode, resultCode, data)
+        data ?: return
+
         if (requestCode == ENTER_ALBUM_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
-                finishActivityWithResult()
+                albumPresenter.finish()
             } else if (resultCode == TRANS_IMAGES_RESULT_CODE) {
-                val addPath = data?.getParcelableArrayListExtra<Uri>(INTENT_ADD_PATH)
-                val position = data?.getIntExtra(INTENT_POSITION, -1)
-                refreshAlbumItem(position, addPath)
-                changeToolbarTitle()
+                val addPath = data.getParcelableArrayListExtra<Uri>(INTENT_ADD_PATH)
+                val position = data.getIntExtra(INTENT_POSITION, -1)
+                albumPresenter.refreshAlbumItem(position, addPath)
             }
         } else if (requestCode == TAKE_A_PICK_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
-                SingleMediaScanner(this, File(cameraUtil.savePath)) {
-                    loadAlbumList()
-                }
+                albumPresenter.onSuccessTakeAPick()
             } else {
                 File(cameraUtil.savePath).delete()
             }
-            changeToolbarTitle()
         }
+    }
+
+    override fun scanAndRefresh() {
+        SingleMediaScanner(this, File(cameraUtil.savePath)) {
+            albumPresenter.loadAlbumList()
+        }
+    }
+
+    override fun showSnackbar(message: String) {
+        recyclerAlbumList?.let { Snackbar.make(it, message, Snackbar.LENGTH_SHORT).show() }
     }
 
     override fun onRequestPermissionsResult(
@@ -204,7 +207,7 @@ class AlbumActivity : BaseActivity(),
                 if (grantResults.isNotEmpty()) {
                     if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                         // permission was granted, yay!
-                        loadAlbumList()
+                        albumPresenter.loadAlbumList()
                     } else {
                         permissionCheck.showPermissionDialog()
                         finish()
@@ -228,12 +231,14 @@ class AlbumActivity : BaseActivity(),
         }
     }
 
-    override fun showAlbumList(albumList: List<Album>) {
-        if (albumList.isNotEmpty()) {
-            bindAlbumList(albumList)
-        } else {
-            showEmptyView()
-        }
+    override fun showAlbumList(
+        albumList: List<Album>,
+        imageAdapter: ImageAdapter,
+        albumViewData: AlbumViewData
+    ) {
+        recyclerAlbumList?.visibility = View.VISIBLE
+        groupEmptyView?.visibility = View.GONE
+        setAlbumListAdapter(albumList, imageAdapter, albumViewData)
     }
 
 
@@ -242,19 +247,19 @@ class AlbumActivity : BaseActivity(),
             .also { startActivityForResult(it, ENTER_ALBUM_REQUEST_CODE) }
     }
 
-    private fun changeToolbarTitle() {
+    override fun changeToolbarTitle(selectedImageCount: Int, albumViewData: AlbumViewData) {
         if (adapter == null) return
-        val total = fishton.selectedImages.size
 
         supportActionBar?.apply {
-            title = if (fishton.maxCount == 1 || !fishton.isShowCount) fishton.titleActionBar
-            else fishton.titleActionBar + " (" + total + "/" + fishton.maxCount + ")"
+            title =
+                if (albumViewData.maxCount == 1 || !albumViewData.isShowCount) albumViewData.titleActionBar
+                else "${albumViewData.titleActionBar} ($selectedImageCount/${albumViewData.maxCount}"
         }
     }
 
-    private fun finishActivityWithResult() {
+    override fun finishActivityWithResult(selectedImages: List<Uri>) {
         val i = Intent()
-        i.putParcelableArrayListExtra(FishBun.INTENT_PATH, fishton.selectedImages)
+        i.putParcelableArrayListExtra(FishBun.INTENT_PATH, ArrayList(selectedImages))
         setResult(Activity.RESULT_OK, i)
         finish()
     }
@@ -271,64 +276,39 @@ class AlbumActivity : BaseActivity(),
         } else true
     }
 
-    private fun setRecyclerViewSpanCount() {
+    override fun setRecyclerViewSpanCount(albumViewData: AlbumViewData) {
         val recyclerView = recyclerAlbumList ?: return
         val gridLayoutManager = recyclerView.layoutManager as? GridLayoutManager ?: return
 
         gridLayoutManager.spanCount =
-            if (isLandscape()) fishton.albumLandscapeSpanCount
-            else fishton.albumPortraitSpanCount
+            if (isLandscape()) albumViewData.albumLandscapeSpanCount
+            else albumViewData.albumPortraitSpanCount
     }
 
-    private fun loadAlbumList() {
-        albumPresenter.loadAlbumList(
-            allViewTitle = fishton.titleAlbumAllView ?: getString(R.string.str_all_view)
-        )
+    override fun refreshAlbumItem(position: Int, imagePath: ArrayList<Uri>) {
+        val thumbnailPath = imagePath[imagePath.size - 1].toString()
+        val addedCount = imagePath.size
+        adapter?.updateAlbumMeta(0, addedCount, thumbnailPath)
+        adapter?.updateAlbumMeta(position, addedCount, thumbnailPath)
     }
 
-    private fun refreshAlbumItem(
-        position: Int?,
-        imagePath: ArrayList<Uri>?
+
+    private fun setAlbumListAdapter(
+        albumList: List<Album>,
+        imageAdapter: ImageAdapter,
+        albumViewData: AlbumViewData
     ) {
-        position ?: return
-        imagePath ?: return
-
-        if (imagePath.size > 0) {
-            if (position == 0) {
-                loadAlbumList()
-            } else {
-                val thumbnailPath = imagePath[imagePath.size - 1].toString()
-                val addedCount = imagePath.size
-                adapter?.updateAlbumMeta(0, addedCount, thumbnailPath)
-                adapter?.updateAlbumMeta(position, addedCount, thumbnailPath)
-            }
-        }
-    }
-
-    private fun setAlbumListAdapter(albumList: List<Album>) {
         if (adapter == null) {
-            adapter = AlbumListAdapter(
-                this,
-                fishton.albumThumbnailSize,
-                fishton.imageAdapter
-            )
+            adapter = AlbumListAdapter(this, albumViewData.albumThumbnailSize, imageAdapter)
         }
         adapter?.let {
             it.setAlbumList(albumList)
             recyclerAlbumList?.adapter = it
             it.notifyDataSetChanged()
-            changeToolbarTitle()
         }
     }
 
-    private fun bindAlbumList(albumList: List<Album>) {
-        recyclerAlbumList?.visibility = View.VISIBLE
-        groupEmptyView?.visibility = View.GONE
-        initRecyclerView()
-        setAlbumListAdapter(albumList)
-    }
-
-    private fun showEmptyView() {
+    override fun showEmptyView() {
         groupEmptyView?.visibility = View.VISIBLE
         recyclerAlbumList?.visibility = View.INVISIBLE
         txtAlbumMessage?.setText(R.string.msg_no_image)
