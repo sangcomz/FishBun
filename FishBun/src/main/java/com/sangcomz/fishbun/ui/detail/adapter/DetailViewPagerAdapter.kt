@@ -1,4 +1,4 @@
-package com.sangcomz.fishbun.ui.detail
+package com.sangcomz.fishbun.ui.detail.adapter
 
 import android.net.Uri
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -16,7 +16,8 @@ import kotlinx.android.synthetic.main.detail_item.view.*
  * Created by sangcomz on 15/06/2017.
  */
 
-class DetailViewPagerAdapter(private val images: List<Uri>) : PagerAdapter() {
+class DetailViewPagerAdapter : PagerAdapter() {
+    private var images: List<Uri> = emptyList()
     private val fishton = Fishton.getInstance()
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
@@ -39,5 +40,10 @@ class DetailViewPagerAdapter(private val images: List<Uri>) : PagerAdapter() {
 
     override fun isViewFromObject(view: View, targetObject: Any): Boolean {
         return view == targetObject
+    }
+
+    fun setImages(images: List<Uri>) {
+        this.images = images
+        notifyDataSetChanged()
     }
 }

@@ -21,7 +21,7 @@
             android:name=".ui.picker.PickerActivity"
             android:theme="@style/FishBunTheme" />
         <activity
-            android:name=".ui.detail.DetailActivity"
+            android:name=".ui.detail.ui.DetailImageActivity"
             android:theme="@style/DetailViewTheme" />
     </application>
 

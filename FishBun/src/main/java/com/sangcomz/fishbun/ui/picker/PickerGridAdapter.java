@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.snackbar.Snackbar;
 import com.sangcomz.fishbun.Fishton;
 import com.sangcomz.fishbun.R;
-import com.sangcomz.fishbun.ui.detail.DetailActivity;
+import com.sangcomz.fishbun.ui.detail.ui.DetailImageActivity;
 import com.sangcomz.fishbun.util.RadioWithTextButton;
 
 import java.util.ArrayList;
@@ -104,13 +104,11 @@ public class PickerGridAdapter
                     if (fishton.isUseDetailView()) {
                         if (context instanceof PickerActivity) {
                             PickerActivity activity = (PickerActivity) context;
-                            Intent i = new Intent(activity, DetailActivity.class);
-                            i.putExtra("position", imagePos);
+                            Intent i = DetailImageActivity.Companion.getDetailImageActivity(context, imagePos);
                             activity.startActivityForResult(i, 130);
                         }
                     } else
                         onCheckStateChange(vh.item, image);
-
                 }
             });
         }
