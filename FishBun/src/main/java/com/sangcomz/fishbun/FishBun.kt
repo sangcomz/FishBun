@@ -23,6 +23,9 @@ class FishBun private constructor(activity: Activity?, fragment: Fragment?) {
     }
 
     companion object {
+        const val FISHBUN_REQUEST_CODE = 27
+        const val INTENT_PATH = "intent_path"
+
         @JvmStatic
         fun with(activity: Activity) = FishBun(activity, null)
 

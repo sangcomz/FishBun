@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sangcomz.fishbun.FishBun
 import com.sangcomz.fishbun.adapter.image.impl.PicassoAdapter
-import com.sangcomz.fishbun.define.Define
 import kotlinx.android.synthetic.main.fragment_sub.*
 import java.util.*
 
@@ -52,8 +51,8 @@ class SubFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
-            Define.ALBUM_REQUEST_CODE -> if (resultCode == Activity.RESULT_OK) {
-                path = data!!.getParcelableArrayListExtra(Define.INTENT_PATH)
+            FishBun.FISHBUN_REQUEST_CODE -> if (resultCode == Activity.RESULT_OK) {
+                path = data!!.getParcelableArrayListExtra(FishBun.INTENT_PATH)
                 imageAdapter.changePath(path)
             }
         }

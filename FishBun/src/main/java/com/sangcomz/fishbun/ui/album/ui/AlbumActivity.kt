@@ -1,4 +1,4 @@
-package com.sangcomz.fishbun.ui.album
+package com.sangcomz.fishbun.ui.album.ui
 
 import android.app.Activity
 import android.content.Intent
@@ -6,7 +6,6 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Parcelable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.view.Menu
@@ -20,61 +19,46 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.sangcomz.fishbun.BaseActivity
+import com.sangcomz.fishbun.FishBun
 import com.sangcomz.fishbun.R
-import com.sangcomz.fishbun.adapter.view.AlbumListAdapter
-import com.sangcomz.fishbun.bean.Album
-import com.sangcomz.fishbun.define.Define
+import com.sangcomz.fishbun.ui.album.model.Album
 import com.sangcomz.fishbun.ext.showSnackBar
-import com.sangcomz.fishbun.model.AlbumRepositoryImpl
-import com.sangcomz.fishbun.model.ImageDataSourceImpl
+import com.sangcomz.fishbun.ui.album.model.repository.AlbumRepositoryImpl
+import com.sangcomz.fishbun.datasource.ImageDataSourceImpl
 import com.sangcomz.fishbun.permission.PermissionCheck
-import com.sangcomz.fishbun.util.CameraUtil
+import com.sangcomz.fishbun.ui.album.AlbumContract
+import com.sangcomz.fishbun.ui.album.mvp.AlbumPresenter
+import com.sangcomz.fishbun.ui.album.adapter.AlbumListAdapter
+import com.sangcomz.fishbun.ui.album.listener.AlbumClickListener
+import com.sangcomz.fishbun.ui.picker.PickerActivity
 import com.sangcomz.fishbun.util.SingleMediaScanner
 import com.sangcomz.fishbun.util.isLandscape
 import com.sangcomz.fishbun.util.setStatusBarColor
 import java.io.File
 import java.util.*
 
-class AlbumActivity : BaseActivity(), AlbumView {
-
-    private val cameraUtil = CameraUtil()
-    private val permissionCheck = PermissionCheck(this)
-
-    private lateinit var albumPresenter: AlbumPresenter
-    private var albumList: List<Album> = emptyList()
+class AlbumActivity : BaseActivity(),
+    AlbumContract.View, AlbumClickListener {
+    private val albumPresenter: AlbumContract.Presenter by lazy {
+        AlbumPresenter(
+            this,
+            AlbumRepositoryImpl(
+                ImageDataSourceImpl(
+                    contentResolver,
+                    fishton.exceptMimeTypeList,
+                    fishton.specifyFolderList
+                )
+            )
+        )
+    }
     private var groupEmptyView: Group? = null
     private var recyclerAlbumList: RecyclerView? = null
     private var adapter: AlbumListAdapter? = null
     private var txtAlbumMessage: TextView? = null
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        if (adapter != null) {
-            outState.putParcelableArrayList(
-                define.SAVE_INSTANCE_ALBUM_LIST,
-                adapter?.albumList as ArrayList<out Parcelable?>
-            )
-        }
-        super.onSaveInstanceState(outState)
-    }
-
-    override fun onRestoreInstanceState(outState: Bundle) {
-        // Always call the superclass so it can restore the view hierarchy
-        super.onRestoreInstanceState(outState)
-        // Restore state members from saved instance
-        val albumList: List<Album>? =
-            outState.getParcelableArrayList(define.SAVE_INSTANCE_ALBUM_LIST)
-        val thumbList: List<Uri>? =
-            outState.getParcelableArrayList(define.SAVE_INSTANCE_ALBUM_THUMB_LIST)
-        if (albumList != null && thumbList != null) {
-            adapter = AlbumListAdapter()
-            adapter?.albumList = albumList
-        }
-    }
-
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_photo_album)
-        initPresenter()
         initView()
         if (checkPermission()) loadAlbumList()
     }
@@ -96,7 +80,11 @@ class AlbumActivity : BaseActivity(), AlbumView {
 
         findViewById<ImageView>(R.id.iv_album_camera).setOnClickListener {
             if (checkCameraPermission()) {
-                cameraUtil.takePicture(this@AlbumActivity, albumPresenter.pathDir)
+                cameraUtil.takePicture(
+                    this@AlbumActivity,
+                    albumPresenter.getPathDir(),
+                    TAKE_A_PICK_REQUEST_CODE
+                )
             }
         }
         initToolBar()
@@ -133,39 +121,6 @@ class AlbumActivity : BaseActivity(), AlbumView {
             && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
         ) {
             toolbar.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        }
-    }
-
-    private fun initPresenter() {
-        albumPresenter = AlbumPresenter(
-            this,
-            AlbumRepositoryImpl(ImageDataSourceImpl(contentResolver))
-        )
-    }
-
-    private fun setAlbumListAdapter() {
-        if (adapter == null) {
-            adapter = AlbumListAdapter()
-        }
-        adapter?.let {
-            it.albumList = albumList
-            recyclerAlbumList?.adapter = it
-            it.notifyDataSetChanged()
-            changeToolbarTitle()
-        }
-    }
-
-    private fun setAlbumList(albumList: List<Album>) {
-        this.albumList = albumList
-        if (albumList.isNotEmpty()) {
-            recyclerAlbumList?.visibility = View.VISIBLE
-            groupEmptyView?.visibility = View.GONE
-            initRecyclerView()
-            setAlbumListAdapter()
-        } else {
-            groupEmptyView?.visibility = View.VISIBLE
-            recyclerAlbumList?.visibility = View.INVISIBLE
-            txtAlbumMessage?.setText(R.string.msg_no_image)
         }
     }
 
@@ -215,33 +170,22 @@ class AlbumActivity : BaseActivity(), AlbumView {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun changeToolbarTitle() {
-        if (adapter == null) return
-        val total = fishton.selectedImages.size
-
-        supportActionBar?.apply {
-            title = if (fishton.maxCount == 1 || !fishton.isShowCount) fishton.titleActionBar
-            else fishton.titleActionBar + " (" + total + "/" + fishton.maxCount + ")"
-        }
-    }
-
     override fun onActivityResult(
         requestCode: Int,
         resultCode: Int,
         data: Intent?
     ) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == define.ENTER_ALBUM_REQUEST_CODE) {
+        if (requestCode == ENTER_ALBUM_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 finishActivityWithResult()
-            } else if (resultCode == define.TRANS_IMAGES_RESULT_CODE) {
-                val addPath =
-                    data?.getParcelableArrayListExtra<Uri>(define.INTENT_ADD_PATH)
-                val position = data?.getIntExtra(define.INTENT_POSITION, -1)
+            } else if (resultCode == TRANS_IMAGES_RESULT_CODE) {
+                val addPath = data?.getParcelableArrayListExtra<Uri>(INTENT_ADD_PATH)
+                val position = data?.getIntExtra(INTENT_POSITION, -1)
                 refreshAlbumItem(position, addPath)
                 changeToolbarTitle()
             }
-        } else if (requestCode == define.TAKE_A_PICK_REQUEST_CODE) {
+        } else if (requestCode == TAKE_A_PICK_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 SingleMediaScanner(this, File(cameraUtil.savePath)) {
                     loadAlbumList()
@@ -258,24 +202,28 @@ class AlbumActivity : BaseActivity(), AlbumView {
         permissions: Array<String>, grantResults: IntArray
     ) {
         when (requestCode) {
-            define.PERMISSION_STORAGE -> {
+            PERMISSION_STORAGE -> {
                 if (grantResults.isNotEmpty()) {
                     if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                         // permission was granted, yay!
                         loadAlbumList()
                     } else {
-                        PermissionCheck(this).showPermissionDialog()
+                        permissionCheck.showPermissionDialog()
                         finish()
                     }
                 }
             }
-            define.PERMISSION_CAMERA -> {
+            PERMISSION_CAMERA -> {
                 if (grantResults.isNotEmpty()) {
                     if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                         // permission was granted, yay!
-                        cameraUtil.takePicture(this, albumPresenter.pathDir)
+                        cameraUtil.takePicture(
+                            this,
+                            albumPresenter.getPathDir(),
+                            TAKE_A_PICK_REQUEST_CODE
+                        )
                     } else {
-                        PermissionCheck(this).showPermissionDialog()
+                        permissionCheck.showPermissionDialog()
                     }
                 }
             }
@@ -283,25 +231,45 @@ class AlbumActivity : BaseActivity(), AlbumView {
     }
 
     override fun showAlbumList(albumList: List<Album>) {
-        setAlbumList(albumList)
+        if (albumList.isNotEmpty()) {
+            bindAlbumList(albumList)
+        } else {
+            showEmptyView()
+        }
+    }
+
+
+    override fun onAlbumClick(position: Int, album: Album) {
+        PickerActivity.getPickerActivityIntent(this, album.id, album.displayName, position)
+            .also { startActivityForResult(it, ENTER_ALBUM_REQUEST_CODE) }
+    }
+
+    private fun changeToolbarTitle() {
+        if (adapter == null) return
+        val total = fishton.selectedImages.size
+
+        supportActionBar?.apply {
+            title = if (fishton.maxCount == 1 || !fishton.isShowCount) fishton.titleActionBar
+            else fishton.titleActionBar + " (" + total + "/" + fishton.maxCount + ")"
+        }
     }
 
     private fun finishActivityWithResult() {
         val i = Intent()
-        i.putParcelableArrayListExtra(Define.INTENT_PATH, fishton.selectedImages)
+        i.putParcelableArrayListExtra(FishBun.INTENT_PATH, fishton.selectedImages)
         setResult(Activity.RESULT_OK, i)
         finish()
     }
 
     private fun checkPermission(): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            permissionCheck.checkStoragePermission()
+            permissionCheck.checkStoragePermission(PERMISSION_STORAGE)
         } else true
     }
 
     private fun checkCameraPermission(): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            permissionCheck.checkCameraPermission()
+            permissionCheck.checkCameraPermission(PERMISSION_CAMERA)
         } else true
     }
 
@@ -315,11 +283,7 @@ class AlbumActivity : BaseActivity(), AlbumView {
     }
 
     private fun loadAlbumList() {
-        albumPresenter.loadAlbumList(
-            allViewTitle = fishton.titleAlbumAllView ?: getString(R.string.str_all_view),
-            exceptMimeTypeList = fishton.exceptMimeTypeList,
-            specifyFolderList = fishton.specifyFolderList
-        )
+        albumPresenter.loadAlbumList(allViewTitle = fishton.titleAlbumAllView ?: getString(R.string.str_all_view))
     }
 
     private fun refreshAlbumItem(
@@ -333,14 +297,40 @@ class AlbumActivity : BaseActivity(), AlbumView {
             if (position == 0) {
                 loadAlbumList()
             } else {
-                albumList[0].counter += imagePath.size
-                albumList[position].counter += imagePath.size
-                albumList[0].thumbnailPath = imagePath[imagePath.size - 1].toString()
-                albumList[position].thumbnailPath = imagePath[imagePath.size - 1].toString()
-                adapter?.notifyItemChanged(0)
-                adapter?.notifyItemChanged(position)
+                val thumbnailPath = imagePath[imagePath.size - 1].toString()
+                val addedCount = imagePath.size
+                adapter?.updateAlbumMeta(0, addedCount, thumbnailPath)
+                adapter?.updateAlbumMeta(position, addedCount, thumbnailPath)
             }
         }
     }
 
+    private fun setAlbumListAdapter(albumList: List<Album>) {
+        if (adapter == null) {
+            adapter = AlbumListAdapter(
+                this,
+                fishton.albumThumbnailSize,
+                fishton.imageAdapter
+            )
+        }
+        adapter?.let {
+            it.setAlbumList(albumList)
+            recyclerAlbumList?.adapter = it
+            it.notifyDataSetChanged()
+            changeToolbarTitle()
+        }
+    }
+
+    private fun bindAlbumList(albumList: List<Album>) {
+        recyclerAlbumList?.visibility = View.VISIBLE
+        groupEmptyView?.visibility = View.GONE
+        initRecyclerView()
+        setAlbumListAdapter(albumList)
+    }
+
+    private fun showEmptyView() {
+        groupEmptyView?.visibility = View.VISIBLE
+        recyclerAlbumList?.visibility = View.INVISIBLE
+        txtAlbumMessage?.setText(R.string.msg_no_image)
+    }
 }

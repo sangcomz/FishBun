@@ -14,7 +14,7 @@
         </provider>
 
         <activity
-            android:name=".ui.album.AlbumActivity"
+            android:name=".ui.album.ui.AlbumActivity"
             android:label="@string/album"
             android:theme="@style/FishBunTheme"/>
         <activity

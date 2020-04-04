@@ -1,6 +1,5 @@
-package com.sangcomz.fishbun.adapter.view;
+package com.sangcomz.fishbun.ui.picker;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -17,10 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.snackbar.Snackbar;
 import com.sangcomz.fishbun.Fishton;
 import com.sangcomz.fishbun.R;
-import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.ui.detail.DetailActivity;
-import com.sangcomz.fishbun.ui.picker.PickerActivity;
-import com.sangcomz.fishbun.ui.picker.PickerController;
 import com.sangcomz.fishbun.util.RadioWithTextButton;
 
 import java.util.ArrayList;
@@ -31,16 +27,16 @@ public class PickerGridAdapter
     private static final int TYPE_HEADER = Integer.MIN_VALUE;
 
     private Fishton fishton;
-    private PickerController pickerController;
+    private PickerActivity pickerActivity;
     private OnPhotoActionListener actionListener;
 
 
     private String saveDir;
 
 
-    public PickerGridAdapter(PickerController pickerController,
+    public PickerGridAdapter(PickerActivity activity,
                              String saveDir) {
-        this.pickerController = pickerController;
+        this.pickerActivity = activity;
         this.saveDir = saveDir;
         this.fishton = Fishton.getInstance();
     }
@@ -67,8 +63,8 @@ public class PickerGridAdapter
             vh.header.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (pickerController.checkCameraPermission()) {
-                        pickerController.takePicture((Activity) vh.header.getContext(), saveDir);
+                    if (pickerActivity.checkCameraPermission()) {
+                        pickerActivity.takePicture(saveDir);
                     }
                 }
             });
@@ -109,8 +105,8 @@ public class PickerGridAdapter
                         if (context instanceof PickerActivity) {
                             PickerActivity activity = (PickerActivity) context;
                             Intent i = new Intent(activity, DetailActivity.class);
-                            i.putExtra(Define.BUNDLE_NAME.POSITION.name(), imagePos);
-                            activity.startActivityForResult(i, new Define().ENTER_DETAIL_REQUEST_CODE);
+                            i.putExtra("position", imagePos);
+                            activity.startActivityForResult(i, 130);
                         }
                     } else
                         onCheckStateChange(vh.item, image);
@@ -148,11 +144,11 @@ public class PickerGridAdapter
             pickedImages.add(image);
             if (fishton.isAutomaticClose()
                     && fishton.getMaxCount() == pickedImages.size()) {
-                pickerController.finishActivity();
+                pickerActivity.finishActivity();
             }
             updateRadioButton(btnThumbCount, String.valueOf(pickedImages.size()));
         }
-        pickerController.setToolbarTitle(pickedImages.size());
+        pickerActivity.setToolbarTitle(pickedImages.size());
     }
 
     public void updateRadioButton(RadioWithTextButton v, String text) {
@@ -232,7 +228,7 @@ public class PickerGridAdapter
 
         notifyDataSetChanged();
 
-        pickerController.setAddImagePath(path);
+        pickerActivity.setAddImagePath(path);
     }
 
     public void setActionListener(OnPhotoActionListener actionListener) {

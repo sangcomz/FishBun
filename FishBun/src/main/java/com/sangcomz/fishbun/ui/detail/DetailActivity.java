@@ -15,8 +15,6 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.snackbar.Snackbar;
 import com.sangcomz.fishbun.BaseActivity;
 import com.sangcomz.fishbun.R;
-import com.sangcomz.fishbun.adapter.view.DetailViewPagerAdapter;
-import com.sangcomz.fishbun.define.Define;
 import com.sangcomz.fishbun.util.RadioWithTextButton;
 import com.sangcomz.fishbun.util.UiUtil;
 
@@ -60,14 +58,14 @@ public class DetailActivity extends BaseActivity
 
     private void initValue() {
         Intent intent = getIntent();
-        initPosition = intent.getIntExtra(Define.BUNDLE_NAME.POSITION.name(), -1);
+        initPosition = intent.getIntExtra("position", -1);
     }
 
     private void initToolBar() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            UiUtil.setStatusBarColor(this, fishton.getColorStatusBar());
+            UiUtil.setStatusBarColor(this, getFishton().getColorStatusBar());
         }
-        if (fishton.isStatusBarLight()
+        if (getFishton().isStatusBarLight()
                 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             vpDetailPager.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
@@ -75,9 +73,9 @@ public class DetailActivity extends BaseActivity
 
     private void initCountButton(){
         btnDetailCount.unselect();
-        btnDetailCount.setCircleColor(fishton.getColorActionBar());
-        btnDetailCount.setTextColor(fishton.getColorActionBarTitle());
-        btnDetailCount.setStrokeColor(fishton.getColorSelectCircleStroke());
+        btnDetailCount.setCircleColor(getFishton().getColorActionBar());
+        btnDetailCount.setTextColor(getFishton().getColorActionBarTitle());
+        btnDetailCount.setStrokeColor(getFishton().getColorSelectCircleStroke());
         btnDetailCount.setOnClickListener(this);
     }
 
@@ -86,14 +84,14 @@ public class DetailActivity extends BaseActivity
     }
 
     private void initPager(){
-        if (fishton.getPickerImages().isEmpty()) {
+        if (getFishton().getPickerImages().isEmpty()) {
             Toast.makeText(this, R.string.msg_error, Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
-        onCheckStateChange(fishton.getPickerImages().get(initPosition));
+        onCheckStateChange(getFishton().getPickerImages().get(initPosition));
 
-        DetailViewPagerAdapter adapter = new DetailViewPagerAdapter(fishton.getPickerImages());
+        DetailViewPagerAdapter adapter = new DetailViewPagerAdapter(getFishton().getPickerImages());
 
         vpDetailPager.setAdapter(adapter);
         vpDetailPager.setCurrentItem(initPosition);
@@ -101,10 +99,10 @@ public class DetailActivity extends BaseActivity
     }
 
     public void onCheckStateChange(Uri image) {
-        boolean isContained = fishton.getSelectedImages().contains(image);
+        boolean isContained = getFishton().getSelectedImages().contains(image);
         if (isContained) {
             updateRadioButton(btnDetailCount,
-                    String.valueOf(fishton.getSelectedImages().indexOf(image) + 1));
+                    String.valueOf(getFishton().getSelectedImages().indexOf(image) + 1));
         } else {
             btnDetailCount.unselect();
         }
@@ -112,7 +110,7 @@ public class DetailActivity extends BaseActivity
 
 
     public void updateRadioButton(RadioWithTextButton v, String text) {
-        if (fishton.getMaxCount() == 1)
+        if (getFishton().getMaxCount() == 1)
             v.setDrawable(ContextCompat.getDrawable(v.getContext(), R.drawable.ic_done_white_24dp));
         else
             v.setText(text);
@@ -125,21 +123,21 @@ public class DetailActivity extends BaseActivity
 
     @Override
     public void onClick(View v) {
-        if (fishton.getPickerImages().isEmpty()) return;
+        if (getFishton().getPickerImages().isEmpty()) return;
         int id = v.getId();
         if (id == R.id.btn_detail_count) {
-            Uri image = fishton.getPickerImages().get(vpDetailPager.getCurrentItem());
-            if (fishton.getSelectedImages().contains(image)) {
-                fishton.getSelectedImages().remove(image);
+            Uri image = getFishton().getPickerImages().get(vpDetailPager.getCurrentItem());
+            if (getFishton().getSelectedImages().contains(image)) {
+                getFishton().getSelectedImages().remove(image);
                 onCheckStateChange(image);
             } else {
-                if (fishton.getSelectedImages().size() == fishton.getMaxCount()) {
-                    Snackbar.make(v, fishton.getMessageLimitReached(), Snackbar.LENGTH_SHORT).show();
+                if (getFishton().getSelectedImages().size() == getFishton().getMaxCount()) {
+                    Snackbar.make(v, getFishton().getMessageLimitReached(), Snackbar.LENGTH_SHORT).show();
                 } else {
-                    fishton.getSelectedImages().add(image);
+                    getFishton().getSelectedImages().add(image);
                     onCheckStateChange(image);
 
-                    if (fishton.isAutomaticClose() && fishton.getSelectedImages().size() == fishton.getMaxCount())
+                    if (getFishton().isAutomaticClose() && getFishton().getSelectedImages().size() == getFishton().getMaxCount())
                         finishActivity();
                 }
             }
@@ -156,8 +154,8 @@ public class DetailActivity extends BaseActivity
 
     @Override
     public void onPageSelected(int position) {
-        if (!fishton.getPickerImages().isEmpty()) {
-            onCheckStateChange(fishton.getPickerImages().get(position));
+        if (!getFishton().getPickerImages().isEmpty()) {
+            onCheckStateChange(getFishton().getPickerImages().get(position));
         }
     }
 

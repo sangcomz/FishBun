@@ -15,9 +15,9 @@ _FishBun_ is a highly customizable image picker for Android.
 <img src="/pic/fishbuns.png">
 
 
-## What's New in _FishBun_ 0.11.4? :tada:
+## What's New in _FishBun_ 0.12.0? :tada:
 
-- Can specify a detailed folder📁 [#205](https://github.com/sangcomz/FishBun/issues/205)
+- Change `Define.ALBUM_REQUEST_CODE` -> `FishBun.FISHBUN_REQUEST_CODE`
 
 
 ## Customizable Styles
@@ -152,7 +152,7 @@ and implement `OnActivityResult`:
                                     Intent imageData) {
         super.onActivityResult(requestCode, resultCode, imageData);
         switch (requestCode) {
-            case Define.ALBUM_REQUEST_CODE:
+            case FishBun.FISHBUN_REQUEST_CODE:
                 if (resultCode == RESULT_OK) {
                     // path = imageData.getStringArrayListExtra(Define.INTENT_PATH);
                     // you can get an image path(ArrayList<String>) on <0.6.2

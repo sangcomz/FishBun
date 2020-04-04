@@ -10,9 +10,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sangcomz.fishbun.FishBun
+import com.sangcomz.fishbun.FishBun.Companion.FISHBUN_REQUEST_CODE
 import com.sangcomz.fishbun.adapter.image.impl.GlideAdapter
 import com.sangcomz.fishbun.adapter.image.impl.PicassoAdapter
-import com.sangcomz.fishbun.define.Define
 import kotlinx.android.synthetic.main.activity_withactivity.*
 import java.util.*
 
@@ -46,8 +46,8 @@ class WithActivityActivityKt : AppCompatActivity() {
     ) {
         super.onActivityResult(requestCode, resultCode, imageData)
 
-        if (requestCode == Define.ALBUM_REQUEST_CODE && resultCode == RESULT_OK) {
-            path = imageData!!.getParcelableArrayListExtra(Define.INTENT_PATH)
+        if (requestCode == FishBun.FISHBUN_REQUEST_CODE && resultCode == RESULT_OK) {
+            path = imageData!!.getParcelableArrayListExtra(FishBun.INTENT_PATH)
             imageAdapter.changePath(path)
         }
     }

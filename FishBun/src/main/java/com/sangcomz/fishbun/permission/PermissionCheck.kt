@@ -11,15 +11,11 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.sangcomz.fishbun.R
-import com.sangcomz.fishbun.define.Define
 
 /**
  * Created by sangc on 2015-10-12.
  */
 class PermissionCheck(private val context: Context) {
-
-    private val define = Define()
-
     private fun checkPermission(permissionList: List<String>, requestCode: Int): Boolean {
         if (context !is Activity) return false
 
@@ -46,15 +42,15 @@ class PermissionCheck(private val context: Context) {
     }
 
     @TargetApi(Build.VERSION_CODES.M)
-    fun checkStoragePermission(): Boolean {
+    fun checkStoragePermission(requestCode: Int): Boolean {
         return checkPermission(
             arrayListOf(READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE),
-            define.PERMISSION_STORAGE
+            requestCode
         )
     }
 
     @TargetApi(Build.VERSION_CODES.M)
-    fun checkCameraPermission(): Boolean {
+    fun checkCameraPermission(requestCode: Int): Boolean {
         try {
             val info = context.packageManager.getPackageInfo(
                 context.packageName,
@@ -64,7 +60,7 @@ class PermissionCheck(private val context: Context) {
             val permissions = info.requestedPermissions
 
             return if (permissions?.contains(CAMERA) == true) {
-                checkPermission(listOf(CAMERA), define.PERMISSION_CAMERA)
+                checkPermission(listOf(CAMERA), requestCode)
             } else {
                 false
             }

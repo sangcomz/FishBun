@@ -13,7 +13,6 @@ import com.sangcomz.fishbun.FishBun
 import com.sangcomz.fishbun.MimeType
 import com.sangcomz.fishbun.adapter.image.impl.GlideAdapter
 import com.sangcomz.fishbun.adapter.image.impl.PicassoAdapter
-import com.sangcomz.fishbun.define.Define
 import kotlinx.android.synthetic.main.activity_withactivity.*
 import java.util.*
 
@@ -47,8 +46,8 @@ class WithActivityActivity : AppCompatActivity() {
     ) {
         super.onActivityResult(requestCode, resultCode, imageData)
 
-        if (requestCode == Define.ALBUM_REQUEST_CODE && resultCode == RESULT_OK) {
-            path = imageData!!.getParcelableArrayListExtra(Define.INTENT_PATH)
+        if (requestCode == FishBun.FISHBUN_REQUEST_CODE && resultCode == RESULT_OK) {
+            path = imageData!!.getParcelableArrayListExtra(FishBun.INTENT_PATH)
             imageAdapter.changePath(path)
         }
     }
@@ -69,10 +68,8 @@ class WithActivityActivity : AppCompatActivity() {
                         .setImageAdapter(GlideAdapter())
                         .setIsUseAllDoneButton(true)
                         .setCamera(true)
-                        .exceptMimeType(listOf(MimeType.GIF))
-                        .setSpecifyFolderList(listOf("SNOW"))
-                        .setMenuDoneText("Choose")
-                        .setMenuAllDoneText("Choose All")
+//                        .setSpecifyFolderList(listOf("Camera"))
+                        .exceptMimeType(listOf(MimeType.PNG))
                         .startAlbum()
                 }
                 //dark

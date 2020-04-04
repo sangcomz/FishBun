@@ -1,4 +1,4 @@
-package com.sangcomz.fishbun.adapter.view
+package com.sangcomz.fishbun.ui.detail
 
 import android.net.Uri
 import androidx.constraintlayout.widget.ConstraintLayout
