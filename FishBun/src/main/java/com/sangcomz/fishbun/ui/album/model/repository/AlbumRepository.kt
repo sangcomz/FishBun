@@ -8,12 +8,13 @@ import com.sangcomz.fishbun.ui.album.model.AlbumMenuViewData
 import com.sangcomz.fishbun.ui.album.model.AlbumMetaData
 import com.sangcomz.fishbun.ui.album.model.AlbumViewData
 import com.sangcomz.fishbun.ui.detail.model.DetailImageViewData
+import com.sangcomz.fishbun.util.future.CallableFutureTask
 import java.util.concurrent.Future
 
 interface AlbumRepository {
-    fun getAlbumList(): Future<List<Album>>
+    fun getAlbumList(): CallableFutureTask<List<Album>>
 
-    fun getAlbumMetaData(albumId: Long): Future<AlbumMetaData>
+    fun getAlbumMetaData(albumId: Long): CallableFutureTask<AlbumMetaData>
 
     fun getAlbumViewData(): AlbumViewData
 

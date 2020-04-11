@@ -2,49 +2,52 @@ package com.sangcomz.fishbun.ui.album.mvp
 
 import android.net.Uri
 import android.os.Environment
-import com.sangcomz.fishbun.MimeType
 import com.sangcomz.fishbun.ui.album.model.Album
 import com.sangcomz.fishbun.ui.album.model.repository.AlbumRepository
 import com.sangcomz.fishbun.ui.album.AlbumContract
 import com.sangcomz.fishbun.ui.album.model.AlbumMenuViewData
+import com.sangcomz.fishbun.util.UiHandler
+import com.sangcomz.fishbun.util.future.CallableFutureTask
+import com.sangcomz.fishbun.util.future.FutureCallback
 import java.util.ArrayList
-import java.util.concurrent.ExecutionException
-import java.util.concurrent.Future
 
 class AlbumPresenter(
     private val albumView: AlbumContract.View,
-    private val albumRepository: AlbumRepository
+    private val albumRepository: AlbumRepository,
+    private val uiHandler: UiHandler
 ) : AlbumContract.Presenter {
 
-    private var albumListFuture: Future<List<Album>>? = null
+    private var albumListFuture: CallableFutureTask<List<Album>>? = null
 
     override fun loadAlbumList() {
         albumListFuture = albumRepository.getAlbumList()
 
         albumListFuture?.let {
-            try {
-                val albumList = it.get()
-                if (albumList.isNotEmpty()) {
-                    changeToolbarTitle()
-                    albumView.showAlbumList(
-                        it.get(),
-                        albumRepository.getImageAdapter(),
-                        albumRepository.getAlbumViewData()
-                    )
-                } else {
-                    albumView.showEmptyView()
+            it.execute(object : FutureCallback<List<Album>> {
+                override fun onSuccess(result: List<Album>) {
+                    uiHandler.run {
+                        if (result.isNotEmpty()) {
+                            changeToolbarTitle()
+                            albumView.showAlbumList(
+                                it.get(),
+                                albumRepository.getImageAdapter(),
+                                albumRepository.getAlbumViewData()
+                            )
+                        } else {
+                            albumView.showEmptyView()
+                        }
+                    }
                 }
-            } catch (e: ExecutionException) {
-                e.printStackTrace()
-            } catch (e: InterruptedException) {
-                e.printStackTrace()
-            }
+            })
         }
     }
 
     override fun getDesignViewData() {
         val viewData = albumRepository.getAlbumViewData()
         with(albumView) {
+            setRecyclerView(viewData)
+            setToolBar(viewData)
+            changeToolbarTitle()
         }
     }
 

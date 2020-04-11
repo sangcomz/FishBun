@@ -4,25 +4,28 @@ import android.content.ContentResolver
 import android.net.Uri
 import android.provider.MediaStore
 import android.provider.MediaStore.Images.Media.*
+import android.telecom.Call
 import com.sangcomz.fishbun.MimeType
+import com.sangcomz.fishbun.ext.equalsMimeType
 import com.sangcomz.fishbun.ui.album.model.Album
 import com.sangcomz.fishbun.ui.album.model.AlbumMetaData
-import com.sangcomz.fishbun.ext.equalsMimeType
+import com.sangcomz.fishbun.util.future.CallableFutureTask
+import com.sangcomz.fishbun.util.future.FutureCallback
 import java.util.*
 import java.util.concurrent.Callable
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
+import java.util.concurrent.ThreadFactory
 import kotlin.collections.LinkedHashMap
 
 class ImageDataSourceImpl(private val contentResolver: ContentResolver) : ImageDataSource {
 
-    private val executorService = Executors.newSingleThreadExecutor()
-
     override fun getAlbumList(
         allViewTitle: String, exceptMimeTypeList: List<MimeType>,
         specifyFolderList: List<String>
-    ): Future<List<Album>> {
-        return executorService.submit(Callable<List<Album>> {
+    ): CallableFutureTask<List<Album>> {
+        return CallableFutureTask(Callable<List<Album>> {
+            Thread.sleep(5000)
             val albumDataMap = LinkedHashMap<Long, AlbumData>()
             val orderBy = "$_ID DESC"
             val projection = arrayOf(_ID, BUCKET_DISPLAY_NAME, MIME_TYPE, BUCKET_ID)
@@ -105,15 +108,14 @@ class ImageDataSourceImpl(private val contentResolver: ContentResolver) : ImageD
 
             albumList
         })
-
     }
 
     override fun getAllMediaThumbnailsPath(
         bucketId: Long,
         exceptMimeTypeList: List<MimeType>,
         specifyFolderList: List<String>
-    ): Future<List<Uri>> {
-        return executorService.submit(Callable<List<Uri>> {
+    ): CallableFutureTask<List<Uri>> {
+        return CallableFutureTask(Callable<List<Uri>> {
             val imageUris = arrayListOf<Uri>()
             val selection = "$BUCKET_ID = ?"
             val bucketId: String = bucketId.toString()
@@ -155,8 +157,8 @@ class ImageDataSourceImpl(private val contentResolver: ContentResolver) : ImageD
         bucketId: Long,
         exceptMimeTypeList: List<MimeType>,
         specifyFolderList: List<String>
-    ): Future<AlbumMetaData> {
-        return executorService.submit(Callable<AlbumMetaData> {
+    ): CallableFutureTask<AlbumMetaData> {
+        return CallableFutureTask(Callable<AlbumMetaData> {
             val selection = "$BUCKET_ID = ?"
             val bucketId: String = bucketId.toString()
             val sort = "$_ID DESC"
@@ -199,8 +201,8 @@ class ImageDataSourceImpl(private val contentResolver: ContentResolver) : ImageD
         })
     }
 
-    override fun getDirectoryPath(bucketId: Long): Future<String> {
-        return executorService.submit(Callable<String> {
+    override fun getDirectoryPath(bucketId: Long): CallableFutureTask<String> {
+        return CallableFutureTask(Callable<String> {
             var path = ""
             val selection = "$BUCKET_ID = ?"
             val bucketId: String = bucketId.toString()

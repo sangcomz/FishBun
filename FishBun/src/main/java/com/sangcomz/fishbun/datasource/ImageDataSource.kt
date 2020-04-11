@@ -4,6 +4,7 @@ import android.net.Uri
 import com.sangcomz.fishbun.MimeType
 import com.sangcomz.fishbun.ui.album.model.Album
 import com.sangcomz.fishbun.ui.album.model.AlbumMetaData
+import com.sangcomz.fishbun.util.future.CallableFutureTask
 import java.util.concurrent.Future
 
 interface ImageDataSource {
@@ -11,19 +12,19 @@ interface ImageDataSource {
         allViewTitle: String,
         exceptMimeTypeList: List<MimeType>,
         specifyFolderList: List<String>
-    ): Future<List<Album>>
+    ): CallableFutureTask<List<Album>>
 
     fun getAllMediaThumbnailsPath(
         bucketId: Long,
         exceptMimeTypeList: List<MimeType>,
         specifyFolderList: List<String>
-    ): Future<List<Uri>>
+    ): CallableFutureTask<List<Uri>>
 
     fun getAlbumMetaData(
         bucketId: Long,
         exceptMimeTypeList: List<MimeType>,
         specifyFolderList: List<String>
-    ): Future<AlbumMetaData>
+    ): CallableFutureTask<AlbumMetaData>
 
-    fun getDirectoryPath(bucketId: Long): Future<String>
+    fun getDirectoryPath(bucketId: Long): CallableFutureTask<String>
 }

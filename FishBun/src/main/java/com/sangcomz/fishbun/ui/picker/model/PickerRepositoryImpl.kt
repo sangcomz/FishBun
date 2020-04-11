@@ -5,6 +5,7 @@ import com.sangcomz.fishbun.MimeType
 import com.sangcomz.fishbun.datasource.FishBunDataSource
 import com.sangcomz.fishbun.datasource.ImageDataSource
 import com.sangcomz.fishbun.ui.picker.model.PickerRepository
+import com.sangcomz.fishbun.util.future.CallableFutureTask
 import java.util.concurrent.Future
 
 class PickerRepositoryImpl(
@@ -12,7 +13,7 @@ class PickerRepositoryImpl(
     private val fishBunDataSource: FishBunDataSource
 ) :
     PickerRepository {
-    override fun getAllMediaThumbnailsPath(bucketId: Long): Future<List<Uri>> {
+    override fun getAllMediaThumbnailsPath(bucketId: Long): CallableFutureTask<List<Uri>> {
         return imageDataSource.getAllMediaThumbnailsPath(
             bucketId,
             fishBunDataSource.getExceptMimeTypeList(),
@@ -20,7 +21,7 @@ class PickerRepositoryImpl(
         )
     }
 
-    override fun getDirectoryPath(bucketId: Long): Future<String> {
+    override fun getDirectoryPath(bucketId: Long): CallableFutureTask<String> {
         return imageDataSource.getDirectoryPath(bucketId)
     }
 

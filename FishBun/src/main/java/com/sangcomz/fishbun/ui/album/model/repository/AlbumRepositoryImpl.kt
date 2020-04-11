@@ -8,6 +8,7 @@ import com.sangcomz.fishbun.ui.album.model.Album
 import com.sangcomz.fishbun.ui.album.model.AlbumMenuViewData
 import com.sangcomz.fishbun.ui.album.model.AlbumMetaData
 import com.sangcomz.fishbun.ui.album.model.AlbumViewData
+import com.sangcomz.fishbun.util.future.CallableFutureTask
 import java.util.concurrent.Future
 
 class AlbumRepositoryImpl(
@@ -17,7 +18,7 @@ class AlbumRepositoryImpl(
 
     private var viewData: AlbumViewData? = null
 
-    override fun getAlbumList(): Future<List<Album>> {
+    override fun getAlbumList(): CallableFutureTask<List<Album>> {
         return imageDataSource.getAlbumList(
             fishBunDataSource.getAllViewTitle(),
             fishBunDataSource.getExceptMimeTypeList(),
@@ -25,7 +26,7 @@ class AlbumRepositoryImpl(
         )
     }
 
-    override fun getAlbumMetaData(albumId: Long): Future<AlbumMetaData> {
+    override fun getAlbumMetaData(albumId: Long): CallableFutureTask<AlbumMetaData> {
         return imageDataSource.getAlbumMetaData(
             albumId,
             fishBunDataSource.getExceptMimeTypeList(),

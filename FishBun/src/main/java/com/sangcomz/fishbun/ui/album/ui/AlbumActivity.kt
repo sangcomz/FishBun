@@ -35,6 +35,7 @@ import com.sangcomz.fishbun.ui.album.listener.AlbumClickListener
 import com.sangcomz.fishbun.ui.album.model.AlbumMenuViewData
 import com.sangcomz.fishbun.ui.album.model.AlbumViewData
 import com.sangcomz.fishbun.ui.picker.PickerActivity
+import com.sangcomz.fishbun.util.MainUiHandler
 import com.sangcomz.fishbun.util.SingleMediaScanner
 import com.sangcomz.fishbun.util.isLandscape
 import com.sangcomz.fishbun.util.setStatusBarColor
@@ -49,7 +50,8 @@ class AlbumActivity : BaseActivity(),
             AlbumRepositoryImpl(
                 ImageDataSourceImpl(contentResolver),
                 FishBunDataSourceImpl(Fishton.getInstance())
-            )
+            ),
+            MainUiHandler()
         )
     }
     private var groupEmptyView: Group? = null
@@ -61,6 +63,7 @@ class AlbumActivity : BaseActivity(),
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_photo_album)
         initView()
+        albumPresenter.getDesignViewData()
         if (checkPermission()) albumPresenter.loadAlbumList()
     }
 
@@ -248,12 +251,10 @@ class AlbumActivity : BaseActivity(),
     }
 
     override fun changeToolbarTitle(selectedImageCount: Int, albumViewData: AlbumViewData) {
-        if (adapter == null) return
-
         supportActionBar?.apply {
             title =
                 if (albumViewData.maxCount == 1 || !albumViewData.isShowCount) albumViewData.titleActionBar
-                else "${albumViewData.titleActionBar} ($selectedImageCount/${albumViewData.maxCount}"
+                else "${albumViewData.titleActionBar} ($selectedImageCount/${albumViewData.maxCount})"
         }
     }
 
@@ -302,8 +303,8 @@ class AlbumActivity : BaseActivity(),
             adapter = AlbumListAdapter(this, albumViewData.albumThumbnailSize, imageAdapter)
         }
         adapter?.let {
-            it.setAlbumList(albumList)
             recyclerAlbumList?.adapter = it
+            it.setAlbumList(albumList)
             it.notifyDataSetChanged()
         }
     }
