@@ -6,6 +6,8 @@ import com.sangcomz.fishbun.adapter.image.ImageAdapter
 import com.sangcomz.fishbun.ui.album.model.AlbumMenuViewData
 import com.sangcomz.fishbun.ui.album.model.AlbumViewData
 import com.sangcomz.fishbun.ui.detail.model.DetailImageViewData
+import com.sangcomz.fishbun.ui.picker.model.PickerMenuViewData
+import com.sangcomz.fishbun.ui.picker.model.PickerViewData
 
 interface FishBunDataSource {
     fun getSelectedImageList(): List<Uri>
@@ -24,4 +26,9 @@ interface FishBunDataSource {
     fun getAlbumViewData(): AlbumViewData
     fun getImageAdapter(): ImageAdapter
     fun gatAlbumMenuViewData(): AlbumMenuViewData
+    fun getPickerViewData(): PickerViewData
+    fun setCurrentPickerImageList(pickerImageList: List<Uri>)
+    fun hasCameraInPickerPage(): Boolean
+    fun useDetailView(): Boolean
+    fun getPickerMenuViewData(): PickerMenuViewData
 }

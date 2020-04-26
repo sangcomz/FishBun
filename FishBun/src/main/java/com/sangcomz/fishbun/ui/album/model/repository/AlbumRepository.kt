@@ -10,6 +10,7 @@ import com.sangcomz.fishbun.ui.album.model.AlbumViewData
 import com.sangcomz.fishbun.ui.detail.model.DetailImageViewData
 import com.sangcomz.fishbun.util.future.CallableFutureTask
 import java.util.concurrent.Future
+import java.util.concurrent.FutureTask
 
 interface AlbumRepository {
     fun getAlbumList(): CallableFutureTask<List<Album>>
@@ -25,5 +26,6 @@ interface AlbumRepository {
     fun getAlbumMenuViewData(): AlbumMenuViewData
 
     fun isNotEnoughSelectedImages(): Boolean
+
     fun getMessageNotingSelected(): String
 }

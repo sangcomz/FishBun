@@ -4,28 +4,24 @@ import android.content.ContentResolver
 import android.net.Uri
 import android.provider.MediaStore
 import android.provider.MediaStore.Images.Media.*
-import android.telecom.Call
 import com.sangcomz.fishbun.MimeType
 import com.sangcomz.fishbun.ext.equalsMimeType
 import com.sangcomz.fishbun.ui.album.model.Album
 import com.sangcomz.fishbun.ui.album.model.AlbumMetaData
 import com.sangcomz.fishbun.util.future.CallableFutureTask
-import com.sangcomz.fishbun.util.future.FutureCallback
 import java.util.*
 import java.util.concurrent.Callable
-import java.util.concurrent.Executors
-import java.util.concurrent.Future
-import java.util.concurrent.ThreadFactory
 import kotlin.collections.LinkedHashMap
 
 class ImageDataSourceImpl(private val contentResolver: ContentResolver) : ImageDataSource {
+
+    private val addedPathList = arrayListOf<Uri>()
 
     override fun getAlbumList(
         allViewTitle: String, exceptMimeTypeList: List<MimeType>,
         specifyFolderList: List<String>
     ): CallableFutureTask<List<Album>> {
         return CallableFutureTask(Callable<List<Album>> {
-            Thread.sleep(5000)
             val albumDataMap = LinkedHashMap<Long, AlbumData>()
             val orderBy = "$_ID DESC"
             val projection = arrayOf(_ID, BUCKET_DISPLAY_NAME, MIME_TYPE, BUCKET_ID)
@@ -110,7 +106,7 @@ class ImageDataSourceImpl(private val contentResolver: ContentResolver) : ImageD
         })
     }
 
-    override fun getAllMediaThumbnailsPath(
+    override fun getAllBucketImageUri(
         bucketId: Long,
         exceptMimeTypeList: List<MimeType>,
         specifyFolderList: List<String>
@@ -230,6 +226,18 @@ class ImageDataSourceImpl(private val contentResolver: ContentResolver) : ImageD
         })
     }
 
+    override fun addAddedPath(addedImage: Uri) {
+        addedPathList.add(addedImage)
+    }
+
+    override fun addAllAddedPath(addedImagePathList: List<Uri>) {
+        addedPathList.addAll(addedImagePathList)
+    }
+
+    override fun getAddedPathList(): List<Uri> {
+        return addedPathList
+    }
+
     private fun getPathDir(path: String, fileName: String): String {
         return path.replace("/$fileName", "")
     }
@@ -261,5 +269,9 @@ class ImageDataSourceImpl(private val contentResolver: ContentResolver) : ImageD
             || isNotContainsSpecifyFolderList(specifyFolderList, bucketDisplayName)
             )
 
-    data class AlbumData(val displayName: String, val thumbnailPath: Uri, var imageCount: Int)
+    private data class AlbumData(
+        val displayName: String,
+        val thumbnailPath: Uri,
+        var imageCount: Int
+    )
 }

@@ -10,6 +10,7 @@ import com.sangcomz.fishbun.ui.album.model.AlbumMetaData
 import com.sangcomz.fishbun.ui.album.model.AlbumViewData
 import com.sangcomz.fishbun.util.future.CallableFutureTask
 import java.util.concurrent.Future
+import java.util.concurrent.FutureTask
 
 class AlbumRepositoryImpl(
     private val imageDataSource: ImageDataSource,

@@ -254,7 +254,12 @@ class AlbumActivity : BaseActivity(),
         supportActionBar?.apply {
             title =
                 if (albumViewData.maxCount == 1 || !albumViewData.isShowCount) albumViewData.titleActionBar
-                else "${albumViewData.titleActionBar} ($selectedImageCount/${albumViewData.maxCount})"
+                else getString(
+                    R.string.title_toolbar,
+                    albumViewData.titleActionBar,
+                    selectedImageCount,
+                    albumViewData.maxCount
+                )
         }
     }
 

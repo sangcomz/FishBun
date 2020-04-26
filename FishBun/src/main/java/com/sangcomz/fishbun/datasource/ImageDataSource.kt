@@ -14,7 +14,7 @@ interface ImageDataSource {
         specifyFolderList: List<String>
     ): CallableFutureTask<List<Album>>
 
-    fun getAllMediaThumbnailsPath(
+    fun getAllBucketImageUri(
         bucketId: Long,
         exceptMimeTypeList: List<MimeType>,
         specifyFolderList: List<String>
@@ -27,4 +27,10 @@ interface ImageDataSource {
     ): CallableFutureTask<AlbumMetaData>
 
     fun getDirectoryPath(bucketId: Long): CallableFutureTask<String>
+
+    fun addAddedPath(addedImage: Uri)
+
+    fun addAllAddedPath(addedImageList: List<Uri>)
+
+    fun getAddedPathList(): List<Uri>
 }

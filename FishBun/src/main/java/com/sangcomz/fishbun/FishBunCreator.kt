@@ -63,9 +63,15 @@ class FishBunCreator(private val fishBun: FishBun, private val fishton: Fishton)
         fishton.isStatusBarLight = isStatusBarLight
     }
 
+    @Deprecated("instead setCamera(count)", ReplaceWith("hasCameraInPickerPage(mimeType)"))
     override fun setCamera(isCamera: Boolean): FishBunCreator = this.apply {
-        fishton.isCamera = isCamera
+        fishton.hasCameraInPickerPage = isCamera
     }
+
+    override fun hasCameraInPickerPage(hasCamera: Boolean): FishBunCreator = this.apply {
+        fishton.hasCameraInPickerPage = hasCamera
+    }
+
 
     override fun setRequestCode(requestCode: Int): FishBunCreator = this.apply {
         this.requestCode = requestCode
@@ -196,8 +202,8 @@ class FishBunCreator(private val fishBun: FishBun, private val fishton: Fishton)
 
     private fun exceptionHandling() {
         //TODO support camera
-        if (fishton.isCamera) {
-            fishton.isCamera = fishton.specifyFolderList.isEmpty()
+        if (fishton.hasCameraInPickerPage) {
+            fishton.hasCameraInPickerPage = fishton.specifyFolderList.isEmpty()
         }
     }
 }

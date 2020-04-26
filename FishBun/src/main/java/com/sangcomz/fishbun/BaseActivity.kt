@@ -12,7 +12,6 @@ abstract class BaseActivity : AppCompatActivity() {
 
     protected val cameraUtil: CameraUtil by lazy { CameraUtil() }
     protected val permissionCheck: PermissionCheck by lazy { PermissionCheck(this) }
-    protected val fishton: Fishton by lazy { getInstance() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

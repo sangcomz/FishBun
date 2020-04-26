@@ -13,7 +13,7 @@ import java.util.ArrayList
  */
 class Fishton {
     lateinit var imageAdapter: ImageAdapter
-    var pickerImages: List<Uri> = emptyList()
+    var currentPickerImageList: List<Uri> = emptyList()
 
     //BaseParams
     var maxCount: Int = 0
@@ -35,7 +35,7 @@ class Fishton {
     var colorStatusBar: Int = 0
 
     var isStatusBarLight: Boolean = false
-    var isCamera: Boolean = false
+    var hasCameraInPickerPage: Boolean = false
 
     var albumThumbnailSize: Int = 0
 
@@ -89,7 +89,7 @@ class Fishton {
         colorStatusBar = Color.parseColor("#303F9F")
 
         isStatusBarLight = false
-        isCamera = false
+        hasCameraInPickerPage = false
 
         albumThumbnailSize = Integer.MAX_VALUE
 

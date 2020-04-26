@@ -11,4 +11,5 @@
     <string name="msg_loading_image">Loading…</string>
     <string name="image">image</string>
     <string name="msg_error">There was a temporary error. Please try again in a few minutes.</string>
+    <string name="title_toolbar" formatted="false" translatable="false">%s (%d/%d)</string>
 </resources>
