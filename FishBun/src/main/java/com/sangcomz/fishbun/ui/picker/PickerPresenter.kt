@@ -64,6 +64,7 @@ class PickerPresenter internal constructor(
                     pickerRepository.getImageAdapter(),
                     pickerRepository.hasCameraInPickerPage()
                 )
+                setToolbarTitle()
             }
         }
     }
@@ -137,7 +138,7 @@ class PickerPresenter internal constructor(
         val pickerViewData = pickerRepository.getPickerViewData()
 
         if (pickerRepository.isLimitReached() && pickerViewData.isAutomaticClose) {
-            pickerView.finishActivityWithResult(pickerRepository.getSelectedImageList())
+            finish()
         } else {
             getPickerListItem()
         }
@@ -211,7 +212,7 @@ class PickerPresenter internal constructor(
         pickerRepository.selectImage(imageUri)
 
         if (pickerRepository.checkForFinish()) {
-            pickerView.finishActivity()
+            finish()
         } else {
             onCheckStateChange(position, imageUri)
             setToolbarTitle()
@@ -242,5 +243,13 @@ class PickerPresenter internal constructor(
         clearCache: Boolean = false
     ): CallableFutureTask<List<Uri>> {
         return pickerRepository.getAllBucketImageUri(albumId, clearCache)
+    }
+
+    private fun finish() {
+        if (pickerRepository.isStartInAllView()) {
+            pickerView.finishActivityWithResult(pickerRepository.getSelectedImageList())
+        } else {
+            pickerView.finishActivity()
+        }
     }
 }

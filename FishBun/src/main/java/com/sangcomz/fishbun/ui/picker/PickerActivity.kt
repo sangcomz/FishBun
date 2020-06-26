@@ -113,7 +113,6 @@ class PickerActivity : BaseActivity(),
             ENTER_DETAIL_REQUEST_CODE -> {
                 if (resultCode == Activity.RESULT_OK) {
                     pickerPresenter.onDetailImageActivityResult()
-
                 }
             }
         }

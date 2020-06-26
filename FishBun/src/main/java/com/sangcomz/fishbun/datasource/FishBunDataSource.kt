@@ -31,4 +31,5 @@ interface FishBunDataSource {
     fun hasCameraInPickerPage(): Boolean
     fun useDetailView(): Boolean
     fun getPickerMenuViewData(): PickerMenuViewData
+    fun isStartInAllView(): Boolean
 }

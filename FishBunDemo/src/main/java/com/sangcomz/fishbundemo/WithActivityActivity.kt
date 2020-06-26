@@ -67,9 +67,6 @@ class WithActivityActivity : AppCompatActivity() {
                     FishBun.with(this@WithActivityActivity)
                         .setImageAdapter(GlideAdapter())
                         .setSelectedImages(path)
-                        .setMaxCount(2)
-                        .setMinCount(1)
-                        .hasCameraInPickerPage(true)
                         .startAlbum()
                 }
                 //dark

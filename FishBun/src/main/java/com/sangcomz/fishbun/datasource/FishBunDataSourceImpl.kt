@@ -94,4 +94,6 @@ class FishBunDataSourceImpl(private val fishton: Fishton) : FishBunDataSource {
         fishton.strAllDoneMenu,
         fishton.isUseAllDoneButton
     )
+
+    override fun isStartInAllView() = fishton.isStartInAllView
 }

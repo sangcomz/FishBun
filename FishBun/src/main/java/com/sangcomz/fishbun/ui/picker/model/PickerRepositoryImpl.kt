@@ -95,4 +95,6 @@ class PickerRepositoryImpl(
     override fun checkForFinish(): Boolean =
         fishBunDataSource.getIsAutomaticClose()
                 && fishBunDataSource.getSelectedImageList().size == fishBunDataSource.getMaxCount()
+
+    override fun isStartInAllView() = fishBunDataSource.isStartInAllView()
 }

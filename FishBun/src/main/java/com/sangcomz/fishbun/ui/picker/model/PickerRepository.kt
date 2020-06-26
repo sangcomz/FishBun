@@ -59,4 +59,6 @@ interface PickerRepository {
     fun getMessageNotingSelected(): String
 
     fun checkForFinish(): Boolean
+
+    fun isStartInAllView(): Boolean
 }
