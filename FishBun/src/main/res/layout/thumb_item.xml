@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.sangcomz.fishbun.util.SquareFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_margin="1dp"
     android:background="#d9d9d9"
     android:clipChildren="false"
@@ -10,21 +11,31 @@
     <ImageView
         android:id="@+id/img_thumb_image"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="?attr/selectableItemBackgroundBorderless"
+        android:layout_height="0dp"
+        android:background="?attr/selectableItemBackground"
         android:clipChildren="false"
         android:clipToPadding="false"
-        android:cropToPadding="false" />
+        android:cropToPadding="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@drawable/drawable_detail_gradient"
-        android:layout_height="match_parent" />
+        app:layout_constraintBottom_toBottomOf="@id/img_thumb_image"
+        app:layout_constraintLeft_toLeftOf="@id/img_thumb_image"
+        app:layout_constraintRight_toRightOf="@id/img_thumb_image"
+        app:layout_constraintTop_toTopOf="@id/img_thumb_image" />
 
     <com.sangcomz.fishbun.util.RadioWithTextButton
         android:id="@+id/btn_thumb_count"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_gravity="right"
-        android:layout_margin="5dp" />
-</com.sangcomz.fishbun.util.SquareFrameLayout>
+        android:layout_margin="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

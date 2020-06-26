@@ -15,9 +15,9 @@ _FishBun_ is a highly customizable image picker for Android.
 <img src="/pic/fishbuns.png">
 
 
-## What's New in _FishBun_ 0.11.4? :tada:
+## What's New in _FishBun_ 1.0.0-alpha01? :tada:
 
-- Can specify a detailed folder📁 [#205](https://github.com/sangcomz/FishBun/issues/205)
+- Refactoring for rapid development:rocket::rocket::rocket:
 
 
 ## Customizable Styles
@@ -122,7 +122,7 @@ Setting up _FishBun_ requires to add this Gradle configuration:
         compile 'com.github.bumptech.glide:glide:4.9.0'
                 
         // Android plugin 3.0.0 or higher.
-        implementation 'com.sangcomz:FishBun:0.11.4'
+        implementation 'com.sangcomz:FishBun:1.0.0-alpha01'
         
         implementation 'com.squareup.picasso:picasso:2.5.2'
         or
@@ -152,7 +152,7 @@ and implement `OnActivityResult`:
                                     Intent imageData) {
         super.onActivityResult(requestCode, resultCode, imageData);
         switch (requestCode) {
-            case Define.ALBUM_REQUEST_CODE:
+            case FishBun.FISHBUN_REQUEST_CODE:
                 if (resultCode == RESULT_OK) {
                     // path = imageData.getStringArrayListExtra(Define.INTENT_PATH);
                     // you can get an image path(ArrayList<String>) on <0.6.2
@@ -191,6 +191,42 @@ Various customizable features can be controlled by chained methods as in:
             .exceptMimeType(listOf(MimeType.GIF))
             .setSpecifyFolderList(arrayListOf("Screenshots", "Camera"))
             .startAlbum();
+
+### attribute
+
+|            Method Name            | Description                                                           |       Default Value      |
+|:---------------------------------:|-----------------------------------------------------------------------|:------------------------:|
+|         setSelectedImages         | Set the already selected image                                        | null |
+|             setMaxCount           | Maximum number of images selected                                     | 10 |
+|             setMinCount           | Minimum number of images selected                                     | 1 |
+|            setRequestCode         | Set RequestCode                                                       | 27 |
+|    setReachLimitAutomaticClose    | Picker automatically ends when the number of images is selected       | false |
+|       exceptMimeType              | Set file type to exclude(gif, png, jpeg, bmp, webp)                   | NONE |
+|   setAlbumThumbnailSize           | Thumbnail size of album screen                                        | 70dp |
+|      setPickerSpanCount           | Set the picker's span count                                           | 3 |
+|      setActionBarColor            | Set background color of action bar, statusBar color, set light theme  | #3F51B5, #303F9F, false  |
+|   setActionBarTitleColor          | Set the title color of the action bar                                 | #ffffff |
+|   textOnNothingSelected           | Message when nothing is selected                                      | "There is no selected image." |
+| textOnImagesSelectionLimitReached | Message when the image is already all selected                        | "Selection full. Deselect an image to choose another." |
+|     setButtonInAlbumActivity      | Set Selected button visibility in album screen                        | false |
+|       setAlbumSpanCount           | Set the album's span count                                            | 1, 2 |
+|   setAlbumSpanCountOnlyLandscape  | Set the album's span count when landscape                             | 2 |
+|    setAlbumSpanCountOnlPortrait   | Set the album's span count when portrait                              | 1 |
+|       setAllViewTitle             | Set the name of all views                                             | "All view" |
+|       setActionBarTitle           | Set the title of the action bar                                       | "Album" |
+|    setHomeAsUpIndicatorDrawable   | Customizing back button of the action bar                             | null |
+|       setDoneButtonDrawable       | Customizing done button of the action bar                             | null |
+|       setAllDoneButtonDrawable    | Customizing all done button of the action bar                         | null |
+|       setIsUseAllDoneButton       | Set whether to use the Done button                                    | false |
+|       setMenuDoneText             | Set text for Done button                                              | null |
+|       setMenuAllDoneText          | Set text for All Done button                                          | null |
+|       setMenuTextColor            | Set text color for menu                                               | Integer.MAX_VALUE |
+|       setIsUseDetailView          | Set whether to use detail screen                                      | false |
+|       setIsShowCount              | Set whether to show counting numbers                                  | false |
+|    setSelectCircleStrokeColor     | Set select circle color                                               | #c1ffffff |
+|       isStartInAllView            | Set to start with all view                                            | false |
+|       setSpecifyFolderList        | Set folder to show                                                    | NONE |
+|       hasCameraInPickerPage       | Set whether to use the camera button on picker screen                 | false |
 
 
 ## Android M Permission

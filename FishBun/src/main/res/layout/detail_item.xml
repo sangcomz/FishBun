@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <com.sangcomz.fishbun.util.TouchImageView
         android:id="@+id/img_detail_image"
         android:layout_width="0dp"
@@ -19,9 +18,9 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.5" />
 
-
     <ImageView
         android:layout_width="match_parent"
-        android:background="@drawable/drawable_detail_gradient"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:background="@drawable/drawable_detail_gradient" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
