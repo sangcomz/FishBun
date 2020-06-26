@@ -11,20 +11,6 @@ import java.util.concurrent.Future
 import kotlin.collections.ArrayList
 
 interface AlbumContract {
-    interface Presenter {
-        fun loadAlbumList()
-        fun getAlbumMetaData(albumId: Long): Future<AlbumMetaData>
-        fun getPathDir(): String
-        fun release()
-        fun getDesignViewData()
-        fun onResume()
-        fun finish()
-        fun refreshAlbumItem(position: Int, addedPathList: ArrayList<Uri>)
-        fun onSuccessTakeAPick()
-        fun getAlbumMenuViewData(callback: (AlbumMenuViewData) -> Unit)
-        fun done()
-    }
-
     interface View {
         fun showAlbumList(
             albumList: List<Album>,
@@ -39,6 +25,20 @@ interface AlbumContract {
         fun finishActivityWithResult(selectedImages: List<Uri>)
         fun refreshAlbumItem(position: Int, imagePath: ArrayList<Uri>)
         fun scanAndRefresh()
-        fun showSnackbar(message: String)
+        fun showNothingSelectedMessage(nothingSelectedMessage: String)
+        fun showMinimumImageMessage(currentSelectedCount: Int)
+    }
+
+    interface Presenter {
+        fun loadAlbumList()
+        fun getPathDir(): String
+        fun release()
+        fun getDesignViewData()
+        fun onResume()
+        fun finish()
+        fun refreshAlbumItem(position: Int, addedPathList: ArrayList<Uri>)
+        fun onSuccessTakeAPick()
+        fun getAlbumMenuViewData(callback: (AlbumMenuViewData) -> Unit)
+        fun onClickMenuDone()
     }
 }

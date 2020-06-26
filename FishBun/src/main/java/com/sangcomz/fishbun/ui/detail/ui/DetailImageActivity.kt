@@ -31,11 +31,11 @@ class DetailImageActivity : BaseActivity(), DetailImageContract.View, OnPageChan
     private val presenter: DetailImageContract.Presenter by lazy {
         DetailImagePresenter(
             this,
-            DetailImageRepositoryImpl(FishBunDataSourceImpl(Fishton.getInstance()))
+            DetailImageRepositoryImpl(FishBunDataSourceImpl(Fishton.getInstance())),
+            intent.getIntExtra(INIT_IMAGE_POSITION, -1)
         )
     }
     private var initPosition = -1
-
     private var btnDetailCount: RadioWithTextButton? = null
     private var vpDetailPager: ViewPager? = null
     private var btnDetailBack: ImageButton? = null
@@ -46,7 +46,6 @@ class DetailImageActivity : BaseActivity(), DetailImageContract.View, OnPageChan
             window.requestFeature(Window.FEATURE_CONTENT_TRANSITIONS)
         }
         setContentView(R.layout.activity_detail_activity)
-        initValue()
         initView()
         initPager()
         presenter.getDesignViewData()
@@ -57,7 +56,10 @@ class DetailImageActivity : BaseActivity(), DetailImageContract.View, OnPageChan
     }
 
     override fun updateRadioButtonWithText(text: String) {
-        btnDetailCount?.setText(text)
+        //FIXME Need to fix to work without post
+        btnDetailCount?.post {
+            btnDetailCount?.setText(text)
+        }
     }
 
     override fun updateRadioButtonWithDrawable() {
@@ -120,8 +122,8 @@ class DetailImageActivity : BaseActivity(), DetailImageContract.View, OnPageChan
             (adapter as? DetailViewPagerAdapter)?.setImages(pickerImages)
             currentItem = initPosition
         }
-        (vpDetailPager?.adapter as? DetailViewPagerAdapter)?.setImages(pickerImages)
 
+        (vpDetailPager?.adapter as? DetailViewPagerAdapter)?.setImages(pickerImages)
     }
 
     override fun finishAndShowErrorToast() {
@@ -138,8 +140,6 @@ class DetailImageActivity : BaseActivity(), DetailImageContract.View, OnPageChan
             adapter = DetailViewPagerAdapter()
             addOnPageChangeListener(this@DetailImageActivity)
         }
-
-        presenter.setInitPagerPosition(initPosition)
     }
 
     private fun initView() {
@@ -147,10 +147,6 @@ class DetailImageActivity : BaseActivity(), DetailImageContract.View, OnPageChan
         btnDetailCount = findViewById(R.id.btn_detail_count)
         btnDetailBack = findViewById(R.id.btn_detail_back)
 
-    }
-
-    private fun initValue() {
-        initPosition = intent.getIntExtra(INIT_IMAGE_POSITION, -1)
     }
 
     companion object {

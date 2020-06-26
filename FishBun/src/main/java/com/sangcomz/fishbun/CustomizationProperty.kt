@@ -59,5 +59,6 @@ interface CustomizationProperty {
     fun isStartInAllView(isStartInAllView: Boolean): FishBunCreator
 
     fun setSpecifyFolderList(specifyFolderList: List<String>): FishBunCreator
+
     fun hasCameraInPickerPage(isCamera: Boolean): FishBunCreator
 }

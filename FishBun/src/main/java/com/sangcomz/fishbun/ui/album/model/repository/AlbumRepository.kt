@@ -21,11 +21,11 @@ interface AlbumRepository {
 
     fun getImageAdapter(): ImageAdapter
 
-    fun selectedImages(): List<Uri>
+    fun getSelectedImageList(): List<Uri>
 
     fun getAlbumMenuViewData(): AlbumMenuViewData
 
-    fun isNotEnoughSelectedImages(): Boolean
-
     fun getMessageNotingSelected(): String
+
+    fun getMinCount(): Int
 }

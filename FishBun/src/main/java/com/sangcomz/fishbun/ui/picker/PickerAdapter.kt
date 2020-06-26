@@ -1,6 +1,5 @@
 package com.sangcomz.fishbun.ui.picker
 
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,21 +7,18 @@ import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.sangcomz.fishbun.Fishton
-import com.sangcomz.fishbun.Fishton.Companion.getInstance
 import com.sangcomz.fishbun.R
 import com.sangcomz.fishbun.adapter.image.ImageAdapter
 import com.sangcomz.fishbun.ui.picker.listener.OnPickerActionListener
 import com.sangcomz.fishbun.ui.picker.model.PickerListItem
 import com.sangcomz.fishbun.util.RadioWithTextButton
-import java.util.*
 
 class PickerAdapter(
     private val imageAdapter: ImageAdapter,
-    private val onPickerActionListener: OnPickerActionListener
+    private val onPickerActionListener: OnPickerActionListener,
+    private val hasCameraInPickerPage: Boolean
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private val fishton: Fishton = getInstance()
     private var pickerList: List<PickerListItem> = listOf()
 
     init {
@@ -88,7 +84,7 @@ class PickerAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (position == 0 && fishton.hasCameraInPickerPage) {
+        return if (position == 0 && hasCameraInPickerPage) {
             TYPE_CAMERA
         } else {
             super.getItemViewType(position)
@@ -100,22 +96,19 @@ class PickerAdapter(
         notifyDataSetChanged()
     }
 
-    fun updatePickerListItem(position: Int, item: PickerListItem.Item) {
+    fun updatePickerListItem(position: Int, image: PickerListItem.Image) {
         this.pickerList = this.pickerList.toMutableList().apply {
-            set(position, item)
+            set(position, image)
         }
         notifyItemChanged(position, "update")
     }
 
-    fun addImage(path: Uri) {
-        TODO(
-            "This is starting point!" +
-                    "I will think about that how to add image in adapter"
-        )
-        val al = ArrayList(fishton.currentPickerImageList)
-        al.add(0, path)
-        fishton.currentPickerImageList = al
-        notifyDataSetChanged()
+    fun addImage(path: PickerListItem.Image) {
+        val addedIndex = if (hasCameraInPickerPage) 1 else 0
+
+        pickerList.toMutableList()
+            .apply { add(addedIndex, path) }
+            .also(this::setPickerList)
     }
 
 
@@ -129,7 +122,7 @@ class PickerAdapter(
         val btnThumbCount: RadioWithTextButton = itemView.findViewById(R.id.btn_thumb_count)
 
         fun bindData(item: PickerListItem) {
-            if (item !is PickerListItem.Item) return
+            if (item !is PickerListItem.Image) return
 
             itemView.tag = item.imageUri
             val viewData = item.viewData
@@ -156,7 +149,7 @@ class PickerAdapter(
         }
 
         fun update(item: PickerListItem) {
-            if (item !is PickerListItem.Item) return
+            if (item !is PickerListItem.Image) return
 
             val selectedIndex = item.selectedIndex
             animScale(imgThumbImage, selectedIndex != -1, true)

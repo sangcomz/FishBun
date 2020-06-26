@@ -7,7 +7,6 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Parcelable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.util.Log
@@ -107,9 +106,6 @@ class PickerActivity : BaseActivity(),
             TAKE_A_PICK_REQUEST_CODE -> {
                 if (resultCode == Activity.RESULT_OK) {
                     onSuccessTakePicture()
-                    val savedFile = File(savePath)
-                    SingleMediaScanner(this, savedFile)
-                    adapter?.addImage(Uri.fromFile(savedFile))
                 } else {
                     File(savePath).delete()
                 }
@@ -126,7 +122,6 @@ class PickerActivity : BaseActivity(),
     private fun onSuccessTakePicture() {
         val savedFile = File(savePath)
         SingleMediaScanner(this, savedFile)
-        adapter?.addImage(Uri.fromFile(savedFile))
         pickerPresenter.successTakePicture(Uri.fromFile(savedFile))
     }
 
@@ -281,6 +276,10 @@ class PickerActivity : BaseActivity(),
         finish()
     }
 
+    override fun addImage(pickerListImage: PickerListItem.Image) {
+        adapter?.addImage(pickerListImage)
+    }
+
     override fun takePicture(saveDir: String) {
         cameraUtil.takePicture(this, saveDir, TAKE_A_PICK_REQUEST_CODE)
     }
@@ -291,8 +290,12 @@ class PickerActivity : BaseActivity(),
             cameraUtil.savePath = savePath
         }
 
-    override fun showImageList(imageList: List<PickerListItem>, adapter: ImageAdapter) {
-        setImageList(imageList, adapter)
+    override fun showImageList(
+        imageList: List<PickerListItem>,
+        adapter: ImageAdapter,
+        hasCameraInPickerPage: Boolean
+    ) {
+        setImageList(imageList, adapter, hasCameraInPickerPage)
     }
 
     override fun takePicture() {
@@ -313,8 +316,8 @@ class PickerActivity : BaseActivity(),
         pickerPresenter.onClickThumbCount(position)
     }
 
-    override fun onCheckStateChange(position: Int, item: PickerListItem.Item) {
-        adapter?.updatePickerListItem(position, item)
+    override fun onCheckStateChange(position: Int, image: PickerListItem.Image) {
+        adapter?.updatePickerListItem(position, image)
     }
 
     override fun showDetailView(position: Int) {
@@ -329,6 +332,26 @@ class PickerActivity : BaseActivity(),
         recyclerView?.let {
             it.post {
                 Snackbar.make(it, messageLimitReached, Snackbar.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    override fun showMinimumImageMessage(currentSelectedCount: Int) {
+        recyclerView?.let {
+            it.post {
+                Snackbar.make(
+                    it,
+                    getString(R.string.msg_minimum_image, currentSelectedCount),
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
+
+    override fun showNothingSelectedMessage(messageNotingSelected: String) {
+        recyclerView?.let {
+            it.post {
+                Snackbar.make(it, messageNotingSelected, Snackbar.LENGTH_SHORT).show()
             }
         }
     }
@@ -365,10 +388,11 @@ class PickerActivity : BaseActivity(),
 
     private fun setImageList(
         pickerList: List<PickerListItem>,
-        imageAdapter: ImageAdapter
+        imageAdapter: ImageAdapter,
+        hasCameraInPickerPage: Boolean
     ) {
         if (adapter == null) {
-            adapter = PickerAdapter(imageAdapter, this)
+            adapter = PickerAdapter(imageAdapter, this, hasCameraInPickerPage)
             recyclerView?.adapter = adapter
         }
         adapter?.setPickerList(pickerList)

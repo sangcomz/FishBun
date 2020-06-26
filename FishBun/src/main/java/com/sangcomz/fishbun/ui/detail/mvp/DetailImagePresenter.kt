@@ -9,17 +9,12 @@ import com.sangcomz.fishbun.ui.detail.model.DetailImageRepository
  */
 class DetailImagePresenter(
     private val detailView: DetailImageContract.View,
-    private val detailImageRepository: DetailImageRepository
-) : DetailImageContract.Presenter {
+    private val detailImageRepository: DetailImageRepository,
+    val position: Int
+    ) : DetailImageContract.Presenter {
 
-    override fun setInitPagerPosition(position: Int) {
-        val pickerImages = detailImageRepository.getPickerImages()
-        if (pickerImages.isNotEmpty()) {
-            changeButtonStatus(position)
-            detailView.showImages(position, pickerImages)
-        } else {
-            detailView.finishAndShowErrorToast()
-        }
+    init {
+        setInitPagerPosition(position)
     }
 
     override fun getDesignViewData() {
@@ -57,6 +52,16 @@ class DetailImagePresenter(
             }
         }
         changeButtonStatusInternal(imageUri)
+    }
+
+    private fun setInitPagerPosition(position: Int) {
+        val pickerImages = detailImageRepository.getPickerImages()
+        if (pickerImages.isNotEmpty()) {
+            changeButtonStatus(position)
+            detailView.showImages(position, pickerImages)
+        } else {
+            detailView.finishAndShowErrorToast()
+        }
     }
 
     private fun changeButtonStatusInternal(imageUri: Uri) {

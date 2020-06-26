@@ -39,12 +39,13 @@ class AlbumRepositoryImpl(
         return viewData ?: fishBunDataSource.getAlbumViewData().also { viewData = it }
     }
 
-    override fun isNotEnoughSelectedImages(): Boolean {
-        return fishBunDataSource.getSelectedImageList().size < fishBunDataSource.getMinCount()
-    }
-
     override fun getImageAdapter() = fishBunDataSource.getImageAdapter()
-    override fun selectedImages() = fishBunDataSource.getSelectedImageList()
+
+    override fun getSelectedImageList() = fishBunDataSource.getSelectedImageList()
+
     override fun getAlbumMenuViewData() = fishBunDataSource.gatAlbumMenuViewData()
+
     override fun getMessageNotingSelected() = fishBunDataSource.getMessageNothingSelected()
+
+    override fun getMinCount() = fishBunDataSource.getMinCount()
 }

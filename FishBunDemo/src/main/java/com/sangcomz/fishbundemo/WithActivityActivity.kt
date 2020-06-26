@@ -66,10 +66,10 @@ class WithActivityActivity : AppCompatActivity() {
                 0 -> {
                     FishBun.with(this@WithActivityActivity)
                         .setImageAdapter(GlideAdapter())
-                        .setIsUseAllDoneButton(true)
-                        .setCamera(true)
-//                        .setSpecifyFolderList(listOf("Camera"))
-                        .exceptMimeType(listOf(MimeType.PNG))
+                        .setSelectedImages(path)
+                        .setMaxCount(2)
+                        .setMinCount(1)
+                        .hasCameraInPickerPage(true)
                         .startAlbum()
                 }
                 //dark

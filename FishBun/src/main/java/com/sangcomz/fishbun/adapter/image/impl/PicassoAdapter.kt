@@ -23,6 +23,5 @@ class PicassoAdapter : ImageAdapter {
             Picasso.with(target.context)
                     .load(loadUrl)
                     .fit()
-                    .centerInside()
                     .into(target)
 }

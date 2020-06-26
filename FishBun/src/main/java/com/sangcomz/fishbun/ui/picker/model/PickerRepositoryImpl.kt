@@ -62,7 +62,7 @@ class PickerRepositoryImpl(
     override fun useDetailView() = fishBunDataSource.useDetailView()
 
     override fun isLimitReached() =
-        fishBunDataSource.getMaxCount() == fishBunDataSource.getPickerImages().size
+        fishBunDataSource.getMaxCount() == fishBunDataSource.getSelectedImageList().size
 
     override fun selectImage(imageUri: Uri) = fishBunDataSource.selectImage(imageUri)
 
@@ -90,5 +90,9 @@ class PickerRepositoryImpl(
 
     override fun getPickerImages() = fishBunDataSource.getPickerImages()
 
+    override fun getMessageNotingSelected() = fishBunDataSource.getMessageNothingSelected()
 
+    override fun checkForFinish(): Boolean =
+        fishBunDataSource.getIsAutomaticClose()
+                && fishBunDataSource.getSelectedImageList().size == fishBunDataSource.getMaxCount()
 }

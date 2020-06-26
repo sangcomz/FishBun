@@ -56,7 +56,7 @@ class AlbumPresenter(
     }
 
     override fun finish() {
-        albumView.finishActivityWithResult(albumRepository.selectedImages())
+        albumView.finishActivityWithResult(albumRepository.getSelectedImageList())
     }
 
     override fun refreshAlbumItem(position: Int, addedPathList: ArrayList<Uri>) {
@@ -66,8 +66,6 @@ class AlbumPresenter(
             else albumView.refreshAlbumItem(position, addedPathList)
         }
     }
-
-    override fun getAlbumMetaData(albumId: Long) = albumRepository.getAlbumMetaData(albumId)
 
     override fun onSuccessTakeAPick() {
         albumView.scanAndRefresh()
@@ -84,7 +82,7 @@ class AlbumPresenter(
 
     private fun changeToolbarTitle() {
         albumView.changeToolbarTitle(
-            albumRepository.selectedImages().size,
+            albumRepository.getSelectedImageList().size,
             albumRepository.getAlbumViewData()
         )
     }
@@ -93,11 +91,19 @@ class AlbumPresenter(
         callback.invoke(albumRepository.getAlbumMenuViewData())
     }
 
-    override fun done() {
-        if (albumRepository.isNotEnoughSelectedImages()) {
-            albumView.showSnackbar(albumRepository.getMessageNotingSelected())
-        } else {
-            finish()
+    override fun onClickMenuDone() {
+        val selectedCount = albumRepository.getSelectedImageList().size
+        when {
+            selectedCount == 0 -> {
+                albumView.showNothingSelectedMessage(albumRepository.getMessageNotingSelected())
+            }
+
+            selectedCount < albumRepository.getMinCount() -> {
+                albumView.showMinimumImageMessage(albumRepository.getMinCount())
+            }
+            else -> {
+                finish()
+            }
         }
     }
 

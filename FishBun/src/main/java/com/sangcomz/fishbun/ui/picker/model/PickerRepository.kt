@@ -55,4 +55,8 @@ interface PickerRepository {
     fun getMaxCount(): Int
 
     fun getPickerImages(): List<Uri>
+
+    fun getMessageNotingSelected(): String
+
+    fun checkForFinish(): Boolean
 }

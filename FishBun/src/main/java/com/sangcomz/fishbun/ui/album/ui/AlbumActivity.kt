@@ -25,14 +25,12 @@ import com.sangcomz.fishbun.R
 import com.sangcomz.fishbun.adapter.image.ImageAdapter
 import com.sangcomz.fishbun.datasource.FishBunDataSourceImpl
 import com.sangcomz.fishbun.ui.album.model.Album
-import com.sangcomz.fishbun.ext.showSnackBar
 import com.sangcomz.fishbun.ui.album.model.repository.AlbumRepositoryImpl
 import com.sangcomz.fishbun.datasource.ImageDataSourceImpl
 import com.sangcomz.fishbun.ui.album.AlbumContract
 import com.sangcomz.fishbun.ui.album.mvp.AlbumPresenter
 import com.sangcomz.fishbun.ui.album.adapter.AlbumListAdapter
 import com.sangcomz.fishbun.ui.album.listener.AlbumClickListener
-import com.sangcomz.fishbun.ui.album.model.AlbumMenuViewData
 import com.sangcomz.fishbun.ui.album.model.AlbumViewData
 import com.sangcomz.fishbun.ui.picker.PickerActivity
 import com.sangcomz.fishbun.util.MainUiHandler
@@ -160,7 +158,7 @@ class AlbumActivity : BaseActivity(),
             finish()
         } else if (id == R.id.action_done) {
             if (adapter != null) {
-                albumPresenter.done()
+                albumPresenter.onClickMenuDone()
             }
         }
         return super.onOptionsItemSelected(item)
@@ -197,8 +195,26 @@ class AlbumActivity : BaseActivity(),
         }
     }
 
-    override fun showSnackbar(message: String) {
-        recyclerAlbumList?.let { Snackbar.make(it, message, Snackbar.LENGTH_SHORT).show() }
+    override fun showNothingSelectedMessage(nothingSelectedMessage: String) {
+        recyclerAlbumList?.let {
+            it.post {
+                Snackbar.make(it, nothingSelectedMessage, Snackbar.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    override fun showMinimumImageMessage(currentSelectedCount: Int) {
+        recyclerAlbumList?.let {
+            it.post {
+                Snackbar
+                    .make(
+                        it,
+                        getString(R.string.msg_minimum_image, currentSelectedCount),
+                        Snackbar.LENGTH_SHORT
+                    )
+                    .show()
+            }
+        }
     }
 
     override fun onRequestPermissionsResult(
@@ -297,7 +313,6 @@ class AlbumActivity : BaseActivity(),
         adapter?.updateAlbumMeta(0, addedCount, thumbnailPath)
         adapter?.updateAlbumMeta(position, addedCount, thumbnailPath)
     }
-
 
     private fun setAlbumListAdapter(
         albumList: List<Album>,

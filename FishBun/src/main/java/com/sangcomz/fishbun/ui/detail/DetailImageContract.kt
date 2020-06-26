@@ -9,7 +9,6 @@ interface DetailImageContract {
         fun getSelectedImage()
         fun onCountClick(position: Int)
         fun changeButtonStatus(position: Int)
-        fun setInitPagerPosition(position: Int)
         fun getDesignViewData()
     }
 

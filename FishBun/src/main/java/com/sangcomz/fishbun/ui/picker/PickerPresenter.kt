@@ -55,11 +55,15 @@ class PickerPresenter internal constructor(
         }
 
         imageUriList.map {
-            PickerListItem.Item(it, selectedImageList.indexOf(it), viewData)
+            PickerListItem.Image(it, selectedImageList.indexOf(it), viewData)
         }.also {
             pickerList.addAll(it)
             uiHandler.run {
-                pickerView.showImageList(pickerList, pickerRepository.getImageAdapter())
+                pickerView.showImageList(
+                    pickerList,
+                    pickerRepository.getImageAdapter(),
+                    pickerRepository.hasCameraInPickerPage()
+                )
             }
         }
     }
@@ -81,7 +85,13 @@ class PickerPresenter internal constructor(
         } else {
             try {
                 dirPathFuture = pickerRepository.getDirectoryPath(albumData.albumId)
-                    .also { pickerView.takePicture(it.get()) }
+                    .also {
+                        it.execute(object : FutureCallback<String> {
+                            override fun onSuccess(result: String) {
+                                pickerView.takePicture(result)
+                            }
+                        })
+                    }
             } catch (e: ExecutionException) {
                 e.printStackTrace()
             } catch (e: InterruptedException) {
@@ -93,6 +103,12 @@ class PickerPresenter internal constructor(
 
     override fun successTakePicture(addedImagePath: Uri) {
         addAddedPath(addedImagePath)
+        pickerView.addImage(
+            PickerListItem.Image(
+                addedImagePath,
+                pickerRepository.getPickerViewData()
+            )
+        )
     }
 
     override fun getDesignViewData() {
@@ -106,19 +122,20 @@ class PickerPresenter internal constructor(
     }
 
     override fun onClickThumbCount(position: Int) {
-        selectImage(position)
+        changeImageStatus(position)
     }
 
     override fun onClickImage(position: Int) {
         if (pickerRepository.useDetailView()) {
             pickerView.showDetailView(getImagePosition(position))
         } else {
-            selectImage(position)
+            changeImageStatus(position)
         }
     }
 
     override fun onDetailImageActivityResult() {
         val pickerViewData = pickerRepository.getPickerViewData()
+
         if (pickerRepository.isLimitReached() && pickerViewData.isAutomaticClose) {
             pickerView.finishActivityWithResult(pickerRepository.getSelectedImageList())
         } else {
@@ -131,10 +148,18 @@ class PickerPresenter internal constructor(
     }
 
     override fun onClickMenuDone() {
-        if (pickerRepository.getSelectedImageList().size < pickerRepository.getMinCount()) {
-            pickerView.showLimitReachedMessage(pickerRepository.getMessageLimitReached())
-        } else {
-            pickerView.finishActivity()
+        val selectedCount = pickerRepository.getSelectedImageList().size
+        when {
+            selectedCount == 0 -> {
+                pickerView.showNothingSelectedMessage(pickerRepository.getMessageNotingSelected())
+            }
+
+            selectedCount < pickerRepository.getMinCount() -> {
+                pickerView.showMinimumImageMessage(pickerRepository.getMinCount())
+            }
+            else -> {
+                pickerView.finishActivity()
+            }
         }
     }
 
@@ -155,29 +180,48 @@ class PickerPresenter internal constructor(
         imageListFuture?.cancel(true)
     }
 
-    private fun selectImage(position: Int) {
-        if (pickerRepository.isLimitReached()) {
-            pickerView.showLimitReachedMessage(pickerRepository.getMessageLimitReached())
-            return
-        }
-
+    private fun changeImageStatus(position: Int) {
         val imagePosition = getImagePosition(position)
         val imageUri = pickerRepository.getPickerImage(imagePosition)
 
         if (pickerRepository.isNotSelectedImage(imageUri)) {
-            pickerRepository.selectImage(imageUri)
+            selectImage(position, imageUri)
         } else {
-            pickerRepository.unselectImage(imageUri)
+            unselectImage(position, imageUri)
         }
+    }
 
+    private fun onCheckStateChange(position: Int, imageUri: Uri) {
         pickerView.onCheckStateChange(
             position,
-            PickerListItem.Item(
+            PickerListItem.Image(
                 imageUri,
                 pickerRepository.getSelectedIndex(imageUri),
                 pickerRepository.getPickerViewData()
             )
         )
+    }
+
+    private fun selectImage(position: Int, imageUri: Uri) {
+        if (pickerRepository.isLimitReached()) {
+            pickerView.showLimitReachedMessage(pickerRepository.getMessageLimitReached())
+            return
+        }
+
+        pickerRepository.selectImage(imageUri)
+
+        if (pickerRepository.checkForFinish()) {
+            pickerView.finishActivity()
+        } else {
+            onCheckStateChange(position, imageUri)
+            setToolbarTitle()
+        }
+    }
+
+    private fun unselectImage(position: Int, imageUri: Uri) {
+        pickerRepository.unselectImage(imageUri)
+
+        onCheckStateChange(position, imageUri)
         setToolbarTitle()
     }
 
