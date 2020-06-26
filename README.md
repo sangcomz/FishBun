@@ -15,9 +15,9 @@ _FishBun_ is a highly customizable image picker for Android.
 <img src="/pic/fishbuns.png">
 
 
-## What's New in _FishBun_ 0.12.0? :tada:
+## What's New in _FishBun_ 1.0.0-alpha01? :tada:
 
-- Change `Define.ALBUM_REQUEST_CODE` -> `FishBun.FISHBUN_REQUEST_CODE`
+- Refactoring for rapid development:rocket::rocket::rocket:
 
 
 ## Customizable Styles
@@ -122,7 +122,7 @@ Setting up _FishBun_ requires to add this Gradle configuration:
         compile 'com.github.bumptech.glide:glide:4.9.0'
                 
         // Android plugin 3.0.0 or higher.
-        implementation 'com.sangcomz:FishBun:0.11.4'
+        implementation 'com.sangcomz:FishBun:1.0.0-alpha01'
         
         implementation 'com.squareup.picasso:picasso:2.5.2'
         or

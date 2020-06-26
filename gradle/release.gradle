@@ -99,7 +99,7 @@ if (project.rootProject.file('local.properties').isFile()) {
         tagName = version
         targetCommitish = 'master'
         body = """## Release Note
-* Can specify a detailed folder📁 [#205](https://github.com/sangcomz/FishBun/issues/205)
+* Refactoring for rapid development
 """
         name = version
     }
