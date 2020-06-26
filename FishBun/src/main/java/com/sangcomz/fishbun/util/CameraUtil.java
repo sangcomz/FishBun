@@ -5,9 +5,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
-import androidx.core.content.FileProvider;
 
-import com.sangcomz.fishbun.define.Define;
+import androidx.core.content.FileProvider;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +21,7 @@ public class CameraUtil {
 
     private String savePath;
 
-    public void takePicture(Activity activity, String saveDir) {
+    public void takePicture(Activity activity, String saveDir, int requestCode) {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(activity.getPackageManager()) != null) {
             // Create the File where the photo should go
@@ -45,7 +44,7 @@ public class CameraUtil {
                 }
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
 
-                activity.startActivityForResult(takePictureIntent, new Define().TAKE_A_PICK_REQUEST_CODE);
+                activity.startActivityForResult(takePictureIntent, requestCode);
             }
         }
     }

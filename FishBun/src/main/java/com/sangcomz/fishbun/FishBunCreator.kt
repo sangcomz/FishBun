@@ -3,11 +3,8 @@ package com.sangcomz.fishbun
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.net.Uri
-import com.sangcomz.fishbun.bean.Album
-import com.sangcomz.fishbun.define.Define
-import com.sangcomz.fishbun.ui.album.AlbumActivity
+import com.sangcomz.fishbun.ui.album.ui.AlbumActivity
 import com.sangcomz.fishbun.ui.picker.PickerActivity
-import java.util.*
 import kotlin.collections.ArrayList
 
 /**
@@ -15,7 +12,7 @@ import kotlin.collections.ArrayList
  */
 class FishBunCreator(private val fishBun: FishBun, private val fishton: Fishton) : BaseProperty,
     CustomizationProperty {
-    private var requestCode = 27
+    private var requestCode = FishBun.FISHBUN_REQUEST_CODE
 
     override fun setSelectedImages(selectedImages: ArrayList<Uri>): FishBunCreator = this.apply {
         fishton.selectedImages = selectedImages
@@ -66,24 +63,30 @@ class FishBunCreator(private val fishBun: FishBun, private val fishton: Fishton)
         fishton.isStatusBarLight = isStatusBarLight
     }
 
+    @Deprecated("instead setCamera(count)", ReplaceWith("hasCameraInPickerPage(mimeType)"))
     override fun setCamera(isCamera: Boolean): FishBunCreator = this.apply {
-        fishton.isCamera = isCamera
+        fishton.hasCameraInPickerPage = isCamera
     }
+
+    override fun hasCameraInPickerPage(hasCamera: Boolean): FishBunCreator = this.apply {
+        fishton.hasCameraInPickerPage = hasCamera
+    }
+
 
     override fun setRequestCode(requestCode: Int): FishBunCreator = this.apply {
         this.requestCode = requestCode
     }
 
-    override fun textOnNothingSelected(message: String?): FishBunCreator = this.apply {
+    override fun textOnNothingSelected(message: String): FishBunCreator = this.apply {
         fishton.messageNothingSelected = message
     }
 
-    override fun textOnImagesSelectionLimitReached(message: String?): FishBunCreator = this.apply {
+    override fun textOnImagesSelectionLimitReached(message: String): FishBunCreator = this.apply {
         fishton.messageLimitReached = message
     }
 
     override fun setButtonInAlbumActivity(isButton: Boolean): FishBunCreator = this.apply {
-        fishton.isButton = isButton
+        fishton.hasButtonInAlbumActivity = isButton
     }
 
     override fun setReachLimitAutomaticClose(isAutomaticClose: Boolean): FishBunCreator =
@@ -108,11 +111,11 @@ class FishBunCreator(private val fishBun: FishBun, private val fishton: Fishton)
         fishton.albumPortraitSpanCount = portraitSpanCount
     }
 
-    override fun setAllViewTitle(allViewTitle: String?): FishBunCreator = this.apply {
+    override fun setAllViewTitle(allViewTitle: String): FishBunCreator = this.apply {
         fishton.titleAlbumAllView = allViewTitle
     }
 
-    override fun setActionBarTitle(actionBarTitle: String?): FishBunCreator = this.apply {
+    override fun setActionBarTitle(actionBarTitle: String): FishBunCreator = this.apply {
         fishton.titleActionBar = actionBarTitle
     }
 
@@ -189,13 +192,7 @@ class FishBunCreator(private val fishBun: FishBun, private val fishton: Fishton)
 
         val intent: Intent =
             if (fishton.isStartInAllView) {
-                Intent(context, PickerActivity::class.java).apply {
-                    putExtra(
-                        Define.BUNDLE_NAME.ALBUM.name,
-                        Album(0, fishton.titleAlbumAllView, null, 0)
-                    )
-                    putExtra(Define.BUNDLE_NAME.POSITION.name, 0)
-                }
+                PickerActivity.getPickerActivityIntent(context, 0L, fishton.titleAlbumAllView, 0)
             } else {
                 Intent(context, AlbumActivity::class.java)
             }
@@ -205,8 +202,8 @@ class FishBunCreator(private val fishBun: FishBun, private val fishton: Fishton)
 
     private fun exceptionHandling() {
         //TODO support camera
-        if (fishton.isCamera) {
-            fishton.isCamera = fishton.specifyFolderList.isEmpty()
+        if (fishton.hasCameraInPickerPage) {
+            fishton.hasCameraInPickerPage = fishton.specifyFolderList.isEmpty()
         }
     }
 }

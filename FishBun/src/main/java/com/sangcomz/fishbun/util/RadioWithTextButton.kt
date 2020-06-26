@@ -54,6 +54,24 @@ class RadioWithTextButton @JvmOverloads constructor(
             return field
         }
 
+    override fun onDraw(canvas: Canvas) {
+        strokePaint.strokeWidth = (width / 18).toFloat()
+        isSelected {
+            canvas.drawCircle((width / 2).toFloat(), (height / 2).toFloat(), (width / 3).toFloat(), circlePaint)
+        }
+        with(radioType) {
+            isRadioText {
+                drawTextCentered(canvas, textPaint, text, (width / 2).toFloat(), (height / 2).toFloat())
+            } isRadioDrawable {
+                drawable.bounds = centerRect
+                drawable.draw(canvas)
+            } isRadioNone {
+                strokePaint.style = Paint.Style.STROKE
+                canvas.drawCircle((width / 2).toFloat(), (height / 2).toFloat(), (width / 3).toFloat(), strokePaint)
+            }
+        }
+    }
+
     fun setTextColor(@ColorInt color: Int) = textPaint.run { this.color = color }
 
     fun setCircleColor(@ColorInt color: Int) = circlePaint.run { this.color = color }
@@ -73,24 +91,6 @@ class RadioWithTextButton @JvmOverloads constructor(
     fun unselect() {
         radioType = RadioType.None
         invalidate()
-    }
-
-    override fun onDraw(canvas: Canvas) {
-        strokePaint.strokeWidth = (width / 18).toFloat()
-        isSelected {
-            canvas.drawCircle((width / 2).toFloat(), (height / 2).toFloat(), (width / 3).toFloat(), circlePaint)
-        }
-        with(radioType) {
-            isRadioText {
-                drawTextCentered(canvas, textPaint, text, (width / 2).toFloat(), (height / 2).toFloat())
-            } isRadioDrawable {
-                drawable.bounds = centerRect
-                drawable.draw(canvas)
-            } isRadioNone {
-                strokePaint.style = Paint.Style.STROKE
-                canvas.drawCircle((width / 2).toFloat(), (height / 2).toFloat(), (width / 3).toFloat(), strokePaint)
-            }
-        }
     }
 
     private fun isSelected(block: () -> Unit) = if (radioType != RadioType.None) block() else Unit

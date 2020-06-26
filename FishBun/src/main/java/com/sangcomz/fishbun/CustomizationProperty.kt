@@ -20,9 +20,9 @@ interface CustomizationProperty {
 
     fun setCamera(isCamera: Boolean): FishBunCreator
 
-    fun textOnNothingSelected(message: String?): FishBunCreator
+    fun textOnNothingSelected(message: String): FishBunCreator
 
-    fun textOnImagesSelectionLimitReached(message: String?): FishBunCreator
+    fun textOnImagesSelectionLimitReached(message: String): FishBunCreator
 
     fun setButtonInAlbumActivity(isButton: Boolean): FishBunCreator
 
@@ -32,9 +32,9 @@ interface CustomizationProperty {
 
     fun setAlbumSpanCountOnlPortrait(portraitSpanCount: Int): FishBunCreator
 
-    fun setAllViewTitle(allViewTitle: String?): FishBunCreator
+    fun setAllViewTitle(allViewTitle: String): FishBunCreator
 
-    fun setActionBarTitle(actionBarTitle: String?): FishBunCreator
+    fun setActionBarTitle(actionBarTitle: String): FishBunCreator
 
     fun setHomeAsUpIndicatorDrawable(icon: Drawable?): FishBunCreator
 
@@ -59,4 +59,6 @@ interface CustomizationProperty {
     fun isStartInAllView(isStartInAllView: Boolean): FishBunCreator
 
     fun setSpecifyFolderList(specifyFolderList: List<String>): FishBunCreator
+
+    fun hasCameraInPickerPage(isCamera: Boolean): FishBunCreator
 }
