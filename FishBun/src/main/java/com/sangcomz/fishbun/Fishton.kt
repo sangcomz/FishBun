@@ -77,7 +77,7 @@ class Fishton {
 
         //CustomizationParams
         specifyFolderList = emptyList()
-        photoSpanCount = 3
+        photoSpanCount = 4
         albumPortraitSpanCount = 1
         albumLandscapeSpanCount = 2
 
