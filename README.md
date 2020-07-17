@@ -203,7 +203,7 @@ Various customizable features can be controlled by chained methods as in:
 |    setReachLimitAutomaticClose    | Picker automatically ends when the number of images is selected       | false |
 |       exceptMimeType              | Set file type to exclude(gif, png, jpeg, bmp, webp)                   | NONE |
 |   setAlbumThumbnailSize           | Thumbnail size of album screen                                        | 70dp |
-|      setPickerSpanCount           | Set the picker's span count                                           | 3 |
+|      setPickerSpanCount           | Set the picker's span count                                           | 4 |
 |      setActionBarColor            | Set background color of action bar, statusBar color, set light theme  | #3F51B5, #303F9F, false  |
 |   setActionBarTitleColor          | Set the title color of the action bar                                 | #ffffff |
 |   textOnNothingSelected           | Message when nothing is selected                                      | "There is no selected image." |
