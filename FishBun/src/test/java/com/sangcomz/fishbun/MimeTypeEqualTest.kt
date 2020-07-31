@@ -4,9 +4,6 @@ import com.sangcomz.fishbun.ext.equalsMimeType
 import junit.framework.Assert.assertEquals
 import org.junit.Test
 
-/**
- * Created by Seok-Won on 31/10/2016.
- */
 class MimeTypeEqualTest {
 
     @Test

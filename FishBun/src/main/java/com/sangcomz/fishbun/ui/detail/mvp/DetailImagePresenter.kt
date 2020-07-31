@@ -1,6 +1,7 @@
 package com.sangcomz.fishbun.ui.detail.mvp
 
 import android.net.Uri
+import androidx.annotation.VisibleForTesting
 import com.sangcomz.fishbun.ui.detail.DetailImageContract
 import com.sangcomz.fishbun.ui.detail.model.DetailImageRepository
 
@@ -11,10 +12,11 @@ class DetailImagePresenter(
     private val detailView: DetailImageContract.View,
     private val detailImageRepository: DetailImageRepository,
     val position: Int
-    ) : DetailImageContract.Presenter {
+) : DetailImageContract.Presenter {
 
     init {
-        setInitPagerPosition(position)
+        initViewPagerAdapter()
+        initPagerPosition(position)
     }
 
     override fun getDesignViewData() {
@@ -26,20 +28,17 @@ class DetailImagePresenter(
         }
     }
 
-    override fun getSelectedImage() {
-        detailImageRepository.getSelectedImageList()
-    }
-
     override fun changeButtonStatus(position: Int) {
-        getPickerImageUriByIndex(position)?.let {
+        detailImageRepository.getPickerImage(position)?.let {
             changeButtonStatusInternal(it)
         }
     }
 
     override fun onCountClick(position: Int) {
-        val imageUri = getPickerImageUriByIndex(position) ?: return
+        val imageUri = detailImageRepository.getPickerImage(position) ?: return
+        val isSelected = detailImageRepository.isSelected(imageUri)
 
-        if (isSelectedImage(imageUri)) {
+        if (isSelected) {
             detailImageRepository.unselectImage(imageUri)
         } else {
             if (detailImageRepository.isFullSelected()) {
@@ -51,10 +50,11 @@ class DetailImagePresenter(
                 }
             }
         }
+
         changeButtonStatusInternal(imageUri)
     }
 
-    private fun setInitPagerPosition(position: Int) {
+    private fun initPagerPosition(position: Int) {
         val pickerImages = detailImageRepository.getPickerImages()
         if (pickerImages.isNotEmpty()) {
             changeButtonStatus(position)
@@ -64,24 +64,21 @@ class DetailImagePresenter(
         }
     }
 
-    private fun changeButtonStatusInternal(imageUri: Uri) {
-        val imageIndex = getSelectedImageIndex(imageUri)
-        if (imageIndex != -1) {
-            if (detailImageRepository.getMaxCount() == 1) {
-                detailView.updateRadioButtonWithDrawable()
-            } else {
-                detailView.updateRadioButtonWithText("${imageIndex + 1}")
-            }
-        } else {
-            detailView.unselectImage()
-        }
+    private fun initViewPagerAdapter() {
+        detailView.initViewPagerAdapter(detailImageRepository.getImageAdapter())
     }
 
-    private fun getPickerImageUriByIndex(index: Int) = detailImageRepository.getPickerImage(index)
+    private fun changeButtonStatusInternal(imageUri: Uri) {
+        when (val imageIndex = detailImageRepository.getImageIndex(imageUri)) {
+            -1 -> detailView.unselectImage()
 
-    private fun getSelectedImageIndex(imageUri: Uri) =
-        detailImageRepository.getSelectedImageList().indexOf(imageUri)
-
-    private fun isSelectedImage(imageUri: Uri) =
-        detailImageRepository.getSelectedImageList().contains(imageUri)
+            else -> {
+                if (detailImageRepository.getMaxCount() == 1) {
+                    detailView.updateRadioButtonWithDrawable()
+                } else {
+                    detailView.updateRadioButtonWithText("${imageIndex + 1}")
+                }
+            }
+        }
+    }
 }
