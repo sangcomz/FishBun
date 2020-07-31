@@ -1,6 +1,7 @@
 package com.sangcomz.fishbun.ui.detail.model
 
 import android.net.Uri
+import com.sangcomz.fishbun.adapter.image.ImageAdapter
 
 interface DetailImageRepository {
     fun getPickerImage(index: Int): Uri?
@@ -8,6 +9,7 @@ interface DetailImageRepository {
     fun getSelectedImageList(): List<Uri>
     fun selectImage(imageUri: Uri)
     fun unselectImage(imageUri: Uri)
+    fun getImageAdapter(): ImageAdapter
     fun isFullSelected(): Boolean
     fun checkForFinish(): Boolean
     fun getMessageLimitReached(): String

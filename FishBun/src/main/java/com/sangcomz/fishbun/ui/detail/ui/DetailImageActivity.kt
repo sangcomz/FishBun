@@ -17,6 +17,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.sangcomz.fishbun.BaseActivity
 import com.sangcomz.fishbun.Fishton
 import com.sangcomz.fishbun.R
+import com.sangcomz.fishbun.adapter.image.ImageAdapter
 import com.sangcomz.fishbun.datasource.FishBunDataSourceImpl
 import com.sangcomz.fishbun.ui.detail.DetailImageContract
 import com.sangcomz.fishbun.ui.detail.adapter.DetailViewPagerAdapter
@@ -35,7 +36,7 @@ class DetailImageActivity : BaseActivity(), DetailImageContract.View, OnPageChan
             intent.getIntExtra(INIT_IMAGE_POSITION, -1)
         )
     }
-    private var initPosition = -1
+
     private var btnDetailCount: RadioWithTextButton? = null
     private var vpDetailPager: ViewPager? = null
     private var btnDetailBack: ImageButton? = null
@@ -47,7 +48,6 @@ class DetailImageActivity : BaseActivity(), DetailImageContract.View, OnPageChan
         }
         setContentView(R.layout.activity_detail_activity)
         initView()
-        initPager()
         presenter.getDesignViewData()
     }
 
@@ -131,13 +131,20 @@ class DetailImageActivity : BaseActivity(), DetailImageContract.View, OnPageChan
         finish()
     }
 
+    override fun initViewPagerAdapter(imageAdapter: ImageAdapter) {
+        vpDetailPager?.run {
+            adapter = DetailViewPagerAdapter(imageAdapter)
+            addOnPageChangeListener(this@DetailImageActivity)
+        }
+    }
+
     override fun onPageScrollStateChanged(state: Int) {}
 
     override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
 
-    private fun initPager() {
+    private fun initPager(imageAdapter: ImageAdapter) {
         vpDetailPager?.run {
-            adapter = DetailViewPagerAdapter()
+            adapter = DetailViewPagerAdapter(imageAdapter)
             addOnPageChangeListener(this@DetailImageActivity)
         }
     }
@@ -146,7 +153,6 @@ class DetailImageActivity : BaseActivity(), DetailImageContract.View, OnPageChan
         vpDetailPager = findViewById(R.id.vp_detail_pager)
         btnDetailCount = findViewById(R.id.btn_detail_count)
         btnDetailBack = findViewById(R.id.btn_detail_back)
-
     }
 
     companion object {

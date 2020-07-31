@@ -1,6 +1,7 @@
 package com.sangcomz.fishbun.ui.detail.model
 
 import android.net.Uri
+import com.sangcomz.fishbun.adapter.image.ImageAdapter
 import com.sangcomz.fishbun.datasource.FishBunDataSource
 
 class DetailImageRepositoryImpl(private val fishBunDataSource: FishBunDataSource) :
@@ -18,6 +19,8 @@ class DetailImageRepositoryImpl(private val fishBunDataSource: FishBunDataSource
     override fun unselectImage(imageUri: Uri) {
         fishBunDataSource.unselectImage(imageUri)
     }
+
+    override fun getImageAdapter() = fishBunDataSource.getImageAdapter()
 
     override fun isFullSelected(): Boolean =
         fishBunDataSource.getSelectedImageList().size == fishBunDataSource.getMaxCount()
