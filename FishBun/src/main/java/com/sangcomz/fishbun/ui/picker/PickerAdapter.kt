@@ -91,8 +91,8 @@ class PickerAdapter(
         }
     }
 
-    fun setPickerList(item: List<PickerListItem>) {
-        this.pickerList = item
+    fun setPickerList(pickerList: List<PickerListItem>) {
+        this.pickerList = pickerList
         notifyDataSetChanged()
     }
 

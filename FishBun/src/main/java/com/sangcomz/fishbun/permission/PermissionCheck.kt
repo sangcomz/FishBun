@@ -1,6 +1,5 @@
 package com.sangcomz.fishbun.permission
 
-import android.Manifest
 import android.Manifest.permission.*
 import android.annotation.TargetApi
 import android.app.Activity

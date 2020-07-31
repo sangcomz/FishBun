@@ -1,11 +1,8 @@
 package com.sangcomz.fishbun.ui.picker.model
 
 import android.net.Uri
-import com.sangcomz.fishbun.MimeType
 import com.sangcomz.fishbun.adapter.image.ImageAdapter
 import com.sangcomz.fishbun.util.future.CallableFutureTask
-import java.util.concurrent.Future
-import java.util.concurrent.FutureTask
 
 interface PickerRepository {
     fun getAllBucketImageUri(bucketId: Long, clearCache: Boolean): CallableFutureTask<List<Uri>>

@@ -17,12 +17,13 @@ class GlideAdapter : ImageAdapter {
             centerCrop()
             format(DecodeFormat.PREFER_RGB_565)
         }
+
         Glide
             .with(target.context)
             .load(loadUrl)
             .apply(options)
             .override(target.width, target.height)
-            .thumbnail(0.25f)
+            .thumbnail(0.1f)
             .into(target)
     }
 

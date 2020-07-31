@@ -394,6 +394,7 @@ class PickerActivity : BaseActivity(),
             adapter = PickerAdapter(imageAdapter, this, hasCameraInPickerPage)
             recyclerView?.adapter = adapter
         }
+
         adapter?.setPickerList(pickerList)
     }
 

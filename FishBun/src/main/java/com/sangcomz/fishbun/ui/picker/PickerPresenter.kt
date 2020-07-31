@@ -34,7 +34,6 @@ class PickerPresenter internal constructor(
 
     override fun getPickerListItem() {
         val albumData = pickerRepository.getPickerAlbumData() ?: return
-
         imageListFuture = getAllMediaThumbnailsPath(albumData.albumId)
             .also {
                 it.execute(object : FutureCallback<List<Uri>> {
@@ -47,6 +46,7 @@ class PickerPresenter internal constructor(
 
     fun onSuccessAllMediaThumbnailsPath(imageUriList: List<Uri>) {
         pickerRepository.setCurrentPickerImageList(imageUriList)
+
         val viewData = pickerRepository.getPickerViewData()
         val selectedImageList = pickerRepository.getSelectedImageList().toMutableList()
         val pickerList = arrayListOf<PickerListItem>()
