@@ -2,6 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'com.hiya.jacoco-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'de.mobilej.unmock'
 
 buildscript {
     repositories {
@@ -48,6 +49,10 @@ apply plugin: "com.jfrog.bintray"
 apply plugin: 'co.riiid.gradle'
 
 apply from: '../gradle/release.gradle'
+
+unMock {
+    keep "android.net.Uri"
+}
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"

@@ -6,7 +6,8 @@ import com.sangcomz.fishbun.adapter.image.ImageAdapter
 interface DetailImageRepository {
     fun getPickerImage(index: Int): Uri?
     fun getPickerImages(): List<Uri>
-    fun getSelectedImageList(): List<Uri>
+    fun isSelected(imageUri: Uri): Boolean
+    fun getImageIndex(imageUri: Uri): Int
     fun selectImage(imageUri: Uri)
     fun unselectImage(imageUri: Uri)
     fun getImageAdapter(): ImageAdapter

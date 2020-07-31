@@ -36,7 +36,7 @@ class DetailImagePresenter(
 
     override fun onCountClick(position: Int) {
         val imageUri = detailImageRepository.getPickerImage(position) ?: return
-        val isSelected = detailImageRepository.getSelectedImageList().contains(imageUri)
+        val isSelected = detailImageRepository.isSelected(imageUri)
 
         if (isSelected) {
             detailImageRepository.unselectImage(imageUri)
@@ -50,6 +50,7 @@ class DetailImagePresenter(
                 }
             }
         }
+
         changeButtonStatusInternal(imageUri)
     }
 
@@ -67,17 +68,17 @@ class DetailImagePresenter(
         detailView.initViewPagerAdapter(detailImageRepository.getImageAdapter())
     }
 
-    @VisibleForTesting
-    fun changeButtonStatusInternal(imageUri: Uri) {
-        val imageIndex = detailImageRepository.getSelectedImageList().indexOf(imageUri)
-        if (imageIndex != -1) {
-            if (detailImageRepository.getMaxCount() == 1) {
-                detailView.updateRadioButtonWithDrawable()
-            } else {
-                detailView.updateRadioButtonWithText("${imageIndex + 1}")
+    private fun changeButtonStatusInternal(imageUri: Uri) {
+        when (val imageIndex = detailImageRepository.getImageIndex(imageUri)) {
+            -1 -> detailView.unselectImage()
+
+            else -> {
+                if (detailImageRepository.getMaxCount() == 1) {
+                    detailView.updateRadioButtonWithDrawable()
+                } else {
+                    detailView.updateRadioButtonWithText("${imageIndex + 1}")
+                }
             }
-        } else {
-            detailView.unselectImage()
         }
     }
 }

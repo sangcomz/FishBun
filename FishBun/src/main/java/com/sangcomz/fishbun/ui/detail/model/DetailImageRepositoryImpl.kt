@@ -10,7 +10,12 @@ class DetailImageRepositoryImpl(private val fishBunDataSource: FishBunDataSource
 
     override fun getPickerImages(): List<Uri> = fishBunDataSource.getPickerImages()
 
-    override fun getSelectedImageList(): List<Uri> = fishBunDataSource.getSelectedImageList()
+    override fun isSelected(imageUri: Uri) =
+        fishBunDataSource.getSelectedImageList().contains(imageUri)
+
+    override fun getImageIndex(imageUri: Uri) =
+        fishBunDataSource.getSelectedImageList().indexOf(imageUri)
+
 
     override fun selectImage(imageUri: Uri) {
         fishBunDataSource.selectImage(imageUri)
