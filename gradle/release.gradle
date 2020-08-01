@@ -100,6 +100,7 @@ if (project.rootProject.file('local.properties').isFile()) {
         targetCommitish = 'master'
         body = """## Release Note
 * Refactoring for rapid development
+* Change PickerSpanCount default value (`3`->`4`) 
 """
         name = version
     }
