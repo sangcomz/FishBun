@@ -17,6 +17,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.sangcomz.fishbun.BaseActivity
 import com.sangcomz.fishbun.Fishton
 import com.sangcomz.fishbun.R
+import com.sangcomz.fishbun.adapter.image.ImageAdapter
 import com.sangcomz.fishbun.datasource.FishBunDataSourceImpl
 import com.sangcomz.fishbun.ui.detail.DetailImageContract
 import com.sangcomz.fishbun.ui.detail.adapter.DetailViewPagerAdapter
@@ -28,17 +29,12 @@ import com.sangcomz.fishbun.util.setStatusBarColor
 
 class DetailImageActivity : BaseActivity(), DetailImageContract.View, OnPageChangeListener {
 
-    private val presenter: DetailImageContract.Presenter by lazy {
-        DetailImagePresenter(
-            this,
-            DetailImageRepositoryImpl(FishBunDataSourceImpl(Fishton.getInstance())),
-            intent.getIntExtra(INIT_IMAGE_POSITION, -1)
-        )
-    }
-    private var initPosition = -1
+    private lateinit var presenter: DetailImageContract.Presenter
+
     private var btnDetailCount: RadioWithTextButton? = null
     private var vpDetailPager: ViewPager? = null
     private var btnDetailBack: ImageButton? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,8 +43,14 @@ class DetailImageActivity : BaseActivity(), DetailImageContract.View, OnPageChan
         }
         setContentView(R.layout.activity_detail_activity)
         initView()
-        initPager()
-        presenter.getDesignViewData()
+
+        presenter = createPresenter()
+        presenter.handleOnCreate(intent.getIntExtra(INIT_IMAGE_POSITION, -1))
+    }
+
+    override fun onDestroy() {
+        vpDetailPager?.removeOnPageChangeListener(this)
+        super.onDestroy()
     }
 
     override fun onBackPressed() {
@@ -122,8 +124,6 @@ class DetailImageActivity : BaseActivity(), DetailImageContract.View, OnPageChan
             (adapter as? DetailViewPagerAdapter)?.setImages(pickerImages)
             currentItem = initPosition
         }
-
-        (vpDetailPager?.adapter as? DetailViewPagerAdapter)?.setImages(pickerImages)
     }
 
     override fun finishAndShowErrorToast() {
@@ -131,26 +131,32 @@ class DetailImageActivity : BaseActivity(), DetailImageContract.View, OnPageChan
         finish()
     }
 
-    override fun onPageScrollStateChanged(state: Int) {}
-
-    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
-
-    private fun initPager() {
+    override fun initViewPagerAdapter(imageAdapter: ImageAdapter) {
         vpDetailPager?.run {
-            adapter = DetailViewPagerAdapter()
-            addOnPageChangeListener(this@DetailImageActivity)
+            adapter = DetailViewPagerAdapter(imageAdapter)
         }
     }
+
+    override fun onPageScrollStateChanged(state: Int) = Unit
+
+    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) =
+        Unit
 
     private fun initView() {
         vpDetailPager = findViewById(R.id.vp_detail_pager)
         btnDetailCount = findViewById(R.id.btn_detail_count)
         btnDetailBack = findViewById(R.id.btn_detail_back)
 
+        vpDetailPager?.addOnPageChangeListener(this@DetailImageActivity)
     }
 
-    companion object {
+    private fun createPresenter() = DetailImagePresenter(
+        this,
+        DetailImageRepositoryImpl(FishBunDataSourceImpl(Fishton.getInstance()))
+    )
 
+
+    companion object {
         private const val INIT_IMAGE_POSITION = "init_image_position"
 
         fun getDetailImageActivity(context: Context, initPosition: Int): Intent =

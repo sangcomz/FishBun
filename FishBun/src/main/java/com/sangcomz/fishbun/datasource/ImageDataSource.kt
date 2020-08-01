@@ -5,7 +5,6 @@ import com.sangcomz.fishbun.MimeType
 import com.sangcomz.fishbun.ui.album.model.Album
 import com.sangcomz.fishbun.ui.album.model.AlbumMetaData
 import com.sangcomz.fishbun.util.future.CallableFutureTask
-import java.util.concurrent.Future
 
 interface ImageDataSource {
     fun getAlbumList(

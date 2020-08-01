@@ -1,6 +1,5 @@
 package com.sangcomz.fishbun.util.future
 
-import com.sangcomz.fishbun.ui.album.model.Album
 import java.util.concurrent.*
 
 class CallableFutureTask<T>(callable: Callable<T>) : FutureTask<T>(callable) {
