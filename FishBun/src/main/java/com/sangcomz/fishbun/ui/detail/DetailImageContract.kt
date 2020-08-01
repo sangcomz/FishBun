@@ -7,9 +7,9 @@ import com.sangcomz.fishbun.ui.detail.model.DetailImageViewData
 
 interface DetailImageContract {
     interface Presenter {
+        fun handleOnCreate(initPosition: Int)
         fun onCountClick(position: Int)
         fun changeButtonStatus(position: Int)
-        fun getDesignViewData()
     }
 
     interface View {

@@ -23,25 +23,11 @@ class DetailImagePresenterTest {
     @Mock
     lateinit var repository: DetailImageRepository
 
-    @Mock
-    lateinit var imageAdapter: ImageAdapter
-
     private lateinit var presenter: DetailImagePresenter
 
     @Before
     fun initialize() {
-        presenter = DetailImagePresenter(view, repository, 1)
-    }
-
-    @Test
-    fun `test getDesignViewData`() {
-        presenter.getDesignViewData()
-
-        val detailImageViewData = repository.getDetailPickerViewData()
-
-        verify(view).setToolBar(detailImageViewData)
-        verify(view).setCountButton(detailImageViewData)
-        verify(view).setBackButton()
+        presenter = DetailImagePresenter(view, repository)
     }
 
     @Test

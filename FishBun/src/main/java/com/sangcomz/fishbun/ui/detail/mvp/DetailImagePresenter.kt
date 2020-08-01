@@ -10,28 +10,19 @@ import com.sangcomz.fishbun.ui.detail.model.DetailImageRepository
  */
 class DetailImagePresenter(
     private val detailView: DetailImageContract.View,
-    private val detailImageRepository: DetailImageRepository,
-    val position: Int
+    private val detailImageRepository: DetailImageRepository
 ) : DetailImageContract.Presenter {
-
-    init {
-        initViewPagerAdapter()
-        initPagerPosition(position)
-    }
-
-    override fun getDesignViewData() {
-        val detailImageViewData = detailImageRepository.getDetailPickerViewData()
-        with(detailView) {
-            setToolBar(detailImageViewData)
-            setCountButton(detailImageViewData)
-            setBackButton()
-        }
-    }
 
     override fun changeButtonStatus(position: Int) {
         detailImageRepository.getPickerImage(position)?.let {
             changeButtonStatusInternal(it)
         }
+    }
+
+    override fun handleOnCreate(initPosition: Int) {
+        getDesignViewData()
+        initViewPagerAdapter()
+        initPagerPosition(initPosition)
     }
 
     override fun onCountClick(position: Int) {
@@ -54,8 +45,18 @@ class DetailImagePresenter(
         changeButtonStatusInternal(imageUri)
     }
 
+    private fun getDesignViewData() {
+        val detailImageViewData = detailImageRepository.getDetailPickerViewData()
+        with(detailView) {
+            setToolBar(detailImageViewData)
+            setCountButton(detailImageViewData)
+            setBackButton()
+        }
+    }
+
     private fun initPagerPosition(position: Int) {
         val pickerImages = detailImageRepository.getPickerImages()
+
         if (pickerImages.isNotEmpty()) {
             changeButtonStatus(position)
             detailView.showImages(position, pickerImages)
