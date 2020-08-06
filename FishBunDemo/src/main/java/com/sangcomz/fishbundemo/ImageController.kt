@@ -10,8 +10,7 @@ import com.squareup.picasso.Picasso
 class ImageController(private val imgMain: ImageView) {
 
     fun setImgMain(path: Uri) {
-        Picasso
-            .with(imgMain.context)
+        Picasso.get()
             .load(path)
             .fit()
             .centerCrop()

@@ -118,18 +118,19 @@ Setting up _FishBun_ requires to add this Gradle configuration:
 
     dependencies {
         // Under the Android Plugin 3.0.0. 
-        compile 'com.sangcomz:FishBun:0.10.0'
+        compile 'com.sangcomz:FishBun:1.0.0-alpha02'
         
         compile 'com.squareup.picasso:picasso:2.71828'
+        compile 'io.coil-kt:coil:0.11.0'
         or
         compile 'com.github.bumptech.glide:glide:4.9.0'
                 
         // Android plugin 3.0.0 or higher.
         implementation 'com.sangcomz:FishBun:1.0.0-alpha02'
         
-        implementation 'com.squareup.picasso:picasso:2.5.2'
+        implementation 'io.coil-kt:coil:0.11.0'
         or
-        implementation 'com.github.bumptech.glide:glide:4.9.0'
+        implementation 'com.github.bumptech.glide:glide:4.11.0'
 
     } 
     

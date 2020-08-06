@@ -25,10 +25,6 @@ buildscript {
 android {
     compileSdkVersion gradle.compileSdk
 
-    lintOptions {
-        abortOnError false
-    }
-
     defaultConfig {
         minSdkVersion gradle.minSdk
         targetSdkVersion gradle.targetSdk
@@ -43,6 +39,19 @@ android {
         debug {
             testCoverageEnabled true
         }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
+    lintOptions {
+        abortOnError false
     }
 }
 
@@ -60,7 +69,6 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     compileOnly "androidx.appcompat:appcompat:$rootProject.androidx_version"
 
-    compile "androidx.viewpager2:viewpager2:$rootProject.viewpager2_version"
     compile "androidx.constraintlayout:constraintlayout:$rootProject.constraint_version"
     compile "com.google.android.material:material:$rootProject.material_version"
     compile "androidx.recyclerview:recyclerview:$rootProject.recyclerview_version"
@@ -71,7 +79,7 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'org.mockito:mockito-android:3.0.0'
 
-    compileOnly "com.squareup.picasso:picasso:$rootProject.picasso_version"
+    compileOnly "io.coil-kt:coil:$rootProject.coil_version"
     compileOnly "com.github.bumptech.glide:glide:$rootProject.glide_version"
 }
 

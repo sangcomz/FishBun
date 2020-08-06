@@ -44,7 +44,7 @@ class PickerAdapter(
             else -> {
                 ViewHolderImage(
                     LayoutInflater.from(parent.context)
-                        .inflate(R.layout.thumb_item, parent, false),
+                        .inflate(R.layout.picker_item, parent, false),
                     imageAdapter,
                     onPickerActionListener
                 ).apply {

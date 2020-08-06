@@ -28,8 +28,7 @@ class ImageAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val imagePath = imagePaths[position]
-        Picasso
-            .with(context)
+        Picasso.get()
             .load(imagePath)
             .fit()
             .centerCrop()
