@@ -15,7 +15,7 @@ class FishBun private constructor(activity: Activity?, fragment: Fragment?) {
     val fishBunContext: FishBunContext get() = FishBunContext()
 
     fun setImageAdapter(imageAdapter: ImageAdapter): FishBunCreator {
-        val fishton = Fishton.getInstance().apply {
+        val fishton = Fishton.apply {
             refresh()
             this.imageAdapter = imageAdapter
         }

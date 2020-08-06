@@ -65,10 +65,10 @@ class PickerAdapter(
         payloads: MutableList<Any>
     ) {
 
-        if (payloads.isEmpty()) {
-            super.onBindViewHolder(holder, position, payloads)
-        } else {
+        if (payloads.contains(UPDATE_PAYLOAD)) {
             (holder as? ViewHolderImage)?.update(pickerList[position])
+        } else {
+            super.onBindViewHolder(holder, position, payloads)
         }
     }
 
@@ -100,7 +100,7 @@ class PickerAdapter(
         this.pickerList = this.pickerList.toMutableList().apply {
             set(position, image)
         }
-        notifyItemChanged(position, "update")
+        notifyItemChanged(position, UPDATE_PAYLOAD)
     }
 
     fun addImage(path: PickerListItem.Image) {
@@ -197,6 +197,7 @@ class PickerAdapter(
 
     companion object {
         private const val TYPE_CAMERA = Int.MIN_VALUE
+        private const val UPDATE_PAYLOAD = "payload_update"
     }
 
 }

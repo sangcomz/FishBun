@@ -42,6 +42,12 @@ class AlbumPresenter(
         }
     }
 
+    override fun takePicture() {
+        albumRepository.getDefaultSavePath()?.let {
+            albumView.takePicture(it)
+        }
+    }
+
     override fun getDesignViewData() {
         val viewData = albumRepository.getAlbumViewData()
         with(albumView) {
@@ -67,14 +73,7 @@ class AlbumPresenter(
         }
     }
 
-    override fun onSuccessTakeAPick() {
-        albumView.scanAndRefresh()
-        changeToolbarTitle()
-    }
-
-    override fun getPathDir(): String = Environment
-        .getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM + defaultDir)
-        .absolutePath
+    override fun getPathDir(): String? = albumRepository.getDefaultSavePath()
 
     override fun release() {
         albumListFuture?.cancel(true)
@@ -105,6 +104,11 @@ class AlbumPresenter(
                 finish()
             }
         }
+    }
+
+    override fun onSuccessTakePicture() {
+        albumView.saveImageForAndroidQOrHigher()
+        albumView.scanAndRefresh()
     }
 
     companion object {

@@ -24,10 +24,11 @@ buildscript {
 
 android {
     compileSdkVersion gradle.compileSdk
-    buildToolsVersion gradle.buildTools
+
     lintOptions {
         abortOnError false
     }
+
     defaultConfig {
         minSdkVersion gradle.minSdk
         targetSdkVersion gradle.targetSdk
@@ -37,6 +38,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
     buildTypes {
         debug {
             testCoverageEnabled true

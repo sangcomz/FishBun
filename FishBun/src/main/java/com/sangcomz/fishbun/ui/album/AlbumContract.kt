@@ -13,6 +13,7 @@ interface AlbumContract {
             imageAdapter: ImageAdapter,
             albumViewData: AlbumViewData
         )
+
         fun showEmptyView()
         fun setRecyclerViewSpanCount(albumViewData: AlbumViewData)
         fun setRecyclerView(albumViewData: AlbumViewData)
@@ -23,18 +24,21 @@ interface AlbumContract {
         fun scanAndRefresh()
         fun showNothingSelectedMessage(nothingSelectedMessage: String)
         fun showMinimumImageMessage(currentSelectedCount: Int)
+        fun takePicture(saveDir: String)
+        fun saveImageForAndroidQOrHigher()
     }
 
     interface Presenter {
         fun loadAlbumList()
-        fun getPathDir(): String
+        fun takePicture()
+        fun getPathDir(): String?
         fun release()
         fun getDesignViewData()
         fun onResume()
         fun finish()
         fun refreshAlbumItem(position: Int, addedPathList: ArrayList<Uri>)
-        fun onSuccessTakeAPick()
         fun getAlbumMenuViewData(callback: (AlbumMenuViewData) -> Unit)
         fun onClickMenuDone()
+        fun onSuccessTakePicture()
     }
 }

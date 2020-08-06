@@ -14,7 +14,6 @@ buildscript {
 
 android {
     compileSdkVersion gradle.compileSdk
-    buildToolsVersion gradle.buildTools
 
     defaultConfig {
         applicationId "com.sangcomz.fishbundemo"

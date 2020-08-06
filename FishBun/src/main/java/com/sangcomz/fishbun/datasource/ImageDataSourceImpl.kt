@@ -76,7 +76,10 @@ class ImageDataSourceImpl(private val contentResolver: ContentResolver) : ImageD
 
 
             val albumList = ArrayList<Album>()
-            if (!isNotContainsSpecifyFolderList(specifyFolderList, allViewTitle))
+
+            if (!isNotContainsSpecifyFolderList(specifyFolderList, allViewTitle)
+                && albumDataMap.isNotEmpty()
+            )
                 albumList.add(
                     0, Album(
                         0,

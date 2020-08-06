@@ -11,7 +11,7 @@ import java.util.ArrayList
 /**
  * Created by seokwon.jeong on 04/01/2018.
  */
-class Fishton {
+object Fishton {
     lateinit var imageAdapter: ImageAdapter
     var currentPickerImageList: List<Uri> = emptyList()
 
@@ -146,14 +146,5 @@ class Fishton {
             } else {
                 albumThumbnailSize
             }
-    }
-
-    private object FishtonHolder {
-        val INSTANCE = Fishton()
-    }
-
-    companion object {
-        @JvmStatic
-        fun getInstance() = FishtonHolder.INSTANCE
     }
 }

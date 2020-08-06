@@ -152,7 +152,7 @@ class DetailImageActivity : BaseActivity(), DetailImageContract.View, OnPageChan
 
     private fun createPresenter() = DetailImagePresenter(
         this,
-        DetailImageRepositoryImpl(FishBunDataSourceImpl(Fishton.getInstance()))
+        DetailImageRepositoryImpl(FishBunDataSourceImpl(Fishton))
     )
 
 

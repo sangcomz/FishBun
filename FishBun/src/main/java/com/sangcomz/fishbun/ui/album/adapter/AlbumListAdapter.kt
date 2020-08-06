@@ -15,12 +15,22 @@ import com.sangcomz.fishbun.ui.album.listener.AlbumClickListener
 import com.sangcomz.fishbun.util.SquareImageView
 import kotlinx.android.synthetic.main.album_item.view.*
 
-class AlbumListAdapter(private val albumClickListener: AlbumClickListener,
-                       private val thumbnailSize:Int,
-                       private val imageAdapter: ImageAdapter?) :
+class AlbumListAdapter(
+    private val albumClickListener: AlbumClickListener,
+    private val thumbnailSize: Int,
+    private val imageAdapter: ImageAdapter?
+) :
     RecyclerView.Adapter<AlbumListAdapter.ViewHolder>() {
 
     private var albumList = emptyList<Album>()
+
+    init {
+        setHasStableIds(true)
+    }
+
+    override fun getItemId(position: Int): Long {
+        return albumList[position].id
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
