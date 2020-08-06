@@ -20,7 +20,7 @@ _FishBun_ is a highly customizable image picker for Android.
 - Refactoring for rapid development:rocket::rocket::rocket:
 - Change PickerSpanCount default value (`3`->`4`)
 - target SDK 29 support
- - In API 29 or higher, the camera can be used only in the total image folder.
+  - In API 29 or higher, the camera can be used only in the total image folder.
 
 
 ## Customizable Styles
