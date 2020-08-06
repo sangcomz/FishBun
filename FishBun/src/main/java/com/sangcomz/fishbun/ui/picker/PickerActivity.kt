@@ -22,7 +22,10 @@ import com.sangcomz.fishbun.FishBun
 import com.sangcomz.fishbun.Fishton
 import com.sangcomz.fishbun.R
 import com.sangcomz.fishbun.adapter.image.ImageAdapter
-import com.sangcomz.fishbun.datasource.*
+import com.sangcomz.fishbun.datasource.CameraDataSourceImpl
+import com.sangcomz.fishbun.datasource.FishBunDataSourceImpl
+import com.sangcomz.fishbun.datasource.ImageDataSourceImpl
+import com.sangcomz.fishbun.datasource.PickerIntentDataSourceImpl
 import com.sangcomz.fishbun.permission.PermissionCheck
 import com.sangcomz.fishbun.ui.detail.ui.DetailImageActivity.Companion.getDetailImageActivity
 import com.sangcomz.fishbun.ui.picker.listener.OnPickerActionListener
@@ -41,8 +44,9 @@ class PickerActivity : BaseActivity(),
         PickerPresenter(
             this, PickerRepositoryImpl(
                 ImageDataSourceImpl(this.contentResolver),
-                FishBunDataSourceImpl(Fishton.getInstance()),
-                PickerIntentDataSourceImpl(intent)
+                FishBunDataSourceImpl(Fishton),
+                PickerIntentDataSourceImpl(intent),
+                CameraDataSourceImpl(this)
             ),
             MainUiHandler()
         )
@@ -54,7 +58,7 @@ class PickerActivity : BaseActivity(),
 
     override fun onSaveInstanceState(outState: Bundle) {
         try {
-            outState.putString(SAVE_INSTANCE_SAVED_IMAGE, savePath)
+            outState.putString(SAVE_INSTANCE_SAVED_IMAGE, cameraUtil.savedPath)
             outState.putParcelableArrayList(
                 SAVE_INSTANCE_NEW_IMAGES,
                 ArrayList(pickerPresenter.getAddedImagePathList())
@@ -62,6 +66,7 @@ class PickerActivity : BaseActivity(),
         } catch (e: Exception) {
             Log.d(TAG, e.toString())
         }
+
         super.onSaveInstanceState(outState)
     }
 
@@ -72,12 +77,15 @@ class PickerActivity : BaseActivity(),
         try {
             val addedImagePathList = outState.getParcelableArrayList<Uri>(SAVE_INSTANCE_NEW_IMAGES)
             val savedImage = outState.getString(SAVE_INSTANCE_SAVED_IMAGE)
+
             if (addedImagePathList != null) {
                 pickerPresenter.addAllAddedPath(addedImagePathList)
             }
+
             if (savedImage != null) {
-                savePath = savedImage
+                cameraUtil.savedPath = savedImage
             }
+
             pickerPresenter.getPickerListItem()
         } catch (e: Exception) {
             Log.d(TAG, e.toString())
@@ -103,11 +111,13 @@ class PickerActivity : BaseActivity(),
         super.onActivityResult(requestCode, resultCode, data)
 
         when (requestCode) {
-            TAKE_A_PICK_REQUEST_CODE -> {
+            TAKE_A_PICTURE_REQUEST_CODE -> {
                 if (resultCode == Activity.RESULT_OK) {
-                    onSuccessTakePicture()
+                    pickerPresenter.onSuccessTakePicture()
                 } else {
-                    File(savePath).delete()
+                    cameraUtil.savedPath?.let {
+                        File(it).delete()
+                    }
                 }
             }
             ENTER_DETAIL_REQUEST_CODE -> {
@@ -118,10 +128,18 @@ class PickerActivity : BaseActivity(),
         }
     }
 
-    private fun onSuccessTakePicture() {
-        val savedFile = File(savePath)
-        SingleMediaScanner(this, savedFile)
-        pickerPresenter.successTakePicture(Uri.fromFile(savedFile))
+    override fun onSuccessTakePicture() {
+        val savedPath = cameraUtil.savedPath ?: return
+
+        val savedFile = File(savedPath)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            cameraUtil.saveImageForAndroidQOrHigher(contentResolver, savedFile)
+        }
+
+        SingleMediaScanner(this, savedFile) {
+            pickerPresenter.successTakePicture(Uri.fromFile(savedFile))
+        }
     }
 
     override fun onRequestPermissionsResult(
@@ -267,11 +285,8 @@ class PickerActivity : BaseActivity(),
         recyclerView?.layoutManager = layoutManager
     }
 
-    override fun transImageFinish(position: Int, addedImageList: List<Uri>) {
-        val i = Intent()
-        i.putParcelableArrayListExtra(INTENT_ADD_PATH, ArrayList(addedImageList))
-        i.putExtra(INTENT_POSITION, position)
-        setResult(TRANS_IMAGES_RESULT_CODE, i)
+    override fun takeANewPictureWithFinish(position: Int, addedImageList: List<Uri>) {
+        setResult(TAKE_A_NEW_PICTURE_RESULT_CODE)
         finish()
     }
 
@@ -280,14 +295,8 @@ class PickerActivity : BaseActivity(),
     }
 
     override fun takePicture(saveDir: String) {
-        cameraUtil.takePicture(this, saveDir, TAKE_A_PICK_REQUEST_CODE)
+        cameraUtil.takePicture(this, saveDir, TAKE_A_PICTURE_REQUEST_CODE)
     }
-
-    private var savePath: String?
-        get() = cameraUtil.savePath
-        set(savePath) {
-            cameraUtil.savePath = savePath
-        }
 
     override fun showImageList(
         imageList: List<PickerListItem>,
@@ -320,11 +329,7 @@ class PickerActivity : BaseActivity(),
     }
 
     override fun showDetailView(position: Int) {
-        val i = getDetailImageActivity(
-            this,
-            position
-        )
-        startActivityForResult(i, ENTER_DETAIL_REQUEST_CODE)
+        startActivityForResult(getDetailImageActivity(this, position), ENTER_DETAIL_REQUEST_CODE)
     }
 
     override fun showLimitReachedMessage(messageLimitReached: String) {

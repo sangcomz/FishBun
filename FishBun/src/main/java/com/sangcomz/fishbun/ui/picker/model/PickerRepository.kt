@@ -58,4 +58,6 @@ interface PickerRepository {
     fun checkForFinish(): Boolean
 
     fun isStartInAllView(): Boolean
+
+    fun getDefaultSavePath(): String?
 }

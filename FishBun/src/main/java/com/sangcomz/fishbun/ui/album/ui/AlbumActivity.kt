@@ -23,6 +23,7 @@ import com.sangcomz.fishbun.FishBun
 import com.sangcomz.fishbun.Fishton
 import com.sangcomz.fishbun.R
 import com.sangcomz.fishbun.adapter.image.ImageAdapter
+import com.sangcomz.fishbun.datasource.CameraDataSourceImpl
 import com.sangcomz.fishbun.datasource.FishBunDataSourceImpl
 import com.sangcomz.fishbun.ui.album.model.Album
 import com.sangcomz.fishbun.ui.album.model.repository.AlbumRepositoryImpl
@@ -47,7 +48,8 @@ class AlbumActivity : BaseActivity(),
             this,
             AlbumRepositoryImpl(
                 ImageDataSourceImpl(contentResolver),
-                FishBunDataSourceImpl(Fishton.getInstance())
+                FishBunDataSourceImpl(Fishton),
+                CameraDataSourceImpl(this)
             ),
             MainUiHandler()
         )
@@ -81,13 +83,7 @@ class AlbumActivity : BaseActivity(),
         txtAlbumMessage = findViewById(R.id.txt_album_msg)
 
         findViewById<ImageView>(R.id.iv_album_camera).setOnClickListener {
-            if (checkCameraPermission()) {
-                cameraUtil.takePicture(
-                    this@AlbumActivity,
-                    albumPresenter.getPathDir(),
-                    TAKE_A_PICK_REQUEST_CODE
-                )
-            }
+            albumPresenter.takePicture()
         }
     }
 
@@ -170,27 +166,32 @@ class AlbumActivity : BaseActivity(),
         data: Intent?
     ) {
         super.onActivityResult(requestCode, resultCode, data)
-        data ?: return
 
-        if (requestCode == ENTER_ALBUM_REQUEST_CODE) {
-            if (resultCode == Activity.RESULT_OK) {
-                albumPresenter.finish()
-            } else if (resultCode == TRANS_IMAGES_RESULT_CODE) {
-                val addPath = data.getParcelableArrayListExtra<Uri>(INTENT_ADD_PATH)
-                val position = data.getIntExtra(INTENT_POSITION, -1)
-                albumPresenter.refreshAlbumItem(position, addPath)
+        when (requestCode) {
+            ENTER_ALBUM_REQUEST_CODE -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    albumPresenter.finish()
+                } else if (resultCode == TAKE_A_NEW_PICTURE_RESULT_CODE) {
+                    albumPresenter.loadAlbumList()
+                }
             }
-        } else if (requestCode == TAKE_A_PICK_REQUEST_CODE) {
-            if (resultCode == Activity.RESULT_OK) {
-                albumPresenter.onSuccessTakeAPick()
-            } else {
-                File(cameraUtil.savePath).delete()
+
+            TAKE_A_PICTURE_REQUEST_CODE -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    albumPresenter.onSuccessTakePicture()
+                } else {
+                    cameraUtil.savedPath?.let {
+                        File(it).delete()
+                    }
+                }
             }
         }
     }
 
     override fun scanAndRefresh() {
-        SingleMediaScanner(this, File(cameraUtil.savePath)) {
+        val savedPath = cameraUtil.savedPath ?: return
+
+        SingleMediaScanner(this, File(savedPath)) {
             albumPresenter.loadAlbumList()
         }
     }
@@ -217,6 +218,12 @@ class AlbumActivity : BaseActivity(),
         }
     }
 
+    override fun takePicture(saveDir: String) {
+        if (checkCameraPermission()) {
+            cameraUtil.takePicture(this@AlbumActivity, saveDir, TAKE_A_PICTURE_REQUEST_CODE)
+        }
+    }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>, grantResults: IntArray
@@ -237,11 +244,7 @@ class AlbumActivity : BaseActivity(),
                 if (grantResults.isNotEmpty()) {
                     if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                         // permission was granted, yay!
-                        cameraUtil.takePicture(
-                            this,
-                            albumPresenter.getPathDir(),
-                            TAKE_A_PICK_REQUEST_CODE
-                        )
+                        albumPresenter.takePicture()
                     } else {
                         permissionCheck.showPermissionDialog()
                     }
@@ -313,6 +316,15 @@ class AlbumActivity : BaseActivity(),
         adapter?.updateAlbumMeta(0, addedCount, thumbnailPath)
         adapter?.updateAlbumMeta(position, addedCount, thumbnailPath)
     }
+
+    override fun saveImageForAndroidQOrHigher() {
+        val savedPath = cameraUtil.savedPath ?: return
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            cameraUtil.saveImageForAndroidQOrHigher(contentResolver, File(savedPath))
+        }
+    }
+
 
     private fun setAlbumListAdapter(
         albumList: List<Album>,

@@ -28,8 +28,9 @@ interface PickerContract {
         fun showDetailView(position: Int)
         fun finishActivity()
         fun finishActivityWithResult(selectedImages: List<Uri>)
-        fun transImageFinish(position: Int, addedImageList: List<Uri>)
+        fun takeANewPictureWithFinish(position: Int, addedImageList: List<Uri>)
         fun addImage(pickerListImage: PickerListItem.Image)
+        fun onSuccessTakePicture()
     }
 
     interface Presenter {
@@ -48,5 +49,6 @@ interface PickerContract {
         fun getPickerMenuViewData(callback: (PickerMenuViewData) -> Unit)
         fun onClickMenuDone()
         fun onClickMenuAllDone()
+        fun onSuccessTakePicture()
     }
 }

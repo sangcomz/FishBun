@@ -72,7 +72,7 @@ class WithActivityActivity : AppCompatActivity() {
                 //dark
                 1 -> {
                     FishBun.with(this@WithActivityActivity)
-                        .setImageAdapter(PicassoAdapter())
+                        .setImageAdapter(GlideAdapter())
                         .setMaxCount(5)
                         .setMinCount(3)
                         .setPickerSpanCount(5)
