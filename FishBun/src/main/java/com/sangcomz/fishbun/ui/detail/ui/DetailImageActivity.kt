@@ -3,6 +3,7 @@ package com.sangcomz.fishbun.ui.detail.ui
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -93,10 +94,7 @@ class DetailImageActivity : BaseActivity(), DetailImageContract.View, OnPageChan
 
     override fun setToolBar(detailImageViewData: DetailImageViewData) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            this.setStatusBarColor(detailImageViewData.colorStatusBar)
-        }
-        if (detailImageViewData.isStatusBarLight && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            vpDetailPager?.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            this.setStatusBarColor(Color.BLACK)
         }
     }
 
