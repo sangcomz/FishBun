@@ -15,7 +15,7 @@ class FishBunCreator(private val fishBun: FishBun, private val fishton: Fishton)
     private var requestCode = FishBun.FISHBUN_REQUEST_CODE
 
     override fun setSelectedImages(selectedImages: ArrayList<Uri>): FishBunCreator = this.apply {
-        fishton.selectedImages = selectedImages
+        fishton.selectedImages.addAll(selectedImages)
     }
 
     override fun setAlbumThumbnailSize(size: Int): FishBunCreator = apply {
