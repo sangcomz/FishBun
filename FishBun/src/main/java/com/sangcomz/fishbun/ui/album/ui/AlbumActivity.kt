@@ -332,10 +332,12 @@ class AlbumActivity : BaseActivity(),
         albumViewData: AlbumViewData
     ) {
         if (adapter == null) {
-            adapter = AlbumListAdapter(this, albumViewData.albumThumbnailSize, imageAdapter)
+            adapter = AlbumListAdapter(this, albumViewData.albumThumbnailSize, imageAdapter).also {
+                recyclerAlbumList?.adapter = it
+            }
         }
+
         adapter?.let {
-            recyclerAlbumList?.adapter = it
             it.setAlbumList(albumList)
             it.notifyDataSetChanged()
         }
