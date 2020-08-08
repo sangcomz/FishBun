@@ -7,7 +7,7 @@ android:
     - build-tools-29.0.2
     - android-15
     - android-22
-    - android-28
+    - android-29
     - tools
     - platform-tools
     - add-on

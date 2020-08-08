@@ -23,7 +23,7 @@ class SingleMediaScanner @JvmOverloads constructor(
 
     override fun onMediaScannerConnected() = mediaScannerConnection.scanFile(file.absolutePath, null)
 
-    override fun onScanCompleted(path: String, uri: Uri) {
+    override fun onScanCompleted(path: String, uri: Uri?) {
         onScanCompleted?.invoke()
         mediaScannerConnection.disconnect()
     }

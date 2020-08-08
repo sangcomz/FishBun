@@ -15,10 +15,15 @@ _FishBun_ is a highly customizable image picker for Android.
 <img src="/pic/fishbuns.png">
 
 
-## What's New in _FishBun_ 1.0.0-alpha02? :tada:
+## What's New in _FishBun_ 1.0.0-alpha03? :tada:
 
 - Refactoring for rapid development:rocket::rocket::rocket:
-- Change PickerSpanCount default value (`3`->`4`) 
+- Change PickerSpanCount default value (`3`->`4`)
+- target SDK 29 support
+  - In API 29 or higher, the camera can be used only in the total image folder.
+- Fix Issue(#215)
+- Change DetailView statusBar color
+- Removed Picasso and added Coil
 
 
 ## Customizable Styles
@@ -116,18 +121,19 @@ Setting up _FishBun_ requires to add this Gradle configuration:
 
     dependencies {
         // Under the Android Plugin 3.0.0. 
-        compile 'com.sangcomz:FishBun:0.10.0'
+        compile 'com.sangcomz:FishBun:1.0.0-alpha02'
         
         compile 'com.squareup.picasso:picasso:2.71828'
+        compile 'io.coil-kt:coil:0.11.0'
         or
         compile 'com.github.bumptech.glide:glide:4.9.0'
                 
         // Android plugin 3.0.0 or higher.
-        implementation 'com.sangcomz:FishBun:1.0.0-alpha02'
+        implementation 'com.sangcomz:FishBun:1.0.0-alpha03'
         
-        implementation 'com.squareup.picasso:picasso:2.5.2'
+        implementation 'io.coil-kt:coil:0.11.0'
         or
-        implementation 'com.github.bumptech.glide:glide:4.9.0'
+        implementation 'com.github.bumptech.glide:glide:4.11.0'
 
     } 
     
@@ -158,7 +164,7 @@ and implement `OnActivityResult`:
                     // path = imageData.getStringArrayListExtra(Define.INTENT_PATH);
                     // you can get an image path(ArrayList<String>) on <0.6.2
 
-                    path = imageData.getParcelableArrayListExtra(Define.INTENT_PATH);
+                    path = imageData.getParcelableArrayListExtra(INTENT_PATH);
                     // you can get an image path(ArrayList<Uri>) on 0.6.2 and later
                     break;
                 }

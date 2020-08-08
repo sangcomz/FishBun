@@ -24,4 +24,6 @@ interface AlbumRepository {
     fun getMessageNotingSelected(): String
 
     fun getMinCount(): Int
+
+    fun getDefaultSavePath(): String?
 }

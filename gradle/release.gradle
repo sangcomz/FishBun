@@ -99,8 +99,13 @@ if (project.rootProject.file('local.properties').isFile()) {
         tagName = version
         targetCommitish = 'master'
         body = """## Release Note
-* Refactoring for rapid development
-* Change PickerSpanCount default value (`3`->`4`) 
+* Refactoring for rapid development:rocket::rocket::rocket:
+* Change PickerSpanCount default value (`3`->`4`)
+* target SDK 29 support
+  * In API 29 or higher, the camera can be used only in the total image folder.
+* Fix Issue(#215)
+* Change DetailView statusBar color
+* Removed Picasso and added Coil
 """
         name = version
     }

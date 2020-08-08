@@ -1,7 +1,10 @@
 package com.sangcomz.fishbun.ui.picker.model
 
 import android.net.Uri
+import android.os.Build
+import android.os.Environment
 import com.sangcomz.fishbun.adapter.image.ImageAdapter
+import com.sangcomz.fishbun.datasource.CameraDataSource
 import com.sangcomz.fishbun.datasource.FishBunDataSource
 import com.sangcomz.fishbun.datasource.ImageDataSource
 import com.sangcomz.fishbun.util.future.CallableFutureTask
@@ -10,7 +13,8 @@ import com.sangcomz.fishbun.datasource.PickerIntentDataSource
 class PickerRepositoryImpl(
     private val imageDataSource: ImageDataSource,
     private val fishBunDataSource: FishBunDataSource,
-    private val pickerIntentDataSource: PickerIntentDataSource
+    private val pickerIntentDataSource: PickerIntentDataSource,
+    private val cameraDataSource: CameraDataSource
 ) : PickerRepository {
 
     private var cachedAllMediaThumbNailPath: CallableFutureTask<List<Uri>>? = null
@@ -57,7 +61,17 @@ class PickerRepositoryImpl(
 
     override fun getImageAdapter(): ImageAdapter = fishBunDataSource.getImageAdapter()
 
-    override fun hasCameraInPickerPage() = fishBunDataSource.hasCameraInPickerPage()
+    override fun hasCameraInPickerPage(): Boolean {
+        return when {
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q -> {
+                fishBunDataSource.hasCameraInPickerPage()
+                        && pickerIntentDataSource.getAlbumData()?.albumId == 0L
+            }
+            else -> {
+                fishBunDataSource.hasCameraInPickerPage()
+            }
+        }
+    }
 
     override fun useDetailView() = fishBunDataSource.useDetailView()
 
@@ -97,4 +111,12 @@ class PickerRepositoryImpl(
                 && fishBunDataSource.getSelectedImageList().size == fishBunDataSource.getMaxCount()
 
     override fun isStartInAllView() = fishBunDataSource.isStartInAllView()
+
+    override fun getDefaultSavePath(): String? {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            cameraDataSource.getPicturePath()
+        } else {
+            cameraDataSource.getCameraPath()
+        }
+    }
 }

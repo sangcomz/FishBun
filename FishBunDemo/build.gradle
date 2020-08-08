@@ -10,11 +10,8 @@ buildscript {
 }
 
 
-
-
 android {
     compileSdkVersion gradle.compileSdk
-    buildToolsVersion gradle.buildTools
 
     defaultConfig {
         applicationId "com.sangcomz.fishbundemo"
@@ -24,7 +21,9 @@ android {
         versionName gradle.versionName
         multiDexEnabled true
     }
+
     Properties signProp = new Properties()
+
     if (project.rootProject.file('playstore/sign.properties').isFile()) {
         signProp.load(project.rootProject.file('playstore/sign.properties').newDataInputStream())
         def password = signProp.get("password", "")
@@ -37,8 +36,8 @@ android {
             }
         }
     }
-    buildTypes {
 
+    buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -50,6 +49,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
     lintOptions {
         abortOnError false
     }
@@ -65,8 +74,9 @@ dependencies {
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0-beta-4'
 
     implementation "androidx.legacy:legacy-support-v4:1.0.0"
-    implementation "com.squareup.picasso:picasso:$rootProject.picasso_version"
+    implementation 'com.squareup.picasso:picasso:2.71828'
     implementation "com.github.bumptech.glide:glide:$rootProject.glide_version"
+    implementation "io.coil-kt:coil:$rootProject.coil_version"
 }
 
 buildscript {

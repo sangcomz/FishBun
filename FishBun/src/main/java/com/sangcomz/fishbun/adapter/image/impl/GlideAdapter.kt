@@ -28,7 +28,7 @@ class GlideAdapter : ImageAdapter {
     }
 
     override fun loadDetailImage(target: ImageView, loadUrl: Uri) {
-        val options = RequestOptions().centerInside()
+        val options = RequestOptions().fitCenter()
         Glide
             .with(target.context)
             .load(loadUrl)

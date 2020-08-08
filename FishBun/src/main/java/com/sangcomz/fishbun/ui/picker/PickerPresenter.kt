@@ -1,7 +1,6 @@
 package com.sangcomz.fishbun.ui.picker
 
 import android.net.Uri
-import android.os.Environment
 import com.sangcomz.fishbun.ui.picker.model.PickerListItem
 import com.sangcomz.fishbun.ui.picker.model.PickerMenuViewData
 import com.sangcomz.fishbun.ui.picker.model.PickerRepository
@@ -34,6 +33,7 @@ class PickerPresenter internal constructor(
 
     override fun getPickerListItem() {
         val albumData = pickerRepository.getPickerAlbumData() ?: return
+
         imageListFuture = getAllMediaThumbnailsPath(albumData.albumId)
             .also {
                 it.execute(object : FutureCallback<List<Uri>> {
@@ -44,45 +44,18 @@ class PickerPresenter internal constructor(
             }
     }
 
-    fun onSuccessAllMediaThumbnailsPath(imageUriList: List<Uri>) {
-        pickerRepository.setCurrentPickerImageList(imageUriList)
-
-        val viewData = pickerRepository.getPickerViewData()
-        val selectedImageList = pickerRepository.getSelectedImageList().toMutableList()
-        val pickerList = arrayListOf<PickerListItem>()
-        if (pickerRepository.hasCameraInPickerPage()) {
-            pickerList.add(PickerListItem.Camera)
-        }
-
-        imageUriList.map {
-            PickerListItem.Image(it, selectedImageList.indexOf(it), viewData)
-        }.also {
-            pickerList.addAll(it)
-            uiHandler.run {
-                pickerView.showImageList(
-                    pickerList,
-                    pickerRepository.getImageAdapter(),
-                    pickerRepository.hasCameraInPickerPage()
-                )
-                setToolbarTitle()
-            }
-        }
-    }
-
     override fun transImageFinish() {
         val albumData = pickerRepository.getPickerAlbumData() ?: return
 
-        pickerView.transImageFinish(albumData.albumPosition, pickerRepository.getAddedPathList())
+        pickerView.takeANewPictureWithFinish(albumData.albumPosition, pickerRepository.getAddedPathList())
     }
 
     override fun takePicture() {
         val albumData = pickerRepository.getPickerAlbumData() ?: return
         if (albumData.albumId == 0L) {
-            pickerView.takePicture(
-                Environment.getExternalStoragePublicDirectory(
-                    Environment.DIRECTORY_DCIM + "/Camera"
-                ).absolutePath
-            )
+            pickerRepository.getDefaultSavePath()?.let {
+                pickerView.takePicture(it)
+            }
         } else {
             try {
                 dirPathFuture = pickerRepository.getDirectoryPath(albumData.albumId)
@@ -104,12 +77,8 @@ class PickerPresenter internal constructor(
 
     override fun successTakePicture(addedImagePath: Uri) {
         addAddedPath(addedImagePath)
-        pickerView.addImage(
-            PickerListItem.Image(
-                addedImagePath,
-                pickerRepository.getPickerViewData()
-            )
-        )
+
+        updatePickerListItem()
     }
 
     override fun getDesignViewData() {
@@ -174,6 +143,10 @@ class PickerPresenter internal constructor(
             }
         }
         pickerView.finishActivity()
+    }
+
+    override fun onSuccessTakePicture() {
+       pickerView.onSuccessTakePicture()
     }
 
     override fun release() {
@@ -243,6 +216,44 @@ class PickerPresenter internal constructor(
         clearCache: Boolean = false
     ): CallableFutureTask<List<Uri>> {
         return pickerRepository.getAllBucketImageUri(albumId, clearCache)
+    }
+
+    private fun onSuccessAllMediaThumbnailsPath(imageUriList: List<Uri>) {
+        pickerRepository.setCurrentPickerImageList(imageUriList)
+
+        val viewData = pickerRepository.getPickerViewData()
+        val selectedImageList = pickerRepository.getSelectedImageList().toMutableList()
+        val pickerList = arrayListOf<PickerListItem>()
+        if (pickerRepository.hasCameraInPickerPage()) {
+            pickerList.add(PickerListItem.Camera)
+        }
+
+        imageUriList.map {
+            PickerListItem.Image(it, selectedImageList.indexOf(it), viewData)
+        }.also {
+            pickerList.addAll(it)
+            uiHandler.run {
+                pickerView.showImageList(
+                    pickerList,
+                    pickerRepository.getImageAdapter(),
+                    pickerRepository.hasCameraInPickerPage()
+                )
+                setToolbarTitle()
+            }
+        }
+    }
+
+    private fun updatePickerListItem() {
+        val albumData = pickerRepository.getPickerAlbumData() ?: return
+
+        imageListFuture = getAllMediaThumbnailsPath(albumData.albumId, true)
+            .also {
+                it.execute(object : FutureCallback<List<Uri>> {
+                    override fun onSuccess(result: List<Uri>) {
+                        onSuccessAllMediaThumbnailsPath(result)
+                    }
+                })
+            }
     }
 
     private fun finish() {

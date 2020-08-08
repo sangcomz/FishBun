@@ -10,9 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sangcomz.fishbun.FishBun
-import com.sangcomz.fishbun.MimeType
 import com.sangcomz.fishbun.adapter.image.impl.GlideAdapter
-import com.sangcomz.fishbun.adapter.image.impl.PicassoAdapter
+import com.sangcomz.fishbun.adapter.image.impl.CoilAdapter
 import kotlinx.android.synthetic.main.activity_withactivity.*
 import java.util.*
 
@@ -72,7 +71,7 @@ class WithActivityActivity : AppCompatActivity() {
                 //dark
                 1 -> {
                     FishBun.with(this@WithActivityActivity)
-                        .setImageAdapter(PicassoAdapter())
+                        .setImageAdapter(GlideAdapter())
                         .setMaxCount(5)
                         .setMinCount(3)
                         .setPickerSpanCount(5)
@@ -108,7 +107,7 @@ class WithActivityActivity : AppCompatActivity() {
                 //Light
                 2 -> {
                     FishBun.with(this@WithActivityActivity)
-                        .setImageAdapter(PicassoAdapter())
+                        .setImageAdapter(CoilAdapter())
                         .setMaxCount(50)
                         .setPickerSpanCount(4)
                         .setActionBarColor(
