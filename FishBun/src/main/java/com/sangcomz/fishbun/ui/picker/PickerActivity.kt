@@ -385,8 +385,8 @@ class PickerActivity : BaseActivity(),
      */
     override fun finishActivityWithResult(selectedImages: List<Uri>) {
         val i = Intent()
-        setResult(Activity.RESULT_OK, i)
         i.putParcelableArrayListExtra(FishBun.INTENT_PATH, ArrayList(selectedImages))
+        setResult(Activity.RESULT_OK, i)
         finish()
     }
 
