@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sangcomz.fishbun.FishBun
+import com.sangcomz.fishbun.MimeType
 import com.sangcomz.fishbun.adapter.image.impl.GlideAdapter
 import com.sangcomz.fishbun.adapter.image.impl.CoilAdapter
 import kotlinx.android.synthetic.main.activity_withactivity.*
@@ -46,7 +47,7 @@ class WithActivityActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, imageData)
 
         if (requestCode == FishBun.FISHBUN_REQUEST_CODE && resultCode == RESULT_OK) {
-            path = imageData!!.getParcelableArrayListExtra(FishBun.INTENT_PATH)
+            path = imageData?.getParcelableArrayListExtra(FishBun.INTENT_PATH) ?: arrayListOf()
             imageAdapter.changePath(path)
         }
     }
@@ -84,8 +85,8 @@ class WithActivityActivity : AppCompatActivity() {
                         .setSelectedImages(path)
                         .setAlbumSpanCount(2, 3)
                         .setButtonInAlbumActivity(false)
-                        .setCamera(true)
-                        .exceptGif(true)
+                        .hasCameraInPickerPage(true)
+                        .exceptMimeType(arrayListOf(MimeType.GIF))
                         .setReachLimitAutomaticClose(true)
                         .setHomeAsUpIndicatorDrawable(
                             ContextCompat.getDrawable(
@@ -119,8 +120,8 @@ class WithActivityActivity : AppCompatActivity() {
                         .setSelectedImages(path)
                         .setAlbumSpanCount(1, 2)
                         .setButtonInAlbumActivity(true)
-                        .setCamera(false)
-                        .exceptGif(true)
+                        .hasCameraInPickerPage(false)
+                        .exceptMimeType(arrayListOf(MimeType.GIF))
                         .setReachLimitAutomaticClose(false)
                         .setHomeAsUpIndicatorDrawable(
                             ContextCompat.getDrawable(

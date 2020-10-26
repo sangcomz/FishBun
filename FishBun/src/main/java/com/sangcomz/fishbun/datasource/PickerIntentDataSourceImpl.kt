@@ -9,11 +9,13 @@ class PickerIntentDataSourceImpl(private val intent: Intent) : PickerIntentDataS
             && intent.hasExtra(ARG_ALBUM_ID)
             && intent.hasExtra(ARG_ALBUM_POSITION)
         )
-            AlbumData(
-                intent.getLongExtra(ARG_ALBUM_ID, -1),
-                intent.getStringExtra(ARG_ALBUM_NAME),
-                intent.getIntExtra(ARG_ALBUM_POSITION, -1)
-            )
+            intent.getStringExtra(ARG_ALBUM_NAME)?.let {
+                AlbumData(
+                    intent.getLongExtra(ARG_ALBUM_ID, -1),
+                        it,
+                    intent.getIntExtra(ARG_ALBUM_POSITION, -1)
+                )
+            }
         else
             null
     }
