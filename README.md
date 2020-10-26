@@ -142,7 +142,8 @@ and to allow the following permissions in your `Manifest`:
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-If your app targets Android 11 with compileSdk/targetSdk >= 30 then you will need to add this to the manifest (outside of the application block) in order to capture pictures with the device camera. [Android documentation here](https://developer.android.com/about/versions/11/privacy/package-visibility)
+If your app targets Android 11 with compileSdk/targetSdk >= 30 then you will need to add this to the manifest (outside of the application block) in order to capture pictures with the device camera. [Android documentation here](https://developer.android.com/about/versions/11/privacy/package-visibility):
+
     <queries>
         <intent>
             <action android:name="android.media.action.IMAGE_CAPTURE" />
