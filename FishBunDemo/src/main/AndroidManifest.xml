@@ -6,6 +6,12 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
 
+    <queries>
+        <intent>
+            <action android:name="android.media.action.IMAGE_CAPTURE" />
+        </intent>
+    </queries>
+
     <application
         android:name="com.sangcomz.fishbundemo.CommonApplication"
         android:allowBackup="true"
@@ -23,5 +29,4 @@
         </activity>
         <activity android:name="com.sangcomz.fishbundemo.WithFragmentActivity" />
     </application>
-
 </manifest>

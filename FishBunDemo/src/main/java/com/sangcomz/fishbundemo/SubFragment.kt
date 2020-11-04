@@ -14,6 +14,7 @@ import com.sangcomz.fishbun.FishBun
 import com.sangcomz.fishbun.adapter.image.impl.CoilAdapter
 import kotlinx.android.synthetic.main.fragment_sub.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * A simple [Fragment] subclass.
@@ -52,7 +53,7 @@ class SubFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             FishBun.FISHBUN_REQUEST_CODE -> if (resultCode == Activity.RESULT_OK) {
-                path = data!!.getParcelableArrayListExtra(FishBun.INTENT_PATH)
+                path = data?.getParcelableArrayListExtra(FishBun.INTENT_PATH) ?: arrayListOf()
                 imageAdapter.changePath(path)
             }
         }
