@@ -15,15 +15,16 @@ _FishBun_ is a highly customizable image picker for Android.
 <img src="/pic/fishbuns.png">
 
 
-## What's New in _FishBun_ 1.0.0-alpha03? :tada:
+## What's New in _FishBun_ 1.0.0-alpha04? :tada:
 
 - Refactoring for rapid development:rocket::rocket::rocket:
 - Change PickerSpanCount default value (`3`->`4`)
-- target SDK 29 support
+- target SDK 30 support
   - In API 29 or higher, the camera can be used only in the total image folder.
 - Fix Issue(#215)
 - Change DetailView statusBar color
 - Removed Picasso and added Coil
+- Supprot Chinese
 
 
 ## Customizable Styles
@@ -121,15 +122,14 @@ Setting up _FishBun_ requires to add this Gradle configuration:
 
     dependencies {
         // Under the Android Plugin 3.0.0. 
-        compile 'com.sangcomz:FishBun:1.0.0-alpha02'
+        compile 'com.sangcomz:FishBun:1.0.0-alpha04'
         
-        compile 'com.squareup.picasso:picasso:2.71828'
         compile 'io.coil-kt:coil:0.11.0'
         or
         compile 'com.github.bumptech.glide:glide:4.9.0'
                 
         // Android plugin 3.0.0 or higher.
-        implementation 'com.sangcomz:FishBun:1.0.0-alpha03'
+        implementation 'com.sangcomz:FishBun:1.0.0-alpha04'
         
         implementation 'io.coil-kt:coil:0.11.0'
         or
@@ -158,7 +158,7 @@ Use _FishBun_ in an activity:
 
 or in a fragment:
 
-    FishBun.with(YourFragment).setImageAdapter(new PicassoAdapter()).startAlbum();
+    FishBun.with(YourFragment).setImageAdapter(new CoilAdapter()).startAlbum();
 
 and implement `OnActivityResult`:
 

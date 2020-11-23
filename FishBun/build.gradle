@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'com.hiya.jacoco-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'de.mobilej.unmock'
+apply plugin: 'maven-publish'
 
 buildscript {
     repositories {
@@ -85,4 +86,12 @@ dependencies {
 
 tasks.withType(Javadoc).all {
     enabled = false
+}
+
+install {
+    repositories.mavenInstaller {
+        pom.groupId = 'com.sangcomz'
+        pom.version = gradle.versionName
+        pom.artifactId = project.name
+    }
 }
