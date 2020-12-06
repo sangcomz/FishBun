@@ -1,0 +1,33 @@
+name: Android CI
+
+on:
+  push:
+    branches: [ master, develop ]
+  pull_request:
+    branches: [ master, develop ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+    - name: Build with Gradle
+      run: ./gradlew build
+    - name: assemble and jacoco
+      run: ./gradlew assembleDebug jacocoTestReport
+    - name: Android Emulator Runner
+      # You may pin to the exact commit or the version.
+      # uses: ReactiveCircus/android-emulator-runner@e08f702234bdc95883c7fd5c7d2867ccf1a8463b
+      uses: ReactiveCircus/android-emulator-runner@v2.13.0
+      with:
+    # API level of the platform and system image - e.g. 23 for Android Marshmallow, 29 for Android 10
+        api-level: 25
+        script: ./gradlew connectedCheck connectedAndroidTest
+    - name: Codecov
+      uses: codecov/codecov-action@v1.0.15
