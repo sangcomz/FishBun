@@ -13,7 +13,7 @@ import com.sangcomz.fishbun.FishBun
 import com.sangcomz.fishbun.MimeType
 import com.sangcomz.fishbun.adapter.image.impl.GlideAdapter
 import com.sangcomz.fishbun.adapter.image.impl.CoilAdapter
-import kotlinx.android.synthetic.main.activity_withactivity.*
+import com.sangcomz.fishbundemo.databinding.ActivityWithactivityBinding
 import java.util.*
 
 class WithActivityActivity : AppCompatActivity() {
@@ -21,21 +21,23 @@ class WithActivityActivity : AppCompatActivity() {
     var path = ArrayList<Uri>()
     private lateinit var imageAdapter: ImageAdapter
     private var mode: Int = 0
+    private lateinit var binding: ActivityWithactivityBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_withactivity)
+        binding = ActivityWithactivityBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         mode = intent.getIntExtra("mode", -1)
 
-        with(recyclerview) {
+        with(binding.recyclerview) {
             layoutManager = LinearLayoutManager(
                 this@WithActivityActivity,
                 LinearLayoutManager.HORIZONTAL,
                 false
             )
 
-            imageAdapter = ImageAdapter(context, ImageController(img_main), path)
+            imageAdapter = ImageAdapter(context, ImageController(binding.imgMain), path)
             adapter = imageAdapter
         }
     }

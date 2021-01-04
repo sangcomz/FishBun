@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import com.sangcomz.fishbun.Fishton
 import com.sangcomz.fishbun.R
 import com.sangcomz.fishbun.adapter.image.ImageAdapter
-import kotlinx.android.synthetic.main.detail_item.view.*
 
 /**
  * Created by sangcomz on 15/06/2017.
@@ -25,7 +24,7 @@ class DetailViewPagerAdapter(private val imageAdapter: ImageAdapter) : PagerAdap
             LayoutInflater.from(container.context).inflate(R.layout.detail_item, container, false)
         container.addView(itemView)
 
-        imageAdapter.loadDetailImage(itemView.img_detail_image, images[position])
+        imageAdapter.loadDetailImage(itemView.findViewById(R.id.img_detail_image), images[position])
 
         return itemView
     }

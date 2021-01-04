@@ -13,7 +13,6 @@ import com.sangcomz.fishbun.ui.album.model.Album
 import com.sangcomz.fishbun.ui.album.model.AlbumMetaData
 import com.sangcomz.fishbun.ui.album.listener.AlbumClickListener
 import com.sangcomz.fishbun.util.SquareImageView
-import kotlinx.android.synthetic.main.album_item.view.*
 
 class AlbumListAdapter(
     private val albumClickListener: AlbumClickListener,
@@ -33,6 +32,7 @@ class AlbumListAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val binding =
         return ViewHolder(
             parent,
             thumbnailSize,
@@ -74,9 +74,9 @@ class AlbumListAdapter(
     ) : RecyclerView.ViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.album_item, parent, false)
     ) {
-        private val imgAlbumThumb: SquareImageView = itemView.img_album_thumb
-        private val txtAlbumName: TextView = itemView.txt_album_name
-        private val txtAlbumCount: TextView = itemView.txt_album_count
+        private val imgAlbumThumb: SquareImageView = itemView.findViewById(R.id.img_album_thumb)
+        private val txtAlbumName: TextView = itemView.findViewById(R.id.txt_album_name)
+        private val txtAlbumCount: TextView = itemView.findViewById(R.id.txt_album_count)
 
         init {
             imgAlbumThumb.layoutParams = LinearLayout.LayoutParams(albumSize, albumSize)
