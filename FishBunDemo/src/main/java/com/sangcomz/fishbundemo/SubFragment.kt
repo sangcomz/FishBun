@@ -12,8 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sangcomz.fishbun.FishBun
 import com.sangcomz.fishbun.adapter.image.impl.CoilAdapter
-import kotlinx.android.synthetic.main.fragment_sub.*
-import java.util.*
+import com.sangcomz.fishbundemo.databinding.FragmentSubBinding
 import kotlin.collections.ArrayList
 
 /**
@@ -23,22 +22,28 @@ class SubFragment : Fragment() {
 
     var path = ArrayList<Uri>()
     private lateinit var imageAdapter: ImageAdapter
+    private var _binding: FragmentSubBinding? = null
+    private val binding get() = _binding!!
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.fragment_sub, container, false)
+    ): View {
+        _binding = FragmentSubBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        with(recyclerview) {
+        with(binding.recyclerview) {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            imageAdapter = ImageAdapter(activity!!, ImageController(img_main), path)
+            imageAdapter = ImageAdapter(activity!!, ImageController(binding.imgMain), path)
             adapter = imageAdapter
         }
 
-        btn_add_images.setOnClickListener {
+        binding.btnAddImages.setOnClickListener {
             FishBun.with(this@SubFragment)
                 .setImageAdapter(CoilAdapter())
                 .setMaxCount(10)
@@ -57,6 +62,11 @@ class SubFragment : Fragment() {
                 imageAdapter.changePath(path)
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {
