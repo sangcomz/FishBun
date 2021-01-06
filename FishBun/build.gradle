@@ -31,7 +31,7 @@ android {
         consumerProguardFile('proguard-rules.pro')
         versionCode gradle.versionCode
         versionName gradle.versionName
-
+        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
