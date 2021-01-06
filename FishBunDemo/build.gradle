@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 
 buildscript {
     repositories {
@@ -61,6 +60,10 @@ android {
 
     lintOptions {
         abortOnError false
+    }
+
+    buildFeatures {
+         viewBinding true
     }
 }
 

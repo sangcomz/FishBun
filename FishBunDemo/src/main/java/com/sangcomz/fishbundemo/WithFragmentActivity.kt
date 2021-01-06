@@ -2,17 +2,20 @@ package com.sangcomz.fishbundemo
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_withfragment.*
+import com.sangcomz.fishbundemo.databinding.ActivityWithfragmentBinding
 
 class WithFragmentActivity : AppCompatActivity() {
 
     private lateinit var subFragment: SubFragment
+    private lateinit var binding: ActivityWithfragmentBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_withfragment)
+        binding = ActivityWithfragmentBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         subFragment = SubFragment.newInstance()
-        supportFragmentManager.beginTransaction().add(area_container.id, subFragment).commit()
+        supportFragmentManager.beginTransaction().add(binding.areaContainer.id, subFragment)
+            .commit()
     }
 }
