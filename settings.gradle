@@ -1,7 +1,7 @@
 include ':FishBunDemo', ':FishBun'
 
-gradle.ext.versionCode = 32
-gradle.ext.versionName = '1.0.0-alpha04'
+gradle.ext.versionCode = 33
+gradle.ext.versionName = '1.0.0-alpha05'
 
 gradle.ext.set('minSdk', 15)
 gradle.ext.set('targetSdk', 30)
