@@ -1,0 +1,15 @@
+<resources>
+    <string name="album">专辑</string>
+    <string name="camera">相机</string>
+    <string name="done">完成</string>
+    <string name="done_all">全部完成</string>
+    <string name="msg_no_selected">没有选择图片。</string>
+    <string name="str_all_view">所有视图</string>
+    <string name="msg_permission">缺少权限。</string>
+    <string name="msg_no_image">没有专辑。\n拍一张照片吧！</string>
+    <string name="msg_full_image">选择数量达到上限。取消一张照片以继续选择其他照片。</string>
+    <string name="msg_loading_image">加载中…</string>
+    <string name="image">照片</string>
+    <string name="msg_error">有点临时错误哦。请过几分钟再试试哦。</string>
+    <string name="msg_minimum_image">请至少选择 <b>%d</b> 张图片。</string>
+</resources>

@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import com.sangcomz.fishbundemo.databinding.ItemBinding
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.item.view.*
 import java.util.*
 
 /**
@@ -21,18 +21,18 @@ class ImageAdapter(
 ) : RecyclerView.Adapter<ImageAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item, parent, false)
-        return ViewHolder(view)
+        return ViewHolder(ItemBinding.inflate(LayoutInflater.from(context)))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val imagePath = imagePaths[position]
+        
         Picasso.get()
             .load(imagePath)
             .fit()
             .centerCrop()
-            .into(holder.imageView);
+            .into(holder.imageView)
+
         holder.imageView.setOnClickListener { imageController.setImgMain(imagePath) }
     }
 
@@ -44,7 +44,7 @@ class ImageAdapter(
 
     override fun getItemCount(): Int = imagePaths.size
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val imageView = itemView.img_item as ImageView
+    class ViewHolder(binding: ItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        val imageView = binding.imgItem
     }
 }

@@ -35,8 +35,9 @@ class ImageDataSourceImpl(private val contentResolver: ContentResolver) : ImageD
                 while (c.moveToNext()) {
 
                     val bucketId = c.getInt(c.getColumnIndex(BUCKET_ID)).toLong()
-                    val bucketDisplayName = c.getString(c.getColumnIndex(BUCKET_DISPLAY_NAME))
-                    val bucketMimeType = c.getString(c.getColumnIndex(MIME_TYPE))
+                    val bucketDisplayName =
+                        c.getString(c.getColumnIndex(BUCKET_DISPLAY_NAME)) ?: continue
+                    val bucketMimeType = c.getString(c.getColumnIndex(MIME_TYPE)) ?: continue
                     val imgId = c.getInt(c.getColumnIndex(MediaStore.MediaColumns._ID))
 
                     if (isExceptImage(
@@ -131,15 +132,17 @@ class ImageDataSourceImpl(private val contentResolver: ContentResolver) : ImageD
                 try {
                     if (c.moveToFirst()) {
                         do {
-                            val mimeType = c.getString(c.getColumnIndex(MIME_TYPE))
-                            val folderName = c.getString(c.getColumnIndex(BUCKET_DISPLAY_NAME))
+                            val mimeType = c.getString(c.getColumnIndex(MIME_TYPE)) ?: continue
+                            val folderName =
+                                c.getString(c.getColumnIndex(BUCKET_DISPLAY_NAME)) ?: continue
+
                             if (isExceptMemeType(exceptMimeTypeList, mimeType)
                                 || isNotContainsSpecifyFolderList(specifyFolderList, folderName)
                             ) continue
+
                             val imgId = c.getInt(c.getColumnIndex(MediaStore.MediaColumns._ID))
                             val path = Uri.withAppendedPath(
-                                EXTERNAL_CONTENT_URI,
-                                "" + imgId
+                                EXTERNAL_CONTENT_URI, "" + imgId
                             )
                             imageUris.add(path)
                         } while (c.moveToNext())
@@ -177,8 +180,8 @@ class ImageDataSourceImpl(private val contentResolver: ContentResolver) : ImageD
                 try {
                     if (c.moveToFirst()) {
                         do {
-                            val mimeType = c.getString(c.getColumnIndex(MIME_TYPE))
-                            val folderName = c.getString(c.getColumnIndex(BUCKET_DISPLAY_NAME))
+                            val mimeType = c.getString(c.getColumnIndex(MIME_TYPE)) ?: continue
+                            val folderName = c.getString(c.getColumnIndex(BUCKET_DISPLAY_NAME)) ?: continue
 
                             if (isExceptMemeType(exceptMimeTypeList, mimeType)
                                 || isNotContainsSpecifyFolderList(specifyFolderList, folderName)

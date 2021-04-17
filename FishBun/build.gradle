@@ -1,8 +1,8 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'com.hiya.jacoco-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'de.mobilej.unmock'
+apply plugin: 'maven-publish'
 
 buildscript {
     repositories {
@@ -31,7 +31,7 @@ android {
         consumerProguardFile('proguard-rules.pro')
         versionCode gradle.versionCode
         versionName gradle.versionName
-
+        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -85,4 +85,12 @@ dependencies {
 
 tasks.withType(Javadoc).all {
     enabled = false
+}
+
+install {
+    repositories.mavenInstaller {
+        pom.groupId = 'com.sangcomz'
+        pom.version = gradle.versionName
+        pom.artifactId = project.name
+    }
 }
