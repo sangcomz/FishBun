@@ -11,7 +11,7 @@ import kotlin.collections.ArrayList
  * Created by sangcomz on 17/05/2017.
  */
 class FishBunCreator(private val fishBun: FishBun, private val fishton: Fishton) : BaseProperty,
-    CustomizationProperty {
+        CustomizationProperty {
     private var requestCode = FishBun.FISHBUN_REQUEST_CODE
 
     override fun setSelectedImages(selectedImages: ArrayList<Uri>): FishBunCreator = this.apply {
@@ -48,15 +48,15 @@ class FishBunCreator(private val fishBun: FishBun, private val fishton: Fishton)
     }
 
     override fun setActionBarColor(actionbarColor: Int, statusBarColor: Int): FishBunCreator =
-        this.apply {
-            fishton.colorActionBar = actionbarColor
-            fishton.colorStatusBar = statusBarColor
-        }
+            this.apply {
+                fishton.colorActionBar = actionbarColor
+                fishton.colorStatusBar = statusBarColor
+            }
 
     override fun setActionBarColor(
-        actionbarColor: Int,
-        statusBarColor: Int,
-        isStatusBarLight: Boolean
+            actionbarColor: Int,
+            statusBarColor: Int,
+            isStatusBarLight: Boolean
     ): FishBunCreator = this.apply {
         fishton.colorActionBar = actionbarColor
         fishton.colorStatusBar = statusBarColor
@@ -90,22 +90,22 @@ class FishBunCreator(private val fishBun: FishBun, private val fishton: Fishton)
     }
 
     override fun setReachLimitAutomaticClose(isAutomaticClose: Boolean): FishBunCreator =
-        this.apply {
-            fishton.isAutomaticClose = isAutomaticClose
-        }
+            this.apply {
+                fishton.isAutomaticClose = isAutomaticClose
+            }
 
     override fun setAlbumSpanCount(
-        portraitSpanCount: Int,
-        landscapeSpanCount: Int
+            portraitSpanCount: Int,
+            landscapeSpanCount: Int
     ): FishBunCreator = this.apply {
         fishton.albumPortraitSpanCount = portraitSpanCount
         fishton.albumLandscapeSpanCount = landscapeSpanCount
     }
 
     override fun setAlbumSpanCountOnlyLandscape(landscapeSpanCount: Int): FishBunCreator =
-        this.apply {
-            fishton.albumLandscapeSpanCount = landscapeSpanCount
-        }
+            this.apply {
+                fishton.albumLandscapeSpanCount = landscapeSpanCount
+            }
 
     override fun setAlbumSpanCountOnlPortrait(portraitSpanCount: Int): FishBunCreator = this.apply {
         fishton.albumPortraitSpanCount = portraitSpanCount
@@ -177,6 +177,12 @@ class FishBunCreator(private val fishBun: FishBun, private val fishton: Fishton)
     }
 
     override fun startAlbum() {
+        albumIntent().run {
+            fishBun.fishBunContext.startActivityForResult(this, requestCode)
+        }
+    }
+
+    override fun albumIntent(): Intent {
         val fishBunContext = fishBun.fishBunContext
         val context = fishBunContext.getContext()
 
@@ -190,14 +196,11 @@ class FishBunCreator(private val fishBun: FishBun, private val fishton: Fishton)
             setDefaultDimen(context)
         }
 
-        val intent: Intent =
-            if (fishton.isStartInAllView) {
-                PickerActivity.getPickerActivityIntent(context, 0L, fishton.titleAlbumAllView, 0)
-            } else {
-                Intent(context, AlbumActivity::class.java)
-            }
-
-        fishBunContext.startActivityForResult(intent, requestCode)
+        return if (fishton.isStartInAllView) {
+            PickerActivity.getPickerActivityIntent(context, 0L, fishton.titleAlbumAllView, 0)
+        } else {
+            Intent(context, AlbumActivity::class.java)
+        }
     }
 
     private fun exceptionHandling() {
