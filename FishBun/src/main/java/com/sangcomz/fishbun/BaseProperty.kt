@@ -1,5 +1,6 @@
 package com.sangcomz.fishbun
 
+import android.content.Intent
 import android.net.Uri
 
 /**
@@ -23,4 +24,6 @@ interface BaseProperty {
     fun exceptMimeType(exceptMimeTypeList: List<MimeType>): FishBunCreator
 
     fun startAlbum()
+
+    fun albumIntent(): Intent
 }
