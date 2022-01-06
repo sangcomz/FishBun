@@ -1,1 +1,1 @@
-./gradlew clean bintrayUpload githubRelease
+./gradlew clean fishbun:publishAllPublicationsToMavenRepository githubRelease

@@ -15,17 +15,9 @@ _FishBun_ is a highly customizable image picker for Android.
 <img src="/pic/fishbuns.png">
 
 
-## What's New in _FishBun_ 1.0.0-alpha05? :tada:
+## What's New in _FishBun_ 1.0.0-alpha06? :tada:
 
-- Refactoring for rapid development:rocket::rocket::rocket:
-- Change PickerSpanCount default value (`3`->`4`)
-- target SDK 30 support
-  - In API 29 or higher, the camera can be used only in the total image folder.
-- Fix Issue(#215)
-- Change DetailView statusBar color
-- Removed Picasso and added Coil
-- Support Chinese
-- Fix Issue(#223)
+- upload artifact to maven central
 
 
 ## Customizable Styles
@@ -117,24 +109,8 @@ Fishbun 0.10.0 and above only supports projects that have been migrated to [andr
 
 Setting up _FishBun_ requires to add this Gradle configuration:
 
-    repositories {
-        jcenter()
-    }
-
     dependencies {
-        // Under the Android Plugin 3.0.0. 
-        compile 'com.sangcomz:FishBun:1.0.0-alpha05'
-        or
-        compile 'com.sangcomz:FishBun:0.11.4' //stable version
-        
-        compile 'io.coil-kt:coil:0.11.0'
-        or
-        compile 'com.github.bumptech.glide:glide:4.9.0'
-                
-        // Android plugin 3.0.0 or higher.
-        implementation 'com.sangcomz:FishBun:1.0.0-alpha05'
-        or
-        implementation 'com.sangcomz:FishBun:0.11.4' //stable version
+        implementation 'io.github.sangcomz:fishbun:1.0.0-alpha06'
          
         implementation 'io.coil-kt:coil:0.11.0'
         or

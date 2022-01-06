@@ -39,6 +39,7 @@ project.ext {
     setProperty("signingKeyId", props["signing.keyId"])
     setProperty("signingPassword", props["signing.password"])
     setProperty("signingKey", props["signing.key"])
+    setProperty("githubAccessTokens", props["github_access_tokens"])
 }
 
 task clean(type: Delete) {

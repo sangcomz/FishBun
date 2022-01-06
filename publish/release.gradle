@@ -92,3 +92,15 @@ afterEvaluate {
         }
     }
 }
+
+github {
+    owner = 'sangcomz'
+    repo = 'Fishbun'
+    token = githubAccessTokens
+    tagName = version
+    targetCommitish = 'master'
+    body = """## Release Note
+* upload artifact to maven central
+"""
+    name = version
+}
