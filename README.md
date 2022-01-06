@@ -3,7 +3,7 @@
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-FishBun-green.svg?style=true)](https://android-arsenal.com/details/1/2785)
 [![Build Status](https://travis-ci.org/sangcomz/FishBun.svg?branch=master)](https://travis-ci.org/sangcomz/FishBun)
 [![codecov](https://codecov.io/gh/sangcomz/FishBun/branch/master/graph/badge.svg)](https://codecov.io/gh/sangcomz/FishBun)
-[![Download](https://api.bintray.com/packages/sangcomz/maven/fishbun/images/download.svg)](https://bintray.com/sangcomz/maven/fishbun/_latestVersion)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.sangcomz/fishbun)](https://search.maven.org/artifact/io.github.sangcomz/fishbun)
 <p style="float:left;">
  <a href="https://play.google.com/store/apps/details?id=com.sangcomz.fishbundemo">
  <img HEIGHT="40" WIDTH="135" alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge.png" />
