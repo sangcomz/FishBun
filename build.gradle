@@ -31,15 +31,26 @@ allprojects {
     }
 }
 
-Properties props = new Properties()
-props.load(new FileInputStream(rootProject.file("local.properties")))
-project.ext {
-    setProperty("ossrhUsername", props["ossrhUsername"])
-    setProperty("ossrhPassword", props["ossrhPassword"])
-    setProperty("signingKeyId", props["signing.keyId"])
-    setProperty("signingPassword", props["signing.password"])
-    setProperty("signingKey", props["signing.key"])
-    setProperty("githubAccessTokens", props["github_access_tokens"])
+if (project.rootProject.file('local.properties').isFile()) {
+    Properties props = new Properties()
+    props.load(new FileInputStream(rootProject.file("local.properties")))
+    project.ext {
+        setProperty("ossrhUsername", props["ossrhUsername"] ?: ' ')
+        setProperty("ossrhPassword", props["ossrhPassword"] ?: ' ')
+        setProperty("signingKeyId", props["signing.keyId"] ?: ' ')
+        setProperty("signingPassword", props["signing.password"] ?: ' ')
+        setProperty("signingKey", props["signing.key"] ?: ' ')
+        setProperty("githubAccessTokens", props["github_access_tokens"] ?: ' ')
+    }
+} else {
+    project.ext {
+        setProperty("ossrhUsername", ' ')
+        setProperty("ossrhPassword", ' ')
+        setProperty("signingKeyId", ' ')
+        setProperty("signingPassword", ' ')
+        setProperty("signingKey", ' ')
+        setProperty("githubAccessTokens", ' ')
+    }
 }
 
 task clean(type: Delete) {
