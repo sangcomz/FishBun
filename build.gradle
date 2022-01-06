@@ -28,8 +28,17 @@ allprojects {
     repositories {
         jcenter()
         google()
-
     }
+}
+
+Properties props = new Properties()
+props.load(new FileInputStream(rootProject.file("local.properties")))
+project.ext {
+    setProperty("ossrhUsername", props["ossrhUsername"])
+    setProperty("ossrhPassword", props["ossrhPassword"])
+    setProperty("signingKeyId", props["signing.keyId"])
+    setProperty("signingPassword", props["signing.password"])
+    setProperty("signingKey", props["signing.key"])
 }
 
 task clean(type: Delete) {
