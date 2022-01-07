@@ -2,7 +2,6 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'com.hiya.jacoco-android'
 apply plugin: 'de.mobilej.unmock'
-apply plugin: 'maven-publish'
 
 buildscript {
     repositories {
@@ -15,7 +14,6 @@ buildscript {
 
     dependencies {
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
-        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3"
         classpath 'com.hiya:jacoco-android:0.2'
         classpath 'co.riiid:gradle-github-plugin:0.4.2'
     }
@@ -56,10 +54,9 @@ android {
 }
 
 apply plugin: 'com.github.dcendents.android-maven'
-apply plugin: "com.jfrog.bintray"
 apply plugin: 'co.riiid.gradle'
 
-apply from: '../gradle/release.gradle'
+apply from: '../publish/release.gradle'
 
 unMock {
     keep "android.net.Uri"

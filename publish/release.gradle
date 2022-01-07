@@ -1,0 +1,106 @@
+apply plugin: "maven-publish"
+apply plugin: "signing"
+
+group = "io.github.sangcomz"
+version = gradle.versionName
+archivesBaseName = "fishbun"
+
+def siteUrl = 'https://github.com/sangcomz/FishBun'      // Homepage URL of the library
+def gitUrl = 'https://github.com/sangcomz/FishBun.git'   // Git repository URL
+
+afterEvaluate {
+
+    task sourceJar(type: Jar) {
+        from android.sourceSets.main.java.srcDirs
+        archiveClassifier.set("sources")
+    }
+
+    task javadoc(type: Javadoc) {
+        source = android.sourceSets.main.java.srcDirs
+        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    }
+
+    task javadocJar(type: Jar, dependsOn: javadoc) {
+        archiveClassifier.set("javadoc")
+        from javadoc.destinationDir
+    }
+
+    // https://docs.gradle.org/current/userguide/publishing_maven.html
+    publishing {
+        publications {
+            // Creates a Maven publication called "release".
+            release(MavenPublication) {
+                groupId group
+                artifactId archivesBaseName
+                version version
+
+                if (project.plugins.findPlugin("com.android.library")) {
+                    from components.release
+                } else {
+                    from components.java
+                }
+                artifact sourceJar
+                artifact javadocJar
+
+                pom {
+                    name = archivesBaseName
+                    description = 'FishBun is a highly customizable image picker for Android.'
+                    url = siteUrl
+                    licenses {
+                        license {
+                            name = 'The Apache License, Version 2.0'
+                            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = 'sangcomz'
+                            name = 'Swokwon Jeong'
+                            email = 'dev.seokwon2@gmail.com'
+                        }
+                    }
+                    scm {
+                        url = gitUrl
+                    }
+                }
+            }
+        }
+
+        repositories {
+            maven {
+                if (version.endsWith("-SNAPSHOT")) {
+                    url = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+                } else {
+                    url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+                }
+                credentials {
+                    username ossrhUsername
+                    password ossrhPassword
+                }
+            }
+        }
+    }
+
+    signing {
+        useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
+        sign publishing.publications.release
+    }
+
+    javadoc {
+        if (JavaVersion.current().isJava9Compatible()) {
+            options.addBooleanOption('html5', true)
+        }
+    }
+}
+
+github {
+    owner = 'sangcomz'
+    repo = 'Fishbun'
+    token = githubAccessTokens
+    tagName = version
+    targetCommitish = 'master'
+    body = """## Release Note
+* upload artifact to maven central
+"""
+    name = version
+}

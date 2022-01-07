@@ -9,7 +9,7 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
 
     steps:
     - uses: actions/checkout@v2
@@ -24,10 +24,10 @@ jobs:
     - name: Android Emulator Runner
       # You may pin to the exact commit or the version.
       # uses: ReactiveCircus/android-emulator-runner@e08f702234bdc95883c7fd5c7d2867ccf1a8463b
-      uses: ReactiveCircus/android-emulator-runner@v2.13.0
+      uses: reactivecircus/android-emulator-runner@v2
       with:
     # API level of the platform and system image - e.g. 23 for Android Marshmallow, 29 for Android 10
-        api-level: 25
+        api-level: 29
         script: ./gradlew connectedCheck connectedAndroidTest
     - name: Codecov
       uses: codecov/codecov-action@v1.0.15
