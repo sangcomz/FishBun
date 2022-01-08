@@ -20,7 +20,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name="com.sangcomz.fishbundemo.WithActivityActivity" />
-        <activity android:name="com.sangcomz.fishbundemo.MainActivity">
+        <activity
+            android:name="com.sangcomz.fishbundemo.MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
