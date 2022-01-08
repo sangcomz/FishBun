@@ -60,7 +60,7 @@ unMock {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    compileOnly "androidx.appcompat:appcompat:$rootProject.androidx_version"
+    implementation "androidx.appcompat:appcompat:$rootProject.androidx_version"
 
     implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraint_version"
     implementation "com.google.android.material:material:$rootProject.material_version"

@@ -100,7 +100,7 @@ github {
     tagName = version
     targetCommitish = 'master'
     body = """## Release Note
-* upload artifact to maven central
+* add startAlbumWithActivityResultCallback function(#239) 
 """
     name = version
 }
