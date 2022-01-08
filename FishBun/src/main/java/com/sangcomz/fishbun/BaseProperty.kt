@@ -1,6 +1,8 @@
 package com.sangcomz.fishbun
 
+import android.content.Intent
 import android.net.Uri
+import androidx.activity.result.ActivityResultLauncher
 
 /**
  * Created by sangcomz on 13/05/2017.
@@ -23,4 +25,8 @@ interface BaseProperty {
     fun exceptMimeType(exceptMimeTypeList: List<MimeType>): FishBunCreator
 
     fun startAlbum()
+
+    fun startAlbumWithOnActivityResult(requestCode: Int)
+
+    fun startAlbumWithActivityResultCallback(activityResultLauncher: ActivityResultLauncher<Intent>)
 }

@@ -1,8 +1,10 @@
 package com.sangcomz.fishbun
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import androidx.activity.result.ActivityResultLauncher
 import com.sangcomz.fishbun.ui.album.ui.AlbumActivity
 import com.sangcomz.fishbun.ui.picker.PickerActivity
 import kotlin.collections.ArrayList
@@ -72,7 +74,7 @@ class FishBunCreator(private val fishBun: FishBun, private val fishton: Fishton)
         fishton.hasCameraInPickerPage = hasCamera
     }
 
-
+    @Deprecated("To be deleted along with the startAlbum function")
     override fun setRequestCode(requestCode: Int): FishBunCreator = this.apply {
         this.requestCode = requestCode
     }
@@ -176,32 +178,56 @@ class FishBunCreator(private val fishBun: FishBun, private val fishton: Fishton)
         fishton.specifyFolderList = specifyFolderList
     }
 
+    private fun prepareStartAlbum(context: Context) {
+        checkNotNull(fishton.imageAdapter)
+        exceptionHandling()
+        setDefaultValue(context)
+    }
+
+    @Deprecated("instead startAlbumWithOnActivityResult(requestCode)", ReplaceWith("startAlbumWithOnActivityResult(requestCode)"))
     override fun startAlbum() {
         val fishBunContext = fishBun.fishBunContext
         val context = fishBunContext.getContext()
 
-        exceptionHandling()
+        prepareStartAlbum(context)
 
-        if (fishton.imageAdapter == null) throw NullPointerException("ImageAdapter is Null")
+        fishBunContext.startActivityForResult(getIntent(context), requestCode)
+    }
 
+    override fun startAlbumWithOnActivityResult(requestCode: Int) {
+        val fishBunContext = fishBun.fishBunContext
+        val context = fishBunContext.getContext()
+
+        prepareStartAlbum(context)
+
+        fishBunContext.startActivityForResult(getIntent(context), requestCode)
+    }
+
+    override fun startAlbumWithActivityResultCallback(activityResultLauncher: ActivityResultLauncher<Intent>) {
+        val fishBunContext = fishBun.fishBunContext
+        val context = fishBunContext.getContext()
+
+        prepareStartAlbum(context)
+
+        fishBunContext.startWithRegisterForActivityResult(activityResultLauncher, getIntent(context))
+    }
+
+    private fun getIntent(context: Context): Intent =
+        if (fishton.isStartInAllView) {
+            PickerActivity.getPickerActivityIntent(context, 0L, fishton.titleAlbumAllView, 0)
+        } else {
+            Intent(context, AlbumActivity::class.java)
+        }
+
+    private fun setDefaultValue(context: Context) {
         with(fishton) {
             setDefaultMessage(context)
             setMenuTextColor()
             setDefaultDimen(context)
         }
-
-        val intent: Intent =
-            if (fishton.isStartInAllView) {
-                PickerActivity.getPickerActivityIntent(context, 0L, fishton.titleAlbumAllView, 0)
-            } else {
-                Intent(context, AlbumActivity::class.java)
-            }
-
-        fishBunContext.startActivityForResult(intent, requestCode)
     }
 
     private fun exceptionHandling() {
-        //TODO support camera
         if (fishton.hasCameraInPickerPage) {
             fishton.hasCameraInPickerPage = fishton.specifyFolderList.isEmpty()
         }

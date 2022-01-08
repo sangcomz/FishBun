@@ -17,7 +17,7 @@ _FishBun_ is a highly customizable image picker for Android.
 
 ## What's New in _FishBun_ 1.0.0-alpha06? :tada:
 
-- upload artifact to maven central
+- add startAlbumWithActivityResultCallback function(#239) 
 
 
 ## Customizable Styles
@@ -31,7 +31,7 @@ _FishBun_ supports various visual styles and allows fine-tuning for details. Jus
 ```java
 FishBun.with(WithActivityActivity.this)
         .setImageAdapter(new GlideAdapter())
-        .startAlbum();
+        .startAlbumWithOnActivityResult(requestCode) or startAlbumWithActivityResultCallback(activityResultLauncher); 
 ```
 
 ##### Screenshots
@@ -66,7 +66,7 @@ FishBun.with(WithActivityActivity.this)
         .textOnNothingSelected("Please select three or more!")
         .exceptMimeType(listOf(MimeType.GIF))
         .setSpecifyFolderList(arrayListOf("Screenshots", "Camera"))
-        .startAlbum();
+        .startAlbumWithOnActivityResult(requestCode);
 ```
 
 ##### Screenshots
@@ -96,7 +96,7 @@ FishBun.with(WithActivityActivity.this)
         .setActionBarTitle("FishBun Light")
         .textOnImagesSelectionLimitReached("You can't select any more.")
         .textOnNothingSelected("I need a photo!")
-        .startAlbum();
+        .startAlbumWithOnActivityResult(requestCode);
 ```
 
 ##### Screenshots
@@ -135,11 +135,11 @@ If your app targets Android 11 with compileSdk/targetSdk >= 30 then you will nee
 
 Use _FishBun_ in an activity:
 
-    FishBun.with(YourActivity).setImageAdapter(new GlideAdapter()).startAlbum();
+    FishBun.with(YourActivity).setImageAdapter(new GlideAdapter()).startAlbumWithOnActivityResult(requestCode);
 
 or in a fragment:
 
-    FishBun.with(YourFragment).setImageAdapter(new CoilAdapter()).startAlbum();
+    FishBun.with(YourFragment).setImageAdapter(new CoilAdapter()).startAlbumWithOnActivityResult(reqeustCode);
 
 and implement `OnActivityResult`:
 
@@ -185,7 +185,7 @@ Various customizable features can be controlled by chained methods as in:
             .isStartInAllView(false)
             .exceptMimeType(listOf(MimeType.GIF))
             .setSpecifyFolderList(arrayListOf("Screenshots", "Camera"))
-            .startAlbum();
+            .startAlbumWithOnActivityResult(requestCode);
 
 ### attribute
 

@@ -60,5 +60,5 @@ interface CustomizationProperty {
 
     fun setSpecifyFolderList(specifyFolderList: List<String>): FishBunCreator
 
-    fun hasCameraInPickerPage(isCamera: Boolean): FishBunCreator
+    fun hasCameraInPickerPage(hasCamera: Boolean): FishBunCreator
 }
