@@ -3,6 +3,10 @@ apply plugin: 'kotlin-android'
 apply plugin: 'com.hiya.jacoco-android'
 apply plugin: 'de.mobilej.unmock'
 
+jacoco {
+    toolVersion = "0.8.7"
+}
+
 buildscript {
     repositories {
         mavenCentral()
@@ -76,4 +80,14 @@ dependencies {
 
 tasks.withType(Javadoc).all {
     enabled = false
+}
+
+configurations.all{
+    resolutionStrategy {
+        eachDependency { details ->
+            if ('org.jacoco' == details.requested.group) {
+                details.useVersion "0.8.7"
+            }
+        }
+    }
 }
