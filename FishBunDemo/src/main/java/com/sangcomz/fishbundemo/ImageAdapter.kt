@@ -3,13 +3,13 @@ package com.sangcomz.fishbundemo
 import android.content.Context
 import android.net.Uri
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import coil.api.load
+import coil.size.Scale
+import coil.transform.CircleCropTransformation
+import coil.transform.RoundedCornersTransformation
 import com.sangcomz.fishbundemo.databinding.ItemBinding
-import com.squareup.picasso.Picasso
-import java.util.*
 
 /**
  * Created by sangc on 2015-11-06.
@@ -26,12 +26,8 @@ class ImageAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val imagePath = imagePaths[position]
-        
-        Picasso.get()
-            .load(imagePath)
-            .fit()
-            .centerCrop()
-            .into(holder.imageView)
+
+        holder.imageView.load(imagePath)
 
         holder.imageView.setOnClickListener { imageController.setImgMain(imagePath) }
     }

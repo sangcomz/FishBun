@@ -12,6 +12,13 @@
         android:layout_margin="5dp"
         android:text="@string/txt_add_images" />
 
+    <Button
+        android:id="@+id/btn_add_images_use_callback"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="@string/txt_add_images_use_callback" />
+
     <ImageView
         android:id="@+id/img_main"
         android:layout_width="match_parent"

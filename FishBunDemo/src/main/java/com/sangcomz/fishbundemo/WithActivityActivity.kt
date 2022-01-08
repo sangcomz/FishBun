@@ -6,6 +6,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,6 +24,12 @@ class WithActivityActivity : AppCompatActivity() {
     private lateinit var imageAdapter: ImageAdapter
     private var mode: Int = 0
     private lateinit var binding: ActivityWithactivityBinding
+    private val startForResultCallback = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        if (it.resultCode == RESULT_OK) {
+            path = it.data?.getParcelableArrayListExtra(FishBun.INTENT_PATH) ?: arrayListOf()
+            imageAdapter.changePath(path)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,7 +77,7 @@ class WithActivityActivity : AppCompatActivity() {
                     FishBun.with(this@WithActivityActivity)
                         .setImageAdapter(GlideAdapter())
                         .setSelectedImages(path)
-                        .startAlbum()
+                        .startAlbumWithActivityResultCallback(startForResultCallback)
                 }
                 //dark
                 1 -> {

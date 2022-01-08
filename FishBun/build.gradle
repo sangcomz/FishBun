@@ -3,9 +3,12 @@ apply plugin: 'kotlin-android'
 apply plugin: 'com.hiya.jacoco-android'
 apply plugin: 'de.mobilej.unmock'
 
+jacoco {
+    toolVersion = "0.8.7"
+}
+
 buildscript {
     repositories {
-        jcenter()
         mavenCentral()
         maven {
             url "https://plugins.gradle.org/m2/"
@@ -27,8 +30,6 @@ android {
         minSdkVersion gradle.minSdk
         targetSdkVersion gradle.targetSdk
         consumerProguardFile('proguard-rules.pro')
-        versionCode gradle.versionCode
-        versionName gradle.versionName
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -53,7 +54,6 @@ android {
     }
 }
 
-apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'co.riiid.gradle'
 
 apply from: '../publish/release.gradle'
@@ -64,16 +64,14 @@ unMock {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    compileOnly "androidx.appcompat:appcompat:$rootProject.androidx_version"
+    implementation "androidx.appcompat:appcompat:$rootProject.androidx_version"
 
-    compile "androidx.constraintlayout:constraintlayout:$rootProject.constraint_version"
-    compile "com.google.android.material:material:$rootProject.material_version"
-    compile "androidx.recyclerview:recyclerview:$rootProject.recyclerview_version"
+    implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraint_version"
+    implementation "com.google.android.material:material:$rootProject.material_version"
 
-
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.mockito:mockito-core:3.0.0'
-    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test:runner:1.4.0'
     androidTestImplementation 'org.mockito:mockito-android:3.0.0'
 
     compileOnly "io.coil-kt:coil:$rootProject.coil_version"
@@ -84,10 +82,12 @@ tasks.withType(Javadoc).all {
     enabled = false
 }
 
-install {
-    repositories.mavenInstaller {
-        pom.groupId = 'com.sangcomz'
-        pom.version = gradle.versionName
-        pom.artifactId = project.name
+configurations.all{
+    resolutionStrategy {
+        eachDependency { details ->
+            if ('org.jacoco' == details.requested.group) {
+                details.useVersion "0.8.7"
+            }
+        }
     }
 }

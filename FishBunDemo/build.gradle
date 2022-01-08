@@ -3,7 +3,6 @@ apply plugin: 'kotlin-android'
 
 buildscript {
     repositories {
-        jcenter()
         mavenCentral()
     }
 }
@@ -74,18 +73,14 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$rootProject.androidx_version"
     implementation "androidx.recyclerview:recyclerview:$rootProject.recyclerview_version"
 
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0-beta-4'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.8.1'
 
     implementation "androidx.legacy:legacy-support-v4:1.0.0"
-    implementation 'com.squareup.picasso:picasso:2.71828'
     implementation "com.github.bumptech.glide:glide:$rootProject.glide_version"
     implementation "io.coil-kt:coil:$rootProject.coil_version"
 }
 
 buildscript {
-    repositories {
-        jcenter()
-    }
     dependencies {
         classpath 'com.github.triplet.gradle:play-publisher:1.2.2'
         // NOTE: Do not place your application dependencies here; they belong

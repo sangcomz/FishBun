@@ -2,7 +2,8 @@ package com.sangcomz.fishbundemo
 
 import android.net.Uri
 import android.widget.ImageView
-import com.squareup.picasso.Picasso
+import coil.api.load
+import coil.size.Scale
 
 /**
  * Created by sangc on 2015-11-06.
@@ -10,10 +11,9 @@ import com.squareup.picasso.Picasso
 class ImageController(private val imgMain: ImageView) {
 
     fun setImgMain(path: Uri) {
-        Picasso.get()
-            .load(path)
-            .fit()
-            .centerCrop()
-            .into(imgMain)
+        imgMain.load(path) {
+            scale(Scale.FILL)
+            scale(Scale.FIT)
+        }
     }
 }

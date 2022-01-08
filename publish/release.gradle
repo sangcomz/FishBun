@@ -100,7 +100,9 @@ github {
     tagName = version
     targetCommitish = 'master'
     body = """## Release Note
-* upload artifact to maven central
+* add startAlbumWithActivityResultCallback function(#239) 
+* remove jcenter
+* library version update  
 """
     name = version
 }
