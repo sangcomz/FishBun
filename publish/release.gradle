@@ -101,6 +101,8 @@ github {
     targetCommitish = 'master'
     body = """## Release Note
 * add startAlbumWithActivityResultCallback function(#239) 
+* remove jcenter
+* library version update  
 """
     name = version
 }

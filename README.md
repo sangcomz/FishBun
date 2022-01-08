@@ -15,9 +15,11 @@ _FishBun_ is a highly customizable image picker for Android.
 <img src="/pic/fishbuns.png">
 
 
-## What's New in _FishBun_ 1.0.0-alpha06? :tada:
+## What's New in _FishBun_ 1.0.0-beta01? :tada:
 
 - add startAlbumWithActivityResultCallback function(#239) 
+- remove jcenter
+- library version update 
 
 
 ## Customizable Styles
@@ -212,7 +214,7 @@ Various customizable features can be controlled by chained methods as in:
 |    setHomeAsUpIndicatorDrawable   | Customizing back button of the action bar                             | null |
 |       setDoneButtonDrawable       | Customizing done button of the action bar                             | null |
 |       setAllDoneButtonDrawable    | Customizing all done button of the action bar                         | null |
-|       setIsUseAllDoneButton       | Set whether to use the Done button                                    | false |
+|       setIsUseAllDoneButton       | Set whether to use the all select button                              | false |
 |       setMenuDoneText             | Set text for Done button                                              | null |
 |       setMenuAllDoneText          | Set text for All Done button                                          | null |
 |       setMenuTextColor            | Set text color for menu                                               | Integer.MAX_VALUE |
