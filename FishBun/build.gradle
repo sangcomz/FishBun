@@ -54,7 +54,7 @@ android {
     }
 }
 
-apply plugin: 'co.riiid.gradle'
+apply plugin: "io.github.sabujak-sabujak"
 
 apply from: '../publish/release.gradle'
 

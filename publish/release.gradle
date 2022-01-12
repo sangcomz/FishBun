@@ -93,7 +93,7 @@ afterEvaluate {
     }
 }
 
-github {
+githubRelease {
     owner = 'sangcomz'
     repo = 'Fishbun'
     token = githubAccessTokens

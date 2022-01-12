@@ -1,1 +1,1 @@
-./gradlew clean fishbun:publishAllPublicationsToMavenRepository githubRelease
+./gradlew clean fishbun:publishAllPublicationsToMavenRepository createGithubRelease
