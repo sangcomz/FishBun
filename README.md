@@ -17,9 +17,7 @@ _FishBun_ is a highly customizable image picker for Android.
 
 ## What's New in _FishBun_ 1.1.0? :tada:
 
-- add startAlbumWithActivityResultCallback function(#239) 
-- remove jcenter
-- library version update 
+- sdk version update 
 
 
 ## Customizable Styles
@@ -133,7 +131,7 @@ If your app targets Android 11 with compileSdk/targetSdk >= 30 then you will nee
         </intent>
     </queries>
 
-If your app targets Android 13 with compileSdk/targetSdk >= 33 then you will need to add this to the manifest (outside of the application block) in order to capture pictures with the device camera. [Android documentation here](https://developer.android.com/about/versions/13/behavior-changes-13#granular-media-permissions):
+If your app targets Android 13 with compileSdk/targetSdk >= 33 then you will need to add this to the manifest. [Android documentation here](https://developer.android.com/about/versions/13/behavior-changes-13#granular-media-permissions):
 
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
 
