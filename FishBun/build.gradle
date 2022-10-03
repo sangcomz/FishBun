@@ -24,6 +24,7 @@ buildscript {
 
 
 android {
+    namespace 'com.sangcomz.fishbun'
     compileSdkVersion gradle.compileSdk
 
     defaultConfig {
@@ -54,7 +55,7 @@ android {
     }
 }
 
-apply plugin: 'co.riiid.gradle'
+apply plugin: "io.github.sabujak-sabujak"
 
 apply from: '../publish/release.gradle'
 

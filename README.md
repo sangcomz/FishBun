@@ -15,11 +15,9 @@ _FishBun_ is a highly customizable image picker for Android.
 <img src="/pic/fishbuns.png">
 
 
-## What's New in _FishBun_ 1.0.0-beta01? :tada:
+## What's New in _FishBun_ 1.1.0? :tada:
 
-- add startAlbumWithActivityResultCallback function(#239) 
-- remove jcenter
-- library version update 
+- sdk version update 
 
 
 ## Customizable Styles
@@ -112,7 +110,7 @@ Fishbun 0.10.0 and above only supports projects that have been migrated to [andr
 Setting up _FishBun_ requires to add this Gradle configuration:
 
     dependencies {
-        implementation 'io.github.sangcomz:fishbun:1.0.0-alpha06'
+        implementation 'io.github.sangcomz:fishbun:x.x.x'
          
         implementation 'io.coil-kt:coil:0.11.0'
         or
@@ -132,6 +130,14 @@ If your app targets Android 11 with compileSdk/targetSdk >= 30 then you will nee
             <action android:name="android.media.action.IMAGE_CAPTURE" />
         </intent>
     </queries>
+
+If your app targets Android 13 with compileSdk/targetSdk >= 33 then you will need to add this to the manifest. [Android documentation here](https://developer.android.com/about/versions/13/behavior-changes-13#granular-media-permissions):
+
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
 
 ## How to Use
 

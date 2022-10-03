@@ -93,16 +93,14 @@ afterEvaluate {
     }
 }
 
-github {
+githubRelease {
     owner = 'sangcomz'
     repo = 'Fishbun'
     token = githubAccessTokens
     tagName = version
     targetCommitish = 'master'
     body = """## Release Note
-* add startAlbumWithActivityResultCallback function(#239) 
-* remove jcenter
-* library version update  
+* update sdk version to 33
 """
     name = version
 }

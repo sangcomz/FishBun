@@ -40,10 +40,31 @@ class PermissionCheck(private val context: Context) {
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.M)
     fun checkStoragePermission(requestCode: Int): Boolean {
+        return when {
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+                    Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU -> {
+                checkStoragePermissionUnderAPI33(requestCode)
+            }
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> {
+                checkStoragePermissionOrHigherAPI33(requestCode)
+            }
+            else -> true
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    fun checkStoragePermissionUnderAPI33(requestCode: Int): Boolean {
         return checkPermission(
             arrayListOf(READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE),
+            requestCode
+        )
+    }
+
+    @TargetApi(Build.VERSION_CODES.TIRAMISU)
+    fun checkStoragePermissionOrHigherAPI33(requestCode: Int): Boolean {
+        return checkPermission(
+            arrayListOf(READ_MEDIA_IMAGES),
             requestCode
         )
     }

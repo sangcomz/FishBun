@@ -361,10 +361,7 @@ class PickerActivity : BaseActivity(),
     }
 
     private fun checkPermission(): Boolean {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (permissionCheck.checkStoragePermission(PERMISSION_STORAGE)) return true
-        } else return true
-        return false
+        return permissionCheck.checkStoragePermission(PERMISSION_STORAGE)
     }
 
     private fun checkCameraPermission(): Boolean {
