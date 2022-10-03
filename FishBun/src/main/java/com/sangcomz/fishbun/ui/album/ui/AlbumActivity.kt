@@ -290,9 +290,7 @@ class AlbumActivity : BaseActivity(),
     }
 
     private fun checkPermission(): Boolean {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            permissionCheck.checkStoragePermission(PERMISSION_STORAGE)
-        } else true
+        return permissionCheck.checkStoragePermission(PERMISSION_STORAGE)
     }
 
     private fun checkCameraPermission(): Boolean {
