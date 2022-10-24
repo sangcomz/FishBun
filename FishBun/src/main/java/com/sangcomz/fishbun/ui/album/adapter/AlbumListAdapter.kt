@@ -32,7 +32,6 @@ class AlbumListAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding =
         return ViewHolder(
             parent,
             thumbnailSize,

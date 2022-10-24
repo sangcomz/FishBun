@@ -23,7 +23,7 @@ interface PickerRepository {
 
     fun getSelectedImageList(): List<Uri>
 
-    fun getImageAdapter(): ImageAdapter
+    fun getImageAdapter(): ImageAdapter?
 
     fun hasCameraInPickerPage(): Boolean
 
