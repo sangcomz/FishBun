@@ -1,13 +1,11 @@
 package com.sangcomz.fishbun.ui.detail.ui
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.view.View
 import android.view.Window
 import android.widget.ImageButton
 import android.widget.Toast
@@ -86,9 +84,9 @@ class DetailImageActivity : BaseActivity(), DetailImageContract.View, OnPageChan
         presenter.changeButtonStatus(position)
     }
 
-    override fun finishActivity() {
+    override fun finishActivity(code: Int) {
         val i = Intent()
-        setResult(Activity.RESULT_OK, i)
+        setResult(code, i)
         finish()
     }
 

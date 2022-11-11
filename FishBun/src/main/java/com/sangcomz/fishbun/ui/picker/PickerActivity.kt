@@ -371,9 +371,9 @@ class PickerActivity : BaseActivity(),
         return false
     }
 
-    override fun finishActivity() {
+    override fun finishActivity(code: Int) {
         val i = Intent()
-        setResult(Activity.RESULT_OK, i)
+        setResult(code, i)
         finish()
     }
 

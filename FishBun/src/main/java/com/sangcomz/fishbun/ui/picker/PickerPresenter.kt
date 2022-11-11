@@ -1,5 +1,6 @@
 package com.sangcomz.fishbun.ui.picker
 
+import android.app.Activity
 import android.net.Uri
 import com.sangcomz.fishbun.ui.picker.model.PickerListItem
 import com.sangcomz.fishbun.ui.picker.model.PickerMenuViewData
@@ -272,7 +273,7 @@ class PickerPresenter internal constructor(
             onSuccessAllMediaThumbnailsPath(result)
         } else {
             // imageAdapter is null, so we can not proceed anymore
-            finish()
+            pickerView.finishActivity(Activity.RESULT_CANCELED)
         }
     }
 }

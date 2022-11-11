@@ -1,5 +1,6 @@
 package com.sangcomz.fishbun.ui.album.mvp
 
+import android.app.Activity
 import android.net.Uri
 import com.sangcomz.fishbun.ui.album.AlbumContract
 import com.sangcomz.fishbun.ui.album.model.Album
@@ -99,7 +100,7 @@ class AlbumPresenter(
         val adapter = albumRepository.getImageAdapter()
         // imageAdapter is null, so we can not proceed anymore
         if (adapter == null) {
-            finish()
+            albumView.finishActivity(Activity.RESULT_CANCELED)
             return
         }
         uiHandler.run {

@@ -1,5 +1,6 @@
 package com.sangcomz.fishbun.ui.album
 
+import android.app.Activity
 import android.net.Uri
 import com.sangcomz.fishbun.adapter.image.ImageAdapter
 import com.sangcomz.fishbun.ui.album.model.Album
@@ -20,6 +21,7 @@ interface AlbumContract {
         fun setToolBar(albumViewData: AlbumViewData)
         fun changeToolbarTitle(selectedImageCount: Int, albumViewData: AlbumViewData)
         fun finishActivityWithResult(selectedImages: List<Uri>)
+        fun finishActivity(code: Int = Activity.RESULT_OK)
         fun refreshAlbumItem(position: Int, imagePath: ArrayList<Uri>)
         fun scanAndRefresh()
         fun showNothingSelectedMessage(nothingSelectedMessage: String)

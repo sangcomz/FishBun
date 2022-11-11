@@ -1,5 +1,6 @@
 package com.sangcomz.fishbun.ui.picker
 
+import android.app.Activity
 import android.net.Uri
 import com.sangcomz.fishbun.adapter.image.ImageAdapter
 import com.sangcomz.fishbun.ui.picker.model.PickerListItem
@@ -13,12 +14,14 @@ interface PickerContract {
             adapter: ImageAdapter,
             hasCameraInPickerPage: Boolean
         )
+
         fun takePicture(saveDir: String)
         fun setToolbarTitle(
             pickerViewData: PickerViewData,
             selectedCount: Int,
             albumName: String
         )
+
         fun initToolBar(pickerViewData: PickerViewData)
         fun initRecyclerView(pickerViewData: PickerViewData)
         fun showLimitReachedMessage(messageLimitReached: String)
@@ -26,7 +29,7 @@ interface PickerContract {
         fun showNothingSelectedMessage(messageNotingSelected: String)
         fun onCheckStateChange(position: Int, image: PickerListItem.Image)
         fun showDetailView(position: Int)
-        fun finishActivity()
+        fun finishActivity(code: Int = Activity.RESULT_OK)
         fun finishActivityWithResult(selectedImages: List<Uri>)
         fun takeANewPictureWithFinish(position: Int, addedImageList: List<Uri>)
         fun addImage(pickerListImage: PickerListItem.Image)

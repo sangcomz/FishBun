@@ -1,5 +1,6 @@
 package com.sangcomz.fishbun.ui.detail.mvp
 
+import android.app.Activity
 import android.net.Uri
 import com.sangcomz.fishbun.ui.detail.DetailImageContract
 import com.sangcomz.fishbun.ui.detail.model.DetailImageRepository
@@ -68,7 +69,7 @@ class DetailImagePresenter(
         val adapter = detailImageRepository.getImageAdapter()
         // we can not proceed any more if imageAdapter is null
         if (adapter == null) {
-            detailView.finishActivity()
+            detailView.finishActivity(Activity.RESULT_CANCELED)
             return
         }
         detailView.initViewPagerAdapter(adapter)
