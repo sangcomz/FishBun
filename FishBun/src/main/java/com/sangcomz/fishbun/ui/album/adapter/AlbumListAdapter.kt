@@ -17,7 +17,7 @@ import com.sangcomz.fishbun.util.SquareImageView
 class AlbumListAdapter(
     private val albumClickListener: AlbumClickListener,
     private val thumbnailSize: Int,
-    private val imageAdapter: ImageAdapter?
+    private val imageAdapter: ImageAdapter
 ) :
     RecyclerView.Adapter<AlbumListAdapter.ViewHolder>() {
 
@@ -69,7 +69,7 @@ class AlbumListAdapter(
     class ViewHolder(
         parent: ViewGroup,
         albumSize: Int,
-        private val imageAdapter: ImageAdapter?
+        private val imageAdapter: ImageAdapter
     ) : RecyclerView.ViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.album_item, parent, false)
     ) {
@@ -83,7 +83,7 @@ class AlbumListAdapter(
 
         fun setData(album: Album) {
             val uri: Uri = Uri.parse(album.metaData.thumbnailPath)
-            imageAdapter?.loadImage(imgAlbumThumb, uri)
+            imageAdapter.loadImage(imgAlbumThumb, uri)
 
             itemView.tag = album
             txtAlbumName.text = album.displayName

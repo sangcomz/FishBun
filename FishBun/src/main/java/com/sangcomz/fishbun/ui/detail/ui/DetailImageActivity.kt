@@ -1,5 +1,6 @@
 package com.sangcomz.fishbun.ui.detail.ui
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -9,6 +10,7 @@ import android.os.Bundle
 import android.view.Window
 import android.widget.ImageButton
 import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
@@ -18,6 +20,7 @@ import com.sangcomz.fishbun.Fishton
 import com.sangcomz.fishbun.R
 import com.sangcomz.fishbun.adapter.image.ImageAdapter
 import com.sangcomz.fishbun.datasource.FishBunDataSourceImpl
+import com.sangcomz.fishbun.ui.common.SimpleDialog
 import com.sangcomz.fishbun.ui.detail.DetailImageContract
 import com.sangcomz.fishbun.ui.detail.adapter.DetailViewPagerAdapter
 import com.sangcomz.fishbun.ui.detail.model.DetailImageRepositoryImpl
@@ -84,9 +87,9 @@ class DetailImageActivity : BaseActivity(), DetailImageContract.View, OnPageChan
         presenter.changeButtonStatus(position)
     }
 
-    override fun finishActivity(code: Int) {
+    override fun finishActivity() {
         val i = Intent()
-        setResult(code, i)
+        setResult(Activity.RESULT_OK, i)
         finish()
     }
 
@@ -125,6 +128,13 @@ class DetailImageActivity : BaseActivity(), DetailImageContract.View, OnPageChan
     override fun finishAndShowErrorToast() {
         Toast.makeText(this, R.string.msg_error, Toast.LENGTH_SHORT).show()
         finish()
+    }
+
+    override fun showErrorDialogAndFinish(@StringRes resId: Int, code: Int) {
+        SimpleDialog.show(fm = supportFragmentManager, mesId = resId) {
+            setResult(code, Intent())
+            finish()
+        }
     }
 
     override fun initViewPagerAdapter(imageAdapter: ImageAdapter) {

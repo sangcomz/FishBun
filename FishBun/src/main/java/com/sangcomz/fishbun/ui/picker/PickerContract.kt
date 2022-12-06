@@ -1,7 +1,7 @@
 package com.sangcomz.fishbun.ui.picker
 
-import android.app.Activity
 import android.net.Uri
+import androidx.annotation.StringRes
 import com.sangcomz.fishbun.adapter.image.ImageAdapter
 import com.sangcomz.fishbun.ui.picker.model.PickerListItem
 import com.sangcomz.fishbun.ui.picker.model.PickerMenuViewData
@@ -29,7 +29,10 @@ interface PickerContract {
         fun showNothingSelectedMessage(messageNotingSelected: String)
         fun onCheckStateChange(position: Int, image: PickerListItem.Image)
         fun showDetailView(position: Int)
-        fun finishActivity(code: Int = Activity.RESULT_OK)
+        fun finishActivity()
+
+        /* show dialog and finish the Activity as dismiss performed */
+        fun showErrorDialogAndFinish(@StringRes resId: Int, code: Int)
         fun finishActivityWithResult(selectedImages: List<Uri>)
         fun takeANewPictureWithFinish(position: Int, addedImageList: List<Uri>)
         fun addImage(pickerListImage: PickerListItem.Image)

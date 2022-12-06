@@ -13,4 +13,6 @@
     <string name="msg_error">There was a temporary error. Please try again in a few minutes.</string>
     <string name="title_toolbar" formatted="false" translatable="false">%s (%d/%d)</string>
     <string name="msg_minimum_image">Please select at least <b>%d</b> images.</string>
+
+    <string name="common_positive_button_label" translatable="false">OK</string>
 </resources>

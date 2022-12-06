@@ -13,6 +13,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.annotation.StringRes
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -27,6 +28,7 @@ import com.sangcomz.fishbun.datasource.FishBunDataSourceImpl
 import com.sangcomz.fishbun.datasource.ImageDataSourceImpl
 import com.sangcomz.fishbun.datasource.PickerIntentDataSourceImpl
 import com.sangcomz.fishbun.permission.PermissionCheck
+import com.sangcomz.fishbun.ui.common.SimpleDialog
 import com.sangcomz.fishbun.ui.detail.ui.DetailImageActivity.Companion.getDetailImageActivity
 import com.sangcomz.fishbun.ui.picker.listener.OnPickerActionListener
 import com.sangcomz.fishbun.ui.picker.model.PickerListItem
@@ -371,9 +373,9 @@ class PickerActivity : BaseActivity(),
         return false
     }
 
-    override fun finishActivity(code: Int) {
+    override fun finishActivity() {
         val i = Intent()
-        setResult(code, i)
+        setResult(Activity.RESULT_OK, i)
         finish()
     }
 
@@ -385,6 +387,13 @@ class PickerActivity : BaseActivity(),
         setResult(Activity.RESULT_OK, i)
         i.putParcelableArrayListExtra(FishBun.INTENT_PATH, ArrayList(selectedImages))
         finish()
+    }
+
+    override fun showErrorDialogAndFinish(@StringRes resId: Int, code: Int) {
+        SimpleDialog.show(fm = supportFragmentManager, mesId = resId) {
+            setResult(code, Intent())
+            finish()
+        }
     }
 
     private fun setImageList(
