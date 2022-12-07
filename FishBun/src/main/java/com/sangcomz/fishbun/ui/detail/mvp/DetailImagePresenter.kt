@@ -70,7 +70,7 @@ class DetailImagePresenter(
         val adapter = detailImageRepository.getImageAdapter()
         // we can not proceed any more if imageAdapter is null
         if (adapter == null) {
-            detailView.showErrorDialogAndFinish(
+            detailView.showToastAndFinish(
                 resId = R.string.msg_error,
                 code = Activity.RESULT_CANCELED,
             )

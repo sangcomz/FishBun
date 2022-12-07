@@ -101,7 +101,7 @@ class AlbumPresenter(
         val adapter = albumRepository.getImageAdapter()
         // imageAdapter is null, so we can not proceed anymore
         if (adapter == null) {
-            albumView.showErrorDialogAndFinish(
+            albumView.showToastAndFinish(
                 resId = R.string.msg_error,
                 code = Activity.RESULT_CANCELED,
             )

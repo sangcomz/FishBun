@@ -19,8 +19,8 @@ interface DetailImageContract {
         fun finishActivity()
         fun finishAndShowErrorToast()
 
-        /* show dialog and finish the Activity as dismiss performed */
-        fun showErrorDialogAndFinish(@StringRes resId: Int, code: Int)
+        /* show toast and finish the Activity */
+        fun showToastAndFinish(@StringRes resId: Int, code: Int)
         fun initViewPagerAdapter(imageAdapter: ImageAdapter)
         fun showImages(initPosition: Int, pickerImages: List<Uri>)
         fun showSnackbar(message: String)

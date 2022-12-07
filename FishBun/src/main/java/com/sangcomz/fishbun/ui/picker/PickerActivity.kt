@@ -13,6 +13,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.GridLayoutManager
@@ -28,7 +29,6 @@ import com.sangcomz.fishbun.datasource.FishBunDataSourceImpl
 import com.sangcomz.fishbun.datasource.ImageDataSourceImpl
 import com.sangcomz.fishbun.datasource.PickerIntentDataSourceImpl
 import com.sangcomz.fishbun.permission.PermissionCheck
-import com.sangcomz.fishbun.ui.common.SimpleDialog
 import com.sangcomz.fishbun.ui.detail.ui.DetailImageActivity.Companion.getDetailImageActivity
 import com.sangcomz.fishbun.ui.picker.listener.OnPickerActionListener
 import com.sangcomz.fishbun.ui.picker.model.PickerListItem
@@ -389,11 +389,12 @@ class PickerActivity : BaseActivity(),
         finish()
     }
 
-    override fun showErrorDialogAndFinish(@StringRes resId: Int, code: Int) {
-        SimpleDialog.show(fm = supportFragmentManager, mesId = resId) {
-            setResult(code, Intent())
-            finish()
+    override fun showToastAndFinish(@StringRes resId: Int, code: Int) {
+        runOnUiThread {
+            Toast.makeText(this, resId, Toast.LENGTH_SHORT).show()
         }
+        setResult(code, Intent())
+        finish()
     }
 
     private fun setImageList(

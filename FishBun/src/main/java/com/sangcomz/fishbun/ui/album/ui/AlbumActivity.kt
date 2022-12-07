@@ -13,6 +13,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.Group
@@ -34,7 +35,6 @@ import com.sangcomz.fishbun.ui.album.model.Album
 import com.sangcomz.fishbun.ui.album.model.AlbumViewData
 import com.sangcomz.fishbun.ui.album.model.repository.AlbumRepositoryImpl
 import com.sangcomz.fishbun.ui.album.mvp.AlbumPresenter
-import com.sangcomz.fishbun.ui.common.SimpleDialog
 import com.sangcomz.fishbun.ui.picker.PickerActivity
 import com.sangcomz.fishbun.util.MainUiHandler
 import com.sangcomz.fishbun.util.SingleMediaScanner
@@ -290,11 +290,12 @@ class AlbumActivity : BaseActivity(),
         finish()
     }
 
-    override fun showErrorDialogAndFinish(@StringRes resId: Int, code: Int) {
-        SimpleDialog.show(fm = supportFragmentManager, mesId = resId) {
-            setResult(code, Intent())
-            finish()
+    override fun showToastAndFinish(@StringRes resId: Int, code: Int) {
+        runOnUiThread {
+            Toast.makeText(this, resId, Toast.LENGTH_SHORT).show()
         }
+        setResult(code, Intent())
+        finish()
     }
 
     private fun checkPermission(): Boolean {

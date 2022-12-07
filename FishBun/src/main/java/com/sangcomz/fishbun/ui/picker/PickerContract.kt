@@ -31,8 +31,8 @@ interface PickerContract {
         fun showDetailView(position: Int)
         fun finishActivity()
 
-        /* show dialog and finish the Activity as dismiss performed */
-        fun showErrorDialogAndFinish(@StringRes resId: Int, code: Int)
+        /* show toast and finish the Activity */
+        fun showToastAndFinish(@StringRes resId: Int, code: Int)
         fun finishActivityWithResult(selectedImages: List<Uri>)
         fun takeANewPictureWithFinish(position: Int, addedImageList: List<Uri>)
         fun addImage(pickerListImage: PickerListItem.Image)

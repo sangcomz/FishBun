@@ -274,7 +274,7 @@ class PickerPresenter internal constructor(
             onSuccessAllMediaThumbnailsPath(result)
         } else {
             // imageAdapter is null, so we can not proceed anymore
-            pickerView.showErrorDialogAndFinish(
+            pickerView.showToastAndFinish(
                 resId = R.string.msg_error,
                 code = Activity.RESULT_CANCELED,
             )

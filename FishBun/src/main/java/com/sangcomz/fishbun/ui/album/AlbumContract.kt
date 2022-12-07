@@ -22,8 +22,8 @@ interface AlbumContract {
         fun changeToolbarTitle(selectedImageCount: Int, albumViewData: AlbumViewData)
         fun finishActivityWithResult(selectedImages: List<Uri>)
 
-        /* show dialog and finish the Activity as dismiss performed */
-        fun showErrorDialogAndFinish(@StringRes resId: Int, code: Int)
+        /* show toast and finish the Activity */
+        fun showToastAndFinish(@StringRes resId: Int, code: Int)
         fun refreshAlbumItem(position: Int, imagePath: ArrayList<Uri>)
         fun scanAndRefresh()
         fun showNothingSelectedMessage(nothingSelectedMessage: String)

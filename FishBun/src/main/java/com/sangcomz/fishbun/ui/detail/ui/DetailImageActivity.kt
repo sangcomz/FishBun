@@ -20,7 +20,6 @@ import com.sangcomz.fishbun.Fishton
 import com.sangcomz.fishbun.R
 import com.sangcomz.fishbun.adapter.image.ImageAdapter
 import com.sangcomz.fishbun.datasource.FishBunDataSourceImpl
-import com.sangcomz.fishbun.ui.common.SimpleDialog
 import com.sangcomz.fishbun.ui.detail.DetailImageContract
 import com.sangcomz.fishbun.ui.detail.adapter.DetailViewPagerAdapter
 import com.sangcomz.fishbun.ui.detail.model.DetailImageRepositoryImpl
@@ -130,11 +129,12 @@ class DetailImageActivity : BaseActivity(), DetailImageContract.View, OnPageChan
         finish()
     }
 
-    override fun showErrorDialogAndFinish(@StringRes resId: Int, code: Int) {
-        SimpleDialog.show(fm = supportFragmentManager, mesId = resId) {
-            setResult(code, Intent())
-            finish()
+    override fun showToastAndFinish(@StringRes resId: Int, code: Int) {
+        runOnUiThread {
+            Toast.makeText(this, resId, Toast.LENGTH_SHORT).show()
         }
+        setResult(code, Intent())
+        finish()
     }
 
     override fun initViewPagerAdapter(imageAdapter: ImageAdapter) {
