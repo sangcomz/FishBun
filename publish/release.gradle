@@ -100,7 +100,7 @@ githubRelease {
     tagName = version
     targetCommitish = 'master'
     body = """## Release Note
-* update sdk version to 33
+* fix issue #234 #254 
 """
     name = version
 }
