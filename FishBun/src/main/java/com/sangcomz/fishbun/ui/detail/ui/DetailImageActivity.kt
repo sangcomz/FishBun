@@ -39,9 +39,6 @@ class DetailImageActivity : BaseActivity(), DetailImageContract.View, OnPageChan
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.requestFeature(Window.FEATURE_CONTENT_TRANSITIONS)
-        }
         setContentView(R.layout.activity_detail_activity)
         initView()
 
