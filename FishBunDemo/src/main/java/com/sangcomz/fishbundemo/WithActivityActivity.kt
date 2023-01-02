@@ -143,7 +143,6 @@ class WithActivityActivity : AppCompatActivity() {
                         .setIsUseAllDoneButton(true)
                         .setMenuDoneText("Choose")
                         .setMenuAllDoneText("Choose All")
-                        .setIsUseAllDoneButton(true)
                         .setAllViewTitle("All of your photos")
                         .setActionBarTitle("FishBun Light")
                         .textOnImagesSelectionLimitReached("You can't select any more.")
