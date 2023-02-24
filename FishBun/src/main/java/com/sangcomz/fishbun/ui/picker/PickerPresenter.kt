@@ -1,6 +1,8 @@
 package com.sangcomz.fishbun.ui.picker
 
+import android.app.Activity
 import android.net.Uri
+import com.sangcomz.fishbun.R
 import com.sangcomz.fishbun.ui.picker.model.PickerListItem
 import com.sangcomz.fishbun.ui.picker.model.PickerMenuViewData
 import com.sangcomz.fishbun.ui.picker.model.PickerRepository
@@ -38,7 +40,7 @@ class PickerPresenter internal constructor(
             .also {
                 it.execute(object : FutureCallback<List<Uri>> {
                     override fun onSuccess(result: List<Uri>) {
-                        onSuccessAllMediaThumbnailsPath(result)
+                        handleResult(result)
                     }
                 })
             }
@@ -47,7 +49,10 @@ class PickerPresenter internal constructor(
     override fun transImageFinish() {
         val albumData = pickerRepository.getPickerAlbumData() ?: return
 
-        pickerView.takeANewPictureWithFinish(albumData.albumPosition, pickerRepository.getAddedPathList())
+        pickerView.takeANewPictureWithFinish(
+            albumData.albumPosition,
+            pickerRepository.getAddedPathList()
+        )
     }
 
     override fun takePicture() {
@@ -146,7 +151,7 @@ class PickerPresenter internal constructor(
     }
 
     override fun onSuccessTakePicture() {
-       pickerView.onSuccessTakePicture()
+        pickerView.onSuccessTakePicture()
     }
 
     override fun release() {
@@ -219,6 +224,7 @@ class PickerPresenter internal constructor(
     }
 
     private fun onSuccessAllMediaThumbnailsPath(imageUriList: List<Uri>) {
+        val adapter = requireNotNull(pickerRepository.getImageAdapter())
         pickerRepository.setCurrentPickerImageList(imageUriList)
 
         val viewData = pickerRepository.getPickerViewData()
@@ -227,7 +233,6 @@ class PickerPresenter internal constructor(
         if (pickerRepository.hasCameraInPickerPage()) {
             pickerList.add(PickerListItem.Camera)
         }
-
         imageUriList.map {
             PickerListItem.Image(it, selectedImageList.indexOf(it), viewData)
         }.also {
@@ -235,7 +240,7 @@ class PickerPresenter internal constructor(
             uiHandler.run {
                 pickerView.showImageList(
                     pickerList,
-                    pickerRepository.getImageAdapter(),
+                    adapter,
                     pickerRepository.hasCameraInPickerPage()
                 )
                 setToolbarTitle()
@@ -250,7 +255,7 @@ class PickerPresenter internal constructor(
             .also {
                 it.execute(object : FutureCallback<List<Uri>> {
                     override fun onSuccess(result: List<Uri>) {
-                        onSuccessAllMediaThumbnailsPath(result)
+                        handleResult(result)
                     }
                 })
             }
@@ -261,6 +266,18 @@ class PickerPresenter internal constructor(
             pickerView.finishActivityWithResult(pickerRepository.getSelectedImageList())
         } else {
             pickerView.finishActivity()
+        }
+    }
+
+    private fun handleResult(result: List<Uri>) {
+        if (pickerRepository.getImageAdapter() != null) {
+            onSuccessAllMediaThumbnailsPath(result)
+        } else {
+            // imageAdapter is null, so we can not proceed anymore
+            pickerView.showToastAndFinish(
+                resId = R.string.msg_error,
+                code = Activity.RESULT_CANCELED,
+            )
         }
     }
 }

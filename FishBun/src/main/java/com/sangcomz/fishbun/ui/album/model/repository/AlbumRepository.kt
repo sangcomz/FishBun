@@ -15,7 +15,7 @@ interface AlbumRepository {
 
     fun getAlbumViewData(): AlbumViewData
 
-    fun getImageAdapter(): ImageAdapter
+    fun getImageAdapter(): ImageAdapter?
 
     fun getSelectedImageList(): List<Uri>
 

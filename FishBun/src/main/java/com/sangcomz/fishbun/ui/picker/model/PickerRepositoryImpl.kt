@@ -59,7 +59,7 @@ class PickerRepositoryImpl(
 
     override fun getSelectedImageList() = fishBunDataSource.getSelectedImageList()
 
-    override fun getImageAdapter(): ImageAdapter = fishBunDataSource.getImageAdapter()
+    override fun getImageAdapter(): ImageAdapter? = fishBunDataSource.getImageAdapter()
 
     override fun hasCameraInPickerPage(): Boolean {
         return when {

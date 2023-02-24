@@ -1,7 +1,8 @@
 package com.sangcomz.fishbun.ui.detail.mvp
 
+import android.app.Activity
 import android.net.Uri
-import androidx.annotation.VisibleForTesting
+import com.sangcomz.fishbun.R
 import com.sangcomz.fishbun.ui.detail.DetailImageContract
 import com.sangcomz.fishbun.ui.detail.model.DetailImageRepository
 
@@ -66,7 +67,16 @@ class DetailImagePresenter(
     }
 
     private fun initViewPagerAdapter() {
-        detailView.initViewPagerAdapter(detailImageRepository.getImageAdapter())
+        val adapter = detailImageRepository.getImageAdapter()
+        // we can not proceed any more if imageAdapter is null
+        if (adapter == null) {
+            detailView.showToastAndFinish(
+                resId = R.string.msg_error,
+                code = Activity.RESULT_CANCELED,
+            )
+            return
+        }
+        detailView.initViewPagerAdapter(adapter)
     }
 
     private fun changeButtonStatusInternal(imageUri: Uri) {

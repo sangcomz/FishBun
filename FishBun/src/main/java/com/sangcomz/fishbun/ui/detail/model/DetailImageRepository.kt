@@ -10,7 +10,7 @@ interface DetailImageRepository {
     fun getImageIndex(imageUri: Uri): Int
     fun selectImage(imageUri: Uri)
     fun unselectImage(imageUri: Uri)
-    fun getImageAdapter(): ImageAdapter
+    fun getImageAdapter(): ImageAdapter?
     fun isFullSelected(): Boolean
     fun checkForFinish(): Boolean
     fun getMessageLimitReached(): String

@@ -13,6 +13,8 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -384,6 +386,14 @@ class PickerActivity : BaseActivity(),
         val i = Intent()
         setResult(Activity.RESULT_OK, i)
         i.putParcelableArrayListExtra(FishBun.INTENT_PATH, ArrayList(selectedImages))
+        finish()
+    }
+
+    override fun showToastAndFinish(@StringRes resId: Int, code: Int) {
+        runOnUiThread {
+            Toast.makeText(this, resId, Toast.LENGTH_SHORT).show()
+        }
+        setResult(code, Intent())
         finish()
     }
 

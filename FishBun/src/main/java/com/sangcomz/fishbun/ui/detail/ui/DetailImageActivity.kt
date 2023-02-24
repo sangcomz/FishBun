@@ -7,10 +7,10 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.view.View
 import android.view.Window
 import android.widget.ImageButton
 import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
@@ -123,6 +123,14 @@ class DetailImageActivity : BaseActivity(), DetailImageContract.View, OnPageChan
 
     override fun finishAndShowErrorToast() {
         Toast.makeText(this, R.string.msg_error, Toast.LENGTH_SHORT).show()
+        finish()
+    }
+
+    override fun showToastAndFinish(@StringRes resId: Int, code: Int) {
+        runOnUiThread {
+            Toast.makeText(this, resId, Toast.LENGTH_SHORT).show()
+        }
+        setResult(code, Intent())
         finish()
     }
 

@@ -24,7 +24,7 @@ interface FishBunDataSource {
     fun getAllViewTitle(): String
     fun getDetailViewData(): DetailImageViewData
     fun getAlbumViewData(): AlbumViewData
-    fun getImageAdapter(): ImageAdapter
+    fun getImageAdapter(): ImageAdapter?
     fun gatAlbumMenuViewData(): AlbumMenuViewData
     fun getPickerViewData(): PickerViewData
     fun setCurrentPickerImageList(pickerImageList: List<Uri>)

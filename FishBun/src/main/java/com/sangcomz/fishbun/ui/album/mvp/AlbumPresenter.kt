@@ -1,15 +1,15 @@
 package com.sangcomz.fishbun.ui.album.mvp
 
+import android.app.Activity
 import android.net.Uri
-import android.os.Environment
-import com.sangcomz.fishbun.ui.album.model.Album
-import com.sangcomz.fishbun.ui.album.model.repository.AlbumRepository
+import com.sangcomz.fishbun.R
 import com.sangcomz.fishbun.ui.album.AlbumContract
+import com.sangcomz.fishbun.ui.album.model.Album
 import com.sangcomz.fishbun.ui.album.model.AlbumMenuViewData
+import com.sangcomz.fishbun.ui.album.model.repository.AlbumRepository
 import com.sangcomz.fishbun.util.UiHandler
 import com.sangcomz.fishbun.util.future.CallableFutureTask
 import com.sangcomz.fishbun.util.future.FutureCallback
-import java.util.ArrayList
 
 class AlbumPresenter(
     private val albumView: AlbumContract.View,
@@ -21,25 +21,11 @@ class AlbumPresenter(
 
     override fun loadAlbumList() {
         albumListFuture = albumRepository.getAlbumList()
-
-        albumListFuture?.let {
-            it.execute(object : FutureCallback<List<Album>> {
-                override fun onSuccess(result: List<Album>) {
-                    uiHandler.run {
-                        if (result.isNotEmpty()) {
-                            changeToolbarTitle()
-                            albumView.showAlbumList(
-                                it.get(),
-                                albumRepository.getImageAdapter(),
-                                albumRepository.getAlbumViewData()
-                            )
-                        } else {
-                            albumView.showEmptyView()
-                        }
-                    }
-                }
-            })
-        }
+        albumListFuture?.execute(object : FutureCallback<List<Album>> {
+            override fun onSuccess(result: List<Album>) {
+                handleResult(result)
+            }
+        })
     }
 
     override fun takePicture() {
@@ -109,6 +95,30 @@ class AlbumPresenter(
     override fun onSuccessTakePicture() {
         albumView.saveImageForAndroidQOrHigher()
         albumView.scanAndRefresh()
+    }
+
+    private fun handleResult(result: List<Album>) {
+        val adapter = albumRepository.getImageAdapter()
+        // imageAdapter is null, so we can not proceed anymore
+        if (adapter == null) {
+            albumView.showToastAndFinish(
+                resId = R.string.msg_error,
+                code = Activity.RESULT_CANCELED,
+            )
+            return
+        }
+        uiHandler.run {
+            if (result.isNotEmpty()) {
+                changeToolbarTitle()
+                albumView.showAlbumList(
+                    result,
+                    adapter,
+                    albumRepository.getAlbumViewData()
+                )
+            } else {
+                albumView.showEmptyView()
+            }
+        }
     }
 
     companion object {
