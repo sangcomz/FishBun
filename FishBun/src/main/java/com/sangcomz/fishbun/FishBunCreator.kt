@@ -65,7 +65,7 @@ class FishBunCreator(private val fishBun: FishBun, private val fishton: Fishton)
         fishton.isStatusBarLight = isStatusBarLight
     }
 
-    @Deprecated("instead setCamera(count)", ReplaceWith("hasCameraInPickerPage(mimeType)"))
+    @Deprecated("instead hasCameraInPickerPage(hasCamera)", ReplaceWith("hasCameraInPickerPage(hasCamera)"))
     override fun setCamera(isCamera: Boolean): FishBunCreator = this.apply {
         fishton.hasCameraInPickerPage = isCamera
     }
