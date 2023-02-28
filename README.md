@@ -115,6 +115,8 @@ Setting up _FishBun_ requires to add this Gradle configuration:
         implementation 'io.coil-kt:coil:0.11.0'
         or
         implementation 'com.github.bumptech.glide:glide:4.11.0'
+        or
+        implementation 'com.squareup.picasso:picasso:2.8'
 
     } 
     
