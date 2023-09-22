@@ -1,5 +1,6 @@
 package com.sangcomz.fishbun.permission
 
+import android.Manifest
 import android.Manifest.permission.*
 import android.annotation.TargetApi
 import android.app.Activity
@@ -42,9 +43,12 @@ class PermissionCheck(private val context: Context) {
 
     fun checkStoragePermission(requestCode: Int): Boolean {
         return when {
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q -> {
+                checkStoragePermissionUnderAPI30(requestCode)
+            }
+            Build.VERSION.SDK_INT > Build.VERSION_CODES.Q &&
                     Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU -> {
-                checkStoragePermissionUnderAPI33(requestCode)
+                checkStoragePermissionUnderAPI30To32(requestCode)
             }
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> {
                 checkStoragePermissionOrHigherAPI33(requestCode)
@@ -54,9 +58,17 @@ class PermissionCheck(private val context: Context) {
     }
 
     @TargetApi(Build.VERSION_CODES.M)
-    fun checkStoragePermissionUnderAPI33(requestCode: Int): Boolean {
+    fun checkStoragePermissionUnderAPI30(requestCode: Int): Boolean {
         return checkPermission(
             arrayListOf(READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE),
+            requestCode
+        )
+    }
+
+    @TargetApi(Build.VERSION_CODES.R)
+    private fun checkStoragePermissionUnderAPI30To32(requestCode: Int): Boolean {
+        return checkPermission(
+            arrayListOf(READ_EXTERNAL_STORAGE),
             requestCode
         )
     }
