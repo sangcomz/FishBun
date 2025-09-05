@@ -1,10 +1,8 @@
 package com.sangcomz.fishbun.adapter.image.impl
 
-import android.graphics.Matrix
 import android.net.Uri
 import android.widget.ImageView
-import coil.api.load
-import coil.request.LoadRequestBuilder
+import coil.load
 import coil.size.Scale
 
 import com.sangcomz.fishbun.adapter.image.ImageAdapter

@@ -9,14 +9,15 @@ buildscript {
 
 
 android {
-    compileSdkVersion gradle.compileSdk
+    namespace 'com.sangcomz.fishbundemo'
+    compileSdkVersion gradle.ext.compileSdk
 
     defaultConfig {
         applicationId "com.sangcomz.fishbundemo"
-        minSdkVersion gradle.minSdk
-        targetSdkVersion gradle.targetSdk
-        versionCode gradle.versionCode
-        versionName gradle.versionName
+        minSdkVersion gradle.ext.minSdk
+        targetSdkVersion gradle.ext.targetSdk
+        versionCode gradle.ext.versionCode
+        versionName gradle.ext.versionName
         multiDexEnabled true
     }
 

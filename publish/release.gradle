@@ -34,10 +34,25 @@ afterEvaluate {
                 artifactId archivesBaseName
                 version version
 
-                if (project.plugins.findPlugin("com.android.library")) {
-                    from components.release
-                } else {
-                    from components.java
+                try {
+                    if (project.plugins.findPlugin("com.android.library")) {
+                        // Try different component names for AGP 8.x
+                        if (components.hasProperty('android')) {
+                            from components.android
+                        } else if (components.hasProperty('release')) {
+                            from components.release
+                        } else {
+                            // Fallback: manually add AAR artifact
+                            artifact tasks.named('bundleReleaseAar').flatMap { it.archiveFile }
+                        }
+                    } else {
+                        from components.java
+                    }
+                } catch (Exception e) {
+                    // Fallback for component resolution issues
+                    if (project.plugins.findPlugin("com.android.library")) {
+                        artifact tasks.named('bundleReleaseAar').flatMap { it.archiveFile }
+                    }
                 }
                 artifact sourceJar
                 artifact javadocJar

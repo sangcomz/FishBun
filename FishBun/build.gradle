@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'com.hiya.jacoco-android'
+apply plugin: 'jacoco'
 apply plugin: 'de.mobilej.unmock'
 
 jacoco {
@@ -17,19 +17,17 @@ buildscript {
 
     dependencies {
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
-        classpath 'com.hiya:jacoco-android:0.2'
-        classpath 'co.riiid:gradle-github-plugin:0.4.2'
     }
 }
 
 
 android {
     namespace 'com.sangcomz.fishbun'
-    compileSdkVersion gradle.compileSdk
+    compileSdkVersion gradle.ext.compileSdk
 
     defaultConfig {
-        minSdkVersion gradle.minSdk
-        targetSdkVersion gradle.targetSdk
+        minSdkVersion gradle.ext.minSdk
+        targetSdkVersion gradle.ext.targetSdk
         consumerProguardFile('proguard-rules.pro')
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

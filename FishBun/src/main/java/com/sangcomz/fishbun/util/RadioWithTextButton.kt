@@ -10,7 +10,6 @@ import android.util.TypedValue
 import android.view.View
 import androidx.annotation.ColorInt
 import androidx.annotation.VisibleForTesting
-
 import com.sangcomz.fishbun.R
 
 /**
@@ -106,7 +105,7 @@ class RadioWithTextButton @JvmOverloads constructor(
 
     private fun fetchAccentColor(): Int {
         val typedValue = TypedValue()
-        val a = context.obtainStyledAttributes(typedValue.data, intArrayOf(R.attr.colorAccent))
+        val a = context.obtainStyledAttributes(typedValue.data, intArrayOf(androidx.appcompat.R.attr.colorAccent))
         val color = a.getColor(0, 0)
         a.recycle()
         return color
