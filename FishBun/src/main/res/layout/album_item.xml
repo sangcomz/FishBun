@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="1dp"
-    android:background="#ffffff"
+    android:background="?attr/albumItemBackground"
     android:orientation="horizontal">
 
     <com.sangcomz.fishbun.util.SquareImageView
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"
-            android:textColor="#000"
+            android:textColor="?attr/albumNameTextColor"
             android:textSize="16sp" />
 
         <TextView
@@ -38,6 +38,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"
+            android:textColor="?attr/albumCountTextColor"
             android:textSize="12sp" />
 
     </LinearLayout>

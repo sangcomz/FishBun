@@ -4,7 +4,11 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="FishBunTheme" parent="Theme.Material3.DayNight.NoActionBar" />
+    <style name="FishBunTheme" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="albumItemBackground">@color/album_item_background</item>
+        <item name="albumNameTextColor">@color/album_name_text</item>
+        <item name="albumCountTextColor">@color/album_count_text</item>
+    </style>
 
     <style name="DetailViewTheme" parent="FishBunTheme">
         <item name="colorControlHighlight">@android:color/white</item>
