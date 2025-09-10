@@ -67,6 +67,7 @@ dependencies {
 
     implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraint_version"
     implementation "com.google.android.material:material:$rootProject.material_version"
+    implementation "androidx.activity:activity-ktx:$rootProject.activity_version"
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.mockito:mockito-core:3.0.0'

@@ -74,6 +74,10 @@ class FishBunCreator(private val fishBun: FishBun, private val fishton: Fishton)
         fishton.hasCameraInPickerPage = hasCamera
     }
 
+    override fun enableEdgeToEdge(enable: Boolean): FishBunCreator = this.apply {
+        fishton.enableEdgeToEdge = enable
+    }
+
     @Deprecated("To be deleted along with the startAlbum function")
     override fun setRequestCode(requestCode: Int): FishBunCreator = this.apply {
         this.requestCode = requestCode

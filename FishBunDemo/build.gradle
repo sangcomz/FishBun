@@ -73,6 +73,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "androidx.appcompat:appcompat:$rootProject.androidx_version"
     implementation "androidx.recyclerview:recyclerview:$rootProject.recyclerview_version"
+    implementation "com.google.android.material:material:$rootProject.material_version"
 
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.8.1'
 
