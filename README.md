@@ -17,7 +17,7 @@ _FishBun_ is a highly customizable image picker for Android.
 
 ## What's New in _FishBun_? :tada:
 
-- fix crash issue [#234](https://github.com/sangcomz/FishBun/issues/234) [#253](https://github.com/sangcomz/FishBun/issues/253)
+- [#269](https://github.com/sangcomz/FishBun/issues/269)
 
 
 ## Customizable Styles
@@ -50,22 +50,21 @@ FishBun.with(WithActivityActivity.this)
         .setPickerSpanCount(5)
         .setActionBarColor(Color.parseColor("#795548"), Color.parseColor("#5D4037"), false)
         .setActionBarTitleColor(Color.parseColor("#ffffff"))
-        .setArrayPaths(path)
         .setAlbumSpanCount(2, 3)
         .setButtonInAlbumActivity(false)
-        .setCamera(true)
-        .exceptGif(true)
+        .hasCameraInPickerPage(true)
         .setReachLimitAutomaticClose(true)
         .setHomeAsUpIndicatorDrawable(ContextCompat.getDrawable(this, R.drawable.ic_custom_back_white))
         .setDoneButtonDrawable(ContextCompat.getDrawable(this, R.drawable.ic_custom_ok))
         .setAllDoneButtonDrawable(ContextCompat.getDrawable(this, R.drawable.ic_custom_ok))
-        .setIsUseAllDoneButton(ContextCompat.getDrawable(this, R.drawable.ic_custom_ok))
+        .setIsUseAllDoneButton(true)
         .setAllViewTitle("All")
         .setMenuAllDoneText("All Done")
         .setActionBarTitle("FishBun Dark")
         .textOnNothingSelected("Please select three or more!")
         .exceptMimeType(listOf(MimeType.GIF))
         .setSpecifyFolderList(arrayListOf("Screenshots", "Camera"))
+        .enableEdgeToEdge(true)
         .startAlbumWithOnActivityResult(requestCode);
 ```
 
@@ -80,22 +79,21 @@ FishBun.with(WithActivityActivity.this)
 ```java
 FishBun.with(WithActivityActivity.this)
         .setImageAdapter(new GlideAdapter())
-        .setPickerCount(50)
+        .setMaxCount(50)
         .setPickerSpanCount(4)
         .setActionBarColor(Color.parseColor("#ffffff"), Color.parseColor("#ffffff"), true)
         .setActionBarTitleColor(Color.parseColor("#000000"))
-        .setArrayPaths(path)
         .setAlbumSpanCount(1, 2)
         .setButtonInAlbumActivity(true)
-        .setCamera(false)
-        .exceptGif(true)
+        .hasCameraInPickerPage(false)
         .setReachLimitAutomaticClose(false)
         .setHomeAsUpIndicatorDrawable(ContextCompat.getDrawable(this, R.drawable.ic_arrow_back_black_24dp))
-        .setOkButtonDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check_black_24dp))
+        .setDoneButtonDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check_black_24dp))
         .setAllViewTitle("All of your photos")
         .setActionBarTitle("FishBun Light")
         .textOnImagesSelectionLimitReached("You can't select any more.")
         .textOnNothingSelected("I need a photo!")
+        .exceptMimeType(listOf(MimeType.GIF))
         .startAlbumWithOnActivityResult(requestCode);
 ```
 
@@ -171,20 +169,18 @@ Various customizable features can be controlled by chained methods as in:
 
     FishBun.with(YourActivity or YourFragment)
             .setImageAdapter(new GlideAdapter())
-            .setIsUseDetailView(false)
-            .setPickerCount(5) //Deprecated
+            .setIsUseDetailView(true)
             .setMaxCount(5)
             .setMinCount(1)
             .setPickerSpanCount(6)
             .setActionBarColor(Color.parseColor("#795548"), Color.parseColor("#5D4037"), false)
             .setActionBarTitleColor(Color.parseColor("#ffffff"))
-            .setArrayPaths(path)
             .setAlbumSpanCount(2, 4)
             .setButtonInAlbumActivity(false)
-            .setCamera(true)
+            .hasCameraInPickerPage(true)
             .setReachLimitAutomaticClose(true)
             .setHomeAsUpIndicatorDrawable(ContextCompat.getDrawable(this, R.drawable.ic_custom_back_white))
-            .setOkButtonDrawable(ContextCompat.getDrawable(this, R.drawable.ic_custom_ok))
+            .setDoneButtonDrawable(ContextCompat.getDrawable(this, R.drawable.ic_custom_ok))
             .setAllViewTitle("All")
             .setActionBarTitle("Image Library")
             .textOnImagesSelectionLimitReached("Limit Reached!")
@@ -193,6 +189,7 @@ Various customizable features can be controlled by chained methods as in:
             .isStartInAllView(false)
             .exceptMimeType(listOf(MimeType.GIF))
             .setSpecifyFolderList(arrayListOf("Screenshots", "Camera"))
+            .enableEdgeToEdge(true)
             .startAlbumWithOnActivityResult(requestCode);
 
 ### attribute
@@ -224,12 +221,13 @@ Various customizable features can be controlled by chained methods as in:
 |       setMenuDoneText             | Set text for Done button                                              | null |
 |       setMenuAllDoneText          | Set text for All Done button                                          | null |
 |       setMenuTextColor            | Set text color for menu                                               | Integer.MAX_VALUE |
-|       setIsUseDetailView          | Set whether to use detail screen                                      | false |
-|       setIsShowCount              | Set whether to show counting numbers                                  | false |
+|       setIsUseDetailView          | Set whether to use detail screen                                      | true |
+|       setIsShowCount              | Set whether to show counting numbers                                  | true |
 |    setSelectCircleStrokeColor     | Set select circle color                                               | #c1ffffff |
 |       isStartInAllView            | Set to start with all view                                            | false |
 |       setSpecifyFolderList        | Set folder to show                                                    | NONE |
 |       hasCameraInPickerPage       | Set whether to use the camera button on picker screen                 | false |
+|       enableEdgeToEdge            | Enable edge-to-edge display                                           | Android 15+ |
 
 
 ## Android M Permission
