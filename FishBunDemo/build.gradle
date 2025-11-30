@@ -9,14 +9,15 @@ buildscript {
 
 
 android {
-    compileSdkVersion gradle.compileSdk
+    namespace 'com.sangcomz.fishbundemo'
+    compileSdkVersion gradle.ext.compileSdk
 
     defaultConfig {
         applicationId "com.sangcomz.fishbundemo"
-        minSdkVersion gradle.minSdk
-        targetSdkVersion gradle.targetSdk
-        versionCode gradle.versionCode
-        versionName gradle.versionName
+        minSdkVersion gradle.ext.minSdk
+        targetSdkVersion gradle.ext.targetSdk
+        versionCode gradle.ext.versionCode
+        versionName gradle.ext.versionName
         multiDexEnabled true
     }
 
@@ -57,12 +58,12 @@ android {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 
-    lintOptions {
-        abortOnError false
-    }
 
     buildFeatures {
          viewBinding true
+    }
+    lint {
+        abortOnError false
     }
 }
 
@@ -72,6 +73,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "androidx.appcompat:appcompat:$rootProject.androidx_version"
     implementation "androidx.recyclerview:recyclerview:$rootProject.recyclerview_version"
+    implementation "com.google.android.material:material:$rootProject.material_version"
 
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.8.1'
 

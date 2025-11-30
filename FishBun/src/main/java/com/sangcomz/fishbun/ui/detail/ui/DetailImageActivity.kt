@@ -138,6 +138,8 @@ class DetailImageActivity : BaseActivity(), DetailImageContract.View, OnPageChan
         Unit
 
     private fun initView() {
+        setupStatusBarInsets(findViewById(R.id.root))
+
         vpDetailPager = findViewById(R.id.vp_detail_pager)
         btnDetailCount = findViewById(R.id.btn_detail_count)
         btnDetailBack = findViewById(R.id.btn_detail_back)

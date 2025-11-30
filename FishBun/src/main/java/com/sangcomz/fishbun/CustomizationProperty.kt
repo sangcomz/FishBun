@@ -61,4 +61,6 @@ interface CustomizationProperty {
     fun setSpecifyFolderList(specifyFolderList: List<String>): FishBunCreator
 
     fun hasCameraInPickerPage(hasCamera: Boolean): FishBunCreator
+
+    fun enableEdgeToEdge(enable: Boolean): FishBunCreator
 }

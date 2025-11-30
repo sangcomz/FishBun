@@ -1,6 +1,7 @@
 package com.sangcomz.fishbundemo
 
 import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.sangcomz.fishbundemo.databinding.ActivityWithfragmentBinding
 
@@ -10,6 +11,7 @@ class WithFragmentActivity : AppCompatActivity() {
     private lateinit var binding: ActivityWithfragmentBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         binding = ActivityWithfragmentBinding.inflate(layoutInflater)
         setContentView(binding.root)

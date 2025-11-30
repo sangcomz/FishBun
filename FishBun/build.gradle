@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'com.hiya.jacoco-android'
+apply plugin: 'jacoco'
 apply plugin: 'de.mobilej.unmock'
 
 jacoco {
@@ -17,29 +17,28 @@ buildscript {
 
     dependencies {
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
-        classpath 'com.hiya:jacoco-android:0.2'
-        classpath 'co.riiid:gradle-github-plugin:0.4.2'
     }
 }
 
 
 android {
     namespace 'com.sangcomz.fishbun'
-    compileSdkVersion gradle.compileSdk
+    compileSdkVersion gradle.ext.compileSdk
 
     defaultConfig {
-        minSdkVersion gradle.minSdk
-        targetSdkVersion gradle.targetSdk
+        minSdkVersion gradle.ext.minSdk
+        targetSdkVersion gradle.ext.targetSdk
         consumerProguardFile('proguard-rules.pro')
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-
     buildTypes {
         debug {
-            testCoverageEnabled true
+            enableUnitTestCoverage true
+            enableAndroidTestCoverage true
         }
     }
+
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -49,10 +48,10 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
-
-    lintOptions {
+    lint {
         abortOnError false
     }
+
 }
 
 apply plugin: "io.github.sabujak-sabujak"
@@ -69,6 +68,7 @@ dependencies {
 
     implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraint_version"
     implementation "com.google.android.material:material:$rootProject.material_version"
+    implementation "androidx.activity:activity-ktx:$rootProject.activity_version"
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.mockito:mockito-core:3.0.0'

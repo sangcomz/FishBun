@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="album_item_background">#ffffff</color>
+    <color name="album_name_text">#000000</color>
+    <color name="album_count_text">#666666</color>
+</resources>

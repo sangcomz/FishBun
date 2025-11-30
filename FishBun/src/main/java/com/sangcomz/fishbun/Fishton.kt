@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.os.Build
 import com.sangcomz.fishbun.adapter.image.ImageAdapter
 import com.sangcomz.fishbun.util.getDimension
 import java.util.ArrayList
@@ -62,6 +63,8 @@ object Fishton {
 
     var isStartInAllView: Boolean = false
 
+    var enableEdgeToEdge: Boolean = false
+
     init {
         initValue()
     }
@@ -108,6 +111,8 @@ object Fishton {
 
         colorSelectCircleStroke = Color.parseColor("#c1ffffff")
         isStartInAllView = false
+
+        enableEdgeToEdge = Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM
     }
 
     fun setDefaultMessage(context: Context) {
