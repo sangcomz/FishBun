@@ -18,9 +18,9 @@ jobs:
       with:
         java-version: 17
     - name: Build with Gradle
-      run: ./gradlew build
+      run: ./gradlew :FishBun:build
     - name: assemble and jacoco
-      run: ./gradlew assembleDebug jacocoTestReport
+      run: ./gradlew :FishBun:assembleDebug :FishBun:jacocoTestReport
     - name: Android Emulator Runner
       # You may pin to the exact commit or the version.
       # uses: ReactiveCircus/android-emulator-runner@e08f702234bdc95883c7fd5c7d2867ccf1a8463b
@@ -28,6 +28,6 @@ jobs:
       with:
     # API level of the platform and system image - e.g. 23 for Android Marshmallow, 29 for Android 10
         api-level: 36
-        script: ./gradlew connectedCheck connectedAndroidTest
+        script: ./gradlew :FishBun:connectedCheck :FishBun:connectedAndroidTest
     - name: Codecov
       uses: codecov/codecov-action@v1.0.15
