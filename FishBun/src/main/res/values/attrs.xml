@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="albumItemBackground" format="color" />
+    <attr name="albumNameTextColor" format="color" />
+    <attr name="albumCountTextColor" format="color" />
+</resources>

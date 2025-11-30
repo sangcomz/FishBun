@@ -120,6 +120,7 @@ class PickerActivity : BaseActivity(),
                     }
                 }
             }
+
             ENTER_DETAIL_REQUEST_CODE -> {
                 if (resultCode == Activity.RESULT_OK) {
                     pickerPresenter.onDetailImageActivityResult()
@@ -159,6 +160,7 @@ class PickerActivity : BaseActivity(),
                     }
                 }
             }
+
             PERMISSION_CAMERA -> {
                 if (grantResults.isNotEmpty()) {
                     if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -229,9 +231,11 @@ class PickerActivity : BaseActivity(),
             R.id.action_done -> {
                 pickerPresenter.onClickMenuDone()
             }
+
             R.id.action_all_done -> {
                 pickerPresenter.onClickMenuAllDone()
             }
+
             android.R.id.home -> {
                 pickerPresenter.transImageFinish()
             }
@@ -258,6 +262,11 @@ class PickerActivity : BaseActivity(),
 
     override fun initToolBar(pickerViewData: PickerViewData) {
         val toolbar = findViewById<Toolbar>(R.id.toolbar_picker_bar)
+
+        if (Fishton.enableEdgeToEdge) {
+            setupStatusBarInsets(toolbar)
+        }
+
         setSupportActionBar(toolbar)
         toolbar.setBackgroundColor(pickerViewData.colorActionBar)
         toolbar.setTitleTextColor(pickerViewData.colorActionBarTitle)

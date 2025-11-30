@@ -6,10 +6,12 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sangcomz.fishbun.FishBun
 import com.sangcomz.fishbun.MimeType
@@ -32,11 +34,13 @@ class WithActivityActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         binding = ActivityWithactivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        setupStatusBarInsets(binding.toolbar)
         mode = intent.getIntExtra("mode", -1)
+        setSupportActionBar(binding.toolbar)
 
         with(binding.recyclerview) {
             layoutManager = LinearLayoutManager(
@@ -86,6 +90,7 @@ class WithActivityActivity : AppCompatActivity() {
                         .setMaxCount(5)
                         .setMinCount(3)
                         .setPickerSpanCount(5)
+                        .enableEdgeToEdge(true)
                         .setActionBarColor(
                             Color.parseColor("#795548"),
                             Color.parseColor("#5D4037"),

@@ -2,7 +2,7 @@ package com.sangcomz.fishbundemo
 
 import android.net.Uri
 import android.widget.ImageView
-import coil.api.load
+import coil.load
 import coil.size.Scale
 
 /**

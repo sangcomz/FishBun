@@ -10,7 +10,9 @@ def gitUrl = 'https://github.com/sangcomz/FishBun.git'   // Git repository URL
 
 afterEvaluate {
 
-    task sourceJar(type: Jar) {
+    // Use existing sourceJar task if available (created by other plugins)
+    // Otherwise create a new one
+    def sourceJarTask = tasks.findByName('releaseSourcesJar') ?: tasks.create('sourceJar', Jar) {
         from android.sourceSets.main.java.srcDirs
         archiveClassifier.set("sources")
     }
@@ -34,12 +36,9 @@ afterEvaluate {
                 artifactId archivesBaseName
                 version version
 
-                if (project.plugins.findPlugin("com.android.library")) {
-                    from components.release
-                } else {
-                    from components.java
-                }
-                artifact sourceJar
+                // Manually add artifacts to avoid conflicts
+                artifact tasks.named('bundleReleaseAar').flatMap { it.archiveFile }
+                artifact sourceJarTask
                 artifact javadocJar
 
                 pom {
@@ -55,7 +54,7 @@ afterEvaluate {
                     developers {
                         developer {
                             id = 'sangcomz'
-                            name = 'Swokwon Jeong'
+                            name = 'Seokwon Jeong'
                             email = 'dev.seokwon2@gmail.com'
                         }
                     }
@@ -73,23 +72,34 @@ afterEvaluate {
                 } else {
                     url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
                 }
-                credentials {
-                    username ossrhUsername
-                    password ossrhPassword
-                }
             }
         }
     }
 
     signing {
-        useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
-        sign publishing.publications.release
+        def signingKeyId = findProperty("signingKeyId") ?: System.getenv("SIGNING_KEY_ID")
+        def signingPassword = findProperty("signingPassword") ?: System.getenv("SIGNING_PASSWORD")
+        def skipSigning = findProperty("skipSigning") ?: System.getenv("SKIP_SIGNING")
+
+        // Only sign if all signing credentials are provided and skipSigning is not set
+        required { signingKeyId && signingPassword && !skipSigning }
+
+        if (signingKeyId && signingPassword && !skipSigning) {
+            // Use GPG agent instead of in-memory keys
+            useGpgCmd()
+            sign publishing.publications.release
+        }
     }
 
     javadoc {
         if (JavaVersion.current().isJava9Compatible()) {
             options.addBooleanOption('html5', true)
         }
+    }
+
+    // Add explicit task dependencies to fix Gradle 8.x warnings
+    tasks.withType(GenerateModuleMetadata) {
+        dependsOn(sourceJarTask, javadocJar)
     }
 }
 

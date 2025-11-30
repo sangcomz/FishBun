@@ -13,6 +13,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.Group
 import androidx.recyclerview.widget.GridLayoutManager
@@ -98,13 +99,15 @@ class AlbumActivity : BaseActivity(),
     override fun setToolBar(albumViewData: AlbumViewData) {
         val toolbar = findViewById<Toolbar>(R.id.toolbar_album_bar)
 
+        if (Fishton.enableEdgeToEdge) {
+            setupStatusBarInsets(toolbar)
+        }
+
         txtAlbumMessage?.setText(R.string.msg_loading_image)
         setSupportActionBar(toolbar)
         toolbar.setBackgroundColor(albumViewData.colorActionBar)
         toolbar.setTitleTextColor(albumViewData.colorActionBarTitle)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            this.setStatusBarColor(albumViewData.colorStatusBar)
-        }
+        this.setStatusBarColor(albumViewData.colorStatusBar)
 
         supportActionBar?.let {
             it.title = albumViewData.titleActionBar

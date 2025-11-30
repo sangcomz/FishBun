@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="album">アルバム</string>
+    <string name="camera">カメラ</string>
+    <string name="done">完了</string>
+    <string name="done_all">全て完了</string>
+    <string name="msg_no_selected">画像が選択されていません</string>
+    <string name="str_all_view">全て</string>
+    <string name="msg_permission">権限が却下されました</string>
+    <string name="msg_no_image">アルバムがありません</string>
+    <string name="msg_full_image">違う画像を選択するには選択済みの画像を外してください</string>
+    <string name="msg_loading_image">読み込み中…</string>
+    <string name="image">画像</string>
+    <string name="msg_error">一時的なエラーが発生しました。少し経ってから試してください</string>
+    <string name="msg_minimum_image">最低でも <b>%d</b> 枚選択してください</string>
+</resources>
