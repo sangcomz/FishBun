@@ -104,9 +104,7 @@ class PickerPresenter internal constructor(
     }
 
     override fun onDetailImageActivityResult() {
-        val pickerViewData = pickerRepository.getPickerViewData()
-
-        if (pickerRepository.isLimitReached() && pickerViewData.isAutomaticClose) {
+        if (pickerRepository.checkForFinish()) {
             finish()
         } else {
             getPickerListItem()
@@ -128,7 +126,7 @@ class PickerPresenter internal constructor(
                 pickerView.showMinimumImageMessage(pickerRepository.getMinCount())
             }
             else -> {
-                pickerView.finishActivity()
+                finish()
             }
         }
     }
@@ -142,7 +140,7 @@ class PickerPresenter internal constructor(
                 pickerRepository.selectImage(it)
             }
         }
-        pickerView.finishActivity()
+        finish()
     }
 
     override fun onSuccessTakePicture() {
